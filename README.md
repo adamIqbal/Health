@@ -1,2 +1,2 @@
 # Health
-health informatics context proejct
+health informatics context project
