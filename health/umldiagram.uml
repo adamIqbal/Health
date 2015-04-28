@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_cRpjwO18EeS50JV9gM78GQ" name="UML Model"/>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_cRpjwO18EeS50JV9gM78GQ" name="UML Model">
+  <packagedElement xmi:type="uml:Package" xmi:id="_ktuQ0O1_EeS50JV9gM78GQ" name="Input Module">
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_iYBvUO2AEeS50JV9gM78GQ" client="_ktuQ0O1_EeS50JV9gM78GQ" supplier="_pb4pEO1_EeS50JV9gM78GQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_pb4pEO1_EeS50JV9gM78GQ" name="Analyse Module">
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_iyonsO2AEeS50JV9gM78GQ" client="_pb4pEO1_EeS50JV9gM78GQ" supplier="_sIuCwO1_EeS50JV9gM78GQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_sIuCwO1_EeS50JV9gM78GQ" name="Output Module"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_znh9sO1_EeS50JV9gM78GQ" name="Control Module">
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_jMJT4O2AEeS50JV9gM78GQ" client="_znh9sO1_EeS50JV9gM78GQ" supplier="_pb4pEO1_EeS50JV9gM78GQ"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_jpBdIO2AEeS50JV9gM78GQ" client="_znh9sO1_EeS50JV9gM78GQ" supplier="_ktuQ0O1_EeS50JV9gM78GQ"/>
+  </packagedElement>
+</uml:Model>
