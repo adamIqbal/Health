@@ -1,4 +1,4 @@
-package parser;
+package txtParser;
 
 import java.io.IOException;
 
