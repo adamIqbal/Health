@@ -1,0 +1,15 @@
+package txtParser;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ConfigObject {
+
+	public ArrayList<String> columns;
+
+	public void columns(ArrayList<String> columns) {
+		this.columns = columns;
+
+	}
+
+}

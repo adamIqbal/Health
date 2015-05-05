@@ -1,0 +1,19 @@
+package txtParser;
+
+import java.util.List;
+
+public class ObjectifyConfig {
+	/**
+	 * Class shall return string o
+	 * 
+	 * @param e
+	 * @return
+	 */
+	ConfigXmlParser xmlConfig;
+
+	public String toString(List<?> e) {
+		
+		return e.toString();
+	}
+
+}
