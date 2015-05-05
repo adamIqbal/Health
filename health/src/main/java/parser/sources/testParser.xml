@@ -1,3 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<data>
+	<data startDelimiter = "["/> 
+	<DELIMITER attribute delimiter = ","/>
+	<COLUMN type > 		</COLUMN type>
+	<COLUMN value>		</COLUMN value>
+	<COLUMN unit>		</COLUMN unit>
+	<COLUMN 00>			</COLUMN 00>
+	<COLUMN date>		</COLUMN date>
+	<COLUMN time>		</COLUMN time>
+	<data endDelimiter = "]"/>
+</data>
+
 <!--<general information>
 <board id> </board id>
 <meter id> </meter id>
@@ -7,14 +22,3 @@
 <time>		</time>
 </general information>
 -->
-<data startDelimiter = "["/>
-<data> 
-	<DELIMITER attribute delimiter = ","/>
-	<COLUMN Crea > 		</COLUMN Crea>
-	<COLUMN value>		</COLUMN value>
-	<COLUMN unit>		</COLUMN unit>
-	<COLUMN 00>			</COLUMN 00>
-	<COLUMN date>		</COLUMN date>
-	<COLUMN time>		</COLUMN time>
-	<data endDelimiter = "]"/>
-</data>
