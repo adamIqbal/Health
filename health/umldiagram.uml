@@ -13,25 +13,17 @@
     <packagedElement xmi:type="uml:Dependency" xmi:id="_iYBvUO2AEeS50JV9gM78GQ" client="_ktuQ0O1_EeS50JV9gM78GQ" supplier="_znh9sO1_EeS50JV9gM78GQ"/>
     <packagedElement xmi:type="uml:Usage" xmi:id="_shF_IO2CEeS50JV9gM78GQ" name="Parsed Data" client="_ktuQ0O1_EeS50JV9gM78GQ" supplier="_znh9sO1_EeS50JV9gM78GQ"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_cTi4wO5OEeSXkuuV0Vgepg" name="Control Module">
-    <packagedElement xmi:type="uml:Package" xmi:id="_j-d9EO5OEeSXkuuV0Vgepg" name="Script Module">
+  <packagedElement xmi:type="uml:Package" xmi:id="_cTi4wO5OEeSXkuuV0Vgepg" name="Can't remove this package because the editor is less than optimal">
+    <packagedElement xmi:type="uml:Package" xmi:id="_j-d9EO5OEeSXkuuV0Vgepg" name="Control Module">
       <packagedElement xmi:type="uml:Class" xmi:id="_olCfkO5OEeSXkuuV0Vgepg" name="Lexer">
-        <ownedAttribute xmi:id="_QgOoYO8iEeSNZNcx4yywVQ" name="reader" visibility="private" type="_CmMlwO-LEeStcLu5a_1AaA"/>
         <ownedAttribute xmi:id="_Ko8dMO8oEeSNZNcx4yywVQ" name="diagnosticObservers" visibility="private" type="_aDEo4O8oEeSNZNcx4yywVQ"/>
         <interfaceRealization xmi:id="_caJ7oO6REeS9rfWCbRrARA" client="_olCfkO5OEeSXkuuV0Vgepg" supplier="_uRBgEO5QEeSXkuuV0Vgepg" contract="_uRBgEO5QEeSXkuuV0Vgepg"/>
-        <ownedOperation xmi:id="_BgI1wO5QEeSXkuuV0Vgepg" name="Lexer">
-          <ownedParameter xmi:id="_CIwU8O5QEeSXkuuV0Vgepg" name="reader" type="_CmMlwO-LEeStcLu5a_1AaA"/>
-        </ownedOperation>
-        <ownedOperation xmi:id="_7_FfkO8hEeSNZNcx4yywVQ" name="peek">
-          <ownedParameter xmi:id="_7_Ffke8hEeSNZNcx4yywVQ" type="_kpk0IO6REeS9rfWCbRrARA" direction="return"/>
-        </ownedOperation>
-        <ownedOperation xmi:id="_7_Ffku8hEeSNZNcx4yywVQ" name="read">
-          <ownedParameter xmi:id="_7_Ffk-8hEeSNZNcx4yywVQ" type="_kpk0IO6REeS9rfWCbRrARA" direction="return"/>
-        </ownedOperation>
-        <ownedOperation xmi:id="_7_FflO8hEeSNZNcx4yywVQ" name="readAll">
+        <ownedOperation xmi:id="_BgI1wO5QEeSXkuuV0Vgepg" name="Lexer"/>
+        <ownedOperation xmi:id="_7_FflO8hEeSNZNcx4yywVQ" name="lex">
           <ownedParameter xmi:id="_7_Ffle8hEeSNZNcx4yywVQ" type="_oWJY4O5XEeSXkuuV0Vgepg" direction="return">
             <name xsi:nil="true"/>
           </ownedParameter>
+          <ownedParameter xmi:id="_rna1MPNhEeS6CKyTDs-NUw" name="reader" type="_CmMlwO-LEeStcLu5a_1AaA"/>
         </ownedOperation>
         <ownedOperation xmi:id="_GyAn4O8oEeSNZNcx4yywVQ" name="addDiagnosticObserver">
           <ownedParameter xmi:id="_GyAn4e8oEeSNZNcx4yywVQ" name="observer" type="_xjbKQO8nEeSNZNcx4yywVQ"/>
@@ -41,15 +33,12 @@
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_qLL-AO5OEeSXkuuV0Vgepg" name="Parser">
-        <ownedAttribute xmi:id="_TIiucO8iEeSNZNcx4yywVQ" name="tokens" visibility="private" type="_oWJY4O5XEeSXkuuV0Vgepg"/>
-        <ownedAttribute xmi:id="_aOCxgO8iEeSNZNcx4yywVQ" name="currentTokenIndex" visibility="private" type="_vns5IO6SEeS9rfWCbRrARA"/>
         <ownedAttribute xmi:id="_lL_eEO8oEeSNZNcx4yywVQ" name="diagnosticObservers" visibility="private" type="_aDEo4O8oEeSNZNcx4yywVQ"/>
         <interfaceRealization xmi:id="_wnA84O6ZEeS9rfWCbRrARA" client="_qLL-AO5OEeSXkuuV0Vgepg" supplier="_u-guAO6ZEeS9rfWCbRrARA" contract="_u-guAO6ZEeS9rfWCbRrARA"/>
-        <ownedOperation xmi:id="_CEOR0O8iEeSNZNcx4yywVQ" name="Parser">
-          <ownedParameter xmi:id="_CEOR0e8iEeSNZNcx4yywVQ" name="reader" type="_oWJY4O5XEeSXkuuV0Vgepg"/>
-        </ownedOperation>
+        <ownedOperation xmi:id="_CEOR0O8iEeSNZNcx4yywVQ" name="Parser"/>
         <ownedOperation xmi:id="_UJMKAO6cEeS9rfWCbRrARA" name="parse">
           <ownedParameter xmi:id="_UJMKAu6cEeS9rfWCbRrARA" type="_T2_RoO6aEeS9rfWCbRrARA" direction="return"/>
+          <ownedParameter xmi:id="_tZVewPNhEeS6CKyTDs-NUw" name="tokens" type="_oWJY4O5XEeSXkuuV0Vgepg"/>
         </ownedOperation>
         <ownedOperation xmi:id="_IBWv4O8oEeSNZNcx4yywVQ" name="addDiagnosticObserver">
           <ownedParameter xmi:id="_IBWv4e8oEeSNZNcx4yywVQ" name="observer" type="_xjbKQO8nEeSNZNcx4yywVQ"/>
@@ -59,27 +48,18 @@
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_s0-qwO5OEeSXkuuV0Vgepg" name="Interpreter">
-        <ownedAttribute xmi:id="_KH2UkO8jEeSNZNcx4yywVQ" name="syntaxTree" visibility="private" type="_T2_RoO6aEeS9rfWCbRrARA"/>
         <interfaceRealization xmi:id="_2eoFkO5OEeSXkuuV0Vgepg" client="_s0-qwO5OEeSXkuuV0Vgepg" supplier="_xP9oUO5OEeSXkuuV0Vgepg" contract="_xP9oUO5OEeSXkuuV0Vgepg"/>
-        <ownedOperation xmi:id="_FVR9cO8jEeSNZNcx4yywVQ" name="Interpreter">
-          <ownedParameter xmi:id="_GG95EO8jEeSNZNcx4yywVQ" name="syntaxTree" type="_T2_RoO6aEeS9rfWCbRrARA"/>
+        <ownedOperation xmi:id="_FVR9cO8jEeSNZNcx4yywVQ" name="Interpreter"/>
+        <ownedOperation xmi:id="_FdSfovNlEeS6CKyTDs-NUw" name="interpret">
+          <ownedParameter xmi:id="_FdSfo_NlEeS6CKyTDs-NUw" name="syntaxTree" type="_T2_RoO6aEeS9rfWCbRrARA"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_DWn4YO8jEeSNZNcx4yywVQ" name="run"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_xP9oUO5OEeSXkuuV0Vgepg" name="IInterpreter" isAbstract="true">
-        <ownedOperation xmi:id="_xhNWAO8iEeSNZNcx4yywVQ" name="run" isAbstract="true"/>
       </packagedElement>
       <packagedElement xmi:type="uml:Interface" xmi:id="_uRBgEO5QEeSXkuuV0Vgepg" name="ILexer" isAbstract="true">
-        <ownedOperation xmi:id="_2AUbEO8hEeSNZNcx4yywVQ" name="peek" isAbstract="true">
-          <ownedParameter xmi:id="_2pFEMO8hEeSNZNcx4yywVQ" type="_kpk0IO6REeS9rfWCbRrARA" direction="return"/>
-        </ownedOperation>
-        <ownedOperation xmi:id="_yIl7kO8hEeSNZNcx4yywVQ" name="read" isAbstract="true">
-          <ownedParameter xmi:id="_y0L2QO8hEeSNZNcx4yywVQ" type="_kpk0IO6REeS9rfWCbRrARA" direction="return"/>
-        </ownedOperation>
-        <ownedOperation xmi:id="_ZOFcUO5REeSXkuuV0Vgepg" name="readAll" isAbstract="true">
+        <ownedOperation xmi:id="_ZOFcUO5REeSXkuuV0Vgepg" name="lex" isAbstract="true">
           <ownedParameter xmi:id="_SQ_ccO5TEeSXkuuV0Vgepg" type="_oWJY4O5XEeSXkuuV0Vgepg" direction="return">
             <name xsi:nil="true"/>
           </ownedParameter>
+          <ownedParameter xmi:id="_pMg5APNhEeS6CKyTDs-NUw" name="reader" type="_CmMlwO-LEeStcLu5a_1AaA"/>
         </ownedOperation>
         <ownedOperation xmi:id="_nIGs0O8lEeSNZNcx4yywVQ" name="addDiagnosticObserver" isAbstract="true">
           <ownedParameter xmi:id="_1Z2CMO8nEeSNZNcx4yywVQ" name="observer" type="_xjbKQO8nEeSNZNcx4yywVQ"/>
@@ -170,6 +150,7 @@
       <packagedElement xmi:type="uml:Interface" xmi:id="_u-guAO6ZEeS9rfWCbRrARA" name="IParser" isAbstract="true">
         <ownedOperation xmi:id="_8ZnBMO6ZEeS9rfWCbRrARA" name="parse" isAbstract="true">
           <ownedParameter xmi:id="_RH7_gO6cEeS9rfWCbRrARA" type="_T2_RoO6aEeS9rfWCbRrARA" direction="return"/>
+          <ownedParameter xmi:id="_aD_asPNhEeS6CKyTDs-NUw" name="tokens" type="_oWJY4O5XEeSXkuuV0Vgepg"/>
         </ownedOperation>
         <ownedOperation xmi:id="_FPz1UO8oEeSNZNcx4yywVQ" name="addDiagnosticObserver" isAbstract="true">
           <ownedParameter xmi:id="_FPz1Ue8oEeSNZNcx4yywVQ" name="observer" type="_xjbKQO8nEeSNZNcx4yywVQ"/>
@@ -232,13 +213,37 @@
         </ownedOperation>
       </packagedElement>
       <packagedElement xmi:type="uml:Class" xmi:id="_quT-gO8lEeSNZNcx4yywVQ" name="Diagnostic">
-        <ownedAttribute xmi:id="_VC8zYO8nEeSNZNcx4yywVQ" name="diagnosticInfo" visibility="private" type="_9m9_MO8oEeSNZNcx4yywVQ"/>
+        <ownedAttribute xmi:id="_VC8zYO8nEeSNZNcx4yywVQ" name="diagnosticCode" visibility="private" type="_9m9_MO8oEeSNZNcx4yywVQ">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5lIYIPNfEeS6CKyTDs-NUw" value="1"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5lIYIfNfEeS6CKyTDs-NUw" value="1"/>
+        </ownedAttribute>
         <ownedAttribute xmi:id="_XAI40O8nEeSNZNcx4yywVQ" name="script" visibility="private" type="_cwpbsO8jEeSNZNcx4yywVQ"/>
         <interfaceRealization xmi:id="_rHbRwO_YEeSFip3Fe5PX8g" client="_quT-gO8lEeSNZNcx4yywVQ" supplier="_HEhgsO_XEeSFip3Fe5PX8g" contract="_HEhgsO_XEeSFip3Fe5PX8g"/>
-        <ownedOperation xmi:id="_KCmrYO8nEeSNZNcx4yywVQ" name="getInfo">
+        <ownedOperation xmi:id="_NghIh_NgEeS6CKyTDs-NUw" name="Diagnostic">
+          <ownedParameter xmi:id="_NghIiPNgEeS6CKyTDs-NUw" name="script" type="_cwpbsO8jEeSNZNcx4yywVQ"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_NghIgvNgEeS6CKyTDs-NUw" name="Diagnostic">
+          <ownedParameter xmi:id="_NghIg_NgEeS6CKyTDs-NUw" name="script" type="_cwpbsO8jEeSNZNcx4yywVQ"/>
+          <ownedParameter xmi:id="_NghIhPNgEeS6CKyTDs-NUw" name="position" type="_vns5IO6SEeS9rfWCbRrARA"/>
+          <ownedParameter xmi:id="_NghIhfNgEeS6CKyTDs-NUw" name="length" type="_vns5IO6SEeS9rfWCbRrARA"/>
+          <ownedParameter xmi:id="_NghIhvNgEeS6CKyTDs-NUw" name="name" type="_4L7kAO6SEeS9rfWCbRrARA"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_NghIjfNgEeS6CKyTDs-NUw" name="Diagnostic">
+          <ownedParameter xmi:id="_NghIjvNgEeS6CKyTDs-NUw" name="script" type="_cwpbsO8jEeSNZNcx4yywVQ"/>
+          <ownedParameter xmi:id="_NghIj_NgEeS6CKyTDs-NUw" name="position" type="_vns5IO6SEeS9rfWCbRrARA"/>
+          <ownedParameter xmi:id="_NghIkPNgEeS6CKyTDs-NUw" name="length" type="_vns5IO6SEeS9rfWCbRrARA"/>
+          <ownedParameter xmi:id="_NghIkfNgEeS6CKyTDs-NUw" name="name" type="_4L7kAO6SEeS9rfWCbRrARA"/>
+          <ownedParameter xmi:id="_NghIkvNgEeS6CKyTDs-NUw" name="value" type="_HHBqUO6TEeS9rfWCbRrARA"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_KCmrYO8nEeSNZNcx4yywVQ" name="getCode">
           <ownedParameter xmi:id="_LimegO8nEeSNZNcx4yywVQ" type="_9m9_MO8oEeSNZNcx4yywVQ" direction="return">
             <name xsi:nil="true"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4Fz6cPNfEeS6CKyTDs-NUw" value="1"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4Fz6cfNfEeS6CKyTDs-NUw" value="1"/>
           </ownedParameter>
+        </ownedOperation>
+        <ownedOperation xmi:id="_69fSMPNfEeS6CKyTDs-NUw" name="getSeverity">
+          <ownedParameter xmi:id="_7-NvYPNfEeS6CKyTDs-NUw" type="_e42xMO_aEeSFip3Fe5PX8g" direction="return"/>
         </ownedOperation>
         <ownedOperation xmi:id="_Assr8O8nEeSNZNcx4yywVQ" name="getScript">
           <ownedParameter xmi:id="_CBNAwO8nEeSNZNcx4yywVQ" type="_cwpbsO8jEeSNZNcx4yywVQ" direction="return"/>
@@ -255,35 +260,15 @@
         <ownedOperation xmi:id="__s2YgO8mEeSNZNcx4yywVQ" name="getColumn">
           <ownedParameter xmi:id="_ECx28O8nEeSNZNcx4yywVQ" type="_vns5IO6SEeS9rfWCbRrARA" direction="return"/>
         </ownedOperation>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_xjbKQO8nEeSNZNcx4yywVQ" name="IDiagnosticObserver">
-        <ownedOperation xmi:id="_-xK98O8nEeSNZNcx4yywVQ" name="onDiagnostic" isAbstract="true">
-          <ownedParameter xmi:id="_AW1UMO8oEeSNZNcx4yywVQ" name="diagnostic" type="_quT-gO8lEeSNZNcx4yywVQ"/>
+        <ownedOperation xmi:id="_NghIifNgEeS6CKyTDs-NUw" name="setCode">
+          <ownedParameter xmi:id="_NghIivNgEeS6CKyTDs-NUw" name="code" type="_9m9_MO8oEeSNZNcx4yywVQ"/>
         </ownedOperation>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Enumeration" xmi:id="_9m9_MO8oEeSNZNcx4yywVQ" name="DiagnosticInfo">
-        <ownedAttribute xmi:id="_M5HAYO_VEeSFip3Fe5PX8g" name="message" visibility="private" type="_tm5fAO6SEeS9rfWCbRrARA"/>
-        <ownedAttribute xmi:id="_jylgQO_aEeSFip3Fe5PX8g" name="severity" visibility="private" type="_e42xMO_aEeSFip3Fe5PX8g"/>
-        <ownedOperation xmi:id="_WTpLsO_WEeSFip3Fe5PX8g" name="DiagnosticInfo">
-          <ownedParameter xmi:id="_R1feAO_ZEeSFip3Fe5PX8g" name="message" type="_tm5fAO6SEeS9rfWCbRrARA"/>
-          <ownedParameter xmi:id="_pobSQO_aEeSFip3Fe5PX8g" name="severity" type="_e42xMO_aEeSFip3Fe5PX8g"/>
+        <ownedOperation xmi:id="_NghIgPNgEeS6CKyTDs-NUw" name="setPosition">
+          <ownedParameter xmi:id="_NghIgfNgEeS6CKyTDs-NUw" name="pos" type="_vns5IO6SEeS9rfWCbRrARA"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_M5HAYe_VEeSFip3Fe5PX8g" name="getMessage">
-          <ownedParameter xmi:id="_M5HAYu_VEeSFip3Fe5PX8g" type="_tm5fAO6SEeS9rfWCbRrARA" direction="return"/>
+        <ownedOperation xmi:id="_NghIi_NgEeS6CKyTDs-NUw" name="setLength">
+          <ownedParameter xmi:id="_NghIjPNgEeS6CKyTDs-NUw" name="length" type="_vns5IO6SEeS9rfWCbRrARA"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_lq33kO_aEeSFip3Fe5PX8g" name="getSeverity">
-          <ownedParameter xmi:id="_mhHjEO_aEeSFip3Fe5PX8g" type="_e42xMO_aEeSFip3Fe5PX8g" direction="return">
-            <name xsi:nil="true"/>
-          </ownedParameter>
-        </ownedOperation>
-        <ownedLiteral xmi:id="_PqbCsO_bEeSFip3Fe5PX8g" name="EndOfStreamInLiteral"/>
-        <ownedLiteral xmi:id="_VPz94O_bEeSFip3Fe5PX8g" name="NewlineInLiteral"/>
-        <ownedLiteral xmi:id="_dY7aEO_bEeSFip3Fe5PX8g" name="InvalidEscapeSequence"/>
-        <ownedLiteral xmi:id="_nD2AMO_bEeSFip3Fe5PX8g" name="EmptyLiteral"/>
-        <ownedLiteral xmi:id="_oN2VMO_bEeSFip3Fe5PX8g" name="TooManyCharactersInLiteral"/>
-        <ownedLiteral xmi:id="_pZr2MO_bEeSFip3Fe5PX8g" name="IntegralConstantTooLarge"/>
-        <ownedLiteral xmi:id="_qfTacO_bEeSFip3Fe5PX8g" name="InvalidNumber"/>
-        <ownedLiteral xmi:id="_rX85sO_bEeSFip3Fe5PX8g" name="etc..."/>
       </packagedElement>
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_OJPesO8pEeSNZNcx4yywVQ" name="TokenType">
         <ownedLiteral xmi:id="_5nJRYO_dEeSFip3Fe5PX8g" name="Keyword"/>
@@ -364,6 +349,40 @@
       <packagedElement xmi:type="uml:Enumeration" xmi:id="_e42xMO_aEeSFip3Fe5PX8g" name="DiagnosticSeverity">
         <ownedLiteral xmi:id="_jE4QQO_bEeSFip3Fe5PX8g" name="Error"/>
         <ownedLiteral xmi:id="_ibfVAO_bEeSFip3Fe5PX8g" name="Warning"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_xjbKQO8nEeSNZNcx4yywVQ" name="IDiagnosticObserver">
+        <ownedOperation xmi:id="_-xK98O8nEeSNZNcx4yywVQ" name="onDiagnostic" isAbstract="true">
+          <ownedParameter xmi:id="_AW1UMO8oEeSNZNcx4yywVQ" name="diagnostic" type="_quT-gO8lEeSNZNcx4yywVQ"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_9m9_MO8oEeSNZNcx4yywVQ" name="DiagnosticCode">
+        <ownedAttribute xmi:id="_M5HAYO_VEeSFip3Fe5PX8g" name="message" visibility="private" type="_tm5fAO6SEeS9rfWCbRrARA"/>
+        <ownedAttribute xmi:id="_jylgQO_aEeSFip3Fe5PX8g" name="severity" visibility="private" type="_e42xMO_aEeSFip3Fe5PX8g"/>
+        <ownedOperation xmi:id="_WTpLsO_WEeSFip3Fe5PX8g" name="DiagnosticInfo">
+          <ownedParameter xmi:id="_R1feAO_ZEeSFip3Fe5PX8g" name="message" type="_tm5fAO6SEeS9rfWCbRrARA"/>
+          <ownedParameter xmi:id="_pobSQO_aEeSFip3Fe5PX8g" name="severity" type="_e42xMO_aEeSFip3Fe5PX8g"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_M5HAYe_VEeSFip3Fe5PX8g" name="getMessage">
+          <ownedParameter xmi:id="_M5HAYu_VEeSFip3Fe5PX8g" type="_tm5fAO6SEeS9rfWCbRrARA" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_lq33kO_aEeSFip3Fe5PX8g" name="getSeverity">
+          <ownedParameter xmi:id="_mhHjEO_aEeSFip3Fe5PX8g" type="_e42xMO_aEeSFip3Fe5PX8g" direction="return">
+            <name xsi:nil="true"/>
+          </ownedParameter>
+        </ownedOperation>
+        <ownedLiteral xmi:id="_PqbCsO_bEeSFip3Fe5PX8g" name="EndOfStreamInLiteral"/>
+        <ownedLiteral xmi:id="_VPz94O_bEeSFip3Fe5PX8g" name="NewlineInLiteral"/>
+        <ownedLiteral xmi:id="_dY7aEO_bEeSFip3Fe5PX8g" name="InvalidEscapeSequence"/>
+        <ownedLiteral xmi:id="_nD2AMO_bEeSFip3Fe5PX8g" name="EmptyLiteral"/>
+        <ownedLiteral xmi:id="_oN2VMO_bEeSFip3Fe5PX8g" name="TooManyCharactersInLiteral"/>
+        <ownedLiteral xmi:id="_pZr2MO_bEeSFip3Fe5PX8g" name="IntegralConstantTooLarge"/>
+        <ownedLiteral xmi:id="_qfTacO_bEeSFip3Fe5PX8g" name="InvalidNumber"/>
+        <ownedLiteral xmi:id="_rX85sO_bEeSFip3Fe5PX8g" name="etc..."/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_xP9oUO5OEeSXkuuV0Vgepg" name="IInterpreter" isAbstract="true">
+        <ownedOperation xmi:id="_xhNWAO8iEeSNZNcx4yywVQ" name="interpret" isAbstract="true">
+          <ownedParameter xmi:id="_nDUtAPNjEeS6CKyTDs-NUw" name="syntaxTree" type="_T2_RoO6aEeS9rfWCbRrARA"/>
+        </ownedOperation>
       </packagedElement>
     </packagedElement>
   </packagedElement>
