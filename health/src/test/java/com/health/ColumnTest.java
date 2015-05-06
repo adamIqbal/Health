@@ -47,7 +47,9 @@ public class ColumnTest {
      */
     @Test
     public void constructor_givenValidArguments_setsName() {
-        Column column = new Column(this.defaultName, this.defaultIndex,
+        Column column = new Column(
+                this.defaultName,
+                this.defaultIndex,
                 this.defaultType);
 
         String expected = this.defaultName;

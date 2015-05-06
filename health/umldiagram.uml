@@ -400,6 +400,7 @@
     <packagedElement xmi:type="uml:Class" xmi:id="_cg_JIPODEeS9Q51oLeydKg" name="List&lt;Object>" isAbstract="true"/>
     <packagedElement xmi:type="uml:Class" xmi:id="_Aw0_cPOEEeS9Q51oLeydKg" name="Double"/>
     <packagedElement xmi:type="uml:Class" xmi:id="_DYRQ4POGEeS9Q51oLeydKg" name="Iterable&lt;Record>"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_fz6ngPRJEeSNf5A7FFP1kg" name="Iterable&lt;Object>"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_olUIkPOBEeS9Q51oLeydKg" name="Table">
     <generalization xmi:id="_O7wIQPPgEeSn_LMEgWuruw" general="_50RLEPOFEeS9Q51oLeydKg"/>
@@ -407,9 +408,9 @@
     <ownedOperation xmi:id="_raxLYPOEEeS9Q51oLeydKg" name="Table">
       <ownedParameter xmi:id="_r8NrkPOEEeS9Q51oLeydKg" name="columns" type="_6vK0cPOCEeS9Q51oLeydKg"/>
     </ownedOperation>
-    <ownedOperation xmi:id="_Wf85gPPgEeSn_LMEgWuruw" name="Table">
-      <ownedParameter xmi:id="_Wf85gfPgEeSn_LMEgWuruw" name="columns" type="_6vK0cPOCEeS9Q51oLeydKg"/>
-      <ownedParameter xmi:id="_XA4cUPPgEeSn_LMEgWuruw" name="records" type="_DYRQ4POGEeS9Q51oLeydKg"/>
+    <ownedOperation xmi:id="_KXUAMPRCEeSNf5A7FFP1kg" name="Table">
+      <ownedParameter xmi:id="_KXUAMfRCEeSNf5A7FFP1kg" name="columns" type="_6vK0cPOCEeS9Q51oLeydKg"/>
+      <ownedParameter xmi:id="_TzEwAPRCEeSNf5A7FFP1kg" name="records" type="_DYRQ4POGEeS9Q51oLeydKg"/>
     </ownedOperation>
     <ownedOperation xmi:id="_hKnaUPO9EeSn_LMEgWuruw" name="getColumn">
       <ownedParameter xmi:id="_hKnaUfO9EeSn_LMEgWuruw" type="__e028POBEeS9Q51oLeydKg" direction="return"/>
@@ -422,12 +423,16 @@
   <packagedElement xmi:type="uml:Class" xmi:id="_pbI9UPOBEeS9Q51oLeydKg" name="Record">
     <ownedAttribute xmi:id="_hO30kPODEeS9Q51oLeydKg" name="table" visibility="private" type="_olUIkPOBEeS9Q51oLeydKg"/>
     <ownedAttribute xmi:id="_e9XsAPODEeS9Q51oLeydKg" name="values" visibility="private" type="_cg_JIPODEeS9Q51oLeydKg"/>
-    <ownedOperation xmi:id="_Leip4POFEeS9Q51oLeydKg" name="Record"/>
     <ownedOperation xmi:id="_ePkqgPOGEeS9Q51oLeydKg" name="Record">
       <ownedParameter xmi:id="_e2drYPOGEeS9Q51oLeydKg" name="table" type="_olUIkPOBEeS9Q51oLeydKg"/>
     </ownedOperation>
     <ownedOperation xmi:id="_QHrNoPOEEeS9Q51oLeydKg" name="getTable">
       <ownedParameter xmi:id="_QvCIkPOEEeS9Q51oLeydKg" type="_olUIkPOBEeS9Q51oLeydKg" direction="return">
+        <name xsi:nil="true"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_TZTWcPOEEeS9Q51oLeydKg" name="getValues">
+      <ownedParameter xmi:id="_UWnTQPOEEeS9Q51oLeydKg" type="_fz6ngPRJEeSNf5A7FFP1kg" direction="return">
         <name xsi:nil="true"/>
       </ownedParameter>
     </ownedOperation>
@@ -449,20 +454,13 @@
         <name xsi:nil="true"/>
       </ownedParameter>
     </ownedOperation>
-    <ownedOperation xmi:id="_TZTWcPOEEeS9Q51oLeydKg" name="getValues">
-      <ownedParameter xmi:id="_UWnTQPOEEeS9Q51oLeydKg" type="_cg_JIPODEeS9Q51oLeydKg" direction="return">
-        <name xsi:nil="true"/>
-      </ownedParameter>
+    <ownedOperation xmi:id="_IYhqMPRAEeSNf5A7FFP1kg" name="setValue">
+      <ownedParameter xmi:id="_IYhqMfRAEeSNf5A7FFP1kg" name="column" type="_tm5fAO6SEeS9rfWCbRrARA"/>
+      <ownedParameter xmi:id="_IYhqMvRAEeSNf5A7FFP1kg" name="value" type="_Aw0_cPOEEeS9Q51oLeydKg"/>
     </ownedOperation>
-    <ownedOperation xmi:id="_7T_G0POEEeS9Q51oLeydKg" name="setTable">
-      <ownedParameter xmi:id="_7T_G0fOEEeS9Q51oLeydKg" name="table" type="_olUIkPOBEeS9Q51oLeydKg"/>
-    </ownedOperation>
-    <ownedOperation xmi:id="_7T_G1POEEeS9Q51oLeydKg" name="setValue">
-      <ownedParameter xmi:id="_7T_G1fOEEeS9Q51oLeydKg" name="column" type="_tm5fAO6SEeS9rfWCbRrARA"/>
-      <ownedParameter xmi:id="_7T_G1vOEEeS9Q51oLeydKg" name="value" type="_HHBqUO6TEeS9rfWCbRrARA"/>
-    </ownedOperation>
-    <ownedOperation xmi:id="_7T_G0vOEEeS9Q51oLeydKg" name="setValues">
-      <ownedParameter xmi:id="_7T_G0_OEEeS9Q51oLeydKg" name="values" type="_cg_JIPODEeS9Q51oLeydKg"/>
+    <ownedOperation xmi:id="_IYkGcPRAEeSNf5A7FFP1kg" name="setValue">
+      <ownedParameter xmi:id="_IYkGcfRAEeSNf5A7FFP1kg" name="column" type="_tm5fAO6SEeS9rfWCbRrARA"/>
+      <ownedParameter xmi:id="_IYkGcvRAEeSNf5A7FFP1kg" name="value" type="_tm5fAO6SEeS9rfWCbRrARA"/>
     </ownedOperation>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="__e028POBEeS9Q51oLeydKg" name="Column">
