@@ -7,9 +7,13 @@ import static org.mockito.Mockito.*;
 import org.junit.Test;
 
 /**
- * Unit test for Table.
+ * Unit test for Chunk.
  */
 public class ChunkTest {
+	/**
+	 * Tests whether {@link Chunk#addRecord(Record)} throws a {@link NullPointerException}
+	 * when given a null reference.
+	 */
 	@Test(expected=NullPointerException.class)
 	public void addRecord_givenRecordNull_throwsNullPointerException() {
 		Chunk chunk = new Chunk();
@@ -17,7 +21,11 @@ public class ChunkTest {
 		
 		chunk.addRecord(record);
 	}
-	
+
+	/**
+	 * Tests whether {@link Chunk#addRecord(Record)} adds the given record
+	 * when given a valid record.
+	 */
 	@Test
 	public void addRecord_givenRecord_addsRecord() {
 		Chunk chunk = new Chunk();
@@ -27,7 +35,11 @@ public class ChunkTest {
 
 		assertThat(chunk.getRecords(), hasItem(record));
 	}
-	
+
+	/**
+	 * Tests whether {@link Chunk#removeRecord(Record)} removes the given record
+	 * when given a record that was already added.
+	 */
 	@Test
 	public void removeRecord_givenRecordExists_removesRecord() {
 		Chunk chunk = new Chunk();
@@ -38,7 +50,11 @@ public class ChunkTest {
 
 		assertThat(chunk.getRecords(), not(hasItem(record)));
 	}
-	
+
+	/**
+	 * Tests whether {@link Chunk#removeRecord(Record)} does not remove any records
+	 * when given a record that was not added.
+	 */
 	@Test
 	public void removeRecord_givenRecordDoesNotExist_doesNotRemoveRecords() {
 		Chunk chunk = new Chunk();
@@ -51,6 +67,10 @@ public class ChunkTest {
 		assertThat(chunk.getRecords(), hasItems(record1));
 	}
 
+	/**
+	 * Tests whether {@link Chunk#removeRecord(Record)} does not remove any records
+	 * when given a null reference.
+	 */
 	@Test
 	public void removeRecord_givenRecordNull_doesNotRemoveRecords() {
 		Chunk chunk = new Chunk();

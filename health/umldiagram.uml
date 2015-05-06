@@ -511,18 +511,8 @@
     </ownedOperation>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_nZljAPOGEeS9Q51oLeydKg" name="Connection"/>
-  <packagedElement xmi:type="uml:Association" xmi:id="_0IxvoPPMEeSn_LMEgWuruw" name="tablesToChunks" memberEnd="_0IyWsPPMEeSn_LMEgWuruw _0JikovPMEeSn_LMEgWuruw" navigableOwnedEnd="_0JikovPMEeSn_LMEgWuruw">
-    <ownedEnd xmi:id="_0IyWsPPMEeSn_LMEgWuruw" name="table" type="_olUIkPOBEeS9Q51oLeydKg" aggregation="shared" association="_0IxvoPPMEeSn_LMEgWuruw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0JikoPPMEeSn_LMEgWuruw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0JikofPMEeSn_LMEgWuruw" value="1"/>
-    </ownedEnd>
-    <ownedEnd xmi:id="_0JikovPMEeSn_LMEgWuruw" name="chunks" type="_50RLEPOFEeS9Q51oLeydKg" association="_0IxvoPPMEeSn_LMEgWuruw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0Kb8gPPMEeSn_LMEgWuruw"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0Kb8gfPMEeSn_LMEgWuruw" value="*"/>
-    </ownedEnd>
-  </packagedElement>
   <packagedElement xmi:type="uml:Association" xmi:id="_2Hxy8PPMEeSn_LMEgWuruw" name="chunksToRecords" memberEnd="_2HyaAPPMEeSn_LMEgWuruw _2HzoIfPMEeSn_LMEgWuruw" navigableOwnedEnd="_2HzoIfPMEeSn_LMEgWuruw">
-    <ownedEnd xmi:id="_2HyaAPPMEeSn_LMEgWuruw" name="chunks" type="_50RLEPOFEeS9Q51oLeydKg" aggregation="shared" association="_2Hxy8PPMEeSn_LMEgWuruw">
+    <ownedEnd xmi:id="_2HyaAPPMEeSn_LMEgWuruw" name="null" type="_50RLEPOFEeS9Q51oLeydKg" aggregation="shared" association="_2Hxy8PPMEeSn_LMEgWuruw">
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2HzBEPPMEeSn_LMEgWuruw"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2HzoIPPMEeSn_LMEgWuruw" value="*"/>
     </ownedEnd>
