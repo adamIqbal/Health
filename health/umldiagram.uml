@@ -407,6 +407,10 @@
     <ownedOperation xmi:id="_raxLYPOEEeS9Q51oLeydKg" name="Table">
       <ownedParameter xmi:id="_r8NrkPOEEeS9Q51oLeydKg" name="columns" type="_6vK0cPOCEeS9Q51oLeydKg"/>
     </ownedOperation>
+    <ownedOperation xmi:id="_hKnaUPO9EeSn_LMEgWuruw" name="getColumn">
+      <ownedParameter xmi:id="_hKnaUfO9EeSn_LMEgWuruw" type="__e028POBEeS9Q51oLeydKg" direction="return"/>
+      <ownedParameter xmi:id="_hxi3cPO9EeSn_LMEgWuruw" name="name" type="_tm5fAO6SEeS9rfWCbRrARA"/>
+    </ownedOperation>
     <ownedOperation xmi:id="_vMVDYPOCEeS9Q51oLeydKg" name="getColumns">
       <ownedParameter xmi:id="__4RcQPOCEeS9Q51oLeydKg" type="_6vK0cPOCEeS9Q51oLeydKg" direction="return"/>
     </ownedOperation>

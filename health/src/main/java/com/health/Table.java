@@ -4,11 +4,11 @@ import java.util.Collection;
 
 public class Table {
 
-	public Table(Collection<Column> columns) {
+	public Table(Iterable<Column> columns) {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Collection<Column> getColumns() {
+	public Iterable<Column> getColumns() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -23,7 +23,12 @@ public class Table {
 		
 	}
 
-	public Collection<Record> getRecords() {
+	public Iterable<Record> getRecords() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Column getColumn(String string) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,12 +1,11 @@
 package com.health;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
@@ -16,8 +15,8 @@ import org.junit.Test;
  */
 public class TableTest {
 	private static Table arrangeTable() {
-		Collection<Column> columns = new ArrayList<Column>();
-		columns.add(mock(Column.class));
+		Column column = mock(Column.class);
+		Iterable<Column> columns = Arrays.asList(column);
 		
 		Table table = new Table(columns);
 		
@@ -33,30 +32,65 @@ public class TableTest {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testConstructorThrowsArgumentNullExceptionGivenColumnsNull() {
+	public void constructor_givenColumnsNull_throwsIllegalArgumentException() {
 		new Table(null);
 	}
 	
 	@Test
-	public void testConstructorSetsColumns() {
-		Collection<Column> expected = new ArrayList<Column>();
-		expected.add(mock(Column.class));
+	public void constructor_givenColumnsEmpty_setsColumns() {
+		Iterable<Column> expected = Arrays.asList();
 		
 		Table table = new Table(expected);
 		
-		Collection<Column> actual = table.getColumns();
+		Iterable<Column> actual = table.getColumns();
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void constructor_givenColumns_setsColumns() {
+		Iterable<Column> expected = Arrays.asList(mock(Column.class));
+		
+		Table table = new Table(expected);
+		
+		Iterable<Column> actual = table.getColumns();
 		assertEquals(expected, actual);
 	}
 	
 	@Test
-	public void testGetRecordsDoesNotReturnNull() {
-		Table table = arrangeTable();
+	public void getColumn_givenNameOfExistingColumn_returnsColumn() {
+		Column expected = mock(Column.class);
+		when(expected.getName()).thenReturn("col1");
+		
+		Iterable<Column> columns = Arrays.asList(expected);
+		Table table = new Table(columns);
+		
+		Column actual = table.getColumn("col1");
+		
+		assertEquals(expected, actual);
+	}
 
-		assertNotEquals(table.getRecords(), null);
+	@Test
+	public void getColumn_givenNameOfNonexistentColumn_returnsNull() {
+		Column column = mock(Column.class);
+		when(column.getName()).thenReturn("col1");
+		
+		Iterable<Column> columns = Arrays.asList(column);
+		Table table = new Table(columns);
+		
+		Column actual = table.getColumn("col2");
+		
+		assertNull(actual);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void addRecord_givenRecordNull_throwsIllegalArgumentException() {
+		Table table = arrangeTable();
+		
+		table.addRecord(null);
 	}
 	
 	@Test
-	public void testAddRecordAddsRecord() {
+	public void addRecord_givenRecord_addsRecord() {
 		Table table = arrangeTable();
 		Record record = arrangeRecord();
 				
@@ -66,7 +100,7 @@ public class TableTest {
 	}
 	
 	@Test
-	public void testRemoveRecordRemovesRecord() {
+	public void removeRecord_givenRecordExists_removesRecord() {
 		Table table = arrangeTable();
 		Record record = arrangeRecord();		
 		table.addRecord(record);
@@ -74,5 +108,28 @@ public class TableTest {
 		table.removeRecord(record);
 
 		assertThat(table.getRecords(), not(hasItem(record)));
+	}
+	
+	@Test
+	public void removeRecord_givenRecordDoesNotExist_doesNotRemoveRecords() {
+		Table table = arrangeTable();
+		Record record1 = arrangeRecord();	
+		Record record2 = arrangeRecord();		
+		table.addRecord(record1);
+		
+		table.removeRecord(record2);
+
+		assertThat(table.getRecords(), hasItems(record1));
+	}
+
+	@Test
+	public void removeRecord_givenRecordNull_doesNotRemoveRecords() {
+		Table table = arrangeTable();
+		Record record = arrangeRecord();		
+		table.addRecord(record);
+		
+		table.removeRecord(null);
+
+		assertThat(table.getRecords(), hasItems(record));
 	}
 }
