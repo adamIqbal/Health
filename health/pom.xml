@@ -14,7 +14,7 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
-                <failOnError>false</failOnError>
+                    <failOnError>false</failOnError>
                 </configuration>
             </plugin>
             <plugin>
@@ -22,7 +22,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.4</version>
                 <configuration>
-                <format>xml</format>
+                    <format>xml</format>
                 </configuration>
             </plugin>
             <plugin>
@@ -30,8 +30,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                <source>1.8</source>
-                <target>1.8</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -43,7 +43,7 @@
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
-                <failOnError>false</failOnError>
+                    <failOnError>false</failOnError>
                 </configuration>
             </plugin>
             <plugin>
@@ -51,7 +51,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.4</version>
                 <configuration>
-                <format>xml</format>
+                    <format>xml</format>
                 </configuration>
             </plugin>
             <plugin>
@@ -59,8 +59,8 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.15</version>
                 <configuration>
-                <failOnViolation>false</failOnViolation>
-                <!-- <configLocation>checkstyle.xml</configLocation> -->
+                    <failOnViolation>false</failOnViolation>
+                    <configLocation>checkstyle.xml</configLocation>
                 </configuration>
             </plugin>
             <plugin>

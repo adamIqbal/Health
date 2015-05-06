@@ -39,4 +39,6 @@ local.properties
 ##########################################################################
 
 # Custom ignores
+.recommended/
+
 /health/target/
