@@ -13,24 +13,7 @@ import org.junit.Test;
 /**
  * Unit test for Table.
  */
-public class TableTest {
-	private static Table arrangeTable() {
-		Column column = mock(Column.class);
-		Iterable<Column> columns = Arrays.asList(column);
-		
-		Table table = new Table(columns);
-		
-		return table;
-	}
-	
-	private static Record arrangeRecord() {
-		Record record = mock(Record.class);
-		
-		// TODO: Mock any potential important methods of record
-		
-		return record;
-	}
-	
+public class TableTest {	
 	@Test(expected=NullPointerException.class)
 	public void constructor_givenColumnsNull_throwsNullPointerException() {
 		new Table(null);
