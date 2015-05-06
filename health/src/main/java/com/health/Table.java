@@ -6,15 +6,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Table {
+public class Table extends Chunk {
 	private Map<String, Column> columnMap;
-	private Collection<Record> records;
 	
 	public Table(Iterable<Column> columns) {
 		Objects.requireNonNull(columns, "Argument columns cannot be null");
 		
 		this.columnMap = new HashMap<String, Column>();
-		this.records = new ArrayList<Record>();
 		
 		for(Column column : columns) {
 			if (column == null) {
@@ -32,20 +30,6 @@ public class Table {
 	 */
 	public Iterable<Column> getColumns() {
 		return this.columnMap.values();
-	}
-	
-	public void addRecord(Record record) {
-		Objects.requireNonNull(record, "Argument record cannot be null");
-		
-		this.records.add(record);
-	}
-
-	public void removeRecord(Record record) {
-		this.records.remove(record);		
-	}
-
-	public Iterable<Record> getRecords() {
-		return this.records;
 	}
 
 	public Column getColumn(String name) {

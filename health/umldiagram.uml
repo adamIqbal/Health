@@ -402,8 +402,8 @@
     <packagedElement xmi:type="uml:Class" xmi:id="_DYRQ4POGEeS9Q51oLeydKg" name="Iterable&lt;Record>"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_olUIkPOBEeS9Q51oLeydKg" name="Table">
+    <generalization xmi:id="_K5pNcPPPEeSn_LMEgWuruw" general="_50RLEPOFEeS9Q51oLeydKg"/>
     <ownedAttribute xmi:id="_weU2wPOCEeS9Q51oLeydKg" name="columns" visibility="private" type="_2pJ2wPOBEeS9Q51oLeydKg"/>
-    <ownedAttribute xmi:id="_KUim0PODEeS9Q51oLeydKg" name="records" visibility="private" type="_Fl4fUPODEeS9Q51oLeydKg"/>
     <ownedOperation xmi:id="_raxLYPOEEeS9Q51oLeydKg" name="Table">
       <ownedParameter xmi:id="_r8NrkPOEEeS9Q51oLeydKg" name="columns" type="_6vK0cPOCEeS9Q51oLeydKg"/>
     </ownedOperation>
@@ -413,15 +413,6 @@
     </ownedOperation>
     <ownedOperation xmi:id="_vMVDYPOCEeS9Q51oLeydKg" name="getColumns">
       <ownedParameter xmi:id="__4RcQPOCEeS9Q51oLeydKg" type="_6vK0cPOCEeS9Q51oLeydKg" direction="return"/>
-    </ownedOperation>
-    <ownedOperation xmi:id="_BXkEwPODEeS9Q51oLeydKg" name="getRecords">
-      <ownedParameter xmi:id="_CAgUEPODEeS9Q51oLeydKg" type="_DYRQ4POGEeS9Q51oLeydKg" direction="return"/>
-    </ownedOperation>
-    <ownedOperation xmi:id="_vFKZgPOEEeS9Q51oLeydKg" name="addRecord">
-      <ownedParameter xmi:id="_xbR8UPOEEeS9Q51oLeydKg" name="record" type="_pbI9UPOBEeS9Q51oLeydKg"/>
-    </ownedOperation>
-    <ownedOperation xmi:id="_zJz6sPOEEeS9Q51oLeydKg" name="removeRecord">
-      <ownedParameter xmi:id="_0CnK8POEEeS9Q51oLeydKg" name="record" type="_pbI9UPOBEeS9Q51oLeydKg"/>
     </ownedOperation>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_pbI9UPOBEeS9Q51oLeydKg" name="Record">
@@ -470,16 +461,6 @@
       <ownedParameter xmi:id="_7T_G0_OEEeS9Q51oLeydKg" name="values" type="_cg_JIPODEeS9Q51oLeydKg"/>
     </ownedOperation>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_wsUr8POBEeS9Q51oLeydKg" name="tablesToRecords" memberEnd="_wsVTAPOBEeS9Q51oLeydKg _wtTjYPOBEeS9Q51oLeydKg" navigableOwnedEnd="_wtTjYPOBEeS9Q51oLeydKg">
-    <ownedEnd xmi:id="_wsVTAPOBEeS9Q51oLeydKg" name="table" type="_olUIkPOBEeS9Q51oLeydKg" aggregation="shared" association="_wsUr8POBEeS9Q51oLeydKg">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wtSVQPOBEeS9Q51oLeydKg" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wtS8UPOBEeS9Q51oLeydKg" value="1"/>
-    </ownedEnd>
-    <ownedEnd xmi:id="_wtTjYPOBEeS9Q51oLeydKg" name="records" type="_pbI9UPOBEeS9Q51oLeydKg" association="_wsUr8POBEeS9Q51oLeydKg">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_wuKfAPOBEeS9Q51oLeydKg"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_wuKfAfOBEeS9Q51oLeydKg" value="*"/>
-    </ownedEnd>
-  </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="__e028POBEeS9Q51oLeydKg" name="Column">
     <ownedAttribute xmi:id="_Qa1kwPOFEeS9Q51oLeydKg" name="name" visibility="private" type="_tm5fAO6SEeS9rfWCbRrARA"/>
     <ownedAttribute xmi:id="_R1dvsPOFEeS9Q51oLeydKg" name="index" visibility="private" type="_vns5IO6SEeS9rfWCbRrARA"/>
@@ -516,6 +497,9 @@
   <packagedElement xmi:type="uml:Class" xmi:id="_50RLEPOFEeS9Q51oLeydKg" name="Chunk">
     <ownedAttribute xmi:id="_8cOEwPOFEeS9Q51oLeydKg" name="records" visibility="private" type="_Fl4fUPODEeS9Q51oLeydKg"/>
     <ownedOperation xmi:id="_SMw_8POGEeS9Q51oLeydKg" name="Chunk"/>
+    <ownedOperation xmi:id="_aALkMPPOEeSn_LMEgWuruw" name="Chunk">
+      <ownedParameter xmi:id="_atQFkPPOEeSn_LMEgWuruw" name="records" type="_DYRQ4POGEeS9Q51oLeydKg"/>
+    </ownedOperation>
     <ownedOperation xmi:id="_8cOr0POFEeS9Q51oLeydKg" name="addRecord">
       <ownedParameter xmi:id="_8cOr0fOFEeS9Q51oLeydKg" name="record" type="_pbI9UPOBEeS9Q51oLeydKg"/>
     </ownedOperation>
@@ -526,15 +510,35 @@
       <ownedParameter xmi:id="_8cOr1fOFEeS9Q51oLeydKg" name="record" type="_pbI9UPOBEeS9Q51oLeydKg"/>
     </ownedOperation>
   </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_Okc1cPOGEeS9Q51oLeydKg" name="chunksToRecords" memberEnd="_OkdcgPOGEeS9Q51oLeydKg _OkfRsPOGEeS9Q51oLeydKg" navigableOwnedEnd="_OkdcgPOGEeS9Q51oLeydKg _OkfRsPOGEeS9Q51oLeydKg">
-    <ownedEnd xmi:id="_OkdcgPOGEeS9Q51oLeydKg" name="chunks" type="_50RLEPOFEeS9Q51oLeydKg" association="_Okc1cPOGEeS9Q51oLeydKg">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_OkeDkPOGEeS9Q51oLeydKg"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OkeqoPOGEeS9Q51oLeydKg" value="*"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_nZljAPOGEeS9Q51oLeydKg" name="Connection"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_0IxvoPPMEeSn_LMEgWuruw" name="tablesToChunks" memberEnd="_0IyWsPPMEeSn_LMEgWuruw _0JikovPMEeSn_LMEgWuruw" navigableOwnedEnd="_0JikovPMEeSn_LMEgWuruw">
+    <ownedEnd xmi:id="_0IyWsPPMEeSn_LMEgWuruw" name="table" type="_olUIkPOBEeS9Q51oLeydKg" aggregation="shared" association="_0IxvoPPMEeSn_LMEgWuruw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0JikoPPMEeSn_LMEgWuruw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0JikofPMEeSn_LMEgWuruw" value="1"/>
     </ownedEnd>
-    <ownedEnd xmi:id="_OkfRsPOGEeS9Q51oLeydKg" name="records" type="_pbI9UPOBEeS9Q51oLeydKg" association="_Okc1cPOGEeS9Q51oLeydKg">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_Okf4wPOGEeS9Q51oLeydKg"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_Okgf0POGEeS9Q51oLeydKg" value="*"/>
+    <ownedEnd xmi:id="_0JikovPMEeSn_LMEgWuruw" name="chunks" type="_50RLEPOFEeS9Q51oLeydKg" association="_0IxvoPPMEeSn_LMEgWuruw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_0Kb8gPPMEeSn_LMEgWuruw"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_0Kb8gfPMEeSn_LMEgWuruw" value="*"/>
     </ownedEnd>
   </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_nZljAPOGEeS9Q51oLeydKg" name="Connection"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_2Hxy8PPMEeSn_LMEgWuruw" name="chunksToRecords" memberEnd="_2HyaAPPMEeSn_LMEgWuruw _2HzoIfPMEeSn_LMEgWuruw" navigableOwnedEnd="_2HzoIfPMEeSn_LMEgWuruw">
+    <ownedEnd xmi:id="_2HyaAPPMEeSn_LMEgWuruw" name="chunks" type="_50RLEPOFEeS9Q51oLeydKg" aggregation="shared" association="_2Hxy8PPMEeSn_LMEgWuruw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2HzBEPPMEeSn_LMEgWuruw"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2HzoIPPMEeSn_LMEgWuruw" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_2HzoIfPMEeSn_LMEgWuruw" name="records" type="_pbI9UPOBEeS9Q51oLeydKg" association="_2Hxy8PPMEeSn_LMEgWuruw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2H0PMPPMEeSn_LMEgWuruw"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2H0PMfPMEeSn_LMEgWuruw" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_SoHVAPPPEeSn_LMEgWuruw" name="recordsToTables" memberEnd="_SoH8EPPPEeSn_LMEgWuruw _SoIjIvPPEeSn_LMEgWuruw" navigableOwnedEnd="_SoH8EPPPEeSn_LMEgWuruw _SoIjIvPPEeSn_LMEgWuruw">
+    <ownedEnd xmi:id="_SoH8EPPPEeSn_LMEgWuruw" name="null" type="_pbI9UPOBEeS9Q51oLeydKg" association="_SoHVAPPPEeSn_LMEgWuruw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SoIjIPPPEeSn_LMEgWuruw"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SoIjIfPPEeSn_LMEgWuruw" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_SoIjIvPPEeSn_LMEgWuruw" name="table" type="_olUIkPOBEeS9Q51oLeydKg" association="_SoHVAPPPEeSn_LMEgWuruw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_SoJKMPPPEeSn_LMEgWuruw" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_SoJxQPPPEeSn_LMEgWuruw" value="1"/>
+    </ownedEnd>
+  </packagedElement>
 </uml:Model>
