@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename package &apos;parser&apos; to &apos;txtParser&apos;&#x0D;&#x0A;- Original project: &apos;health&apos;&#x0D;&#x0A;- Original element: &apos;health/src/main/java/parser&apos;&#x0D;&#x0A;- Renamed element: &apos;health/src/main/java/txtParser&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename package &apos;parser&apos;" flags="589830" hierarchical="false" id="org.eclipse.jdt.ui.rename.package" input="/src\/main\/java&lt;parser" name="txtParser" qualified="false" references="true" stamp="1430421751056" textual="false" version="1.0"/>
-</session>
