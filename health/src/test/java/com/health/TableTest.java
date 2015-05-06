@@ -6,21 +6,58 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * Unit test for Table.
  */
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Column.class)
 public class TableTest {
+    private Column defaultColumn1;
+    private Column defaultColumn2;
+    private Column defaultColumn3;
+    private Column defaultColumn4;
+    private Iterable<Column> defaultColumns;
+    private Table defaultTable;
+
+    /**
+     * Sets up mocks and default values used during tests.
+     */
+    @Before
+    public void setUp() {
+        this.defaultColumn1 = mock(Column.class);
+        this.defaultColumn2 = mock(Column.class);
+        this.defaultColumn3 = mock(Column.class);
+        this.defaultColumn4 = mock(Column.class);
+
+        when(this.defaultColumn1.getName()).thenReturn("abc");
+        when(this.defaultColumn2.getName()).thenReturn("column2");
+        when(this.defaultColumn3.getName()).thenReturn("cda");
+        when(this.defaultColumn4.getName()).thenReturn("column4");
+
+        this.defaultColumns = Arrays.asList(
+                this.defaultColumn1,
+                this.defaultColumn2,
+                this.defaultColumn3,
+                this.defaultColumn4);
+
+        this.defaultTable = new Table(this.defaultColumns);
+    }
+
     /**
      * Tests whether {@link Table#Table(Iterable)} throws a
      * {@link NullPointerException} when given a null reference.
      */
     @Test(expected = NullPointerException.class)
     public void constructor_givenColumnsNull_throwsNullPointerException() {
-        new Table(null);
+        new Table((Iterable<Column>) null);
     }
 
     /**
@@ -30,9 +67,7 @@ public class TableTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void constructor_givenColumnsWithNullColumn_throwsIllegalArgumentException() {
-        Iterable<Column> columns = Arrays.asList((Column) null);
-
-        new Table(columns);
+        new Table(Arrays.asList((Column) null));
     }
 
     /**
@@ -43,9 +78,8 @@ public class TableTest {
     @Test
     public void constructor_givenColumnsEmpty_setsColumns() {
         Column[] expected = new Column[] {};
-        Iterable<Column> columns = Arrays.asList(expected);
 
-        Table table = new Table(columns);
+        Table table = new Table(Arrays.asList(expected));
 
         Iterable<Column> actual = table.getColumns();
         assertThat(actual, hasItems(expected));
@@ -59,9 +93,8 @@ public class TableTest {
     @Test
     public void constructor_givenColumns_setsColumns() {
         Column[] expected = new Column[] { mock(Column.class) };
-        Iterable<Column> columns = Arrays.asList(expected);
 
-        Table table = new Table(columns);
+        Table table = new Table(Arrays.asList(expected));
 
         Iterable<Column> actual = table.getColumns();
         assertThat(actual, hasItems(expected));
@@ -73,21 +106,10 @@ public class TableTest {
      */
     @Test
     public void getColumn_givenNameOfExistingColumn_returnsColumn() {
-        Column column1 = mock(Column.class);
-        Column column2 = mock(Column.class);
-        Column column3 = mock(Column.class);
-        Column column4 = mock(Column.class);
-        when(column1.getName()).thenReturn("col1");
-        when(column2.getName()).thenReturn("col2");
-        when(column3.getName()).thenReturn("col3");
-        when(column4.getName()).thenReturn("col4");
+        Table table = this.defaultTable;
 
-        Iterable<Column> columns = Arrays.asList(column1, column2, column3,
-                column4);
-        Table table = new Table(columns);
-
-        Column expected = column3;
-        Column actual = table.getColumn("col3");
+        Column expected = this.defaultColumn3;
+        Column actual = table.getColumn(this.defaultColumn3.getName());
 
         assertEquals(expected, actual);
     }
@@ -98,13 +120,9 @@ public class TableTest {
      */
     @Test
     public void getColumn_givenNameOfNonexistentColumn_returnsNull() {
-        Column column = mock(Column.class);
-        when(column.getName()).thenReturn("col1");
+        Table table = this.defaultTable;
 
-        Iterable<Column> columns = Arrays.asList(column);
-        Table table = new Table(columns);
-
-        Column actual = table.getColumn("col2");
+        Column actual = table.getColumn("null");
 
         assertNull(actual);
     }

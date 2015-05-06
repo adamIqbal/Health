@@ -2,14 +2,28 @@ package com.health;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Unit test for Chunk.
  */
 public class ChunkTest {
+    private Record defaultRecord;
+    private Chunk defaultChunk;
+
+    /**
+     * Sets up mocks and default values used during tests.
+     */
+    @Before
+    public void setUp() {
+        this.defaultRecord = mock(Record.class);
+        this.defaultChunk = new Chunk();
+        this.defaultChunk.addRecord(this.defaultRecord);
+    }
+
     /**
      * Tests whether {@link Chunk#addRecord(Record)} throws a
      * {@link NullPointerException} when given a null reference.
@@ -17,9 +31,8 @@ public class ChunkTest {
     @Test(expected = NullPointerException.class)
     public void addRecord_givenRecordNull_throwsNullPointerException() {
         Chunk chunk = new Chunk();
-        Record record = null;
 
-        chunk.addRecord(record);
+        chunk.addRecord((Record) null);
     }
 
     /**
@@ -29,11 +42,10 @@ public class ChunkTest {
     @Test
     public void addRecord_givenRecord_addsRecord() {
         Chunk chunk = new Chunk();
-        Record record = mock(Record.class);
 
-        chunk.addRecord(record);
+        chunk.addRecord(this.defaultRecord);
 
-        assertThat(chunk.getRecords(), hasItem(record));
+        assertThat(chunk.getRecords(), hasItem(this.defaultRecord));
     }
 
     /**
@@ -42,13 +54,11 @@ public class ChunkTest {
      */
     @Test
     public void removeRecord_givenRecordExists_removesRecord() {
-        Chunk chunk = new Chunk();
-        Record record = mock(Record.class);
-        chunk.addRecord(record);
+        Chunk chunk = this.defaultChunk;
 
-        chunk.removeRecord(record);
+        chunk.removeRecord(this.defaultRecord);
 
-        assertThat(chunk.getRecords(), not(hasItem(record)));
+        assertThat(chunk.getRecords(), not(hasItem(this.defaultRecord)));
     }
 
     /**
@@ -57,14 +67,11 @@ public class ChunkTest {
      */
     @Test
     public void removeRecord_givenRecordDoesNotExist_doesNotRemoveRecords() {
-        Chunk chunk = new Chunk();
-        Record record1 = mock(Record.class);
-        Record record2 = mock(Record.class);
-        chunk.addRecord(record1);
+        Chunk chunk = this.defaultChunk;
 
-        chunk.removeRecord(record2);
+        chunk.removeRecord(mock(Record.class));
 
-        assertThat(chunk.getRecords(), hasItems(record1));
+        assertThat(chunk.getRecords(), hasItems(this.defaultRecord));
     }
 
     /**
@@ -73,12 +80,10 @@ public class ChunkTest {
      */
     @Test
     public void removeRecord_givenRecordNull_doesNotRemoveRecords() {
-        Chunk chunk = new Chunk();
-        Record record = mock(Record.class);
-        chunk.addRecord(record);
+        Chunk chunk = this.defaultChunk;
 
-        chunk.removeRecord(null);
+        chunk.removeRecord((Record) null);
 
-        assertThat(chunk.getRecords(), hasItems(record));
+        assertThat(chunk.getRecords(), hasItems(this.defaultRecord));
     }
 }
