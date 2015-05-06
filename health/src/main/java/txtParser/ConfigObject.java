@@ -20,7 +20,7 @@ public class ConfigObject {
   public ArrayList<String> strip(ArrayList<String> columns2) {
     ArrayList<String> columnsStripped = new ArrayList<String>();
     for (int i = 0; i < columns2.size() - 1; i++) {
-      if (i != 0 & i != columns2.size() - 1) {
+      if (i != 0 && i != columns2.size() - 1 && i != 1) {
         columnsStripped.add(columns2.get(i));
       } else {
         delimiters.add(columns2.get(i));
