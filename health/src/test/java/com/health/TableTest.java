@@ -31,29 +31,38 @@ public class TableTest {
 		return record;
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
-	public void constructor_givenColumnsNull_throwsIllegalArgumentException() {
+	@Test(expected=NullPointerException.class)
+	public void constructor_givenColumnsNull_throwsNullPointerException() {
 		new Table(null);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void constructor_givenColumnsWithNullColumn_throwsIllegalArgumentException() {
+		Iterable<Column> columns = Arrays.asList((Column)null);
+		
+		new Table(columns);
 	}
 	
 	@Test
 	public void constructor_givenColumnsEmpty_setsColumns() {
-		Iterable<Column> expected = Arrays.asList();
+		Column[] expected = new Column[]{ };
+		Iterable<Column> columns = Arrays.asList(expected);
 		
-		Table table = new Table(expected);
+		Table table = new Table(columns);
 		
 		Iterable<Column> actual = table.getColumns();
-		assertEquals(expected, actual);
+		assertThat(actual, hasItems(expected));
 	}
 
 	@Test
 	public void constructor_givenColumns_setsColumns() {
-		Iterable<Column> expected = Arrays.asList(mock(Column.class));
+		Column[] expected = new Column[]{ mock(Column.class) };
+		Iterable<Column> columns = Arrays.asList(expected);
 		
-		Table table = new Table(expected);
+		Table table = new Table(columns);
 		
 		Iterable<Column> actual = table.getColumns();
-		assertEquals(expected, actual);
+		assertThat(actual, hasItems(expected));
 	}
 	
 	@Test
@@ -82,8 +91,8 @@ public class TableTest {
 		assertNull(actual);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
-	public void addRecord_givenRecordNull_throwsIllegalArgumentException() {
+	@Test(expected=NullPointerException.class)
+	public void addRecord_givenRecordNull_throwsNullPointerException() {
 		Table table = arrangeTable();
 		
 		table.addRecord(null);

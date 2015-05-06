@@ -1,36 +1,54 @@
 package com.health;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class Table {
-
+	private Map<String, Column> columnMap;
+	private Collection<Record> records;
+	
 	public Table(Iterable<Column> columns) {
-		// TODO Auto-generated constructor stub
-	}
-
-	public Iterable<Column> getColumns() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void addRecord(Record record) {
-		// TODO Auto-generated method stub
+		Objects.requireNonNull(columns, "Argument columns cannot be null");
 		
+		this.columnMap = new HashMap<String, Column>();
+		this.records = new ArrayList<Record>();
+		
+		for(Column column : columns) {
+			if (column == null) {
+				throw new IllegalArgumentException("Argument columns olumns cannot not contain null references");
+			}
+			
+			this.columnMap.put(column.getName(), column);
+		}
+	}
+
+	/**
+	 * Returns a @see Iterable<Column> containing all columns in this table.
+	 * 
+	 * @return the collection of columns of this table. 
+	 */
+	public Iterable<Column> getColumns() {
+		return this.columnMap.values();
+	}
+	
+	public void addRecord(Record record) {
+		Objects.requireNonNull(record, "Argument record cannot be null");
+		
+		this.records.add(record);
 	}
 
 	public void removeRecord(Record record) {
-		// TODO Auto-generated method stub
-		
+		this.records.remove(record);		
 	}
 
 	public Iterable<Record> getRecords() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.records;
 	}
 
-	public Column getColumn(String string) {
-		// TODO Auto-generated method stub
-		return null;
+	public Column getColumn(String name) {
+		return this.columnMap.get(name);
 	}
-
 }
