@@ -402,10 +402,14 @@
     <packagedElement xmi:type="uml:Class" xmi:id="_DYRQ4POGEeS9Q51oLeydKg" name="Iterable&lt;Record>"/>
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_olUIkPOBEeS9Q51oLeydKg" name="Table">
-    <generalization xmi:id="_K5pNcPPPEeSn_LMEgWuruw" general="_50RLEPOFEeS9Q51oLeydKg"/>
+    <generalization xmi:id="_O7wIQPPgEeSn_LMEgWuruw" general="_50RLEPOFEeS9Q51oLeydKg"/>
     <ownedAttribute xmi:id="_weU2wPOCEeS9Q51oLeydKg" name="columns" visibility="private" type="_2pJ2wPOBEeS9Q51oLeydKg"/>
     <ownedOperation xmi:id="_raxLYPOEEeS9Q51oLeydKg" name="Table">
       <ownedParameter xmi:id="_r8NrkPOEEeS9Q51oLeydKg" name="columns" type="_6vK0cPOCEeS9Q51oLeydKg"/>
+    </ownedOperation>
+    <ownedOperation xmi:id="_Wf85gPPgEeSn_LMEgWuruw" name="Table">
+      <ownedParameter xmi:id="_Wf85gfPgEeSn_LMEgWuruw" name="columns" type="_6vK0cPOCEeS9Q51oLeydKg"/>
+      <ownedParameter xmi:id="_XA4cUPPgEeSn_LMEgWuruw" name="records" type="_DYRQ4POGEeS9Q51oLeydKg"/>
     </ownedOperation>
     <ownedOperation xmi:id="_hKnaUPO9EeSn_LMEgWuruw" name="getColumn">
       <ownedParameter xmi:id="_hKnaUfO9EeSn_LMEgWuruw" type="__e028POBEeS9Q51oLeydKg" direction="return"/>
@@ -512,7 +516,8 @@
   </packagedElement>
   <packagedElement xmi:type="uml:Class" xmi:id="_nZljAPOGEeS9Q51oLeydKg" name="Connection"/>
   <packagedElement xmi:type="uml:Association" xmi:id="_2Hxy8PPMEeSn_LMEgWuruw" name="chunksToRecords" memberEnd="_2HyaAPPMEeSn_LMEgWuruw _2HzoIfPMEeSn_LMEgWuruw" navigableOwnedEnd="_2HzoIfPMEeSn_LMEgWuruw">
-    <ownedEnd xmi:id="_2HyaAPPMEeSn_LMEgWuruw" name="null" type="_50RLEPOFEeS9Q51oLeydKg" aggregation="shared" association="_2Hxy8PPMEeSn_LMEgWuruw">
+    <ownedEnd xmi:id="_2HyaAPPMEeSn_LMEgWuruw" type="_50RLEPOFEeS9Q51oLeydKg" aggregation="shared" association="_2Hxy8PPMEeSn_LMEgWuruw">
+      <name xsi:nil="true"/>
       <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_2HzBEPPMEeSn_LMEgWuruw"/>
       <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_2HzoIPPMEeSn_LMEgWuruw" value="*"/>
     </ownedEnd>
