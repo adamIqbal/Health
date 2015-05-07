@@ -27,7 +27,8 @@ public class Column {
      *             if index is negative.
      */
     public Column(final String name, final int index, final ValueType type) {
-        Objects.requireNonNull(name);
+        Objects.requireNonNull(name, "Argument name cannot be null.");
+        Objects.requireNonNull(type, "Argument type cannot be null.");
 
         if (index < 0) {
             throw new IllegalArgumentException(

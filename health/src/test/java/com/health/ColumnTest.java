@@ -25,11 +25,20 @@ public class ColumnTest {
 
     /**
      * Tests whether {@link Column#Column(String, int, ValueType)} throws a
-     * {@link NullPointerException} when given a null reference.
+     * {@link NullPointerException} when given a null reference for name.
      */
     @Test(expected = NullPointerException.class)
     public void constructor_givenNameNull_throwsNullPointerException() {
         new Column((String) null, this.defaultIndex, this.defaultType);
+    }
+
+    /**
+     * Tests whether {@link Column#Column(String, int, ValueType)} throws a
+     * {@link NullPointerException} when given a null reference for type.
+     */
+    @Test(expected = NullPointerException.class)
+    public void constructor_givenTypeNull_throwsNullPointerException() {
+        new Column(this.defaultName, this.defaultIndex, (ValueType) null);
     }
 
     /**

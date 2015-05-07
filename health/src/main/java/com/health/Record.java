@@ -22,10 +22,12 @@ public class Record {
      *             if table is null.
      */
     public Record(Table table) {
-        Objects.requireNonNull(table, "Argument table cannot be null");
+        Objects.requireNonNull(table, "Argument table cannot be null.");
 
         this.table = table;
         this.values = new Object[table.getColumns().size()];
+
+        table.addRecord(this);
     }
 
     /**
@@ -130,7 +132,7 @@ public class Record {
         }
 
         // Throw an exception if the column contains a type not contained in the
-        // num set
+        // enum set
         if (!types.contains(column.getType())) {
             throw new IllegalStateException();
         }

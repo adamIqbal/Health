@@ -32,7 +32,7 @@ public class Table implements Iterable<Chunk> {
      *             if columns contains a null element.
      */
     public Table(final Iterable<Column> columns) {
-        Objects.requireNonNull(columns, "Argument columns cannot be null");
+        Objects.requireNonNull(columns, "Argument columns cannot be null.");
 
         Table.verifyColumnIndices(columns);
 
@@ -75,11 +75,11 @@ public class Table implements Iterable<Chunk> {
      *             if record belongs to a different table.
      */
     public void addRecord(Record record) {
-        Objects.requireNonNull(record, "Argument record cannot be null");
+        Objects.requireNonNull(record, "Argument record cannot be null.");
 
         if (record.getTable() != this) {
             throw new IllegalArgumentException(
-                    "Argument record already belongs to a different table");
+                    "Argument record already belongs to a different table.");
         }
 
         this.records.add(record);
@@ -104,7 +104,7 @@ public class Table implements Iterable<Chunk> {
     public Iterable<Record> getRecords() {
         return this.records;
     }
-    
+
     /**
      * Returns a chunk iterator that can be used to iterate over this table.
      *
@@ -125,7 +125,7 @@ public class Table implements Iterable<Chunk> {
             // Throw an exception if the column is a null reference
             if (column == null) {
                 throw new IllegalArgumentException(
-                        "Argument columns cannot not contain null references");
+                        "Argument columns cannot not contain null references.");
             }
 
             int index = column.getIndex();
@@ -133,7 +133,7 @@ public class Table implements Iterable<Chunk> {
             // Throw an exception if the index is not unique
             if (!indices.add(index)) {
                 throw new IllegalArgumentException(
-                        "Each column must have a unique index");
+                        "Each column must have a unique index.");
             }
 
             // Find the smallest and largest index
@@ -146,13 +146,13 @@ public class Table implements Iterable<Chunk> {
         // Throw an exception if columns is empty
         if (count == 0) {
             throw new IllegalArgumentException(
-                    "Argument columns must contain at least one column");
+                    "Argument columns must contain at least one column.");
         }
 
         // Throw an exception if the indices do not start at 0 or end at n-1
         if (minIndex != 0 || maxIndex != count - 1) {
             throw new IllegalArgumentException(
-                    "The indices of the columns must be in the range [0, n)");
+                    "The indices of the columns must be in the range [0, n).");
         }
     }
 }
