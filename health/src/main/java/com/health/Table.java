@@ -15,7 +15,7 @@ import java.util.Set;
  *
  * @author Martijn
  */
-public class Table implements Iterable<Chunk> {
+public final class Table implements Iterable<Chunk> {
     private Map<String, Column> columnMap;
     private Chunk records;
 
@@ -49,7 +49,7 @@ public class Table implements Iterable<Chunk> {
      *
      * @return an {@link Iterable} containing all columns of this table.
      */
-    public final Collection<Column> getColumns() {
+    public Collection<Column> getColumns() {
         return Collections.unmodifiableCollection(this.columnMap.values());
     }
 
@@ -60,7 +60,7 @@ public class Table implements Iterable<Chunk> {
      *            the name of the column to get.
      * @return the column with the given name if found; otherwise null.
      */
-    public final Column getColumn(final String name) {
+    public Column getColumn(final String name) {
         return this.columnMap.get(name);
     }
 
@@ -74,7 +74,7 @@ public class Table implements Iterable<Chunk> {
      * @throws IllegalArgumentException
      *             if record belongs to a different table.
      */
-    public void addRecord(Record record) {
+    public void addRecord(final Record record) {
         Objects.requireNonNull(record, "Argument record cannot be null.");
 
         if (record.getTable() != this) {
@@ -92,7 +92,7 @@ public class Table implements Iterable<Chunk> {
      * @param record
      *            the record to remove.
      */
-    public void removeRecord(Record record) {
+    public void removeRecord(final Record record) {
         this.records.remove(record);
     }
 
@@ -111,11 +111,13 @@ public class Table implements Iterable<Chunk> {
      * @return a chunk iterator that can be used to iterate over this table.
      */
     @Override
-    public final Iterator<Chunk> iterator() {
+    public Iterator<Chunk> iterator() {
         return Arrays.asList(this.records).iterator();
     }
 
-    private static void verifyColumnIndices(Iterable<Column> columns) {
+    private static void verifyColumnIndices(final Iterable<Column> columns) {
+        assert columns != null;
+
         Set<Integer> indices = new HashSet<Integer>();
         int count = 0;
         int minIndex = Integer.MAX_VALUE;
@@ -137,8 +139,8 @@ public class Table implements Iterable<Chunk> {
             }
 
             // Find the smallest and largest index
-            minIndex = index < minIndex ? index : minIndex;
-            maxIndex = index > maxIndex ? index : maxIndex;
+            minIndex = Math.min(minIndex, index);
+            maxIndex = Math.max(maxIndex, index);
 
             count++;
         }

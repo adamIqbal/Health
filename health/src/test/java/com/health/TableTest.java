@@ -25,7 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * Unit test for Table.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Column.class)
+@PrepareForTest({ Column.class, Record.class })
 public class TableTest {
     private Column defaultColumn1;
     private Column defaultColumn2;
