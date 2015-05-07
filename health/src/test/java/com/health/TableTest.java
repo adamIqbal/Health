@@ -54,9 +54,9 @@ public class TableTest {
 
         // Mock column indices
         when(this.defaultColumn1.getIndex()).thenReturn(0);
-        when(this.defaultColumn1.getIndex()).thenReturn(1);
-        when(this.defaultColumn2.getIndex()).thenReturn(2);
-        when(this.defaultColumn3.getIndex()).thenReturn(3);
+        when(this.defaultColumn2.getIndex()).thenReturn(1);
+        when(this.defaultColumn3.getIndex()).thenReturn(2);
+        when(this.defaultColumn4.getIndex()).thenReturn(3);
 
         this.defaultColumns = Arrays.asList(
                 this.defaultColumn1,
@@ -202,7 +202,7 @@ public class TableTest {
     @Test(expected = IllegalArgumentException.class)
     public void addRecord_givenRecordBeloningToDifferentTable_throwsIllegalArgumentException() {
         Table table1 = this.defaultTable;
-        Table table2 = mock(Table.class);
+        Table table2 = new Table(this.defaultColumns);
         Record record = mock(Record.class);
         when(record.getTable()).thenReturn(table2);
 
