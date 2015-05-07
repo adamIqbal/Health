@@ -173,7 +173,7 @@ public class RecordTest {
     }
 
     /**
-     * Tests whether {@link Record#getStringsValue(String)} throws an
+     * Tests whether {@link Record#getStringValue(String)} throws an
      * {@link IllegalStateException} when given the name of a column that
      * contains {@link Double}s.
      */

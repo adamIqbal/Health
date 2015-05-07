@@ -157,7 +157,7 @@ public class TableTest {
     }
 
     /**
-     * Tests whether {@link Table#iterator()} returns an {@link Iterator} that
+     * Tests whether {@link Table#iterator()} returns an iterator that
      * contains this table.
      */
     @Test
