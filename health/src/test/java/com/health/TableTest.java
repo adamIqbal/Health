@@ -1,9 +1,12 @@
 package com.health;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.powermock.api.mockito.PowerMockito.*;
@@ -77,12 +80,9 @@ public class TableTest {
      */
     @Test
     public void constructor_givenColumnsEmpty_setsColumns() {
-        Column[] expected = new Column[] {};
+        Table table = new Table(new ArrayList<Column>());
 
-        Table table = new Table(Arrays.asList(expected));
-
-        Iterable<Column> actual = table.getColumns();
-        assertThat(actual, hasItems(expected));
+        assertThat(table.getColumns(), iterableWithSize(0));
     }
 
     /**
@@ -92,12 +92,12 @@ public class TableTest {
      */
     @Test
     public void constructor_givenColumns_setsColumns() {
-        Column[] expected = new Column[] { mock(Column.class) };
+        Column column1 = mock(Column.class);
+        Column column2 = mock(Column.class);
 
-        Table table = new Table(Arrays.asList(expected));
+        Table table = new Table(Arrays.asList(column1, column2));
 
-        Iterable<Column> actual = table.getColumns();
-        assertThat(actual, hasItems(expected));
+        assertThat(table.getColumns(), contains(column1, column2));
     }
 
     /**

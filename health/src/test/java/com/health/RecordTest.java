@@ -1,7 +1,7 @@
 package com.health;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.*;
@@ -71,11 +71,11 @@ public class RecordTest {
     public void constructor_givenTableNull_throwsNullPointerException() {
         new Record((Table) null);
     }
-    
+
     @Test
     public void constructor_givenTable_setsTable() {
         Record record = new Record(this.defaultTable);
-        
+
         Table expected = this.defaultTable;
         Table actual = record.getTable();
         assertSame(expected, actual);
@@ -84,10 +84,10 @@ public class RecordTest {
     @Test
     public void constructor_givenTable_setsValues() {
         Record record = new Record(this.defaultTable);
-        
-        assertThat(record.getValues(), hasItems(this.column1, this.column2));
+
+        assertThat(record.getValues(), iterableWithSize(2));
     }
-    
+
     @Test(expected = NullPointerException.class)
     public void getValue_givenNameNull_throwsNullPointerException() {
         this.defaultRecord.getValue(null);
