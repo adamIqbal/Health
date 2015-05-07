@@ -3,7 +3,6 @@ package com.health;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
@@ -92,12 +91,11 @@ public class TableTest {
      */
     @Test
     public void constructor_givenColumns_setsColumns() {
-        Column column1 = mock(Column.class);
-        Column column2 = mock(Column.class);
+        Table table = new Table(Arrays.asList(this.defaultColumn1,
+                this.defaultColumn2));
 
-        Table table = new Table(Arrays.asList(column1, column2));
-
-        assertThat(table.getColumns(), contains(column1, column2));
+        assertThat(table.getColumns(),
+                contains(this.defaultColumn1, this.defaultColumn2));
     }
 
     /**
@@ -125,5 +123,20 @@ public class TableTest {
         Column actual = table.getColumn("null");
 
         assertNull(actual);
+    }
+
+    /**
+     * Tests whether {@link Table#addRecord(Record)} throws an
+     * {@link IllegalArgumentException} when given a {@link Record} that belongs
+     * to a different table.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void addRecord_givenRecordBeloningToDifferentTable_throwsIllegalArgumentExceptioN() {
+        Table table = this.defaultTable;
+        Table mockTable = mock(Table.class);
+        Record mockRecord = mock(Record.class);        
+        when(mockRecord.getTable()).thenReturn(mockTable);
+        
+        table.addRecord(mockRecord);
     }
 }

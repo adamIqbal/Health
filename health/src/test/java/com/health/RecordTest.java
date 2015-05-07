@@ -50,28 +50,35 @@ public class RecordTest {
                 this.column2);
 
         // Create mock table
-        Table table = mock(Table.class);
-        when(table.getColumn(anyString())).thenReturn(null);
-        when(table.getColumn(this.column1.getName())).thenReturn(
+        this.defaultTable = mock(Table.class);
+        when(this.defaultTable.getColumn(anyString())).thenReturn(null);
+        when(this.defaultTable.getColumn(this.column1.getName())).thenReturn(
                 this.column1);
-        when(table.getColumn(this.column2.getName())).thenReturn(
+        when(this.defaultTable.getColumn(this.column2.getName())).thenReturn(
                 this.column2);
-        when(table.getColumns()).thenReturn(columns);
+        when(this.defaultTable.getColumns()).thenReturn(columns);
 
         // Create mock record
         this.value1 = "abc";
         this.value2 = 1.5;
 
-        this.defaultRecord = spy(new Record(table));
+        this.defaultRecord = spy(new Record(this.defaultTable));
         this.defaultRecord.setValue(this.column1.getName(), value1);
         this.defaultRecord.setValue(this.column2.getName(), value2);
     }
 
+    /**
+     * Tests whether {@link Record#Record(Table)} throws a
+     * {@link NullPointerException} when given a null reference.
+     */
     @Test(expected = NullPointerException.class)
     public void constructor_givenTableNull_throwsNullPointerException() {
         new Record((Table) null);
     }
 
+    /**
+     * Tests whether {@link Record#Record(Table)} sets the record's table.
+     */
     @Test
     public void constructor_givenTable_setsTable() {
         Record record = new Record(this.defaultTable);
@@ -81,6 +88,11 @@ public class RecordTest {
         assertSame(expected, actual);
     }
 
+    /**
+     * Tests whether {@link Record#Record(Table)} allocates an iterable for the
+     * record's values that has a length matching the number of columns of the
+     * given table.
+     */
     @Test
     public void constructor_givenTable_setsValues() {
         Record record = new Record(this.defaultTable);
@@ -88,16 +100,29 @@ public class RecordTest {
         assertThat(record.getValues(), iterableWithSize(2));
     }
 
+    /**
+     * Tests whether {@link Record#getValue(String)} throws a
+     * {@link NullPointerException} when given a null reference.
+     */
     @Test(expected = NullPointerException.class)
     public void getValue_givenNameNull_throwsNullPointerException() {
         this.defaultRecord.getValue(null);
     }
 
+    /**
+     * Tests whether {@link Record#getValue(String)} throws an
+     * {@link IllegalArgumentException} when given a name of an nonexistent
+     * column.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void getValue_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
         this.defaultRecord.getValue("null");
     }
 
+    /**
+     * Tests whether {@link Record#getValue(String)} returns the value of the
+     * right column given the name of the column.
+     */
     @Test
     public void getValue_givenNameOfColumn_returnsValueOfColumn() {
         Record record = this.defaultRecord;
@@ -108,6 +133,11 @@ public class RecordTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Tests whether {@link Record#getNumberValue(String)}'s implementation
+     * makes a call to {@link Record#getValue(String)} to get the value of the
+     * right column.
+     */
     @Test
     public void getNumberValue_callsGetValue() {
         Record record = this.defaultRecord;
@@ -117,6 +147,10 @@ public class RecordTest {
         verify(record).getValue(this.column2.getName());
     }
 
+    /**
+     * Tests whether {@link Record#getNumberValue(String)} returns the correct
+     * {@link Double} when given the name of a column that contains Doubles.
+     */
     @Test
     public void getNumberValue_givenNameOfColumnWithNumber_returnsNumber() {
         Record record = this.defaultRecord;
@@ -127,11 +161,21 @@ public class RecordTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Tests whether {@link Record#getNumberValue(String)} throws an
+     * {@link IllegalArgumentException} when given the name of a column that
+     * contains {@link String}s.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void getNumberValue_givenNameOfColumnWithString_throwsIllegalArgumentException() {
         this.defaultRecord.getNumberValue(this.column1.getName());
     }
 
+    /**
+     * Tests whether {@link Record#getStringValue(String)}'s implementation
+     * makes a call to {@link Record#getValue(String)} to get the value of the
+     * right column.
+     */
     @Test
     public void getStringValue_callsGetValue() {
         Record record = this.defaultRecord;
@@ -141,6 +185,10 @@ public class RecordTest {
         verify(record).getValue(this.column1.getName());
     }
 
+    /**
+     * Tests whether {@link Record#getStringValue(String)} returns the correct
+     * {@link String} when given the name of a column that contains Strings.
+     */
     @Test
     public void getStringValue_givenNameOfColumnWithString_returnsString() {
         Record record = this.defaultRecord;
@@ -151,28 +199,52 @@ public class RecordTest {
         assertEquals(expected, actual);
     }
 
+    /**
+     * Tests whether {@link Record#getStringsValue(String)} throws an
+     * {@link IllegalArgumentException} when given the name of a column that
+     * contains {@link Double}s.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void getStringValue_givenNameOfColumnWithNumber_throwsIllegalArgumentException() {
         this.defaultRecord.getNumberValue(this.column2.getName());
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, Double)} throws a
+     * {@link NullPointerException} when given a null reference for name.
+     */
     @Test(expected = NullPointerException.class)
-    public void setValueNumber_givenNameNull_throwsNullPointerException() {
+    public void setValueDouble_givenNameNull_throwsNullPointerException() {
         this.defaultRecord.setValue((String) null, this.value2);
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, Double)} throws an
+     * {@link IllegalArgumentException} when given a name of a column that
+     * contains {@link String}s.
+     */
     @Test(expected = IllegalArgumentException.class)
-    public void setValueNumber_givenNameOfColumnWithString_throwsIllegalArgumentException() {
+    public void setValueDouble_givenNameOfColumnWithString_throwsIllegalArgumentException() {
         this.defaultRecord.setValue(this.column1.getName(), this.value2);
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, Double)} throws an
+     * {@link IllegalArgumentException} when given a name of an nonexistent
+     * column.
+     */
     @Test(expected = IllegalArgumentException.class)
-    public void setValueNumber_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
+    public void setValueDouble_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
         this.defaultRecord.setValue("null", this.value2);
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, Double)} updates the value
+     * of the correct column when given the name of a column that contains
+     * {@link Double}s.
+     */
     @Test
-    public void setValueNumber_givenNameOfColumn_updatesValue() {
+    public void setValueDouble_givenNameOfColumn_updatesValue() {
         Record record = this.defaultRecord;
         Double value = -1.0;
 
@@ -183,21 +255,40 @@ public class RecordTest {
         assertSame(expected, actual);
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, String)} throws a
+     * {@link NullPointerException} when given a null reference for name.
+     */
     @Test(expected = NullPointerException.class)
     public void setValueString_givenNameNull_throwsNullPointerException() {
         this.defaultRecord.setValue((String) null, this.value1);
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, String)} throws an
+     * {@link IllegalArgumentException} when given a name of a column that
+     * contains {@link Double}s.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void setValueString_givenNameOfColumnWithNumber_throwsIllegalArgumentException() {
         this.defaultRecord.setValue(this.column2.getName(), this.value1);
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, String)} throws an
+     * {@link IllegalArgumentException} when given a name of an nonexistent
+     * column.
+     */
     @Test(expected = IllegalArgumentException.class)
     public void setValueString_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
         this.defaultRecord.setValue("null", this.value1);
     }
 
+    /**
+     * Tests whether {@link Record#setValue(String, String)} updates the value
+     * of the correct column when given the name of a column that contains
+     * {@link String}s.
+     */
     @Test
     public void setValueString_givenNameOfColumn_updatesValue() {
         Record record = this.defaultRecord;

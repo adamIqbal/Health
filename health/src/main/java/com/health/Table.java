@@ -60,6 +60,28 @@ public class Table extends Chunk implements Iterable<Chunk> {
     }
 
     /**
+     * Adds the given record to this table.
+     *
+     * @param record
+     *            the record to add.
+     * @throws NullPointerException
+     *             if record is null.
+     * @throws IllegalArgumentException
+     *             if record belongs to a different table.
+     */
+    @Override
+    public void addRecord(Record record) {
+        Objects.requireNonNull(record, "Argument record cannot be null");
+
+        if (record.getTable() != this) {
+            throw new IllegalArgumentException(
+                    "Argument record already belongs to a different table");
+        }
+
+        super.addRecord(record);
+    }
+
+    /**
      * Returns a chunk iterator that can be used to iterate over this table.
      *
      * @return a chunk iterator that can be used to iterate over this table.
