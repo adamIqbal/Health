@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 /**
- * Represents a group of @see {@link Record}s.
+ * Represents a group of {@link Record}s.
  *
  * @author Martijn
  */

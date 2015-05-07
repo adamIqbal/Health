@@ -3,14 +3,14 @@ package com.health;
 import java.util.Objects;
 
 /**
- * Represents a column of a @see {@link Table}.
+ * Represents a column of a {@link Table}.
  *
  * @author Martijn
  */
 public class Column {
-    private String name;
-    private int index;
-    private ValueType type;
+    private final String name;
+    private final int index;
+    private final ValueType type;
 
     /**
      * Constructs a new column with the given name, index and type.

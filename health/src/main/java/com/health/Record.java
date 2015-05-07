@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.Objects;
 
 /**
- * Represents a row of values in a table.
+ * Represents a row of values in a {@link Table}.
  *
  * @author Martijn
  */
@@ -55,7 +55,7 @@ public class Record {
      *         null.
      */
     public Object getValue(String name) {
-        // Retrieve the value for any of the types
+        // Retrieve the value for any of the supported types
         return this.getValue(name, EnumSet.allOf(ValueType.class));
     }
 
@@ -135,7 +135,6 @@ public class Record {
             throw new IllegalStateException();
         }
 
-        // TODO Add checks for index out of bounds
         return this.values[column.getIndex()];
     }
 
@@ -153,7 +152,6 @@ public class Record {
             throw new IllegalStateException();
         }
 
-        // TODO Add checks for index out of bounds
         this.values[column.getIndex()] = value;
     }
 }

@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.powermock.api.mockito.PowerMockito.*;
@@ -34,15 +34,23 @@ public class TableTest {
      */
     @Before
     public void setUp() {
+        // Create mock columns
         this.defaultColumn1 = mock(Column.class);
         this.defaultColumn2 = mock(Column.class);
         this.defaultColumn3 = mock(Column.class);
         this.defaultColumn4 = mock(Column.class);
 
+        // Mock column names
         when(this.defaultColumn1.getName()).thenReturn("abc");
         when(this.defaultColumn2.getName()).thenReturn("column2");
         when(this.defaultColumn3.getName()).thenReturn("cda");
         when(this.defaultColumn4.getName()).thenReturn("column4");
+
+        // Mock column indices
+        when(this.defaultColumn1.getIndex()).thenReturn(0);
+        when(this.defaultColumn1.getIndex()).thenReturn(1);
+        when(this.defaultColumn2.getIndex()).thenReturn(2);
+        when(this.defaultColumn3.getIndex()).thenReturn(3);
 
         this.defaultColumns = Arrays.asList(
                 this.defaultColumn1,
@@ -73,15 +81,60 @@ public class TableTest {
     }
 
     /**
-     * Tests whether {@link Table#Table(Iterable)} sets the columns when given
-     * an empty {@link Iterable} so that {@link Table#getColumns()} returns an
-     * {@link Iterable} instance.
+     * Tests whether {@link Table#Table(Iterable)} throws an
+     * {@link IllegalArgumentException} when given an empty {@link Iterable}.
      */
-    @Test
-    public void constructor_givenColumnsEmpty_setsColumns() {
-        Table table = new Table(new ArrayList<Column>());
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_givenColumnsEmpty_throwsIllegalArgumentException() {
+        new Table(new ArrayList<Column>());
+    }
 
-        assertThat(table.getColumns(), iterableWithSize(0));
+    /**
+     * Tests whether {@link Table#Table(Iterable)} throws an
+     * {@link IllegalArgumentException} when given an {@link Iterable} with
+     * columns whose indices do not start at zero.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_givenColumnsWithIndicesStartingAboveZero_throwsIllegalArgumentException() {
+        Column column = mock(Column.class);
+        when(column.getName()).thenReturn("column1");
+        when(column.getIndex()).thenReturn(1);
+
+        new Table(Arrays.asList(column));
+    }
+
+    /**
+     * Tests whether {@link Table#Table(Iterable)} throws an
+     * {@link IllegalArgumentException} when given an {@link Iterable} with
+     * columns whose indices do not for a sequence.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_givenColumnsWithMissingIndices_throwsIllegalArgumentException() {
+        Column column1 = mock(Column.class);
+        Column column2 = mock(Column.class);
+        when(column1.getName()).thenReturn("column1");
+        when(column2.getName()).thenReturn("column2");
+        when(column1.getIndex()).thenReturn(0);
+        when(column1.getIndex()).thenReturn(2);
+
+        new Table(Arrays.asList(column1, column2));
+    }
+
+    /**
+     * Tests whether {@link Table#Table(Iterable)} throws an
+     * {@link IllegalArgumentException} when given an {@link Iterable} with
+     * columns whose indices contain duplicates.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void constructor_givenColumnsWitDuplicateIndices_throwsIllegalArgumentException() {
+        Column column1 = mock(Column.class);
+        Column column2 = mock(Column.class);
+        when(column1.getName()).thenReturn("column1");
+        when(column2.getName()).thenReturn("column2");
+        when(column1.getIndex()).thenReturn(0);
+        when(column1.getIndex()).thenReturn(0);
+
+        new Table(Arrays.asList(column1, column2));
     }
 
     /**
@@ -90,13 +143,19 @@ public class TableTest {
      * {@link Iterable} that contains the same elements.
      */
     @Test
-    public void constructor_givenColumns_setsColumns() {
+    public void constructor_givenValidColumns_setsColumns() {
         Table table = new Table(Arrays.asList(
+                this.defaultColumn2,
+                this.defaultColumn4,
                 this.defaultColumn1,
-                this.defaultColumn2));
+                this.defaultColumn3));
 
         assertThat(table.getColumns(),
-                contains(this.defaultColumn1, this.defaultColumn2));
+                containsInAnyOrder(
+                        this.defaultColumn1,
+                        this.defaultColumn2,
+                        this.defaultColumn3,
+                        this.defaultColumn4));
     }
 
     /**
@@ -157,13 +216,13 @@ public class TableTest {
     }
 
     /**
-     * Tests whether {@link Table#iterator()} returns an iterator that
-     * contains this table.
+     * Tests whether {@link Table#iterator()} returns an iterator that contains
+     * this table.
      */
     @Test
     public void iterator_returnsIteratorContainingTable() {
         Table table = this.defaultTable;
-        
+
         assertThat(table, contains(table));
     }
 }
