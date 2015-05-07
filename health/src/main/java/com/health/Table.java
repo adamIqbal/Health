@@ -15,8 +15,9 @@ import java.util.Set;
  *
  * @author Martijn
  */
-public class Table extends Chunk implements Iterable<Chunk> {
+public class Table implements Iterable<Chunk> {
     private Map<String, Column> columnMap;
+    private Chunk records;
 
     /**
      * Constructs a table with the given columns. Each column must have a unique
@@ -36,6 +37,7 @@ public class Table extends Chunk implements Iterable<Chunk> {
         Table.verifyColumnIndices(columns);
 
         this.columnMap = new HashMap<String, Column>();
+        this.records = new Chunk();
 
         for (Column column : columns) {
             this.columnMap.put(column.getName(), column);
@@ -72,7 +74,6 @@ public class Table extends Chunk implements Iterable<Chunk> {
      * @throws IllegalArgumentException
      *             if record belongs to a different table.
      */
-    @Override
     public void addRecord(Record record) {
         Objects.requireNonNull(record, "Argument record cannot be null");
 
@@ -81,9 +82,29 @@ public class Table extends Chunk implements Iterable<Chunk> {
                     "Argument record already belongs to a different table");
         }
 
-        super.addRecord(record);
+        this.records.add(record);
     }
 
+    /**
+     * Removes the first occurrence of the given record from this table if
+     * present.
+     *
+     * @param record
+     *            the record to remove.
+     */
+    public void removeRecord(Record record) {
+        this.records.remove(record);
+    }
+
+    /**
+     * Returns an {@link Iterable} containing all records in this table.
+     *
+     * @return an {@link Iterable} containing all records in this table.
+     */
+    public Iterable<Record> getRecords() {
+        return this.records;
+    }
+    
     /**
      * Returns a chunk iterator that can be used to iterate over this table.
      *
@@ -91,7 +112,7 @@ public class Table extends Chunk implements Iterable<Chunk> {
      */
     @Override
     public final Iterator<Chunk> iterator() {
-        return Arrays.asList((Chunk) this).iterator();
+        return Arrays.asList(this.records).iterator();
     }
 
     private static void verifyColumnIndices(Iterable<Column> columns) {

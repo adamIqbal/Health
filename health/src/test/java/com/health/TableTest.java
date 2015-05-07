@@ -1,14 +1,19 @@
 package com.health;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +33,7 @@ public class TableTest {
     private Column defaultColumn4;
     private Iterable<Column> defaultColumns;
     private Table defaultTable;
+    private Record defaultRecord;
 
     /**
      * Sets up mocks and default values used during tests.
@@ -59,6 +65,9 @@ public class TableTest {
                 this.defaultColumn4);
 
         this.defaultTable = new Table(this.defaultColumns);
+
+        this.defaultRecord = mock(Record.class);
+        when(this.defaultRecord.getTable()).thenReturn(this.defaultTable);
     }
 
     /**
@@ -207,22 +216,72 @@ public class TableTest {
     @Test
     public void addRecord_givenRecordBeloningToThisTable_addsRecord() {
         Table table = this.defaultTable;
-        Record record = mock(Record.class);
-        when(record.getTable()).thenReturn(table);
-
+        Record record = this.defaultRecord;
         table.addRecord(record);
 
         assertThat(table.getRecords(), contains(record));
     }
 
     /**
+     * Tests whether {@link Table#addRecord(Record)} throws a
+     * {@link NullPointerException} when given a null reference.
+     */
+    @Test(expected = NullPointerException.class)
+    public void addRecord_givenRecordNull_throwsNullPointerException() {
+        this.defaultTable.addRecord((Record) null);
+    }
+
+    /**
+     * Tests whether {@link Table#removeRecord(Record)} removes the given record
+     * when given a record that was already added.
+     */
+    @Test
+    public void removeRecord_givenRecordExists_removesRecord() {
+        Table table = this.defaultTable;
+        Record record = this.defaultRecord;
+        table.addRecord(record);
+
+        table.removeRecord(record);
+
+        assertThat(table.getRecords(), not(hasItem(record)));
+    }
+
+    /**
+     * Tests whether {@link Table#removeRecord(Record)} does not remove any
+     * records when given a record that was not added.
+     */
+    @Test
+    public void removeRecord_givenRecordDoesNotExist_doesNotRemoveRecords() {
+        Table table = this.defaultTable;
+        Record record = this.defaultRecord;
+        table.addRecord(record);
+
+        table.removeRecord(mock(Record.class));
+
+        assertThat(table.getRecords(), hasItem(record));
+    }
+
+    /**
+     * Tests whether {@link Table#removeRecord(Record)} does not remove any
+     * records when given a null reference.
+     */
+    @Test
+    public void removeRecord_givenRecordNull_doesNotRemoveRecords() {
+        Table table = this.defaultTable;
+        Record record = this.defaultRecord;
+        table.addRecord(record);
+
+        table.removeRecord((Record) null);
+
+        assertThat(table.getRecords(), hasItem(record));
+    }
+
+    /**
      * Tests whether {@link Table#iterator()} returns an iterator that contains
-     * this table.
+     * at least one {@link Chunk}.
      */
     @Test
     public void iterator_returnsIteratorContainingTable() {
-        Table table = this.defaultTable;
-
-        assertThat(table, contains(table));
+        assertThat(this.defaultTable, iterableWithSize(greaterThan(0)));
     }
 }
