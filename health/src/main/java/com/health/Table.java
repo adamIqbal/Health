@@ -1,6 +1,8 @@
 package com.health;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class Table extends Chunk implements Iterable<Chunk> {
 
         this.columnMap = new HashMap<String, Column>();
 
+        // TODO Verify column indices
         for (Column column : columns) {
             if (column == null) {
                 throw new IllegalArgumentException(
@@ -40,16 +43,16 @@ public class Table extends Chunk implements Iterable<Chunk> {
     }
 
     /**
-     * Returns an {@link Iterable} containing all columns in this table.
+     * Gets an {@link Iterable} containing all columns in this table.
      *
-     * @return the collection of columns of this table.
+     * @return an {@link Iterable} containing all columns of this table.
      */
-    public final Iterable<Column> getColumns() {
-        return this.columnMap.values();
+    public final Collection<Column> getColumns() {
+        return Collections.unmodifiableCollection(this.columnMap.values());
     }
 
     /**
-     * Returns the column with the given name.
+     * Gets the column with the given name.
      *
      * @param name
      *            the name of the column to get.

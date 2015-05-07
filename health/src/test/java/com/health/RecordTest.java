@@ -3,12 +3,14 @@ package com.health;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +47,7 @@ public class RecordTest {
         when(this.column2.getName()).thenReturn("column2");
         when(this.column2.getType()).thenReturn(ValueType.Number);
 
-        Iterable<Column> columns = Arrays.asList(
+        Collection<Column> columns = Arrays.asList(
                 this.column1,
                 this.column2);
 
@@ -62,7 +64,7 @@ public class RecordTest {
         this.value1 = "abc";
         this.value2 = 1.5;
 
-        this.defaultRecord = spy(new Record(this.defaultTable));
+        this.defaultRecord = new Record(this.defaultTable);
         this.defaultRecord.setValue(this.column1.getName(), value1);
         this.defaultRecord.setValue(this.column2.getName(), value2);
     }
@@ -101,22 +103,21 @@ public class RecordTest {
     }
 
     /**
-     * Tests whether {@link Record#getValue(String)} throws a
-     * {@link NullPointerException} when given a null reference.
+     * Tests whether {@link Record#getValue(String)} returns null when given a
+     * null reference.
      */
-    @Test(expected = NullPointerException.class)
-    public void getValue_givenNameNull_throwsNullPointerException() {
-        this.defaultRecord.getValue(null);
+    @Test
+    public void getValue_givenNameNull_returnsNull() {
+        assertNull(this.defaultRecord.getValue(null));
     }
 
     /**
-     * Tests whether {@link Record#getValue(String)} throws an
-     * {@link IllegalArgumentException} when given a name of an nonexistent
-     * column.
+     * Tests whether {@link Record#getValue(String)} returns null when given a
+     * name of a nonexistent column.
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void getValue_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
-        this.defaultRecord.getValue("null");
+    @Test
+    public void getValue_givenNameOfNonexistentColumn_returnsNull() {
+        assertNull(this.defaultRecord.getValue("null"));
     }
 
     /**
@@ -131,20 +132,6 @@ public class RecordTest {
         Object actual = record.getValue(this.column1.getName());
 
         assertEquals(expected, actual);
-    }
-
-    /**
-     * Tests whether {@link Record#getNumberValue(String)}'s implementation
-     * makes a call to {@link Record#getValue(String)} to get the value of the
-     * right column.
-     */
-    @Test
-    public void getNumberValue_callsGetValue() {
-        Record record = this.defaultRecord;
-
-        record.getNumberValue(this.column2.getName());
-
-        verify(record).getValue(this.column2.getName());
     }
 
     /**
@@ -163,26 +150,12 @@ public class RecordTest {
 
     /**
      * Tests whether {@link Record#getNumberValue(String)} throws an
-     * {@link IllegalArgumentException} when given the name of a column that
+     * {@link IllegalStateException} when given the name of a column that
      * contains {@link String}s.
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void getNumberValue_givenNameOfColumnWithString_throwsIllegalArgumentException() {
+    @Test(expected = IllegalStateException.class)
+    public void getNumberValue_givenNameOfColumnWithString_throwsIllegalStateException() {
         this.defaultRecord.getNumberValue(this.column1.getName());
-    }
-
-    /**
-     * Tests whether {@link Record#getStringValue(String)}'s implementation
-     * makes a call to {@link Record#getValue(String)} to get the value of the
-     * right column.
-     */
-    @Test
-    public void getStringValue_callsGetValue() {
-        Record record = this.defaultRecord;
-
-        record.getStringValue(this.column1.getName());
-
-        verify(record).getValue(this.column1.getName());
     }
 
     /**
@@ -201,31 +174,21 @@ public class RecordTest {
 
     /**
      * Tests whether {@link Record#getStringsValue(String)} throws an
-     * {@link IllegalArgumentException} when given the name of a column that
+     * {@link IllegalStateException} when given the name of a column that
      * contains {@link Double}s.
      */
-    @Test(expected = IllegalArgumentException.class)
-    public void getStringValue_givenNameOfColumnWithNumber_throwsIllegalArgumentException() {
-        this.defaultRecord.getNumberValue(this.column2.getName());
+    @Test(expected = IllegalStateException.class)
+    public void getStringValue_givenNameOfColumnWithNumber_throwsIllegalStateException() {
+        this.defaultRecord.getStringValue(this.column2.getName());
     }
 
     /**
      * Tests whether {@link Record#setValue(String, Double)} throws a
-     * {@link NullPointerException} when given a null reference for name.
-     */
-    @Test(expected = NullPointerException.class)
-    public void setValueDouble_givenNameNull_throwsNullPointerException() {
-        this.defaultRecord.setValue((String) null, this.value2);
-    }
-
-    /**
-     * Tests whether {@link Record#setValue(String, Double)} throws an
-     * {@link IllegalArgumentException} when given a name of a column that
-     * contains {@link String}s.
+     * {@link IllegalArgumentException} when given a null reference for name.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void setValueDouble_givenNameOfColumnWithString_throwsIllegalArgumentException() {
-        this.defaultRecord.setValue(this.column1.getName(), this.value2);
+    public void setValueDouble_givenNameNull_throwsIllegalArgumentException() {
+        this.defaultRecord.setValue((String) null, this.value2);
     }
 
     /**
@@ -236,6 +199,16 @@ public class RecordTest {
     @Test(expected = IllegalArgumentException.class)
     public void setValueDouble_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
         this.defaultRecord.setValue("null", this.value2);
+    }
+
+    /**
+     * Tests whether {@link Record#setValue(String, Double)} throws an
+     * {@link IllegalStateException} when given a name of a column that contains
+     * {@link String}s.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void setValueDouble_givenNameOfColumnWithString_throwsIllegalStateException() {
+        this.defaultRecord.setValue(this.column1.getName(), this.value2);
     }
 
     /**
@@ -257,21 +230,11 @@ public class RecordTest {
 
     /**
      * Tests whether {@link Record#setValue(String, String)} throws a
-     * {@link NullPointerException} when given a null reference for name.
-     */
-    @Test(expected = NullPointerException.class)
-    public void setValueString_givenNameNull_throwsNullPointerException() {
-        this.defaultRecord.setValue((String) null, this.value1);
-    }
-
-    /**
-     * Tests whether {@link Record#setValue(String, String)} throws an
-     * {@link IllegalArgumentException} when given a name of a column that
-     * contains {@link Double}s.
+     * {@link IllegalArgumentException} when given a null reference for name.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void setValueString_givenNameOfColumnWithNumber_throwsIllegalArgumentException() {
-        this.defaultRecord.setValue(this.column2.getName(), this.value1);
+    public void setValueString_givenNameNull_throwsIllegalArgumentException() {
+        this.defaultRecord.setValue((String) null, this.value1);
     }
 
     /**
@@ -282,6 +245,16 @@ public class RecordTest {
     @Test(expected = IllegalArgumentException.class)
     public void setValueString_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
         this.defaultRecord.setValue("null", this.value1);
+    }
+
+    /**
+     * Tests whether {@link Record#setValue(String, String)} throws an
+     * {@link IllegalStateException} when given a name of a column that contains
+     * {@link Double}s.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void setValueString_givenNameOfColumnWithNumber_throwsIllegalStateException() {
+        this.defaultRecord.setValue(this.column2.getName(), this.value1);
     }
 
     /**

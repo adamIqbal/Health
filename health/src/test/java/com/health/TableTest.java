@@ -91,7 +91,8 @@ public class TableTest {
      */
     @Test
     public void constructor_givenColumns_setsColumns() {
-        Table table = new Table(Arrays.asList(this.defaultColumn1,
+        Table table = new Table(Arrays.asList(
+                this.defaultColumn1,
                 this.defaultColumn2));
 
         assertThat(table.getColumns(),
@@ -131,12 +132,38 @@ public class TableTest {
      * to a different table.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void addRecord_givenRecordBeloningToDifferentTable_throwsIllegalArgumentExceptioN() {
+    public void addRecord_givenRecordBeloningToDifferentTable_throwsIllegalArgumentException() {
+        Table table1 = this.defaultTable;
+        Table table2 = mock(Table.class);
+        Record record = mock(Record.class);
+        when(record.getTable()).thenReturn(table2);
+
+        table1.addRecord(record);
+    }
+
+    /**
+     * Tests whether {@link Table#addRecord(Record)} adds the given record when
+     * given a record that belongs to this table.
+     */
+    @Test
+    public void addRecord_givenRecordBeloningToThisTable_addsRecord() {
         Table table = this.defaultTable;
-        Table mockTable = mock(Table.class);
-        Record mockRecord = mock(Record.class);        
-        when(mockRecord.getTable()).thenReturn(mockTable);
+        Record record = mock(Record.class);
+        when(record.getTable()).thenReturn(table);
+
+        table.addRecord(record);
+
+        assertThat(table.getRecords(), contains(record));
+    }
+
+    /**
+     * Tests whether {@link Table#iterator()} returns an {@link Iterator} that
+     * contains this table.
+     */
+    @Test
+    public void iterator_returnsIteratorContainingTable() {
+        Table table = this.defaultTable;
         
-        table.addRecord(mockRecord);
+        assertThat(table, contains(table));
     }
 }
