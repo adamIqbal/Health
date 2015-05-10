@@ -24,6 +24,7 @@ public class FileListingRow {
 		deleteButton = new JButton("X");
 		
 		this.fillComboBox();
+				
 	}
 	
 	public void setFileString(String fileString){

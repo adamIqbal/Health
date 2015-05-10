@@ -21,6 +21,8 @@ public class ScriptPanel extends JPanel{
 		
 		JTextArea scriptArea = new JTextArea(2,1);
 		scriptArea.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+
 
 		panel.add(scriptArea, BorderLayout.CENTER);
 		
