@@ -1,14 +1,11 @@
 package GUI;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 public class FileListingRow {
@@ -26,7 +23,6 @@ public class FileListingRow {
 		fileField.setOpaque(false);
 		
 		
-		// TODO handle delete
 		deleteButton = new JButton("X");
 		lforDelete = new ListenForDeleteFile(fileString);
 		deleteButton.addActionListener(lforDelete);
@@ -37,8 +33,25 @@ public class FileListingRow {
 	
 	public void setFileString(String fileString){
 		this.fileString = fileString;
-		fileField.setText(fileString);
-		lforDelete.setStringToBeDeleted(fileString);
+		String fileFieldText = fileString;
+		
+		//if string wont fit the field
+		if(fileFieldText.length() > 50){
+			//trim of till 50 chars
+			fileFieldText = this.fileString.substring(fileFieldText.length()-50);
+			
+			//find last slash that fits in the field
+			int lastSlash =fileFieldText.indexOf('/');
+			
+			//if there is a slash
+			if(lastSlash != -1){
+				fileFieldText = fileFieldText.substring(lastSlash); 
+			}
+			fileFieldText = "..." + fileFieldText;
+		}
+		
+		fileField.setText(fileFieldText);
+		lforDelete.setStringToBeDeleted(this.fileString);
 	}
 	
 	public void fillComboBox(){

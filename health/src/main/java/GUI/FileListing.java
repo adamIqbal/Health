@@ -5,19 +5,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import externalClasses.FileDrop;
 
 public class FileListing extends JPanel{
 	
 	static GridBagConstraints fileListingCons;
 	static JPanel listing = new JPanel();
-	static FileListingRow[] fileListingRows = new FileListingRow[20];
+	static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
 	static int fileCount = 0;
 	
 	public FileListing(){
@@ -34,6 +34,7 @@ public class FileListing extends JPanel{
 
 		FileListing.fillFileListing();
 		
+
 		this.add(listing);
 	}
 	
@@ -42,9 +43,24 @@ public class FileListing extends JPanel{
 		makeHeaderOfListing();
 		fileListingCons.gridwidth = 1;
 		fileListingCons.gridheight = 1;
-		for(int i =0; i < fileListingRows.length; i++){
+		int rows = fileCount;
+		
+		if(rows < 20){
+			rows = 20;
+		}
+		
+		for(int i =0; i < rows; i++){
 			
-			if(fileListingRows[i] == null){
+			try{
+				//fill the row
+				fileListingCons.gridy = i+1;
+				fileListingCons.gridx = 0;
+				listing.add(fileListingRows.get(i).fileField, fileListingCons,(i*3) + 1);
+				fileListingCons.gridx = 1;
+				listing.add(fileListingRows.get(i).xmlFormat, fileListingCons,(i*3) + 2);
+				fileListingCons.gridx = 2;
+				listing.add(fileListingRows.get(i).deleteButton, fileListingCons,(i*3) + 3);
+			}catch(IndexOutOfBoundsException e){
 				//make empty row
 				fileListingCons.gridy = i+1;
 				for(int j =0; j <3; j++){
@@ -54,16 +70,8 @@ public class FileListing extends JPanel{
 					textField.setEditable(false);
 					listing.add(textField, fileListingCons);
 				}
-			}else{
-				//fill the row
-				fileListingCons.gridy = i+1;
-				fileListingCons.gridx = 0;
-				listing.add(fileListingRows[i].fileField, fileListingCons,(i*3) + 1);
-				fileListingCons.gridx = 1;
-				listing.add(fileListingRows[i].xmlFormat, fileListingCons,(i*3) + 2);
-				fileListingCons.gridx = 2;
-				listing.add(fileListingRows[i].deleteButton, fileListingCons,(i*3) + 3);
 			}
+			
 		}
 		listing.revalidate();
 		listing.repaint();
@@ -100,26 +108,20 @@ public class FileListing extends JPanel{
 	    FileListingRow row = new FileListingRow();
 	    
 		row.setFileString(newFile.getPath());
-		fileListingRows[fileCount] = row;
+		fileListingRows.add(row);
 		fileCount++;
 		fillFileListing();
 	}
 	
 	public static void delete(String toBeDeleted){
 		boolean found = false;
-		for(int i =0; i < fileListingRows.length;i++){
-			if(!found){
-				if(fileListingRows[i].fileString.equals(toBeDeleted)){
-					fileListingRows[i] = null;
-					found = true;
-				}
-			}else if(fileListingRows[i] != null){
-				fileListingRows[i-1] = fileListingRows[i];
-				fileListingRows[i] = null;
+		for(int i =0; i < fileCount && !found;i++){
+			if(fileListingRows.get(i).fileString.equals(toBeDeleted)){
+				fileListingRows.remove(i);
+				found = true;
 			}
 		}
 		fileCount--;
-		
 		FileListing.fillFileListing();
 	}
 	

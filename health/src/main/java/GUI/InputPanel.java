@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import externalClasses.FileDrop;
+
 public class InputPanel extends JPanel{
 
 	public InputPanel(){
@@ -13,6 +15,15 @@ public class InputPanel extends JPanel{
 		
 		JPanel scriptPanel = new ScriptPanel();
 		JPanel fileSelectionPanel = new FileSelectionPanel();
+		
+		new FileDrop( fileSelectionPanel, new FileDrop.Listener()
+	      {   public void filesDropped( java.io.File[] files )
+	          {  
+	            for(int i =0; i< files.length; i++){
+	            	 FileListing.addFile(files[i]);
+	            }
+	          }   // end filesDropped
+	      }); // end FileDrop.Listener
 		
 		tabbedPane.addTab("File Selection", fileSelectionPanel);
 		tabbedPane.addTab("Script", scriptPanel);
