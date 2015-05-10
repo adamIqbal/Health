@@ -1,9 +1,14 @@
 package GUI;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 public class FileListingRow {
@@ -12,7 +17,7 @@ public class FileListingRow {
 	public String fileString;
 	public JComboBox<String> xmlFormat;
 	public JButton deleteButton;
-	
+	private ListenForDeleteFile lforDelete;
 	
 	public FileListingRow(){
 		fileField = new JTextField();
@@ -20,8 +25,11 @@ public class FileListingRow {
 		fileField.setDisabledTextColor(Color.black);
 		fileField.setOpaque(false);
 		
+		
 		// TODO handle delete
 		deleteButton = new JButton("X");
+		lforDelete = new ListenForDeleteFile(fileString);
+		deleteButton.addActionListener(lforDelete);
 		
 		this.fillComboBox();
 				
@@ -30,6 +38,7 @@ public class FileListingRow {
 	public void setFileString(String fileString){
 		this.fileString = fileString;
 		fileField.setText(fileString);
+		lforDelete.setStringToBeDeleted(fileString);
 	}
 	
 	public void fillComboBox(){
@@ -38,5 +47,23 @@ public class FileListingRow {
 		String[] formats  = {"select format","textFormat", "fooFormat", "faaFormat"};
 		xmlFormat = new JComboBox<String>(formats);
 	}
+	
+	private class ListenForDeleteFile implements ActionListener{
+		private String stringToBeDeleted;
+		
+		public ListenForDeleteFile(String fileString){
+			this.stringToBeDeleted = fileString;
+		}
+		
+		public void setStringToBeDeleted(String newFileString){
+			this.stringToBeDeleted = newFileString;
+		}
+		
+		public void actionPerformed(ActionEvent e) {
+			FileListing.delete(this.stringToBeDeleted);	
+		}
+		
+	}
+
 	
 }

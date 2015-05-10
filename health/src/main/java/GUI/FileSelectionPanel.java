@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -23,25 +24,24 @@ import externalClasses.FileDrop;
 
 public class FileSelectionPanel extends JPanel{
 	
-	private FileListing fileListing;
+	
 	
 	public FileSelectionPanel(){
 		this.setLayout(new BorderLayout());
 		
-	
-		
-		fileListing = new FileListing();
 		new FileDrop( this, new FileDrop.Listener()
 	      {   public void filesDropped( java.io.File[] files )
 	          {  
 	            for(int i =0; i< files.length; i++){
-	            	 fileListing.addFile(files[i]);
+	            	 FileListing.addFile(files[i]);
 	            }
 	          }   // end filesDropped
 	      }); // end FileDrop.Listener
 	
 		
-		this.add(fileListing, BorderLayout.CENTER);
+		JScrollPane scrolForFileListing = new JScrollPane(new FileListing());
+		
+		this.add(scrolForFileListing, BorderLayout.CENTER);
 		
 		JButton addButton = new JButton("add file");
 		ListenForAddFile lforAddFile = new ListenForAddFile();
@@ -51,21 +51,29 @@ public class FileSelectionPanel extends JPanel{
 		buttonPanel.add(addButton);
 		
 		this.add(buttonPanel, BorderLayout.SOUTH);
-		this.setBorder(new EmptyBorder(50,93,50,93));
+		this.setBorder(new EmptyBorder(70,85,70,85));
 		
+		new FileDrop( scrolForFileListing,  new FileDrop.Listener()
+	      {   public void filesDropped( java.io.File[] files )
+	          {  
+	            for(int i =0; i< files.length; i++){
+	            	 FileListing.addFile(files[i]);
+	            }
+	          }   // end filesDropped
+	      }); // end FileDrop.Listener
 		
 		
 	}
-
+	
 	private class ListenForAddFile implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-			int result = fileChooser.showOpenDialog(fileListing);
+			int result = fileChooser.showOpenDialog(null);
 			
 			if (result == JFileChooser.APPROVE_OPTION) {
-			    fileListing.addFile(fileChooser.getSelectedFile());
+			    FileListing.addFile(fileChooser.getSelectedFile());
 				
 			}
 			
