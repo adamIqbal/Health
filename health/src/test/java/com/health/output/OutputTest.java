@@ -6,12 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.powermock.api.mockito.PowerMockito.doReturn;
 import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.spy;
-import static org.powermock.api.mockito.PowerMockito.verifyStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.io.File;
@@ -43,13 +38,14 @@ import com.health.ValueType;
  * Unit test for Output.
  */
 @RunWith(JUnitParamsRunner.class)
-@PrepareForTest({ Column.class, Output.class, Record.class, Table.class })
+@PrepareForTest({ Column.class, Record.class, Table.class })
 public class OutputTest {
     private Table table;
     private Path filePath;
     private static final String delim = "\n";
     private static final String file = "target/test-output/OutputTest.tmp";
     private static final String format = "{abc}, {xyz}";
+
     @Rule
     public PowerMockRule powerMockRule = new PowerMockRule();
 
@@ -81,7 +77,7 @@ public class OutputTest {
 
         // Create mock records
         Record record1 = createMockRecord(table, "one", 1.0);
-        Record record2 = createMockRecord(table, "two", 2.0);
+        Record record2 = createMockRecord(table, "two", null);
 
         when(table.getRecords()).thenReturn(Arrays.asList(record1, record2));
     }
@@ -153,66 +149,47 @@ public class OutputTest {
     }
 
     @Test
-    public void writeTableStringTable_callsWriteTableStringTableString() {
-        spy(Output.class);
-
+    public void writeTableStringTable_stuffs()
+            throws IOException {
         Output.writeTable(file, table);
 
-        verifyStatic();
-        Output.writeTable(eq(file), eq(table), anyString());
+        assertEquals("one, 1.0\ntwo, ", getOutput());
     }
 
     @Test
-    public void writeTableStringTable_callsWriteTableStringTableStringWithCorrectFormat() {
-        spy(Output.class);
-
-        Output.writeTable(file, table);
-
-        verifyStatic();
-        Output.writeTable(file, table, "{abc}, {xyz}");
-    }
-
-    @Test
-    public void writeTableStringTableString_callsWriteTableStringTableStringString() {
-        spy(Output.class);
-
+    public void writeTableStringTableString_stuffs()
+            throws IOException {
         Output.writeTable(file, table, "{abc}, {xyz}");
 
-        verifyStatic();
-        Output.writeTable(file, table, "{abc}, {xyz}", "\n");
+        assertEquals("one, 1.0\ntwo, ", getOutput());
     }
 
     @Test(expected = NullPointerException.class)
-    public void writeTable_givenFileNull_throwsNullPointerException() {
+    public void writeTable_givenFileNull_throwsNullPointerException()
+            throws IOException {
         Output.writeTable((String) null, table, format, delim);
     }
 
     @Test(expected = NullPointerException.class)
-    public void writeTable_givenTableNull_throwsNullPointerException() {
+    public void writeTable_givenTableNull_throwsNullPointerException()
+            throws IOException {
         Output.writeTable(file, (Table) null, format, delim);
     }
 
     @Test(expected = NullPointerException.class)
-    public void writeTable_givenFormatNull_throwsNullPointerException() {
+    public void writeTable_givenFormatNull_throwsNullPointerException()
+            throws IOException {
         Output.writeTable(file, table, (String) null, delim);
     }
 
     @Test(expected = NullPointerException.class)
-    public void writeTable_givenDelimiterNull_throwsNullPointerException() {
+    public void writeTable_givenDelimiterNull_throwsNullPointerException()
+            throws IOException {
         Output.writeTable(file, table, format, (String) null);
     }
 
     @Test
-    public void writeTable_callsFormat() {
-        spy(Output.class);
-        Output.writeTable(file, table, format, delim);
-
-        verifyStatic();
-        Output.format(table, format);
-    }
-
-    @Test
-    public void writeTable_createsFile() {
+    public void writeTable_createsFile() throws IOException {
         Output.writeTable(file, table, format, delim);
 
         assertTrue(Files.exists(filePath));
@@ -241,11 +218,6 @@ public class OutputTest {
             String format,
             String delim,
             String expected) throws Exception {
-        // Mock Output.format
-        mockStatic(Output.class);
-        doReturn(Arrays.asList(format, format)).when(
-                Output.class, "format", this.table, format);
-
         Output.writeTable(file, table, format, delim);
 
         assertEquals(expected, getOutput());
@@ -265,20 +237,8 @@ public class OutputTest {
         Record record = mock(Record.class);
 
         when(record.getTable()).thenReturn(table);
-        when(record.getNumberValue("abc")).thenThrow(
-                new IllegalStateException());
-        when(record.getNumberValue("xyz")).thenReturn(xyzValue);
-        when(record.getNumberValue(anyString())).thenThrow(
-                new IllegalArgumentException());
-        when(record.getStringValue("abc")).thenReturn(abcValue);
-        when(record.getStringValue("xyz")).thenThrow(
-                new IllegalStateException());
-        when(record.getStringValue(anyString())).thenThrow(
-                new IllegalArgumentException());
         when(record.getValue("abc")).thenReturn(abcValue);
         when(record.getValue("xyz")).thenReturn(xyzValue);
-        when(record.getValue(anyString())).thenThrow(
-                new IllegalArgumentException());
         when(record.getValues()).thenReturn(Arrays.asList(abcValue, xyzValue));
 
         return record;

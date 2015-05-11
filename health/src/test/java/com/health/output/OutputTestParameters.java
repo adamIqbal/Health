@@ -71,7 +71,7 @@ public class OutputTestParameters {
                         "test({abc}) = {{{xyz}}}",
                         Arrays.asList(
                                 "test(one) = {1.0}",
-                                "test(two) = {2.0}")
+                                "test(two) = {}")
                 },
         };
     }
@@ -106,19 +106,19 @@ public class OutputTestParameters {
                         "Hello {abc}{xyz}!",
                         Arrays.asList(
                                 "Hello one1.0!",
-                                "Hello two2.0!")
+                                "Hello two!")
                 },
                 new Object[] {
                         "{xyz}+{xyz}",
                         Arrays.asList(
                                 "1.0+1.0",
-                                "2.0+2.0")
+                                "+")
                 },
                 new Object[] {
                         "test({abc}) = xyz{xyz}",
                         Arrays.asList(
                                 "test(one) = xyz1.0",
-                                "test(two) = xyz2.0")
+                                "test(two) = xyz")
                 },
         };
     }
@@ -129,6 +129,7 @@ public class OutputTestParameters {
                 new Object[] { " ", "\n", " \n " },
                 new Object[] { "12-3", "\t", "12-3\t12-3" },
                 new Object[] { "", " x ", " x " },
+                new Object[] { "%", " x ", "% x %" },
         };
     }
 }
