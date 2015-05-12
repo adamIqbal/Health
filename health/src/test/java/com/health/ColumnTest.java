@@ -2,26 +2,15 @@ package com.health;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Unit test for Column.
  */
 public class ColumnTest {
-    private String defaultName;
-    private int defaultIndex;
-    private ValueType defaultType;
-
-    /**
-     * Sets up mocks and default values used during tests.
-     */
-    @Before
-    public void setUp() {
-        this.defaultName = "column1";
-        this.defaultIndex = 0;
-        this.defaultType = ValueType.String;
-    }
+    private static final String name = "column1";
+    private static final int index = 0;
+    private static final ValueType type = ValueType.String;
 
     /**
      * Tests whether {@link Column#Column(String, int, ValueType)} throws a
@@ -29,7 +18,7 @@ public class ColumnTest {
      */
     @Test(expected = NullPointerException.class)
     public void constructor_givenNameNull_throwsNullPointerException() {
-        new Column((String) null, this.defaultIndex, this.defaultType);
+        new Column((String) null, index, type);
     }
 
     /**
@@ -38,7 +27,7 @@ public class ColumnTest {
      */
     @Test(expected = NullPointerException.class)
     public void constructor_givenTypeNull_throwsNullPointerException() {
-        new Column(this.defaultName, this.defaultIndex, (ValueType) null);
+        new Column(name, index, (ValueType) null);
     }
 
     /**
@@ -47,7 +36,7 @@ public class ColumnTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void constructor_givenNegativeIndex_throwsIllegalArgumentException() {
-        new Column(this.defaultName, -1, this.defaultType);
+        new Column(name, -1, type);
     }
 
     /**
@@ -56,12 +45,9 @@ public class ColumnTest {
      */
     @Test
     public void constructor_givenValidArguments_setsName() {
-        Column column = new Column(
-                this.defaultName,
-                this.defaultIndex,
-                this.defaultType);
+        Column column = new Column(name, index, type);
 
-        String expected = this.defaultName;
+        String expected = name;
         String actual = column.getName();
 
         assertEquals(expected, actual);
@@ -73,12 +59,9 @@ public class ColumnTest {
      */
     @Test
     public void constructor_givenValidArguments_setsIndex() {
-        Column column = new Column(
-                this.defaultName,
-                this.defaultIndex,
-                this.defaultType);
+        Column column = new Column(name, index, type);
 
-        int expected = this.defaultIndex;
+        int expected = index;
         int actual = column.getIndex();
 
         assertEquals(expected, actual);
@@ -90,12 +73,9 @@ public class ColumnTest {
      */
     @Test
     public void constructor_givenValidArguments_setsType() {
-        Column column = new Column(
-                this.defaultName,
-                this.defaultIndex,
-                this.defaultType);
+        Column column = new Column(name, index, type);
 
-        ValueType expected = this.defaultType;
+        ValueType expected = type;
         ValueType actual = column.getType();
 
         assertEquals(expected, actual);

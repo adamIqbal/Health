@@ -6,6 +6,12 @@ package com.health;
  * @author Martijn
  */
 public enum ValueType {
-    Number, 
+    /**
+     * Number type.
+     */
+    Number,
+    /**
+     * String type.
+     */
     String
 }

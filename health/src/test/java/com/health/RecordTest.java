@@ -11,7 +11,6 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.util.Arrays;
-import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +24,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Column.class, Table.class })
 public class RecordTest {
-    private String value1;
-    private Double value2;
+    private static final String value1 = "abc";
+    private static final Double value2 = 1.5;
     private Column column1;
     private Column column2;
-    private Record defaultRecord;
-    private Table defaultTable;
+    private Record record;
+    private Table table;
 
     /**
      * Sets up mocks and default values used during tests.
@@ -38,36 +37,29 @@ public class RecordTest {
     @Before
     public void setUp() {
         // Create mock columns
-        this.column1 = mock(Column.class);
-        when(this.column1.getIndex()).thenReturn(0);
-        when(this.column1.getName()).thenReturn("column1");
-        when(this.column1.getType()).thenReturn(ValueType.String);
+        column1 = mock(Column.class);
+        when(column1.getIndex()).thenReturn(0);
+        when(column1.getName()).thenReturn("column1");
+        when(column1.getType()).thenReturn(ValueType.String);
 
-        this.column2 = mock(Column.class);
-        when(this.column2.getIndex()).thenReturn(1);
-        when(this.column2.getName()).thenReturn("column2");
-        when(this.column2.getType()).thenReturn(ValueType.Number);
-
-        Collection<Column> columns = Arrays.asList(
-                this.column1,
-                this.column2);
+        column2 = mock(Column.class);
+        when(column2.getIndex()).thenReturn(1);
+        when(column2.getName()).thenReturn("column2");
+        when(column2.getType()).thenReturn(ValueType.Number);
 
         // Create mock table
-        this.defaultTable = mock(Table.class);
-        when(this.defaultTable.getColumn(anyString())).thenReturn(null);
-        when(this.defaultTable.getColumn(this.column1.getName())).thenReturn(
-                this.column1);
-        when(this.defaultTable.getColumn(this.column2.getName())).thenReturn(
-                this.column2);
-        when(this.defaultTable.getColumns()).thenReturn(columns);
+        table = mock(Table.class);
+        when(table.getColumn(anyString())).thenReturn(null);
+        when(table.getColumn(column1.getName())).thenReturn(
+                column1);
+        when(table.getColumn(column2.getName())).thenReturn(
+                column2);
+        when(table.getColumns()).thenReturn(Arrays.asList(column1, column2));
 
         // Create mock record
-        this.value1 = "abc";
-        this.value2 = 1.5;
-
-        this.defaultRecord = new Record(this.defaultTable);
-        this.defaultRecord.setValue(this.column1.getName(), value1);
-        this.defaultRecord.setValue(this.column2.getName(), value2);
+        record = new Record(table);
+        record.setValue(column1.getName(), value1);
+        record.setValue(column2.getName(), value2);
     }
 
     /**
@@ -84,10 +76,11 @@ public class RecordTest {
      */
     @Test
     public void constructor_givenTable_setsTable() {
-        Record record = new Record(this.defaultTable);
+        Record record = new Record(table);
 
-        Table expected = this.defaultTable;
+        Table expected = table;
         Table actual = record.getTable();
+
         assertSame(expected, actual);
     }
 
@@ -98,7 +91,7 @@ public class RecordTest {
      */
     @Test
     public void constructor_givenTable_setsValues() {
-        Record record = new Record(this.defaultTable);
+        Record record = new Record(table);
 
         assertThat(record.getValues(), iterableWithSize(2));
     }
@@ -109,9 +102,9 @@ public class RecordTest {
      */
     @Test
     public void constructor_givenTable_callsAddRecord() {
-        Record record = new Record(this.defaultTable);
+        Record record = new Record(table);
 
-        verify(this.defaultTable).addRecord(record);
+        verify(table).addRecord(record);
     }
 
     /**
@@ -120,7 +113,7 @@ public class RecordTest {
      */
     @Test
     public void getValue_givenNameNull_returnsNull() {
-        assertNull(this.defaultRecord.getValue(null));
+        assertNull(record.getValue(null));
     }
 
     /**
@@ -129,7 +122,7 @@ public class RecordTest {
      */
     @Test
     public void getValue_givenNameOfNonexistentColumn_returnsNull() {
-        assertNull(this.defaultRecord.getValue("null"));
+        assertNull(record.getValue("null"));
     }
 
     /**
@@ -138,10 +131,8 @@ public class RecordTest {
      */
     @Test
     public void getValue_givenNameOfColumn_returnsValueOfColumn() {
-        Record record = this.defaultRecord;
-
         Object expected = value1;
-        Object actual = record.getValue(this.column1.getName());
+        Object actual = record.getValue(column1.getName());
 
         assertEquals(expected, actual);
     }
@@ -152,10 +143,8 @@ public class RecordTest {
      */
     @Test
     public void getNumberValue_givenNameOfColumnWithNumber_returnsNumber() {
-        Record record = this.defaultRecord;
-
-        Double expected = (Double) this.value2;
-        Double actual = record.getNumberValue(this.column2.getName());
+        Double expected = (Double) value2;
+        Double actual = record.getNumberValue(column2.getName());
 
         assertEquals(expected, actual);
     }
@@ -167,7 +156,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalStateException.class)
     public void getNumberValue_givenNameOfColumnWithString_throwsIllegalStateException() {
-        this.defaultRecord.getNumberValue(this.column1.getName());
+        record.getNumberValue(column1.getName());
     }
 
     /**
@@ -176,10 +165,8 @@ public class RecordTest {
      */
     @Test
     public void getStringValue_givenNameOfColumnWithString_returnsString() {
-        Record record = this.defaultRecord;
-
-        String expected = (String) this.value1;
-        String actual = record.getStringValue(this.column1.getName());
+        String expected = (String) value1;
+        String actual = record.getStringValue(column1.getName());
 
         assertEquals(expected, actual);
     }
@@ -191,7 +178,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalStateException.class)
     public void getStringValue_givenNameOfColumnWithNumber_throwsIllegalStateException() {
-        this.defaultRecord.getStringValue(this.column2.getName());
+        record.getStringValue(column2.getName());
     }
 
     /**
@@ -200,7 +187,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void setValueDouble_givenNameNull_throwsIllegalArgumentException() {
-        this.defaultRecord.setValue((String) null, this.value2);
+        record.setValue((String) null, value2);
     }
 
     /**
@@ -210,7 +197,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void setValueDouble_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
-        this.defaultRecord.setValue("null", this.value2);
+        record.setValue("null", value2);
     }
 
     /**
@@ -220,7 +207,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalStateException.class)
     public void setValueDouble_givenNameOfColumnWithString_throwsIllegalStateException() {
-        this.defaultRecord.setValue(this.column1.getName(), this.value2);
+        record.setValue(column1.getName(), value2);
     }
 
     /**
@@ -230,13 +217,13 @@ public class RecordTest {
      */
     @Test
     public void setValueDouble_givenNameOfColumn_updatesValue() {
-        Record record = this.defaultRecord;
         Double value = -1.0;
 
-        record.setValue(this.column2.getName(), value);
+        record.setValue(column2.getName(), value);
 
         Double expected = value;
-        Double actual = record.getNumberValue(this.column2.getName());
+        Double actual = record.getNumberValue(column2.getName());
+
         assertSame(expected, actual);
     }
 
@@ -246,7 +233,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void setValueString_givenNameNull_throwsIllegalArgumentException() {
-        this.defaultRecord.setValue((String) null, this.value1);
+        record.setValue((String) null, value1);
     }
 
     /**
@@ -256,7 +243,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void setValueString_givenNameOfNonexistentColumn_throwsIllegalArgumentException() {
-        this.defaultRecord.setValue("null", this.value1);
+        record.setValue("null", value1);
     }
 
     /**
@@ -266,7 +253,7 @@ public class RecordTest {
      */
     @Test(expected = IllegalStateException.class)
     public void setValueString_givenNameOfColumnWithNumber_throwsIllegalStateException() {
-        this.defaultRecord.setValue(this.column2.getName(), this.value1);
+        record.setValue(column2.getName(), value1);
     }
 
     /**
@@ -276,13 +263,13 @@ public class RecordTest {
      */
     @Test
     public void setValueString_givenNameOfColumn_updatesValue() {
-        Record record = this.defaultRecord;
         String value = "def";
 
-        record.setValue(this.column1.getName(), value);
+        record.setValue(column1.getName(), value);
 
         String expected = value;
-        String actual = record.getStringValue(this.column1.getName());
+        String actual = record.getStringValue(column1.getName());
+
         assertSame(expected, actual);
     }
 }
