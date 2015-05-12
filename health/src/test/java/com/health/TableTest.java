@@ -4,7 +4,6 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertEquals;
@@ -15,6 +14,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,15 +25,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * Unit test for Table.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Column.class)
+@PrepareForTest({ Column.class, Record.class })
 public class TableTest {
-    private Column defaultColumn1;
-    private Column defaultColumn2;
-    private Column defaultColumn3;
-    private Column defaultColumn4;
-    private Iterable<Column> defaultColumns;
-    private Table defaultTable;
-    private Record defaultRecord;
+    private Column[] columns;
+    private Table table;
+    private Record record;
 
     /**
      * Sets up mocks and default values used during tests.
@@ -41,33 +37,34 @@ public class TableTest {
     @Before
     public void setUp() {
         // Create mock columns
-        this.defaultColumn1 = mock(Column.class);
-        this.defaultColumn2 = mock(Column.class);
-        this.defaultColumn3 = mock(Column.class);
-        this.defaultColumn4 = mock(Column.class);
+        Column column1 = mock(Column.class);
+        Column column2 = mock(Column.class);
+        Column column3 = mock(Column.class);
+        Column column4 = mock(Column.class);
 
         // Mock column names
-        when(this.defaultColumn1.getName()).thenReturn("abc");
-        when(this.defaultColumn2.getName()).thenReturn("column2");
-        when(this.defaultColumn3.getName()).thenReturn("cda");
-        when(this.defaultColumn4.getName()).thenReturn("column4");
+        when(column1.getName()).thenReturn("abc");
+        when(column2.getName()).thenReturn("column2");
+        when(column3.getName()).thenReturn("cda");
+        when(column4.getName()).thenReturn("column4");
 
         // Mock column indices
-        when(this.defaultColumn1.getIndex()).thenReturn(0);
-        when(this.defaultColumn1.getIndex()).thenReturn(1);
-        when(this.defaultColumn2.getIndex()).thenReturn(2);
-        when(this.defaultColumn3.getIndex()).thenReturn(3);
+        when(column1.getIndex()).thenReturn(0);
+        when(column2.getIndex()).thenReturn(1);
+        when(column3.getIndex()).thenReturn(2);
+        when(column4.getIndex()).thenReturn(3);
 
-        this.defaultColumns = Arrays.asList(
-                this.defaultColumn1,
-                this.defaultColumn2,
-                this.defaultColumn3,
-                this.defaultColumn4);
+        columns = new Column[] {
+                column1,
+                column2,
+                column3,
+                column4
+        };
 
-        this.defaultTable = new Table(this.defaultColumns);
+        table = new Table(Arrays.asList(columns));
 
-        this.defaultRecord = mock(Record.class);
-        when(this.defaultRecord.getTable()).thenReturn(this.defaultTable);
+        record = mock(Record.class);
+        when(record.getTable()).thenReturn(table);
     }
 
     /**
@@ -153,18 +150,11 @@ public class TableTest {
      */
     @Test
     public void constructor_givenValidColumns_setsColumns() {
-        Table table = new Table(Arrays.asList(
-                this.defaultColumn2,
-                this.defaultColumn4,
-                this.defaultColumn1,
-                this.defaultColumn3));
+        Table table = new Table(Arrays.asList(columns));
 
         assertThat(table.getColumns(),
-                containsInAnyOrder(
-                        this.defaultColumn1,
-                        this.defaultColumn2,
-                        this.defaultColumn3,
-                        this.defaultColumn4));
+                IsIterableContainingInAnyOrder
+                        .<Column> containsInAnyOrder(columns));
     }
 
     /**
@@ -173,10 +163,8 @@ public class TableTest {
      */
     @Test
     public void getColumn_givenNameOfExistingColumn_returnsColumn() {
-        Table table = this.defaultTable;
-
-        Column expected = this.defaultColumn3;
-        Column actual = table.getColumn(this.defaultColumn3.getName());
+        Column expected = columns[2];
+        Column actual = table.getColumn(columns[2].getName());
 
         assertEquals(expected, actual);
     }
@@ -187,8 +175,6 @@ public class TableTest {
      */
     @Test
     public void getColumn_givenNameOfNonexistentColumn_returnsNull() {
-        Table table = this.defaultTable;
-
         Column actual = table.getColumn("null");
 
         assertNull(actual);
@@ -201,8 +187,8 @@ public class TableTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void addRecord_givenRecordBeloningToDifferentTable_throwsIllegalArgumentException() {
-        Table table1 = this.defaultTable;
-        Table table2 = mock(Table.class);
+        Table table1 = table;
+        Table table2 = new Table(Arrays.asList(columns));
         Record record = mock(Record.class);
         when(record.getTable()).thenReturn(table2);
 
@@ -215,8 +201,6 @@ public class TableTest {
      */
     @Test
     public void addRecord_givenRecordBeloningToThisTable_addsRecord() {
-        Table table = this.defaultTable;
-        Record record = this.defaultRecord;
         table.addRecord(record);
 
         assertThat(table.getRecords(), contains(record));
@@ -228,7 +212,7 @@ public class TableTest {
      */
     @Test(expected = NullPointerException.class)
     public void addRecord_givenRecordNull_throwsNullPointerException() {
-        this.defaultTable.addRecord((Record) null);
+        table.addRecord((Record) null);
     }
 
     /**
@@ -237,8 +221,6 @@ public class TableTest {
      */
     @Test
     public void removeRecord_givenRecordExists_removesRecord() {
-        Table table = this.defaultTable;
-        Record record = this.defaultRecord;
         table.addRecord(record);
 
         table.removeRecord(record);
@@ -252,8 +234,6 @@ public class TableTest {
      */
     @Test
     public void removeRecord_givenRecordDoesNotExist_doesNotRemoveRecords() {
-        Table table = this.defaultTable;
-        Record record = this.defaultRecord;
         table.addRecord(record);
 
         table.removeRecord(mock(Record.class));
@@ -267,8 +247,6 @@ public class TableTest {
      */
     @Test
     public void removeRecord_givenRecordNull_doesNotRemoveRecords() {
-        Table table = this.defaultTable;
-        Record record = this.defaultRecord;
         table.addRecord(record);
 
         table.removeRecord((Record) null);
@@ -282,6 +260,6 @@ public class TableTest {
      */
     @Test
     public void iterator_returnsIteratorContainingTable() {
-        assertThat(this.defaultTable, iterableWithSize(greaterThan(0)));
+        assertThat(table, iterableWithSize(greaterThan(0)));
     }
 }

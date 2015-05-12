@@ -9,7 +9,7 @@ import java.util.Objects;
  *
  * @author Martijn
  */
-public class Record {
+public final class Record {
     private Table table;
     private Object[] values;
 
@@ -21,7 +21,7 @@ public class Record {
      * @throws NullPointerException
      *             if table is null.
      */
-    public Record(Table table) {
+    public Record(final Table table) {
         Objects.requireNonNull(table, "Argument table cannot be null.");
 
         this.table = table;
@@ -32,7 +32,7 @@ public class Record {
 
     /**
      * Gets the table this record belongs to.
-     * 
+     *
      * @return the table this record belongs to.
      */
     public Table getTable() {
@@ -41,7 +41,7 @@ public class Record {
 
     /**
      * Gets an iterable containing the values in this record.
-     * 
+     *
      * @return an iterable containing the values in this record.
      */
     public Iterable<Object> getValues() {
@@ -56,7 +56,7 @@ public class Record {
      * @return the value of the column with the given name if found; otherwise
      *         null.
      */
-    public Object getValue(String name) {
+    public Object getValue(final String name) {
         // Retrieve the value for any of the supported types
         return this.getValue(name, EnumSet.allOf(ValueType.class));
     }
@@ -71,7 +71,7 @@ public class Record {
      * @throws IllegalStateException
      *             if the specified column does not contain Double values.
      */
-    public Double getNumberValue(String name) {
+    public Double getNumberValue(final String name) {
         // Retrieve the value for a number and cast it to Double
         return (Double) this.getValue(name, EnumSet.of(ValueType.Number));
     }
@@ -86,7 +86,7 @@ public class Record {
      * @throws IllegalStateException
      *             if the specified column does not contain String values.
      */
-    public String getStringValue(String name) {
+    public String getStringValue(final String name) {
         // Retrieve the value for a number and cast it to String
         return (String) this.getValue(name, EnumSet.of(ValueType.String));
     }
@@ -103,7 +103,7 @@ public class Record {
      * @throws IllegalStateException
      *             if the specified column does not contain Double values.
      */
-    public void setValue(String name, Double value) {
+    public void setValue(final String name, final Double value) {
         this.setValue(name, value, ValueType.Number);
     }
 
@@ -119,11 +119,13 @@ public class Record {
      * @throws IllegalStateException
      *             if the specified column does not contain String values.
      */
-    public void setValue(String name, String value) {
+    public void setValue(final String name, final String value) {
         this.setValue(name, value, ValueType.String);
     }
 
-    private Object getValue(String name, EnumSet<ValueType> types) {
+    private Object getValue(final String name, final EnumSet<ValueType> types) {
+        assert types != null;
+
         Column column = this.table.getColumn(name);
 
         // Return null if a column with the given name was not found
@@ -140,7 +142,12 @@ public class Record {
         return this.values[column.getIndex()];
     }
 
-    private void setValue(String name, Object value, ValueType type) {
+    private void setValue(
+            final String name,
+            final Object value,
+            final ValueType type) {
+        assert type != null;
+
         Column column = this.table.getColumn(name);
 
         // Throw an exception if a column with the given name was not found
