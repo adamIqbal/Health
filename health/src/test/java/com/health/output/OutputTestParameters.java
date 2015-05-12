@@ -123,13 +123,27 @@ public class OutputTestParameters {
         };
     }
 
-    public static Object[] getDelimiter() {
+    public static Object[] getFormatForWriteTable() {
         return new Object[] {
-                new Object[] { "a", ", ", "a, a" },
-                new Object[] { " ", "\n", " \n " },
-                new Object[] { "12-3", "\t", "12-3\t12-3" },
-                new Object[] { "", " x ", " x " },
-                new Object[] { "%", " x ", "% x %" },
+                new Object[] { "", "\n" },
+                new Object[] { "%", "%\n%" },
+                new Object[] { "format", "format\nformat" },
+                new Object[] { "{abc}", "one\ntwo" },
+                new Object[] { "{abc}={xyz}", "one=1.0\ntwo=" },
+                new Object[] { "{{ test {abc}={{{xyz}}} }}",
+                        "{ test one={1.0} }\n{ test two={} }" },
+        };
+    }
+
+    public static Object[] getFormatAndDelimiterForWriteTable() {
+        return new Object[] {
+                new Object[] { "", " ", " " },
+                new Object[] { "%", "x", "%x%" },
+                new Object[] { "format", "+", "format+format" },
+                new Object[] { "{abc}", "newline", "onenewlinetwo" },
+                new Object[] { "{abc}={xyz}", ";", "one=1.0;two=" },
+                new Object[] { "{{ test {abc}={{{xyz}}} }}", "\\n",
+                        "{ test one={1.0} }\\n{ test two={} }" },
         };
     }
 }

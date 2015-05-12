@@ -22,7 +22,6 @@ import junitparams.naming.TestCaseName;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,11 +47,6 @@ public class OutputTest {
 
     @Rule
     public PowerMockRule powerMockRule = new PowerMockRule();
-
-    @BeforeClass
-    public static void setUpClass() {
-        new File(new File(file).getParent()).mkdirs();
-    }
 
     @Before
     public void setUpTest() {
@@ -148,22 +142,6 @@ public class OutputTest {
         assertEquals(expected, actual);
     }
 
-    @Test
-    public void writeTableStringTable_stuffs()
-            throws IOException {
-        Output.writeTable(file, table);
-
-        assertEquals("one, 1.0\ntwo, ", getOutput());
-    }
-
-    @Test
-    public void writeTableStringTableString_stuffs()
-            throws IOException {
-        Output.writeTable(file, table, "{abc}, {xyz}");
-
-        assertEquals("one, 1.0\ntwo, ", getOutput());
-    }
-
     @Test(expected = NullPointerException.class)
     public void writeTable_givenFileNull_throwsNullPointerException()
             throws IOException {
@@ -204,6 +182,8 @@ public class OutputTest {
 
     @Test
     public void writeTable_overwritesFile() throws IOException {
+        // Create the directory and file
+        new File(new File(file).getParent()).mkdirs();
         Files.write(filePath, Arrays.asList("--overwrite me--"));
 
         Output.writeTable(file, table, "abc", " ");
@@ -212,9 +192,28 @@ public class OutputTest {
     }
 
     @Test
-    @TestCaseName("delim=\"{0}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getDelimiter")
-    public void writeTable_writesCorrectOutput(
+    public void writeTableStringTable_writesCorrectResult()
+            throws IOException {
+        Output.writeTable(file, table);
+
+        assertEquals("one, 1.0\ntwo, ", getOutput());
+    }
+
+    @Test
+    @TestCaseName("format=\"{0}\"")
+    @Parameters(source = OutputTestParameters.class, method = "getFormatForWriteTable")
+    public void writeTableStringTableString_writesCorrectResult(
+            String format,
+            String expected) throws IOException {
+        Output.writeTable(file, table, format);
+
+        assertEquals(expected, getOutput());
+    }
+
+    @Test
+    @TestCaseName("format=\"{0}\" delim=\"{1}\"")
+    @Parameters(source = OutputTestParameters.class, method = "getFormatAndDelimiterForWriteTable")
+    public void writeTable_writesCorrectResult(
             String format,
             String delim,
             String expected) throws Exception {
