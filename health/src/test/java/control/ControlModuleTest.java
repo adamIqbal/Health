@@ -26,7 +26,7 @@ public class ControlModuleTest {
 		
 		InputData[] expected = {id1, id2, id3};
 		
-		assertArrayEquals(expected, cm.getScript());
+		assertArrayEquals(expected, cm.getData());
 	}
 	
 	@Test
