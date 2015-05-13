@@ -60,6 +60,9 @@ public class FileListing extends JPanel{
 				listing.add(fileListingRows.get(i).xmlFormat, fileListingCons,(i*3) + 2);
 				fileListingCons.gridx = 2;
 				listing.add(fileListingRows.get(i).deleteButton, fileListingCons,(i*3) + 3);
+				
+				
+				
 			}catch(IndexOutOfBoundsException e){
 				//make empty row
 				fileListingCons.gridy = i+1;
@@ -68,6 +71,13 @@ public class FileListing extends JPanel{
 					JTextField textField = new JTextField();
 					textField.setSize(200, 30);
 					textField.setEditable(false);
+					new FileDrop(textField, textField.getBorder(),new FileDrop.Listener() {
+						public void filesDropped(java.io.File[] files) {
+							for (int i = 0; i < files.length; i++) {
+								FileListing.addFile(files[i]);
+							}
+						}
+					});
 					listing.add(textField, fileListingCons);
 				}
 			}
