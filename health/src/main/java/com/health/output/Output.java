@@ -152,7 +152,7 @@ public final class Output {
     }
 
     private static String getDefaultFormat(final Table table) {
-        // assert table != null;
+        assert table != null;
 
         StringBuilder format = new StringBuilder();
         boolean first = true;
@@ -192,9 +192,9 @@ public final class Output {
     private static String buildFormatString(final Table table,
             final String format,
             final List<GetValueClosure> getValueClosures) {
-        // assert table != null;
-        // assert format != null;
-        // assert getValueClosures != null;
+        assert table != null;
+        assert format != null;
+        assert getValueClosures != null;
 
         Reader reader = new StringReader(format);
         StringBuilder formatBuilder = new StringBuilder();
@@ -315,7 +315,7 @@ public final class Output {
             // In StringReader an IOException will happen iff read(), ready(),
             // mark() or reset() is invoked after calling close().
             // This will never happen unless there is a fault in the code
-            // assert false;
+            assert false;
 
             return -1;
         }
@@ -329,13 +329,13 @@ public final class Output {
         private final String column;
 
         public GetValueClosure(final String column) {
-            // assert column != null;
+            assert column != null;
 
             this.column = column;
         }
 
         public String invoke(final Record record) {
-            // assert record != null;
+            assert record != null;
 
             Object value = record.getValue(this.column);
 
