@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+
+import externalClasses.FileDrop;
 
 public class FileListingRow {
 	
@@ -26,6 +29,14 @@ public class FileListingRow {
 		deleteButton = new JButton("X");
 		lforDelete = new ListenForDeleteFile(fileString);
 		deleteButton.addActionListener(lforDelete);
+		
+		new FileDrop(fileField, fileField.getBorder(),new FileDrop.Listener() {
+			public void filesDropped(java.io.File[] files) {
+				for (int i = 0; i < files.length; i++) {
+					FileListing.addFile(files[i]);
+				}
+			}
+		});
 		
 		this.fillComboBox();
 				
