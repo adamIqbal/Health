@@ -1,4 +1,4 @@
-package control;
+package com.health.control;
 
 public class InputData {
 	private String xmlPath;

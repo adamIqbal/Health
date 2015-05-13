@@ -1,4 +1,4 @@
-package control;
+package com.health.control;
 import java.util.Arrays;
 
 import com.health.*;

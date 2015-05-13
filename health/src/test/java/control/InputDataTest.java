@@ -16,7 +16,7 @@ public class InputDataTest {
 	@Test
 	public void getXML() {
 		String expected = "path/to/xml.xml";
-		String actual = ip.getXML();
+		String actual = ip.getXmlPath();
 		
 		assertEquals(expected, actual);
 	}
@@ -24,7 +24,7 @@ public class InputDataTest {
 	@Test
 	public void getData() {
 		String expected = "path/to/data.txt";
-		String actual = ip.getData();
+		String actual = ip.getDataPath();
 		
 		assertEquals(expected, actual);
 	}
