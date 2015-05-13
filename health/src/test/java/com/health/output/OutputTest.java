@@ -11,22 +11,20 @@ import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import junitparams.naming.TestCaseName;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.health.Column;
 import com.health.Record;
@@ -36,7 +34,7 @@ import com.health.ValueType;
 /**
  * Unit test for Output.
  */
-@RunWith(JUnitParamsRunner.class)
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ Column.class, Record.class, Table.class })
 public class OutputTest {
     private Table table;
@@ -45,8 +43,14 @@ public class OutputTest {
     private static final String file = "target/test-output/OutputTest.tmp";
     private static final String format = "{abc}, {xyz}";
 
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
+    @BeforeClass
+    public static void setUpClass() throws InstantiationException,
+            IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException {
+        Constructor<?>[] cons = Output.class.getDeclaredConstructors();
+        cons[0].setAccessible(true);
+        cons[0].newInstance((Object[]) null);
+    }
 
     @Before
     public void setUpTest() {
@@ -82,62 +86,68 @@ public class OutputTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void format_givenTableNull_throwsNullPointerException() {
-        Output.format((Table) null, "");
+    public void formatTable_givenTableNull_throwsNullPointerException() {
+        Output.formatTable((Table) null, "");
     }
 
     @Test(expected = NullPointerException.class)
-    public void format_givenFormatNull_throwsNullPointerException() {
-        Output.format(table, (String) null);
+    public void formatTable_givenFormatNull_throwsNullPointerException() {
+        Output.formatTable(table, (String) null);
     }
 
     @Test
-    public void format_givenValidFormat_returnsIterator() {
-        assertNotNull(Output.format(table, ""));
+    public void formatTable_givenValidFormat_returnsIterator() {
+        assertNotNull(Output.formatTable(table, ""));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @TestCaseName("format=\"{0}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getFormatWithUnmatchedOpeningBrace")
-    public void format_givenFormatWithUnmatchedOpeningBrace_throwsIllegalArgumentException(
-            String format) {
-        Output.format(table, format);
+    public void formatTable_givenFormatWithUnmatchedOpeningBrace_throwsIllegalArgumentException() {
+        Output.formatTable(table, "{");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @TestCaseName("format=\"{0}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getFormatWithUnmatchedClosingBrace")
-    public void format_givenFormatWithUnmatchedClosingBrace_throwsIllegalArgumentException(
-            String format) {
-        Output.format(table, format);
+    public void formatTable_givenFormatWithUnmatchedClosingBrace_throwsIllegalArgumentException() {
+        Output.formatTable(table, "}");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    @TestCaseName("format=\"{0}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getFormatWithUnmatchedColumn")
-    public void format_givenFormatWithUnmatchedColumn_throwsIllegalArgumentException(
-            String format) {
-        Output.format(table, "{null}");
+    public void formatTable_givenFormatWithUnmatchedColumn_throwsIllegalArgumentException() {
+        Output.formatTable(table, "{null}");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void formatTable_givenFormatWithStuff_throwsIllegalArgumentException() {
+        Output.formatTable(table, "{null{");
     }
 
     @Test
-    @TestCaseName("format=\"{0}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getFormatWithEscapeBrace")
-    public void format_givenFormatWithEscapedBrace_formatsCorrectly(
-            String format,
-            Iterable<String> expected) {
-        Iterable<String> actual = Output.format(table, format);
+    public void formatTable_givenFormatWithEscapedOpeningBrace_formatsCorrectly() {
+        Iterable<String> expected = Arrays.asList("{", "{");
+        Iterable<String> actual = Output.formatTable(table, "{{");
 
         assertEquals(expected, actual);
     }
 
     @Test
-    @TestCaseName("format=\"{0}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getFormat")
-    public void format_formatsCorrectly(
-            String format,
-            Iterable<String> expected) {
-        Iterable<String> actual = Output.format(table, format);
+    public void formatTable_givenFormatWithEscapedClosingBrace_formatsCorrectly() {
+        Iterable<String> expected = Arrays.asList("}", "}");
+        Iterable<String> actual = Output.formatTable(table, "}}");
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void formatTable_givenFormatWithPercentage_formatsCorrectly() {
+        Iterable<String> expected = Arrays.asList("%", "%");
+        Iterable<String> actual = Output.formatTable(table, "%");
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void formatTable_formatsCorrectly() {
+        Iterable<String> expected = Arrays.asList("one=%{1.0}", "two=%{}");
+        Iterable<String> actual = Output.formatTable(table, "{abc}=%{{{xyz}}}");
 
         assertEquals(expected, actual);
     }
@@ -200,26 +210,18 @@ public class OutputTest {
     }
 
     @Test
-    @TestCaseName("format=\"{0}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getFormatForWriteTable")
-    public void writeTableStringTableString_writesCorrectResult(
-            String format,
-            String expected) throws IOException {
-        Output.writeTable(file, table, format);
+    public void writeTableStringTableString_writesCorrectResult()
+            throws IOException {
+        Output.writeTable(file, table, "abc");
 
-        assertEquals(expected, getOutput());
+        assertEquals("abc\nabc", getOutput());
     }
 
     @Test
-    @TestCaseName("format=\"{0}\" delim=\"{1}\"")
-    @Parameters(source = OutputTestParameters.class, method = "getFormatAndDelimiterForWriteTable")
-    public void writeTable_writesCorrectResult(
-            String format,
-            String delim,
-            String expected) throws Exception {
-        Output.writeTable(file, table, format, delim);
+    public void writeTable_writesCorrectResult() throws Exception {
+        Output.writeTable(file, table, "abc", "d");
 
-        assertEquals(expected, getOutput());
+        assertEquals("abcdabc", getOutput());
     }
 
     private String getOutput() throws IOException {

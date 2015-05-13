@@ -25,16 +25,28 @@ public final class Output {
     }
 
     /**
+     * <p>
      * Returns an iterable containing the formatted strings for each record in
      * the given table.
+     * </p>
+     * <p>
+     * Example:<br>
+     * <code>
+     * &nbsp;&nbsp;&nbsp;&nbsp;Table table = ...;<br>
+     * &nbsp;&nbsp;&nbsp;&nbsp;Iterable&#60;String&#62; result =
+     * Output.formatTable(table, "{Date} - creatinine level: {Creatinine}");<br>
+     * </code><br>
+     * The table in the example must at least contain a column named "Date" and
+     * "Creatinine".
+     * </p>
      *
      * @param table
      *            the table to format.
      * @param format
-     *            a format string as described in ???.
+     *            a format string.
      * @return an iterable containing the formatted strings.
      */
-    public static Iterable<String> format(
+    public static Iterable<String> formatTable(
             final Table table,
             final String format) {
         Objects.requireNonNull(table);
@@ -93,11 +105,11 @@ public final class Output {
      * @param table
      *            the table to write.
      * @param format
-     *            a format string, see {@link Output#format(Table, String)} for
-     *            details.
+     *            a format string, see {@link Output#formatTable(Table, String)}
+     *            for details.
      * @throws IOException
      *             if an I/O error occurs writing to or creating the file.
-     * @see Output#format(Table, String)
+     * @see Output#formatTable(Table, String)
      */
     public static void writeTable(
             final String file,
@@ -114,14 +126,14 @@ public final class Output {
      * @param table
      *            the table to write.
      * @param format
-     *            a format string, see {@link Output#format(Table, String)} for
-     *            details.
+     *            a format string, see {@link Output#formatTable(Table, String)}
+     *            for details.
      * @param recordDelimiter
      *            a String that is used separate each of the records in the
      *            formatted String.
      * @throws IOException
      *             if an I/O error occurs writing to or creating the file.
-     * @see Output#format(Table, String)
+     * @see Output#formatTable(Table, String)
      */
     public static void writeTable(
             final String file,
@@ -130,7 +142,7 @@ public final class Output {
             final String recordDelimiter) throws IOException {
         // Join each record on the given delimiter
         String output = String.join(recordDelimiter,
-                Output.format(table, format));
+                Output.formatTable(table, format));
 
         // Create the directory for the file
         new File(new File(file).getParent()).mkdirs();
@@ -300,6 +312,11 @@ public final class Output {
         try {
             return reader.read();
         } catch (IOException ex) {
+            // In StringReader an IOException will happen iff read(), ready(),
+            // mark() or reset() is invoked after calling close().
+            // This will never happen unless there is a fault in the code
+            assert false;
+
             return -1;
         }
     }
