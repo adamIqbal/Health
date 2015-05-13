@@ -27,26 +27,55 @@ public class ControlModule {
      * @param script
      */
     public ControlModule(InputData[] data, String script) {
-    	setInputData(data);
+    	setData(data);
     	setScript(script);
     	this.dataset = null;
     }
 
-    /**
-     * @param script
-     */
-    public void setScript(String script) {
-    	this.script = script;
-    }
 
-    /**
-     * @param data
-     */
-    public void setInputData(InputData[] data) {
-    	this.data = data;
-    }
+	/**
+	 * @return
+	 */
+	public InputData[] getData() {
+		return data;
+	}
 
-    /**
+	/**
+	 * @param data
+	 */
+	public void setData(InputData[] data) {
+		this.data = data;
+	}
+
+	/**
+	 * @return
+	 */
+	public String getScript() {
+		return script;
+	}
+
+	/**
+	 * @param script
+	 */
+	public void setScript(String script) {
+		this.script = script;
+	}
+
+	/**
+	 * @return
+	 */
+	public Table getDataset() {
+		return dataset;
+	}
+
+	/**
+	 * @param dataset
+	 */
+	public void setDataset(Table dataset) {
+		this.dataset = dataset;
+	}
+
+	/**
      * @return
      */
     public boolean startAnalysis() {
