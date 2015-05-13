@@ -32,6 +32,45 @@ public class ControlModule {
     	this.dataset = null;
     }
 
+	/**
+	 * Start analysis based on script
+     * @return
+     */
+    public boolean startAnalysis() {
+    	if(this.data == null || this.script == null) {
+    		return false;
+    	}
+
+    	toInputModule();
+    	toOutputModule();
+
+    	return false;
+    }	
+
+    /**
+     * returns result of the script
+     */
+    public void getResults() {
+    	
+    }
+
+    /**
+     * Send data to input module
+     */
+    private void toInputModule() {
+    	//maakt input module aan..
+    	//geef data..
+    	//this.dataset =  gevuld Table object.
+
+    	return;
+    }
+
+    /**
+     * Send data to output module
+     */
+    private void toOutputModule() {
+
+    }
 
 	/**
 	 * @return
@@ -74,55 +113,6 @@ public class ControlModule {
 	public void setDataset(Table dataset) {
 		this.dataset = dataset;
 	}
-
-	/**
-     * @return
-     */
-    public boolean startAnalysis() {
-    	if(this.data == null || this.script == null) {
-    		return false;
-    	}
-
-    	if(toInputModule()) {
-    		toOutputModule();
-    	}
-
-    	return false;
-    }	
-
-    /**
-     * 
-     */
-    public void getResults() {
-    	toGUI();
-    }
-
-    /**
-     * @return
-     */
-    private boolean toInputModule() {
-    	//maakt input module aan..
-    	//geef data..
-    	//this.dataset =  gevuld Table object.
-
-    	return false;
-    }
-
-    /**
-     * 
-     */
-    private void toOutputModule() {
-    	//maakt output module aan..
-    	//geeft data..
-    	//krijgt output dingen terug
-    }
-
-    /**
-     * 
-     */
-    private void toGUI() {
-    	//stuurt alles terug naar GUI
-    }
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
