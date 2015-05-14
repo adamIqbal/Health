@@ -2,6 +2,8 @@ package txtParser;
 
 import java.util.ArrayList;
 
+import com.health.Table;
+
 public class StartInput {
   ArrayList<String> input, delimiters, columns, data;
 
@@ -20,6 +22,10 @@ public class StartInput {
     // TxtParser tp = new TxtParser(columns, delimiters, txtPath);
 
     data = tp.getData();
+
+  }
+
+  public Table getTable() {
 
   }
 }
