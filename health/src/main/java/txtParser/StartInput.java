@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class StartInput {
   ArrayList<String> input, delimiters, columns, data;
 
-  public void inputStarter(String xmlPath, String txtPath) throws Exception {
+  public StartInput(String xmlPath, String txtPath) throws Exception {
 
     domXML xml = new domXML();
     // domXML xml = new domXML(xmlPath);
@@ -20,6 +20,6 @@ public class StartInput {
     // TxtParser tp = new TxtParser(columns, delimiters, txtPath);
 
     data = tp.getData();
-    
+
   }
 }
