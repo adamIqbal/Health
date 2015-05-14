@@ -3,7 +3,7 @@
 
 <data>
 	<data startDelimiter = "["/> 
-	<DELIMITER attribute delimiter = ","/>
+	<DELIMITER attribute = ","/>
 	<COLUMN type > 		</COLUMN type>
 	<COLUMN value>		</COLUMN value>
 	<COLUMN unit>		</COLUMN unit>

@@ -1,32 +1,47 @@
 package txtParser;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 
 public class TxtParser {
 
-  public void readStream() {
-    Path path = Paths.get("c:/temp", "data.txt");
+  private String dir = "src/main/txtData.xml";
+  private ArrayList<String> delimiters, columns, data;
 
-    try (Stream<String> lines = Files.lines(path)) {
-      String str = path.toString();
-      String[] strs = str.split("\\|+");
-      for (String s : strs) {
-        System.out.println("Split..: " + s);
-      }
+  public TxtParser(ArrayList<String> columns, ArrayList<String> delimiters) throws Exception {
+    this.delimiters = delimiters;
+    this.columns = columns;
+    parseTxt();
 
-      Pattern pattern = Pattern.compile("[^|]+");
-      Matcher matcher = pattern.matcher(str);
-      while (matcher.find()) {
-        System.out.println("Pattern:" + matcher.group());
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
+  }
+
+  public TxtParser(ArrayList<String> columns, ArrayList<String> delimiters, String directory)
+      throws Exception {
+    if (directory != null) {
+      dir = directory;
     }
+    this.delimiters = delimiters;
+    this.columns = columns;
+    parseTxt();
+  }
+
+  private void parseTxt() throws Exception {
+    BufferedReader br = new BufferedReader(new FileReader(dir));
+    while (br.readLine() != delimiters.get(0)) {
+    }
+    String current;
+    while ((current = br.readLine()) != delimiters.get(delimiters.size())) {
+
+      data.add(current);
+
+    }
+    br.close();
+  }
+
+  public ArrayList<String> getData() {
+
+    return data;
+
   }
 }
