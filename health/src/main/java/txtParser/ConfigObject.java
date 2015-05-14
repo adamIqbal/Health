@@ -10,25 +10,23 @@ import java.util.ArrayList;
 
 public class ConfigObject {
 
-  public ArrayList<String> columns, delimiters;
+  private ArrayList<String> columns, delimiters;
 
-  public void columns(ArrayList<String> columns) {
-    this.columns = columns;
-    columns = strip(columns);
+  public ConfigObject(ArrayList<String> rawColumns) {
+    strip(rawColumns);
   }
 
-  public ArrayList<String> strip(ArrayList<String> columns2) {
+  private void strip(ArrayList<String> rawColumns) {
     ArrayList<String> columnsStripped = new ArrayList<String>();
-    for (int i = 0; i < columns2.size() - 1; i++) {
-      if (i != 0 && i != columns2.size() - 1 && i != 1) {
-        columnsStripped.add(columns2.get(i));
+    for (int i = 0; i < rawColumns.size(); i++) {
+      if (i != 0 && i != rawColumns.size() && i != 1) {
+        columnsStripped.add(rawColumns.get(i));
       } else {
-        delimiters.add(columns2.get(i));
+        delimiters.add(rawColumns.get(i));
       }
     }
 
     columns = columnsStripped;
-    return columns;
   }
 
   public ArrayList<String> getColumns() {
