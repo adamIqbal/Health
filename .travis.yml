@@ -4,7 +4,7 @@ jdk:
 notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook
-script: "cd health && mvn test"
+script: "cd health && mvn site"
 after_script:
   - echo "== CHECKSTYLE_RESULT ==" && cat "target/checkstyle-result.xml" && echo "== END_CHECKSTYLE_RESULT =="
   - echo "== PMD_RESULT ==" && cat "target/pmd.xml" && echo "== END_PMD_RESULT =="
