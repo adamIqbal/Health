@@ -79,7 +79,6 @@ public final class TextParser implements Parser {
         // Read all lines until the end delimiter
         while ((line = reader.readLine()) != null &&
                 (endDelimiter == null || !line.startsWith(endDelimiter))) {
-            System.out.println(line);
             lines.add(line);
         }
 
