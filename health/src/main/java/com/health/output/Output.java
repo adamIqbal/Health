@@ -145,7 +145,10 @@ public final class Output {
                 Output.formatTable(table, format));
 
         // Create the directory for the file
-        new File(new File(file).getParent()).mkdirs();
+        File parentFile = new File(file).getParentFile();
+        if (parentFile != null) {
+            parentFile.mkdirs();
+        }
 
         // Create and write the file
         Files.write(Paths.get(file), Arrays.asList(output));
