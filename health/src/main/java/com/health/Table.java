@@ -1,11 +1,12 @@
 package com.health;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.Set;
  * @author Martijn
  */
 public final class Table implements Iterable<Chunk> {
+    private List<Column> columns;
     private Map<String, Column> columnMap;
     private Chunk records;
 
@@ -36,21 +38,40 @@ public final class Table implements Iterable<Chunk> {
 
         Table.verifyColumnIndices(columns);
 
+        this.columns = new ArrayList<Column>();
         this.columnMap = new HashMap<String, Column>();
         this.records = new Chunk();
 
         for (Column column : columns) {
+            this.columns.add(column);
             this.columnMap.put(column.getName(), column);
         }
+
+        // Sort the columns by index and make the list read-only
+        this.columns.sort(new ColumnComparator());
+        this.columns = Collections.unmodifiableList(this.columns);
     }
 
     /**
-     * Gets an {@link Iterable} containing all columns in this table.
+     * Gets an {@link List} containing all columns in this table.
      *
-     * @return an {@link Iterable} containing all columns of this table.
+     * @return an {@link List} containing all columns of this table.
      */
-    public Collection<Column> getColumns() {
-        return Collections.unmodifiableCollection(this.columnMap.values());
+    public List<Column> getColumns() {
+        return this.columns;
+    }
+
+    /**
+     * Gets the column with the given index.
+     *
+     * @param index
+     *            the index of the column to get.
+     * @return the column with the given index.
+     * @throws IndexOutOfBoundsException
+     *             if the index is out of range.
+     */
+    public Column getColumn(final int index) {
+        return this.columns.get(index);
     }
 
     /**

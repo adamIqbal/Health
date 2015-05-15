@@ -158,6 +158,47 @@ public class TableTest {
     }
 
     /**
+     * Tests whether {@link Table#getColumn(int)} throws an
+     * {@link IndexOutOfBoundsException} when given an index smaller than zero.
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getColumnInt_givenIndexSmallerThanZero_throwsIndexOutOfBoundsException() {
+        table.getColumn(-1);
+    }
+
+    /**
+     * Tests whether {@link Table#getColumn(int)} throws an
+     * {@link IndexOutOfBoundsException} when given an index equal to the number
+     * of columns.
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getColumnInt_givenIndexEqualToNumberOfColumns_throwsIndexOutOfBoundsException() {
+        table.getColumn(this.columns.length);
+    }
+
+    /**
+     * Tests whether {@link Table#getColumn(int)} throws an
+     * {@link IndexOutOfBoundsException} when given an index greater than the
+     * number of columns.
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void getColumnInt_givenIndexGreaterThanNumberOfColumns_throwsIndexOutOfBoundsException() {
+        table.getColumn(this.columns.length + 1);
+    }
+
+    /**
+     * Tests whether {@link Table#getColumn(int)} returns the right
+     * {@link Column} when given the index of the column.
+     */
+    @Test
+    public void getColumnInt_givenIndexOfExistingColumn_returnsColumn() {
+        Column expected = columns[2];
+        Column actual = table.getColumn(columns[2].getIndex());
+
+        assertEquals(expected, actual);
+    }
+
+    /**
      * Tests whether {@link Table#getColumn(String)} returns the right
      * {@link Column} when given the name of the column.
      */
