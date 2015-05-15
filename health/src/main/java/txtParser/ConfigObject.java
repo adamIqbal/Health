@@ -3,37 +3,40 @@ package txtParser;
 import java.util.ArrayList;
 
 /**
- * Class which separates the delimiters and the columns, and creates 2 arraylists from them.
+ * Class which separates the delimiters and the columns, and creates 2
+ * arraylists from them.
  * 
  *
  */
 
 public class ConfigObject {
 
-  private ArrayList<String> columns, delimiters;
+    private ArrayList<String> columns, delimiters;
 
-  public ConfigObject(ArrayList<String> rawColumns) {
-    strip(rawColumns);
-  }
+    public ConfigObject(ArrayList<String> rawColumns) {
+        delimiters = new ArrayList<String>();
 
-  private void strip(ArrayList<String> rawColumns) {
-    ArrayList<String> columnsStripped = new ArrayList<String>();
-    for (int i = 0; i < rawColumns.size(); i++) {
-      if (i != 0 && i != rawColumns.size() && i != 1) {
-        columnsStripped.add(rawColumns.get(i));
-      } else {
-        delimiters.add(rawColumns.get(i));
-      }
+        strip(rawColumns);
     }
 
-    columns = columnsStripped;
-  }
+    private void strip(ArrayList<String> rawColumns) {
+        ArrayList<String> columnsStripped = new ArrayList<String>();
+        for (int i = 0; i < rawColumns.size(); i++) {
+            if (i != 0 && i != (rawColumns.size() - 1) && i != 1) {
+                columnsStripped.add(rawColumns.get(i));
+            } else {
+                delimiters.add(rawColumns.get(i));
+            }
+        }
 
-  public ArrayList<String> getColumns() {
-    return columns;
-  }
+        columns = columnsStripped;
+    }
 
-  public ArrayList<String> getDelimiters() {
-    return delimiters;
-  }
+    public ArrayList<String> getColumns() {
+        return columns;
+    }
+
+    public ArrayList<String> getDelimiters() {
+        return delimiters;
+    }
 }

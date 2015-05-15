@@ -14,11 +14,12 @@ public class StartInput {
 
     public StartInput(String xmlPath, String txtPath) throws Exception {
 
-        domXML xml = new domXML();
+        DomXml xml = new DomXml();
         // domXML xml = new domXML(xmlPath);
 
         input = xml.xmlColumns;
 
+        System.out.println(input);
         ConfigObject co = new ConfigObject(input);
         delimiters = co.getDelimiters();
         columns = co.getColumns();
@@ -39,7 +40,7 @@ public class StartInput {
             String[] fields = row.split(delimiters.get(1));
 
             for (int i = 0; i < fields.length; i++) {
-                record.setValue(columns.get(i).getName(), fields[i]);
+                record.setValue(columns.get(i).getName(), fields[i].trim());
             }
         }
 

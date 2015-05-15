@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+	<column>[</column>
+    <column>,</column>
+    <column>type</column>
+	<column>value</column>
+	<column>unit</column>
+	<column>misc</column>
+	<column>date</column>
+	<column>time</column>
+	<column>]</column>
+</data>
