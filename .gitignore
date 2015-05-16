@@ -18,3 +18,8 @@ target/
 
 # Eclipse checkstyle plugin
 .checkstyle
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
