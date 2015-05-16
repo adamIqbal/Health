@@ -192,8 +192,8 @@ public final class InputDescriptor {
             return ValueType.valueOf(column.getAttribute("type"));
         } catch (IllegalArgumentException ex) {
             throw new InputException(String.format(
-                    "Column '%s' has an invalid type: '%s'",
-                    column.getTagName(),
+                    "Column '%s' has an invalid type: '%s'.",
+                    column.getTextContent(),
                     column.getAttribute("type")));
         }
     }
