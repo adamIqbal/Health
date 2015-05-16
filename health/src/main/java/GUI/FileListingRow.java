@@ -18,6 +18,7 @@ public class FileListingRow {
 	public JComboBox<String> xmlFormat;
 	public JButton deleteButton;
 	private ListenForDeleteFile lforDelete;
+	public static String selectFormatString = "select format";
 	
 	public FileListingRow(){
 		fileField = new JTextField();
@@ -29,11 +30,11 @@ public class FileListingRow {
 		deleteButton = new JButton("X");
 		lforDelete = new ListenForDeleteFile(fileString);
 		deleteButton.addActionListener(lforDelete);
-		
+		//filedrop for fileField
 		new FileDrop(fileField, fileField.getBorder(),new FileDrop.Listener() {
 			public void filesDropped(java.io.File[] files) {
 				for (int i = 0; i < files.length; i++) {
-					FileListing.addFile(files[i]);
+					FileListing.addFile(files[i], xmlFormat.getSelectedItem().toString());
 				}
 			}
 		});
@@ -63,12 +64,13 @@ public class FileListingRow {
 		
 		fileField.setText(fileFieldText);
 		lforDelete.setStringToBeDeleted(this.fileString);
+		xmlFormat.addActionListener(new ListenForSetFormat());
 	}
 	
 	public void fillComboBox(){
 		//TO DO : fill combobox with xml formats provided in folder
 		
-		String[] formats  = {"select format","textFormat", "fooFormat", "faaFormat"};
+		String[] formats  = {selectFormatString,"textFormat", "fooFormat", "faaFormat"};
 		xmlFormat = new JComboBox<String>(formats);
 	}
 	
@@ -84,7 +86,16 @@ public class FileListingRow {
 		}
 		
 		public void actionPerformed(ActionEvent e) {
-			FileListing.delete(this.stringToBeDeleted);	
+			FileListing.delete(this.stringToBeDeleted, xmlFormat.getSelectedItem().toString());	
+		}
+		
+	}
+	private class ListenForSetFormat implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			FileListing.fillFileListing();
 		}
 		
 	}
