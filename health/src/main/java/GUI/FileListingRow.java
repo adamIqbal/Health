@@ -99,6 +99,10 @@ public class FileListingRow {
 		}
 		
 	}
+	
+	public boolean hasEqualFormat(FileListingRow that){
+		return this.xmlFormat.getSelectedItem().toString().equals(that.xmlFormat.getSelectedItem().toString());
+	}
 
 	
 }

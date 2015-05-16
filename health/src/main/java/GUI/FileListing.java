@@ -8,8 +8,10 @@ import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
 
 import externalClasses.FileDrop;
 
@@ -19,6 +21,7 @@ public class FileListing extends JPanel {
 	static JPanel listing = new JPanel();
 	static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
 	static int fileCount = 0;
+	static Color borderColor = Color.BLACK;
 
 	public FileListing() {
 
@@ -52,47 +55,53 @@ public class FileListing extends JPanel {
 		for (int i = 0; i < rows; i++) {
 
 			try {
-				// fill the row
-				fileListingCons.gridy = i + 1;
-				fileListingCons.gridx = 0;
-				listing.add(fileListingRows.get(i).fileField, fileListingCons,
-						(i * 3) + 1);
-				fileListingCons.gridx = 1;
 
-				// if xmlformat is same as previous, make empty field with
-				// filedrop listener specific to that format
-				if (i >= 1
-						&& !fileListingRows.get(i).xmlFormat.getSelectedItem()
-								.toString()
-								.equals(FileListingRow.selectFormatString)
-						&& fileListingRows.get(i).xmlFormat.getSelectedItem()
-								.equals(fileListingRows.get(i - 1).xmlFormat
-										.getSelectedItem())) {
-					JTextField textField = new JTextField();
-					textField.setSize(200, 30);
-					textField.setEditable(false);
-					new FileDrop(textField, textField.getBorder(),
-							new FileDrop.Listener() {
-								public void filesDropped(java.io.File[] files) {
-									for (int i = 0; i < files.length; i++) {
-										FileListing
-												.addFile(
-														files[i],
-														fileListingRows.get(i).xmlFormat
-																.getSelectedItem()
-																.toString());
-									}
-								}
-							});
-					listing.add(textField, fileListingCons, (i * 3) + 2);
-				} else {
-					listing.add(fileListingRows.get(i).xmlFormat,
-							fileListingCons, (i * 3) + 2);
+				// if format is select format, make single row
+				if (fileListingRows.get(i).xmlFormat.getSelectedItem()
+						.toString().equals(FileListingRow.selectFormatString)) {
+					makeSingelRow(i);
 				}
-
-				fileListingCons.gridx = 2;
-				listing.add(fileListingRows.get(i).deleteButton,
-						fileListingCons, (i * 3) + 3);
+				// if not select format but last
+				else if(fileCount == i+1){
+					// if in list make bot
+					if(i != 0 && fileListingRows.get(i - 1).hasEqualFormat(
+							fileListingRows.get(i))){
+						makeBottomRow(i);
+					// else make single
+					}else {
+						makeSingelRow(i);
+					}
+				}
+				// if first row of listing and next row is not same format
+				// or previous was different and next is differend
+				else if ((i == 0 || !fileListingRows.get(i - 1).hasEqualFormat(
+						fileListingRows.get(i)))
+						&& !fileListingRows.get(i + 1).hasEqualFormat(
+								fileListingRows.get(i))) {
+					makeSingelRow(i);
+				}
+				// if first row of listing and next row has same format
+				// or previous was different and next is same
+				else if ((i == 0 || !fileListingRows.get(i - 1).hasEqualFormat(
+						fileListingRows.get(i)))
+						&& fileListingRows.get(i + 1).hasEqualFormat(
+								fileListingRows.get(i))) {
+					makeTopRow(i);
+				}
+				// if previous and next are same format make middle row
+				else if (fileListingRows.get(i - 1).hasEqualFormat(
+						fileListingRows.get(i))
+						&& fileListingRows.get(i + 1).hasEqualFormat(
+								fileListingRows.get(i))) {
+					makeMiddleRow(i);
+				}
+				// if previous is same but next different
+				else if (fileListingRows.get(i - 1).hasEqualFormat(
+						fileListingRows.get(i))
+						&& !fileListingRows.get(i + 1).hasEqualFormat(
+								fileListingRows.get(i))) {
+					makeBottomRow(i);
+				}
 
 			} catch (IndexOutOfBoundsException e) {
 				// make empty row
@@ -122,6 +131,7 @@ public class FileListing extends JPanel {
 	private static void sortListingByFormat() {
 		ArrayList<FileListingRow> newFileListingRows = new ArrayList<FileListingRow>();
 
+		// sort the list by format
 		while (!fileListingRows.isEmpty()) {
 			FileListingRow tmp = fileListingRows.remove(0);
 			newFileListingRows.add(tmp);
@@ -136,7 +146,22 @@ public class FileListing extends JPanel {
 
 		}
 
-		fileListingRows = newFileListingRows;
+		// make the unselected go last
+
+		// add everything but files with unselected format
+		for (int i = 0; i < newFileListingRows.size(); i++) {
+			if (!newFileListingRows.get(i).xmlFormat.getSelectedItem()
+					.toString().equals(FileListingRow.selectFormatString)) {
+				fileListingRows.add(newFileListingRows.get(i));
+			}
+		}
+		// add files with unselected format
+		for (int i = 0; i < newFileListingRows.size(); i++) {
+			if (newFileListingRows.get(i).xmlFormat.getSelectedItem()
+					.toString().equals(FileListingRow.selectFormatString)) {
+				fileListingRows.add(newFileListingRows.get(i));
+			}
+		}
 	}
 
 	private static void makeHeaderOfListing() {
@@ -164,6 +189,104 @@ public class FileListing extends JPanel {
 		tableHeader3.setBackground(Color.gray);
 		tableHeader3.setPreferredSize(new Dimension(50, 20));
 		listing.add(tableHeader3);
+	}
+
+	private static void makeSingelRow(int i) {
+		fileListingCons.gridy = i + 1;
+		fileListingCons.gridx = 0;
+		fileListingRows.get(i).fileField.setBorder(new MatteBorder(1, 1, 1, 0,
+				borderColor));
+		listing.add(fileListingRows.get(i).fileField, fileListingCons,
+				(i * 3) + 1);
+		fileListingCons.gridx = 1;
+		fileListingRows.get(i).xmlFormat.setBorder(new MatteBorder(1, 0, 1, 0,
+				borderColor));
+		listing.add(fileListingRows.get(i).xmlFormat, fileListingCons,
+				(i * 3) + 2);
+		fileListingCons.gridx = 2;
+		fileListingRows.get(i).deleteButton.setBorder(new MatteBorder(1, 0, 1,
+				2, borderColor));
+		listing.add(fileListingRows.get(i).deleteButton, fileListingCons,
+				(i * 3) + 3);
+	}
+
+	private static void makeTopRow(int i) {
+		fileListingCons.gridy = i + 1;
+		fileListingCons.gridx = 0;
+		fileListingRows.get(i).fileField.setBorder(new MatteBorder(1, 1, 0, 0,
+				borderColor));
+		listing.add(fileListingRows.get(i).fileField, fileListingCons,
+				(i * 3) + 1);
+		fileListingCons.gridx = 1;
+		fileListingRows.get(i).xmlFormat.setBorder(new MatteBorder(1, 0, 0, 0,
+				borderColor));
+		listing.add(fileListingRows.get(i).xmlFormat, fileListingCons,
+				(i * 3) + 2);
+		fileListingCons.gridx = 2;
+		fileListingRows.get(i).deleteButton.setBorder(new MatteBorder(1, 0, 0,
+				2, borderColor));
+		listing.add(fileListingRows.get(i).deleteButton, fileListingCons,
+				(i * 3) + 3);
+	}
+
+	private static void makeMiddleRow(int i) {
+		fileListingCons.gridy = i + 1;
+		fileListingCons.gridx = 0;
+		fileListingRows.get(i).fileField.setBorder(new MatteBorder(0, 1, 0, 0,
+				borderColor));
+		listing.add(fileListingRows.get(i).fileField, fileListingCons,
+				(i * 3) + 1);
+		fileListingCons.gridx = 1;
+		JTextField textField = new JTextField();
+		textField.setSize(200, 30);
+		textField.setEditable(false);
+		textField.setPreferredSize(new Dimension(200, 25));
+		textField.setBorder(BorderFactory.createEmptyBorder());
+		new FileDrop(textField, textField.getBorder(), new FileDrop.Listener() {
+			public void filesDropped(java.io.File[] files) {
+				for (int i = 0; i < files.length; i++) {
+					FileListing.addFile(files[i],
+							fileListingRows.get(i).xmlFormat.getSelectedItem()
+									.toString());
+				}
+			}
+		});
+		listing.add(textField, fileListingCons, (i * 3) + 2);
+		fileListingCons.gridx = 2;
+		fileListingRows.get(i).deleteButton.setBorder(new MatteBorder(0, 0, 0,
+				2, borderColor));
+		listing.add(fileListingRows.get(i).deleteButton, fileListingCons,
+				(i * 3) + 3);
+	}
+
+	private static void makeBottomRow(int i) {
+		fileListingCons.gridy = i + 1;
+		fileListingCons.gridx = 0;
+		fileListingRows.get(i).fileField.setBorder(new MatteBorder(0, 1, 1, 0,
+				borderColor));
+		listing.add(fileListingRows.get(i).fileField, fileListingCons,
+				(i * 3) + 1);
+		fileListingCons.gridx = 1;
+		JTextField textField = new JTextField();
+		textField.setSize(200, 30);
+		textField.setEditable(false);
+		textField.setPreferredSize(new Dimension(200, 25));
+		textField.setBorder(new MatteBorder(0, 0, 1, 0, borderColor));
+		new FileDrop(textField, textField.getBorder(), new FileDrop.Listener() {
+			public void filesDropped(java.io.File[] files) {
+				for (int i = 0; i < files.length; i++) {
+					FileListing.addFile(files[i],
+							fileListingRows.get(i).xmlFormat.getSelectedItem()
+									.toString());
+				}
+			}
+		});
+		listing.add(textField, fileListingCons, (i * 3) + 2);
+		fileListingCons.gridx = 2;
+		fileListingRows.get(i).deleteButton.setBorder(new MatteBorder(0, 0, 1,
+				2, borderColor));
+		listing.add(fileListingRows.get(i).deleteButton, fileListingCons,
+				(i * 3) + 3);
 	}
 
 	public static void addFile(File newFile) {
