@@ -17,8 +17,11 @@ public interface Parser {
      * @param config
      *            the input descriptor.
      * @return a table representing the parsed input file.
+     * @throws InputException
+     *             if any input errors occur.
      * @throws IOException
      *             if any IO errors occur.
      */
-    Table parse(String path, InputDescriptor config) throws IOException;
+    Table parse(String path, InputDescriptor config) throws InputException,
+            IOException;
 }

@@ -15,4 +15,16 @@ public class InputException extends Exception {
     public InputException(final String message) {
         super(message);
     }
+
+    /**
+     * Constructs a new {@link InputException} with the given message and cause.
+     *
+     * @param message
+     *            the detail message.
+     * @param cause
+     *            the cause.
+     */
+    public InputException(final String message, final Throwable cause) {
+        super(message, cause);
+    }
 }

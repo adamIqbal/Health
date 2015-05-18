@@ -67,7 +67,7 @@ public final class InputDescriptor {
                     String.format(
                             "An exception occured when reading input "
                                     + "descriptor %s: %s",
-                            path, ex.getMessage()));
+                            path, ex.getMessage()), ex);
         }
     }
 
@@ -194,7 +194,7 @@ public final class InputDescriptor {
             throw new InputException(String.format(
                     "Column '%s' has an invalid type: '%s'.",
                     column.getTextContent(),
-                    column.getAttribute("type")));
+                    column.getAttribute("type")), ex);
         }
     }
 

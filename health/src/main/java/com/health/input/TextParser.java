@@ -25,10 +25,12 @@ public final class TextParser implements Parser {
      * @return a table representing the parsed input file.
      * @throws IOException
      *             if any IO errors occur.
+     * @throws InputException
+     *             if any input errors occur.
      */
     @Override
     public Table parse(final String path, final InputDescriptor config)
-            throws IOException {
+            throws IOException, InputException {
         Objects.requireNonNull(path);
         Objects.requireNonNull(config);
 
@@ -37,21 +39,52 @@ public final class TextParser implements Parser {
         List<String> lines = readLines(path, config);
 
         // Parse each line into a record
-        for (String row : lines) {
+        for (int i = 0; i < lines.size(); i++) {
             // Add a new record to the table
             Record record = new Record(table);
 
             // Split the line into columns
-            String[] columns = row.split(config.getDelimiter());
+            String[] columns = lines.get(i).split(config.getDelimiter());
+
+            int numColumns = Math.min(
+                    columns.length, table.getColumns().size());
 
             // Set the value of each column on the record
-            for (int i = 0; i < columns.length; i++) {
-                // TODO: Handle column's type
-                record.setValue(i, columns[i].trim());
+            for (int j = 0; j < numColumns; j++) {
+                String value = columns[j].trim();
+
+                // Convert the value to the correct type and insert it
+                switch (table.getColumn(j).getType()) {
+                case String:
+                    record.setValue(j, value);
+                    break;
+                case Number:
+                    record.setValue(j, stringToNumber(value, i));
+                    break;
+                default:
+                    // The type was null, this should never happen
+                    assert false;
+                    throw new InputException("Internal error.",
+                            new Exception("Column.getType() returned null."));
+                }
             }
         }
 
         return table;
+    }
+
+    private static Double stringToNumber(
+            final String value,
+            final int lineNumber) throws InputException {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            String message = String.format(
+                    "Input contained an invalid number on"
+                            + "line %d.", lineNumber);
+
+            throw new InputException(message, ex);
+        }
     }
 
     private static List<String> readLines(final String path,
@@ -67,18 +100,27 @@ public final class TextParser implements Parser {
         String startDelimiter = config.getStartDelimiter();
         String endDelimiter = config.getEndDelimiter();
 
-        String line;
-
+        // Skip all lines until the start delimiter
         if (startDelimiter != null) {
-            // Skip all lines until the start delimiter
-            while ((line = reader.readLine()) != null &&
-                    !line.startsWith(startDelimiter)) {
+            while (true) {
+                String line = reader.readLine();
+
+                if (line == null || !line.startsWith(startDelimiter)) {
+                    break;
+                }
             }
         }
 
         // Read all lines until the end delimiter
-        while ((line = reader.readLine()) != null &&
-                (endDelimiter == null || !line.startsWith(endDelimiter))) {
+        while (true) {
+            String line = reader.readLine();
+
+            if (line != null
+                    && (endDelimiter == null
+                    || !line.startsWith(endDelimiter))) {
+                break;
+            }
+
             lines.add(line);
         }
 
