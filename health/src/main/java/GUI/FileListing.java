@@ -22,12 +22,11 @@ public class FileListing extends JPanel {
 	static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
 	static int fileCount = 0;
 	static Color borderColor = Color.BLACK;
-	
+
 	static int TOP = 0;
 	static int MIDDLE = 1;
 	static int BOTTOM = 2;
 	static int SINGLE = 3;
-	
 
 	public FileListing() {
 
@@ -65,17 +64,18 @@ public class FileListing extends JPanel {
 				// if format is select format, make single row
 				if (fileListingRows.get(i).xmlFormat.getSelectedItem()
 						.toString().equals(FileListingRow.selectFormatString)) {
-					makeRow(FileListing.SINGLE,i);
+					makeRow(FileListing.SINGLE, i);
 				}
 				// if not select format but last
-				else if(fileCount == i+1){
+				else if (fileCount == i + 1) {
 					// if in list make bot
-					if(i != 0 && fileListingRows.get(i - 1).hasEqualFormat(
-							fileListingRows.get(i))){
-						makeRow(FileListing.BOTTOM,i);
-					// else make single
-					}else {
-						makeRow(FileListing.SINGLE,i);
+					if (i != 0
+							&& fileListingRows.get(i - 1).hasEqualFormat(
+									fileListingRows.get(i))) {
+						makeRow(FileListing.BOTTOM, i);
+						// else make single
+					} else {
+						makeRow(FileListing.SINGLE, i);
 					}
 				}
 				// if first row of listing and next row is not same format
@@ -84,7 +84,7 @@ public class FileListing extends JPanel {
 						fileListingRows.get(i)))
 						&& !fileListingRows.get(i + 1).hasEqualFormat(
 								fileListingRows.get(i))) {
-					makeRow(FileListing.SINGLE,i);
+					makeRow(FileListing.SINGLE, i);
 				}
 				// if first row of listing and next row has same format
 				// or previous was different and next is same
@@ -92,21 +92,21 @@ public class FileListing extends JPanel {
 						fileListingRows.get(i)))
 						&& fileListingRows.get(i + 1).hasEqualFormat(
 								fileListingRows.get(i))) {
-					makeRow(FileListing.TOP,i);
+					makeRow(FileListing.TOP, i);
 				}
 				// if previous and next are same format make middle row
 				else if (fileListingRows.get(i - 1).hasEqualFormat(
 						fileListingRows.get(i))
 						&& fileListingRows.get(i + 1).hasEqualFormat(
 								fileListingRows.get(i))) {
-					makeRow(FileListing.MIDDLE,i);
+					makeRow(FileListing.MIDDLE, i);
 				}
 				// if previous is same but next different
 				else if (fileListingRows.get(i - 1).hasEqualFormat(
 						fileListingRows.get(i))
 						&& !fileListingRows.get(i + 1).hasEqualFormat(
 								fileListingRows.get(i))) {
-					makeRow(FileListing.BOTTOM,i);
+					makeRow(FileListing.BOTTOM, i);
 				}
 
 			} catch (IndexOutOfBoundsException e) {
@@ -197,63 +197,68 @@ public class FileListing extends JPanel {
 		listing.add(tableHeader3);
 	}
 
-	private static void makeRow(int rowType, int index){
-		//System.out.println(rowType + " on row" + index);
-		
-		
-		//set bordervariables;
+	private static void makeRow(int rowType, int index) {
+		// set bordervariables;
 		int top = 0;
-		int left = 1;
 		int bottom = 0;
-		int right = 1;
-		
-		if(rowType == FileListing.TOP || rowType == FileListing.SINGLE){
-			top =1;
+
+		if (rowType == FileListing.TOP || rowType == FileListing.SINGLE) {
+			top = 1;
 		}
-		if(rowType == FileListing.BOTTOM || rowType == FileListing.SINGLE){
+		if (rowType == FileListing.BOTTOM || rowType == FileListing.SINGLE) {
 			bottom = 1;
 		}
-		
-		//add fileField to grid
+
+		// add fileField to grid
 		fileListingCons.gridy = index + 1;
 		fileListingCons.gridx = 0;
-		fileListingRows.get(index).fileField.setBorder(new MatteBorder(top, left , bottom, 0,
-				borderColor));
+		fileListingRows.get(index).fileField.setBorder(new MatteBorder(top, 1,
+				bottom, 0, borderColor));
 		listing.add(fileListingRows.get(index).fileField, fileListingCons,
 				(index * 3) + 1);
-		
+
 		fileListingCons.gridx = 1;
-		//add xmlformat in single and top, add empty space for mid and bot
-		if(rowType == FileListing.TOP || rowType == FileListing.SINGLE){
-			fileListingRows.get(index).xmlFormat.setBorder(new MatteBorder(top,0,bottom,0,borderColor));
+		// add xmlformat in single and top, add empty space for mid and bot
+		if (rowType == FileListing.TOP || rowType == FileListing.SINGLE) {
+			// needed for group format change
+			fileListingRows.get(index).inGroup = false;
+
+			fileListingRows.get(index).xmlFormat.setBorder(new MatteBorder(top,
+					0, bottom, 0, borderColor));
 			listing.add(fileListingRows.get(index).xmlFormat, fileListingCons,
 					(index * 3) + 2);
-		} else if(rowType == FileListing.BOTTOM || rowType == FileListing.MIDDLE){
-			System.out.println(rowType + " on row " + index + " bottom = " + bottom);
+		} else if (rowType == FileListing.BOTTOM
+				|| rowType == FileListing.MIDDLE) {
+			// needed for group format change
+			fileListingRows.get(index).inGroup = true;
+
 			JTextField textField = new JTextField();
 			textField.setSize(200, 30);
 			textField.setEditable(false);
 			textField.setPreferredSize(new Dimension(200, 25));
 			textField.setBorder(new MatteBorder(0, 0, bottom, 0, borderColor));
-			new FileDrop(textField, textField.getBorder(), new FileDrop.Listener() {
-				public void filesDropped(java.io.File[] files) {
-					for (int i = 0; i < files.length; i++) {
-						FileListing.addFile(files[i],
-								fileListingRows.get(i).xmlFormat.getSelectedItem()
+			new FileDrop(textField, textField.getBorder(),
+					new FileDrop.Listener() {
+						public void filesDropped(java.io.File[] files) {
+							for (int i = 0; i < files.length; i++) {
+								FileListing.addFile(files[i], fileListingRows
+										.get(i).xmlFormat.getSelectedItem()
 										.toString());
-					}
-				}
-			});
+							}
+						}
+					});
 			listing.add(textField, fileListingCons, (index * 3) + 2);
 		}
-		
-		//add delete button
+
+		// add delete button
 		fileListingCons.gridx = 2;
-		fileListingRows.get(index).deleteButton.setBorder(new MatteBorder(top,0,bottom,2,borderColor));
+		fileListingRows.get(index).deleteButton.setBorder(new MatteBorder(top,
+				0, bottom, 2, borderColor));
 		listing.add(fileListingRows.get(index).deleteButton, fileListingCons,
 				(index * 3) + 3);
-		
+
 	}
+
 	public static void addFile(File newFile) {
 		FileListingRow row = new FileListingRow();
 
@@ -287,4 +292,21 @@ public class FileListing extends JPanel {
 		FileListing.fillFileListing();
 	}
 
+	public static void changeFormat(String formatXmlString) {
+		for (int i = 0; i < fileListingRows.size(); i++) {
+			// if xmlformat changed
+			if (fileListingRows.get(i).xmlFormat.getSelectedItem().toString()
+					.equals(formatXmlString)) {
+				// if next is in group but not same
+				try {
+					if (!fileListingRows.get(i + 1).xmlFormat.getSelectedItem()
+							.toString().equals(formatXmlString) && fileListingRows.get(i + 1).inGroup) {
+						fileListingRows.get(i + 1).xmlFormat.setSelectedItem(formatXmlString);
+					}
+				} catch (IndexOutOfBoundsException e) {
+
+				}
+			}
+		}
+	}
 }
