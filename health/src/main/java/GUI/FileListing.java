@@ -73,6 +73,7 @@ public class FileListing extends JPanel {
 							&& fileListingRows.get(i - 1).hasEqualFormat(
 									fileListingRows.get(i))) {
 						makeRow(FileListing.BOTTOM, i);
+						System.out.println("for last");
 						// else make single
 					} else {
 						makeRow(FileListing.SINGLE, i);
@@ -107,6 +108,7 @@ public class FileListing extends JPanel {
 						&& !fileListingRows.get(i + 1).hasEqualFormat(
 								fileListingRows.get(i))) {
 					makeRow(FileListing.BOTTOM, i);
+					System.out.println("not because last");
 				}
 
 			} catch (IndexOutOfBoundsException e) {
@@ -202,6 +204,8 @@ public class FileListing extends JPanel {
 		int top = 0;
 		int bottom = 0;
 
+		
+		
 		if (rowType == FileListing.TOP || rowType == FileListing.SINGLE) {
 			top = 1;
 		}
@@ -209,6 +213,7 @@ public class FileListing extends JPanel {
 			bottom = 1;
 		}
 
+		System.out.println(rowType + " in row " + index + " with bottom " + bottom + " and top " + top);
 		// add fileField to grid
 		fileListingCons.gridy = index + 1;
 		fileListingCons.gridx = 0;

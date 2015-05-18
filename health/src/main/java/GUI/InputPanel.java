@@ -20,5 +20,8 @@ public class InputPanel extends JPanel{
 		tabbedPane.addTab("Script", scriptPanel);
 		
 		this.add(tabbedPane, BorderLayout.CENTER);
+		
+
 	}
+	
 }
