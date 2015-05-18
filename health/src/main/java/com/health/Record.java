@@ -92,6 +92,38 @@ public final class Record {
     }
 
     /**
+     * Sets the {@link Double} value of the column with the given index.
+     *
+     * @param index
+     *            the index of the column whose value to set.
+     * @param value
+     *            the new value.
+     * @throws IllegalArgumentException
+     *             if a column with the given name was not found.
+     * @throws IllegalStateException
+     *             if the specified column does not contain Double values.
+     */
+    public void setValue(final int index, final Double value) {
+        this.setValue(this.table.getColumn(index).getName(), value);
+    }
+
+    /**
+     * Sets the {@link String} value of the column with the given index.
+     *
+     * @param index
+     *            the index of the column whose value to set.
+     * @param value
+     *            the new value.
+     * @throws IllegalArgumentException
+     *             if a column with the given name was not found.
+     * @throws IllegalStateException
+     *             if the specified column does not contain String values.
+     */
+    public void setValue(final int index, final String value) {
+        this.setValue(this.table.getColumn(index).getName(), value);
+    }
+
+    /**
      * Sets the {@link Double} value of the column with the given name.
      *
      * @param name
