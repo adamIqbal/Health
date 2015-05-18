@@ -81,7 +81,7 @@ public final class TextParser implements Parser {
         } catch (NumberFormatException ex) {
             String message = String.format(
                     "Input contained an invalid number on"
-                            + "line %d.", lineNumber);
+                            + " line %d.", lineNumber + 1);
 
             throw new InputException(message, ex);
         }
@@ -105,7 +105,7 @@ public final class TextParser implements Parser {
             while (true) {
                 String line = reader.readLine();
 
-                if (line == null || !line.startsWith(startDelimiter)) {
+                if (line == null || line.startsWith(startDelimiter)) {
                     break;
                 }
             }
@@ -115,9 +115,9 @@ public final class TextParser implements Parser {
         while (true) {
             String line = reader.readLine();
 
-            if (line != null
-                    && (endDelimiter == null
-                    || !line.startsWith(endDelimiter))) {
+            if (line == null
+                    || (endDelimiter != null
+                    && line.startsWith(endDelimiter))) {
                 break;
             }
 
