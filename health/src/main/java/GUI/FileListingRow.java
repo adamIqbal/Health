@@ -18,6 +18,7 @@ public class FileListingRow {
 	public JComboBox<String> xmlFormat;
 	public JButton deleteButton;
 	private ListenForDeleteFile lforDelete;
+	public boolean inGroup = false;
 	public static String selectFormatString = "select format";
 	
 	public FileListingRow(){
@@ -94,7 +95,9 @@ public class FileListingRow {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+			JComboBox<String> changed = (JComboBox<String>)e.getSource();
+			FileListing.changeFormat(changed.getSelectedItem().toString());
+			
 			FileListing.fillFileListing();
 		}
 		
