@@ -1,4 +1,4 @@
-package GUI;
+package com.health.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -8,26 +8,35 @@ import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 
 import externalClasses.FileDrop;
 
+/**
+ * The class that fill and is the panel with a list of files used for input.
+ *
+ * @author Daan
+ */
 public class FileListing extends JPanel {
 
-	static GridBagConstraints fileListingCons;
-	static JPanel listing = new JPanel();
-	static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
-	static int fileCount = 0;
-	static Color borderColor = Color.BLACK;
+	private static GridBagConstraints fileListingCons;
+	private static JPanel listing = new JPanel();
+	private static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
+	private static int fileCount = 0;
+	private static Color borderColor = Color.BLACK;
 
-	static int TOP = 0;
-	static int MIDDLE = 1;
-	static int BOTTOM = 2;
-	static int SINGLE = 3;
+	private static int TOP = 0;
+	private static int MIDDLE = 1;
+	private static int BOTTOM = 2;
+	private static int SINGLE = 3;
 
+	private static int maxStringLength = 50;
+
+	/**
+	 *
+	 */
 	public FileListing() {
 
 		this.setLayout(new BorderLayout());
@@ -45,6 +54,9 @@ public class FileListing extends JPanel {
 		this.add(listing);
 	}
 
+	/**
+	 * Function fills the listing with rows in fileListingRows.
+	 */
 	public static void fillFileListing() {
 		listing.removeAll();
 		sortListingByFormat();
@@ -62,8 +74,9 @@ public class FileListing extends JPanel {
 			try {
 
 				// if format is select format, make single row
-				if (fileListingRows.get(i).xmlFormat.getSelectedItem()
-						.toString().equals(FileListingRow.selectFormatString)) {
+				if (fileListingRows.get(i).getXmlFormat().getSelectedItem()
+						.toString()
+						.equals(FileListingRow.getSelectFormatString())) {
 					makeRow(FileListing.SINGLE, i);
 				}
 				// if not select format but last
@@ -136,6 +149,9 @@ public class FileListing extends JPanel {
 		listing.repaint();
 	}
 
+	/**
+	 * sort the row array by group.
+	 */
 	private static void sortListingByFormat() {
 		ArrayList<FileListingRow> newFileListingRows = new ArrayList<FileListingRow>();
 
@@ -145,8 +161,10 @@ public class FileListing extends JPanel {
 			newFileListingRows.add(tmp);
 
 			for (int i = 0; i < fileListingRows.size(); i++) {
-				if (tmp.xmlFormat.getSelectedItem().equals(
-						fileListingRows.get(i).xmlFormat.getSelectedItem())) {
+				if (tmp.getXmlFormat()
+						.getSelectedItem()
+						.equals(fileListingRows.get(i).getXmlFormat()
+								.getSelectedItem())) {
 					newFileListingRows.add(fileListingRows.remove(i));
 					i--;
 				}
@@ -158,20 +176,23 @@ public class FileListing extends JPanel {
 
 		// add everything but files with unselected format
 		for (int i = 0; i < newFileListingRows.size(); i++) {
-			if (!newFileListingRows.get(i).xmlFormat.getSelectedItem()
-					.toString().equals(FileListingRow.selectFormatString)) {
+			if (!newFileListingRows.get(i).getXmlFormat().getSelectedItem()
+					.toString().equals(FileListingRow.getSelectFormatString())) {
 				fileListingRows.add(newFileListingRows.get(i));
 			}
 		}
 		// add files with unselected format
 		for (int i = 0; i < newFileListingRows.size(); i++) {
-			if (newFileListingRows.get(i).xmlFormat.getSelectedItem()
-					.toString().equals(FileListingRow.selectFormatString)) {
+			if (newFileListingRows.get(i).getXmlFormat().getSelectedItem()
+					.toString().equals(FileListingRow.getSelectFormatString())) {
 				fileListingRows.add(newFileListingRows.get(i));
 			}
 		}
 	}
 
+	/**
+	 * make the first row of the listing.
+	 */
 	private static void makeHeaderOfListing() {
 		fileListingCons.gridx = 0;
 		fileListingCons.gridy = 0;
@@ -199,13 +220,16 @@ public class FileListing extends JPanel {
 		listing.add(tableHeader3);
 	}
 
+	/**
+	 * make a row in the listing.
+	 * @param rowType, defines the kind of row needed to be made
+	 * @param index
+	 */
 	private static void makeRow(int rowType, int index) {
 		// set bordervariables;
 		int top = 0;
 		int bottom = 0;
 
-		
-		
 		if (rowType == FileListing.TOP || rowType == FileListing.SINGLE) {
 			top = 1;
 		}
@@ -213,29 +237,30 @@ public class FileListing extends JPanel {
 			bottom = 1;
 		}
 
-		System.out.println(rowType + " in row " + index + " with bottom " + bottom + " and top " + top);
+		System.out.println(rowType + " in row " + index + " with bottom "
+				+ bottom + " and top " + top);
 		// add fileField to grid
 		fileListingCons.gridy = index + 1;
 		fileListingCons.gridx = 0;
-		fileListingRows.get(index).fileField.setBorder(new MatteBorder(top, 1,
-				bottom, 0, borderColor));
-		listing.add(fileListingRows.get(index).fileField, fileListingCons,
+		fileListingRows.get(index).getFileField()
+				.setBorder(new MatteBorder(top, 1, bottom, 0, borderColor));
+		listing.add(fileListingRows.get(index).getFileField(), fileListingCons,
 				(index * 3) + 1);
 
 		fileListingCons.gridx = 1;
 		// add xmlformat in single and top, add empty space for mid and bot
 		if (rowType == FileListing.TOP || rowType == FileListing.SINGLE) {
 			// needed for group format change
-			fileListingRows.get(index).inGroup = false;
+			fileListingRows.get(index).setInGroup(false);
 
-			fileListingRows.get(index).xmlFormat.setBorder(new MatteBorder(top,
-					0, bottom, 0, borderColor));
-			listing.add(fileListingRows.get(index).xmlFormat, fileListingCons,
-					(index * 3) + 2);
+			fileListingRows.get(index).getXmlFormat()
+					.setBorder(new MatteBorder(top, 0, bottom, 0, borderColor));
+			listing.add(fileListingRows.get(index).getXmlFormat(),
+					fileListingCons, (index * 3) + 2);
 		} else if (rowType == FileListing.BOTTOM
 				|| rowType == FileListing.MIDDLE) {
 			// needed for group format change
-			fileListingRows.get(index).inGroup = true;
+			fileListingRows.get(index).setInGroup(true);
 
 			JTextField textField = new JTextField();
 			textField.setSize(200, 30);
@@ -247,8 +272,8 @@ public class FileListing extends JPanel {
 						public void filesDropped(java.io.File[] files) {
 							for (int i = 0; i < files.length; i++) {
 								FileListing.addFile(files[i], fileListingRows
-										.get(i).xmlFormat.getSelectedItem()
-										.toString());
+										.get(i).getXmlFormat()
+										.getSelectedItem().toString());
 							}
 						}
 					});
@@ -257,37 +282,51 @@ public class FileListing extends JPanel {
 
 		// add delete button
 		fileListingCons.gridx = 2;
-		fileListingRows.get(index).deleteButton.setBorder(new MatteBorder(top,
-				0, bottom, 2, borderColor));
-		listing.add(fileListingRows.get(index).deleteButton, fileListingCons,
-				(index * 3) + 3);
+		fileListingRows.get(index).getDeleteButton()
+				.setBorder(new MatteBorder(top, 0, bottom, 2, borderColor));
+		listing.add(fileListingRows.get(index).getDeleteButton(),
+				fileListingCons, (index * 3) + 3);
 
 	}
 
+	/**
+	 * add a file to the row array.
+	 * @param newFile
+	 */
 	public static void addFile(File newFile) {
 		FileListingRow row = new FileListingRow();
 
-		row.setFileString(newFile.getPath());
+		row.setFileString(newFile.getPath(), maxStringLength);
 		fileListingRows.add(row);
 		fileCount++;
 		fillFileListing();
 	}
 
-	public static void addFile(File newFile, String XMLFormat) {
+	/**
+	 * add a file to rows array.
+	 * @param newFile
+	 * @param xmlFormat
+	 */
+	public static void addFile(File newFile, String xmlFormat) {
 		FileListingRow row = new FileListingRow();
 
-		row.setFileString(newFile.getPath());
-		row.xmlFormat.setSelectedItem(XMLFormat);
+		row.setFileString(newFile.getPath(), maxStringLength);
+		row.getXmlFormat().setSelectedItem(xmlFormat);
 		fileListingRows.add(row);
 		fileCount++;
 		fillFileListing();
 	}
 
+	/**
+	 * delete a file from listing array.
+	 * @param toBeDeleted
+	 * @param xmlFormat
+	 */
 	public static void delete(String toBeDeleted, String xmlFormat) {
 		boolean found = false;
 		for (int i = 0; i < fileCount && !found; i++) {
-			if (fileListingRows.get(i).fileString.equals(toBeDeleted)
-					&& fileListingRows.get(i).xmlFormat.getSelectedItem()
+			if (fileListingRows.get(i).getFileString().equals(toBeDeleted)
+					&& fileListingRows.get(i).getXmlFormat().getSelectedItem()
 							.toString().equals(xmlFormat)) {
 				fileListingRows.remove(i);
 				found = true;
@@ -297,19 +336,26 @@ public class FileListing extends JPanel {
 		FileListing.fillFileListing();
 	}
 
+	/**
+	 * change format of a group of files with same format.
+	 * @param formatXmlString
+	 */
 	public static void changeFormat(String formatXmlString) {
 		for (int i = 0; i < fileListingRows.size(); i++) {
 			// if xmlformat changed
-			if (fileListingRows.get(i).xmlFormat.getSelectedItem().toString()
-					.equals(formatXmlString)) {
+			if (fileListingRows.get(i).getXmlFormat().getSelectedItem()
+					.toString().equals(formatXmlString)) {
 				// if next is in group but not same
 				try {
-					if (!fileListingRows.get(i + 1).xmlFormat.getSelectedItem()
-							.toString().equals(formatXmlString) && fileListingRows.get(i + 1).inGroup) {
-						fileListingRows.get(i + 1).xmlFormat.setSelectedItem(formatXmlString);
+					if (!fileListingRows.get(i + 1).getXmlFormat()
+							.getSelectedItem().toString()
+							.equals(formatXmlString)
+							&& fileListingRows.get(i + 1).isInGroup()) {
+						fileListingRows.get(i + 1).getXmlFormat()
+								.setSelectedItem(formatXmlString);
 					}
 				} catch (IndexOutOfBoundsException e) {
-
+					e.getStackTrace();
 				}
 			}
 		}
