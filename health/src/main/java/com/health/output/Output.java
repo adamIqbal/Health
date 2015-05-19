@@ -25,6 +25,72 @@ public final class Output {
     }
 
     /**
+     * Converts a table to a string.
+     *
+     * @param table
+     *            the table to format.
+     * @return a string representing the table.
+     */
+    public static String formatTable(final Table table) {
+        Objects.requireNonNull(table, "Argument table cannot be null.");
+
+        return Output.formatTable(table, Output.getDefaultFormat(table));
+    }
+
+    /**
+     * Converts a table to a string according to the specified format.
+     *
+     * @param table
+     *            the table to format.
+     * @param format
+     *            a format string, see
+     *            {@link Output#formatTableRaw(Table, String)} for details.
+     * @return a string representing the formatted table.
+     * @see Output#formatTableRaw(Table, String)
+     */
+    public static String formatTable(final Table table, final String format) {
+        return Output.formatTable(table, format, "\n");
+    }
+
+    /**
+     * Converts a table to a string according to the specified format.
+     *
+     * @param table
+     *            the table to format.
+     * @param format
+     *            a format string, see
+     *            {@link Output#formatTableRaw(Table, String)} for details.
+     * @param recordDelimiter
+     *            a String that is used separate each of the records in the
+     *            formatted String.
+     * @return a string representing the formatted table.
+     * @see Output#formatTableRaw(Table, String)
+     */
+    public static String formatTable(final Table table, final String format,
+            final String recordDelimiter) {
+        Objects.requireNonNull(recordDelimiter,
+                "Argument recordDelimiter cannot be null.");
+
+        // Join each record on the given delimiter
+        return String.join(recordDelimiter,
+                Output.formatTableRaw(table, format));
+    }
+
+    /**
+     * Returns an iterable containing the formatted strings for each record in
+     * the given table.
+     *
+     * @param table
+     *            the table to format.
+     * @return an iterable containing the formatted strings.
+     */
+    public static Iterable<String> formatTableRaw(final Table table) {
+        Objects.requireNonNull(table, "Argument table cannot be null.");
+
+        return formatTableRaw(table, Output.getDefaultFormat(table));
+    }
+
+    /**
      * <p>
      * Returns an iterable containing the formatted strings for each record in
      * the given table.
@@ -46,11 +112,11 @@ public final class Output {
      *            a format string.
      * @return an iterable containing the formatted strings.
      */
-    public static Iterable<String> formatTable(
+    public static Iterable<String> formatTableRaw(
             final Table table,
             final String format) {
-        Objects.requireNonNull(table);
-        Objects.requireNonNull(format);
+        Objects.requireNonNull(table, "Argument table cannot be null.");
+        Objects.requireNonNull(format, "Argument format cannot be null.");
 
         List<String> result =
                 new ArrayList<String>(/* table.getRecords().size() */);
@@ -94,6 +160,8 @@ public final class Output {
     public static void writeTable(
             final String file,
             final Table table) throws IOException {
+        Objects.requireNonNull(table, "Argument table cannot be null.");
+
         Output.writeTable(file, table, Output.getDefaultFormat(table));
     }
 
@@ -105,11 +173,11 @@ public final class Output {
      * @param table
      *            the table to write.
      * @param format
-     *            a format string, see {@link Output#formatTable(Table, String)}
-     *            for details.
+     *            a format string, see
+     *            {@link Output#formatTableRaw(Table, String)} for details.
      * @throws IOException
      *             if an I/O error occurs writing to or creating the file.
-     * @see Output#formatTable(Table, String)
+     * @see Output#formatTableRaw(Table, String)
      */
     public static void writeTable(
             final String file,
@@ -126,23 +194,26 @@ public final class Output {
      * @param table
      *            the table to write.
      * @param format
-     *            a format string, see {@link Output#formatTable(Table, String)}
-     *            for details.
+     *            a format string, see
+     *            {@link Output#formatTableRaw(Table, String)} for details.
      * @param recordDelimiter
      *            a String that is used separate each of the records in the
      *            formatted String.
      * @throws IOException
      *             if an I/O error occurs writing to or creating the file.
-     * @see Output#formatTable(Table, String)
+     * @see Output#formatTableRaw(Table, String)
      */
     public static void writeTable(
             final String file,
             final Table table,
             final String format,
             final String recordDelimiter) throws IOException {
+        Objects.requireNonNull(recordDelimiter,
+                "Argument recordDelimiter cannot be null.");
+
         // Join each record on the given delimiter
         String output = String.join(recordDelimiter,
-                Output.formatTable(table, format));
+                Output.formatTableRaw(table, format));
 
         // Create the directory for the file
         File parentFile = new File(file).getParentFile();

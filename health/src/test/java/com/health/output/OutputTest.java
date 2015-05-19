@@ -85,69 +85,102 @@ public class OutputTest {
         Files.deleteIfExists(filePath);
     }
 
-    @Test(expected = NullPointerException.class)
-    public void formatTable_givenTableNull_throwsNullPointerException() {
-        Output.formatTable((Table) null, "");
-    }
+    @Test
+    public void formatTableTable_formatsCorrectly() {
+        String expected = "one, 1.0\ntwo, ";
+        String actual = Output.formatTable(table);
 
-    @Test(expected = NullPointerException.class)
-    public void formatTable_givenFormatNull_throwsNullPointerException() {
-        Output.formatTable(table, (String) null);
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void formatTable_givenValidFormat_returnsIterator() {
-        assertNotNull(Output.formatTable(table, ""));
-    }
+    public void formatTableTableString_formatsCorrectly() {
+        String expected = "one=%{1.0}\ntwo=%{}";
+        String actual = Output.formatTable(table, "{abc}=%{{{xyz}}}");
 
-    @Test(expected = IllegalArgumentException.class)
-    public void formatTable_givenFormatWithUnmatchedOpeningBrace_throwsIllegalArgumentException() {
-        Output.formatTable(table, "{");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void formatTable_givenFormatWithUnmatchedClosingBrace_throwsIllegalArgumentException() {
-        Output.formatTable(table, "}");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void formatTable_givenFormatWithUnmatchedColumn_throwsIllegalArgumentException() {
-        Output.formatTable(table, "{null}");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void formatTable_givenFormatWithStuff_throwsIllegalArgumentException() {
-        Output.formatTable(table, "{null{");
+        assertEquals(expected, actual);
     }
 
     @Test
-    public void formatTable_givenFormatWithEscapedOpeningBrace_formatsCorrectly() {
+    public void formatTableTableStringString_formatsCorrectly() {
+        String expected = "abcdabc";
+        String actual = Output.formatTable(table, "abc", "d");
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void formatTableRawTable_formatsCorrectly() {
+        Iterable<String> expected = Arrays.asList("one, 1.0", "two, ");
+        Iterable<String> actual = Output.formatTableRaw(table);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void formatTableRaw_givenTableNull_throwsNullPointerException() {
+        Output.formatTableRaw((Table) null, "");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void formatTableRaw_givenFormatNull_throwsNullPointerException() {
+        Output.formatTableRaw(table, (String) null);
+    }
+
+    @Test
+    public void formatTableRaw_givenValidFormat_returnsIterator() {
+        assertNotNull(Output.formatTableRaw(table, ""));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void formatTableRaw_givenFormatWithUnmatchedOpeningBrace_throwsIllegalArgumentException() {
+        Output.formatTableRaw(table, "{");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void formatTableRaw_givenFormatWithUnmatchedClosingBrace_throwsIllegalArgumentException() {
+        Output.formatTableRaw(table, "}");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void formatTableRaw_givenFormatWithUnmatchedColumn_throwsIllegalArgumentException() {
+        Output.formatTableRaw(table, "{null}");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void formatTableRaw_givenFormatWithStuff_throwsIllegalArgumentException() {
+        Output.formatTableRaw(table, "{null{");
+    }
+
+    @Test
+    public void formatTableRaw_givenFormatWithEscapedOpeningBrace_formatsCorrectly() {
         Iterable<String> expected = Arrays.asList("{", "{");
-        Iterable<String> actual = Output.formatTable(table, "{{");
+        Iterable<String> actual = Output.formatTableRaw(table, "{{");
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void formatTable_givenFormatWithEscapedClosingBrace_formatsCorrectly() {
+    public void formatTableRaw_givenFormatWithEscapedClosingBrace_formatsCorrectly() {
         Iterable<String> expected = Arrays.asList("}", "}");
-        Iterable<String> actual = Output.formatTable(table, "}}");
+        Iterable<String> actual = Output.formatTableRaw(table, "}}");
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void formatTable_givenFormatWithPercentage_formatsCorrectly() {
+    public void formatTableRaw_givenFormatWithPercentage_formatsCorrectly() {
         Iterable<String> expected = Arrays.asList("%", "%");
-        Iterable<String> actual = Output.formatTable(table, "%");
+        Iterable<String> actual = Output.formatTableRaw(table, "%");
 
         assertEquals(expected, actual);
     }
 
     @Test
-    public void formatTable_formatsCorrectly() {
+    public void formatTableRaw_formatsCorrectly() {
         Iterable<String> expected = Arrays.asList("one=%{1.0}", "two=%{}");
-        Iterable<String> actual = Output.formatTable(table, "{abc}=%{{{xyz}}}");
+        Iterable<String> actual = Output.formatTableRaw(table,
+                "{abc}=%{{{xyz}}}");
 
         assertEquals(expected, actual);
     }
