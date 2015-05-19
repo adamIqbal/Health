@@ -36,15 +36,17 @@ public class XlsParser implements Parser {
     Objects.requireNonNull(config);
 
     Table table = config.buildTable();
+
     Workbook wb = new HSSFWorkbook();
-    
+
     Sheet sheet = wb.getSheetAt(0);
     for (Row row : sheet) {
       for (Cell cell : row) {
         // Do something here
       }
+    }
 
     return table;
-  }
 
+  }
 }
