@@ -1,5 +1,6 @@
 package com.health.input;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -36,8 +37,9 @@ public class XlsParser implements Parser {
     Objects.requireNonNull(config);
 
     Table table = config.buildTable();
-
-    Workbook wb = new HSSFWorkbook();
+    
+    FileInputStream io = new FileInputStream(path);
+    HSSFWorkbook wb = new HSSFWorkbook(io);
 
     Sheet sheet = wb.getSheetAt(0);
     for (Row row : sheet) {
@@ -45,7 +47,7 @@ public class XlsParser implements Parser {
         // Do something here
       }
     }
-
+    wb.close();
     return table;
 
   }
