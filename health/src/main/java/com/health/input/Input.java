@@ -55,7 +55,8 @@ public final class Input {
         assert format != null;
 
         switch (format.toLowerCase()) {
-        case "txt":
+        case "xls":
+          return new XlsParser();
         case "text":
             return new TextParser();
         default:
