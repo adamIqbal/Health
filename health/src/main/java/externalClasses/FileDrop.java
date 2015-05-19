@@ -341,7 +341,16 @@ public class FileDrop
                 {
                     log(out, "FileDrop: drop event.");
                     try
-                    { // Get whatever was dropped
+                    { 
+                    	// If it's a Swing component, reset its border
+                        if (c instanceof javax.swing.JComponent)
+                        {
+                            javax.swing.JComponent jc = (javax.swing.JComponent) c;
+                            jc.setBorder(normalBorder);
+                            log(out, "FileDrop: normal border restored.");
+                        } // end if: JComponent
+                        
+                    	// Get whatever was dropped
                         java.awt.datatransfer.Transferable tr = evt
                                 .getTransferable();
 
@@ -429,16 +438,6 @@ public class FileDrop
                         ufe.printStackTrace(out);
                         evt.rejectDrop();
                     } // end catch: UnsupportedFlavorException
-                    finally
-                    {
-                        // If it's a Swing component, reset its border
-                        if (c instanceof javax.swing.JComponent)
-                        {
-                            javax.swing.JComponent jc = (javax.swing.JComponent) c;
-                            jc.setBorder(normalBorder);
-                            log(out, "FileDrop: normal border restored.");
-                        } // end if: JComponent
-                    } // end finally
                 } // end drop
 
                 public void dragExit(java.awt.dnd.DropTargetEvent evt)
