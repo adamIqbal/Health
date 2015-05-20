@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -154,7 +153,7 @@ public final class FileListingRow {
 	public void fillComboBox() {
 
 		try {
-			List<File> filesInFolder = Files.walk(Paths.get("data/configXmls"))
+			List<File> filesInFolder = Files.walk(Paths.get(GUImain.PATHTOXMLFORMATS))
 					.filter(Files::isRegularFile).map(Path::toFile)
 					.collect(Collectors.toList());
 			String[] formats = new String[filesInFolder.size() + 1];

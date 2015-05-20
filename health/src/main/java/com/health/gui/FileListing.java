@@ -35,6 +35,14 @@ public class FileListing extends JPanel {
 	private static int maxStringLength = 50;
 
 	/**
+	 * get the data from filelisting.
+	 * @return fileListingRows the file data.
+	 */
+	public static ArrayList<FileListingRow> getFileListingRows() {
+		return fileListingRows;
+	}
+
+	/**
 	 * Constructor for the fileListing.
 	 */
 	public FileListing() {
