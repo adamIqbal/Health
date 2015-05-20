@@ -19,6 +19,7 @@ public class GUImain extends JFrame {
 	 * Starts up GUI mainly for development.
 	 *
 	 * @param args
+	 *            arguments for constructor.
 	 */
 	public static void main(final String[] args) {
 
@@ -51,7 +52,7 @@ public class GUImain extends JFrame {
 	/**
 	 * sets the frame variables.
 	 */
-	private void initializeFrame(int width, int height) {
+	private void initializeFrame(final int width, final int height) {
 		this.setSize(width, height);
 
 		Toolkit tk = Toolkit.getDefaultToolkit();

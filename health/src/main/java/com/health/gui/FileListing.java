@@ -27,15 +27,15 @@ public class FileListing extends JPanel {
 	private static int fileCount = 0;
 	private static Color borderColor = Color.BLACK;
 
-	private static int TOP = 0;
-	private static int MIDDLE = 1;
-	private static int BOTTOM = 2;
-	private static int SINGLE = 3;
+	private static final int TOP = 0;
+	private static final int MIDDLE = 1;
+	private static final int BOTTOM = 2;
+	private static final int SINGLE = 3;
 
 	private static int maxStringLength = 50;
 
 	/**
-	 *
+	 * Constructor for the fileListing.
 	 */
 	public FileListing() {
 
@@ -134,7 +134,7 @@ public class FileListing extends JPanel {
 					textField.setEditable(false);
 					new FileDrop(textField, textField.getBorder(),
 							new FileDrop.Listener() {
-								public void filesDropped(java.io.File[] files) {
+								public void filesDropped(final File[] files) {
 									for (int i = 0; i < files.length; i++) {
 										FileListing.addFile(files[i]);
 									}
@@ -222,10 +222,13 @@ public class FileListing extends JPanel {
 
 	/**
 	 * make a row in the listing.
-	 * @param rowType, defines the kind of row needed to be made
+	 *
+	 * @param rowType
+	 *            defines the kind of row needed to be made.
 	 * @param index
+	 *            the index of the row.
 	 */
-	private static void makeRow(int rowType, int index) {
+	private static void makeRow(final int rowType, final int index) {
 		// set bordervariables;
 		int top = 0;
 		int bottom = 0;
@@ -269,7 +272,7 @@ public class FileListing extends JPanel {
 			textField.setBorder(new MatteBorder(0, 0, bottom, 0, borderColor));
 			new FileDrop(textField, textField.getBorder(),
 					new FileDrop.Listener() {
-						public void filesDropped(java.io.File[] files) {
+						public void filesDropped(final File[] files) {
 							for (int i = 0; i < files.length; i++) {
 								FileListing.addFile(files[i], fileListingRows
 										.get(i).getXmlFormat()
@@ -291,9 +294,11 @@ public class FileListing extends JPanel {
 
 	/**
 	 * add a file to the row array.
+	 *
 	 * @param newFile
+	 *            is the new file.
 	 */
-	public static void addFile(File newFile) {
+	public static void addFile(final File newFile) {
 		FileListingRow row = new FileListingRow();
 
 		row.setFileString(newFile.getPath(), maxStringLength);
@@ -304,10 +309,13 @@ public class FileListing extends JPanel {
 
 	/**
 	 * add a file to rows array.
+	 *
 	 * @param newFile
+	 *            the file to be added.
 	 * @param xmlFormat
+	 *            the format in which it should be added.
 	 */
-	public static void addFile(File newFile, String xmlFormat) {
+	public static void addFile(final File newFile, final String xmlFormat) {
 		FileListingRow row = new FileListingRow();
 
 		row.setFileString(newFile.getPath(), maxStringLength);
@@ -319,10 +327,13 @@ public class FileListing extends JPanel {
 
 	/**
 	 * delete a file from listing array.
+	 *
 	 * @param toBeDeleted
+	 *            the filestring of the to be deleted file.
 	 * @param xmlFormat
+	 *            the selected xmlFormat for this file.
 	 */
-	public static void delete(String toBeDeleted, String xmlFormat) {
+	public static void delete(final String toBeDeleted, final String xmlFormat) {
 		boolean found = false;
 		for (int i = 0; i < fileCount && !found; i++) {
 			if (fileListingRows.get(i).getFileString().equals(toBeDeleted)
@@ -338,9 +349,11 @@ public class FileListing extends JPanel {
 
 	/**
 	 * change format of a group of files with same format.
+	 *
 	 * @param formatXmlString
+	 *            the selected format as string.
 	 */
-	public static void changeFormat(String formatXmlString) {
+	public static void changeFormat(final String formatXmlString) {
 		for (int i = 0; i < fileListingRows.size(); i++) {
 			// if xmlformat changed
 			if (fileListingRows.get(i).getXmlFormat().getSelectedItem()

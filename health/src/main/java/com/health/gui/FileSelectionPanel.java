@@ -21,7 +21,7 @@ import javax.swing.border.EmptyBorder;
 public class FileSelectionPanel extends JPanel {
 
 	private Insets emptyBorderFileListing = new Insets(70, 85, 70, 85);
-	
+
 	/**
 	 * Constructor which set the panel layout and adds.
 	 * components
