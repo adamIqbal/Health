@@ -1,4 +1,4 @@
-package GUI;
+package com.health.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,34 +11,42 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class ScriptPanel extends JPanel{
-	
-	public ScriptPanel(){
+/**
+ * class creates and fills the panel for scripting.
+ *
+ * @author Daan
+ */
+public class ScriptPanel extends JPanel {
+
+	/**
+	 * function creates and fill the panel.
+	 */
+	public ScriptPanel() {
 
 		this.setLayout(new BorderLayout());
-		
-		JPanel panel = new JPanel(new BorderLayout());
-		
-		JTextArea scriptArea = new JTextArea(2,1);
-		scriptArea.setBorder(BorderFactory.createLineBorder(Color.black));
-		
 
+		JPanel panel = new JPanel(new BorderLayout());
+
+		JTextArea scriptArea = new JTextArea(2, 1);
+		scriptArea.setBorder(
+				BorderFactory.createLineBorder(Color.black));
 
 		panel.add(scriptArea, BorderLayout.CENTER);
-		
+
 		JButton startAnalasisButton = new JButton("Start Analyse");
-		JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel southPanel = new JPanel(
+				new FlowLayout(FlowLayout.RIGHT));
 		southPanel.add(startAnalasisButton);
 		panel.add(southPanel, BorderLayout.SOUTH);
-		
+
 		JTextField textAbove = new JTextField("Script: ");
 		textAbove.setEditable(false);
 		textAbove.setDisabledTextColor(Color.black);
-		
+
 		panel.add(textAbove, BorderLayout.NORTH);
-		panel.setBorder(new EmptyBorder(10,80,10,80));
-		
+		panel.setBorder(new EmptyBorder(10, 80, 10, 80));
+
 		this.add(panel, BorderLayout.CENTER);
-		
+
 	}
 }
