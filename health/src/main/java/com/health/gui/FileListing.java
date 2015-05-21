@@ -35,6 +35,14 @@ public class FileListing extends JPanel {
 	private static int maxStringLength = 50;
 
 	/**
+	 * get the data from filelisting.
+	 * @return fileListingRows the file data.
+	 */
+	public static ArrayList<FileListingRow> getFileListingRows() {
+		return fileListingRows;
+	}
+
+	/**
 	 * Constructor for the fileListing.
 	 */
 	public FileListing() {
@@ -121,7 +129,6 @@ public class FileListing extends JPanel {
 						&& !fileListingRows.get(i + 1).hasEqualFormat(
 								fileListingRows.get(i))) {
 					makeRow(FileListing.BOTTOM, i);
-					System.out.println("not because last");
 				}
 
 			} catch (IndexOutOfBoundsException e) {
@@ -240,8 +247,6 @@ public class FileListing extends JPanel {
 			bottom = 1;
 		}
 
-		System.out.println(rowType + " in row " + index + " with bottom "
-				+ bottom + " and top " + top);
 		// add fileField to grid
 		fileListingCons.gridy = index + 1;
 		fileListingCons.gridx = 0;

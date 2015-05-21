@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -146,9 +151,23 @@ public final class FileListingRow {
 	 * fill the combobox with all possible xmlformats.
 	 */
 	public void fillComboBox() {
-		String[] formats = {selectFormatString, "textFormat", "fooFormat",
-				"faaFormat" };
-		xmlFormat = new JComboBox<String>(formats);
+
+		try {
+			List<File> filesInFolder = Files.walk(Paths.get(GUImain.PATHTOXMLFORMATS))
+					.filter(Files::isRegularFile).map(Path::toFile)
+					.collect(Collectors.toList());
+			String[] formats = new String[filesInFolder.size() + 1];
+			formats[0] = selectFormatString;
+			for (int i = 1; i <= filesInFolder.size(); i++) {
+				String tmp = filesInFolder.get(i - 1).getName();
+				formats[i] = tmp.substring(0, tmp.lastIndexOf('.'));
+			}
+			xmlFormat = new JComboBox<String>(formats);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
