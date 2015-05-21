@@ -71,24 +71,6 @@ public class ControlModule {
   }
 
   /**
-   * Send data to input module
-   */
-  private void toInputModule() {
-    // maakt input module aan..
-    // geef data..
-    // this.dataset = gevuld Table object.
-
-    return;
-  }
-
-  /**
-   * Send data to output module
-   */
-  private void toOutputModule() {
-
-  }
-
-  /**
    * @return
    */
   public Table getData() {
