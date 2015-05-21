@@ -18,7 +18,7 @@ public class GUImain extends JFrame {
 	/**
 	 * PATHTOXMLFORMAT is the path to all config xmls.
 	 */
-	public static final String PATHTOXMLFORMATS = "data/configXmls";
+	public static final String PATHTOXMLFORMATS = "data/configXmls/";
 
 	/**
 	 * Starts up GUI mainly for development.
