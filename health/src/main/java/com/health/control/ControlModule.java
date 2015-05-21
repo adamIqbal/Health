@@ -35,6 +35,11 @@ public class ControlModule {
     this.dataset = null;
   }
 
+  public ControlModule(Table data) {
+    setData(data);
+    this.dataset = null;
+  }
+
   /**
    * Start analysis based on script
    * 
@@ -48,6 +53,7 @@ public class ControlModule {
     // data.script
 
     String output = Output.formatTable(data);
+
     try {
       Output.writeTable("output.txt", data);
     } catch (IOException e) {

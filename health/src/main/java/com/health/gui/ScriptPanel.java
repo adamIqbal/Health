@@ -110,7 +110,7 @@ public class ScriptPanel extends JPanel {
 			String script = ScriptPanel.getScriptArea().getText();
 
 			ControlModule control = new ControlModule(parsedData, script);
-			control.startAnalysis();
+			String output = control.startAnalysis();
 		}
 
 	}
