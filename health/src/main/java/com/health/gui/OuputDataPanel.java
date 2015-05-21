@@ -12,7 +12,13 @@ public class OuputDataPanel extends JPanel {
 	 * Method to display all outputData.
 	 */
 	public OuputDataPanel() {
+		
+		
 
+	}
+	
+	public static void displayData(String result){
+		
 	}
 
 }
