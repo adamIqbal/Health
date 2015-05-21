@@ -12,9 +12,17 @@ public enum TokenName {
 
     IDENTIFIER(null, TokenType.IDENTIFIER),
 
+    // Literals
+    NUMBER_LITERAL(null, TokenType.LITERAL),
+    STRING_LITERAL(null, TokenType.LITERAL),
+
     // Primitive types
-    NUMBER(null, TokenType.NUMBER),
-    STRING(null, TokenType.STRING),
+    VAR("var", TokenType.KEYWORD),
+    NUMBER("number", TokenType.TYPE),
+    STRING("string", TokenType.TYPE),
+
+    // Keywords
+    NEW("new", TokenType.KEYWORD),
 
     // Query keywords
     FROM("from", TokenType.KEYWORD),
@@ -25,6 +33,11 @@ public enum TokenName {
     BY("by", TokenType.KEYWORD),
     JOIN("join", TokenType.KEYWORD),
     ON("on", TokenType.KEYWORD),
+    INTO("into", TokenType.KEYWORD),
+    ORDERBY("orderby", TokenType.KEYWORD),
+    ASCENDING("ascending", TokenType.KEYWORD),
+    DESCENDING("descending", TokenType.KEYWORD),
+    LET("let", TokenType.KEYWORD),
 
     // Aggregate keywords
     AVG("avg", TokenType.KEYWORD),
@@ -38,6 +51,10 @@ public enum TokenName {
     AMPERSAND_AMPERSAND("&&", TokenType.OPERATOR),
 
     // Punctuation
+    OPEN_BRACE("{", TokenType.PUNCTUATOR),
+    CLOSE_BRACE("}", TokenType.PUNCTUATOR),
+    OPEN_PARENTHESIS("(", TokenType.PUNCTUATOR),
+    CLOSE_PARENTHESIS(")", TokenType.PUNCTUATOR),
     PERIOD(".", TokenType.PUNCTUATOR),
     COMMA(",", TokenType.PUNCTUATOR),
     SEMICOLON(";", TokenType.PUNCTUATOR),

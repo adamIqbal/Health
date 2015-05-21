@@ -19,7 +19,8 @@ public final class MyScriptScanner implements Scanner {
         this.symbolMap = new SymbolMap();
 
         for (TokenName token : TokenName.values()) {
-            if (token.getType() == TokenType.KEYWORD) {
+            if (token.getType() == TokenType.KEYWORD
+                    || token.getType() == TokenType.TYPE) {
                 this.keywordMap.put(token.getLexeme(), token);
             } else if (token.getType() == TokenType.OPERATOR
                     || token.getType() == TokenType.PUNCTUATOR) {
@@ -170,7 +171,8 @@ public final class MyScriptScanner implements Scanner {
 
         int end = reader.getPosition();
 
-        return new Token(reader.getScript(), start, end, TokenName.NUMBER);
+        return new Token(reader.getScript(), start, end,
+                TokenName.NUMBER_LITERAL);
     }
 
     private static Token readStringLiteral(final ScriptReader reader) {
@@ -189,6 +191,8 @@ public final class MyScriptScanner implements Scanner {
             int next = reader.peek();
 
             if (next == -1 || next == '\n' || next == '"') {
+                reader.skip(1);
+
                 end = reader.getPosition();
 
                 break;
@@ -208,8 +212,8 @@ public final class MyScriptScanner implements Scanner {
             }
         }
 
-        return new Token(reader.getScript(), start, end, TokenName.STRING,
-                string.toString());
+        return new Token(reader.getScript(), start, end,
+                TokenName.STRING_LITERAL, string.toString());
     }
 
     private static int readEscapedCharacter(final ScriptReader reader) {
@@ -222,7 +226,7 @@ public final class MyScriptScanner implements Scanner {
         case '\'':
             reader.skip(1);
             return '\'';
-        case '\"':
+        case '"':
             reader.skip(1);
             return '\"';
         case '\\':

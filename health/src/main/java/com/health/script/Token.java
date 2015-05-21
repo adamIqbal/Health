@@ -128,4 +128,17 @@ public final class Token {
     public void setValue(Object value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder("<");
+        string.append(this.name.toString());
+        string.append('>');
+        string.append(this.getLexeme());
+        string.append("</");
+        string.append(this.name.toString());
+        string.append('>');
+
+        return string.toString();
+    }
 }

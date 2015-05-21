@@ -3,10 +3,10 @@ package com.health.script;
 public enum TokenType {
     UNKNOWN,
     IDENTIFIER,
-    NUMBER,
-    STRING,
+    LITERAL,
     KEYWORD,
     OPERATOR,
     PUNCTUATOR,
-    COMMENT
+    COMMENT,
+    TYPE
 }
