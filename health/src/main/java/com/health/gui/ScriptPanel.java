@@ -111,6 +111,9 @@ public class ScriptPanel extends JPanel {
 
 			ControlModule control = new ControlModule(parsedData, script);
 			String output = control.startAnalysis();
+			
+			OutputDataPanel.displayData(output);
+			
 		}
 
 	}
