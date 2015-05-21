@@ -1,8 +1,6 @@
 package com.health.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -36,6 +34,12 @@ public class OutputDataPanel extends JPanel {
 
 	}
 
+	/**
+	 * set the text of the display area.
+	 *
+	 * @param result
+	 *            the result of the analysis
+	 */
 	public static void displayData(String result) {
 		outputArea.setText(result);
 		outputArea.revalidate();
