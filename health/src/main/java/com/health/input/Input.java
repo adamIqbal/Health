@@ -12,7 +12,7 @@ import com.health.Table;
  * Utility class for parsing input data.
  */
 public final class Input {
-    private Input() {
+    public Input() {
     }
 
     /**

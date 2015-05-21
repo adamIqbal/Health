@@ -4,11 +4,11 @@ import java.util.Arrays;
 import com.health.*;
 
 /**
- * @author bjorn
+ * 
  *
  */
 public class ControlModule {
-	private InputData[] data;
+	private Table data;
 	private String script;
 
 	private Table dataset;
@@ -26,7 +26,7 @@ public class ControlModule {
      * @param data
      * @param script
      */
-    public ControlModule(InputData[] data, String script) {
+    public ControlModule(Table data, String script) {
     	setData(data);
     	setScript(script);
     	this.dataset = null;
@@ -75,15 +75,15 @@ public class ControlModule {
 	/**
 	 * @return
 	 */
-	public InputData[] getData() {
+	public Table getData() {
 		return data;
 	}
 
 	/**
-	 * @param data
+	 * @param data2
 	 */
-	public void setData(InputData[] data) {
-		this.data = data;
+	public void setData(Table data2) {
+		this.data = data2;
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class ControlModule {
 	 */
 	@Override
 	public String toString() {
-		return "ControlModule [data=" + Arrays.toString(data) + ", script="
+		return "ControlModule [data=" + data.toString() + ", script="
 				+ script + ", dataset=" + dataset + "]";
 	}
     

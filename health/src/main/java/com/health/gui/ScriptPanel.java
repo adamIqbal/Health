@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -13,9 +14,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
+import com.health.Table;
 import com.health.control.InputData;
 import com.health.control.ControlModule;
+import com.health.input.Input;
+import com.health.input.InputException;
 
 /**
  * class creates and fills the panel for scripting.
@@ -82,7 +89,7 @@ public class ScriptPanel extends JPanel {
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			ArrayList<FileListingRow> files = FileListing.getFileListingRows();
-			InputData[] inputData = new InputData[files.size()];
+			Table parsedData = new Table(null);
 
 			for (int i = 0; i < files.size(); i++) {
 				String xmlFormat = files.get(i).getXmlFormat()
@@ -92,12 +99,18 @@ public class ScriptPanel extends JPanel {
 
 				System.out.println(xmlFormat + " " + fileString);
 
-				inputData[i] = new InputData(xmlFormat, fileString);
+				try {
+          new Input();
+          parsedData = Input.readTable(fileString,xmlFormat);
+        } catch (IOException | ParserConfigurationException | SAXException | InputException e1) {
+          System.out.println("Error: Something went wrong parsing the config and data!");
+          e1.printStackTrace();
+        }
 			}
 
 			String script = ScriptPanel.getScriptArea().getText();
 
-			ControlModule control = new ControlModule(inputData, script);
+			ControlModule control = new ControlModule(parsedData, script);
 			control.startAnalysis();
 		}
 
