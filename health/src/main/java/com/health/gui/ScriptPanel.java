@@ -85,11 +85,12 @@ public class ScriptPanel extends JPanel {
     /**
      * Makes inputData array and calls the control module.
      *
-     * @param e
+     * @param event
      */
-    public void actionPerformed(final ActionEvent e) {
+    public void actionPerformed(final ActionEvent event) {
       ArrayList<FileListingRow> files = FileListing.getFileListingRows();
-      String xmlFormat = "", fileString = "";
+      String xmlFormat = "";
+      String fileString = "";
       Table parsedData = null;
 
       for (int i = 0; i < files.size(); i++) {
@@ -115,6 +116,5 @@ public class ScriptPanel extends JPanel {
       OutputDataPanel.displayData(output);
 
     }
-
   }
 }
