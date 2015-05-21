@@ -100,7 +100,6 @@ public class ScriptPanel extends JPanel {
 				System.out.println(xmlFormat + " " + fileString);
 
 				try {
-          new Input();
           parsedData = Input.readTable(fileString,xmlFormat);
         } catch (IOException | ParserConfigurationException | SAXException | InputException e1) {
           System.out.println("Error: Something went wrong parsing the config and data!");
