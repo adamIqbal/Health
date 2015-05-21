@@ -19,7 +19,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.health.Table;
-import com.health.control.InputData;
 import com.health.control.ControlModule;
 import com.health.input.Input;
 import com.health.input.InputException;
