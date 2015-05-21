@@ -41,7 +41,7 @@ public class GUImain extends JFrame {
 		// define tabbed pane
 		JTabbedPane tabbedPane = new JTabbedPane();
 		JPanel inputPanel = new InputPanel();
-		JPanel outputDataPanel = new OuputDataPanel();
+		JPanel outputDataPanel = new OutputDataPanel();
 		JPanel outputVisualPanel = new OutputVisualPanel();
 
 		tabbedPane.addTab("Input", inputPanel);

@@ -6,12 +6,12 @@ import javax.swing.JPanel;
  * @author daan
  *
  */
-public class OuputDataPanel extends JPanel {
+public class OutputDataPanel extends JPanel {
 
 	/**
 	 * Method to display all outputData.
 	 */
-	public OuputDataPanel() {
+	public OutputDataPanel() {
 		
 		
 
