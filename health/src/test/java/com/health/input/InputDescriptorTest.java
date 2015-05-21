@@ -53,7 +53,7 @@ public class InputDescriptorTest {
         columntypes : [String, Number, String, Number, Number, Number]
          */
 
-        InputDescriptor actual = new InputDescriptor("data/data_bjorn/Admire2config.xml");
+        InputDescriptor actual = new InputDescriptor("data/configXmls/admireTxtConfig.xml");
 
         assertEquals(startDelimeter, actual.getStartDelimiter());
         assertEquals(endDelimeter, actual.getEndDelimiter());
@@ -66,7 +66,7 @@ public class InputDescriptorTest {
 
     @Test
     public void buildTable_Test() throws ParserConfigurationException, InputException, SAXException, IOException {
-        InputDescriptor id = new InputDescriptor("data/data_bjorn/Admire2config.xml");
+        InputDescriptor id = new InputDescriptor("data/configXmls/admireTxtConfig.xml");
         Table table = id.buildTable();
     }
 }
