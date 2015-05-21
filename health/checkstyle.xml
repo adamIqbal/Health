@@ -5,13 +5,15 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: Sun Checks Modified
+    Checkstyle-Configuration: Custom Sun Checks
     Description: 
-Checkstyle configuration that checks the sun coding conventions with a few minor changes.
+A modification of the Sun Checks configuration with several minor changes.
 -->
 <module name="Checker">
-  <property name="severity" value="warning"/>
+  <property name="severity" value=  "warning"/>
+  <module name="SuppressWarningsFilter"/>
   <module name="TreeWalker">
+    <module name="SuppressWarningsHolder"/>
     <module name="JavadocMethod">
       <property name="scope" value="protected"/>
       <property name="suppressLoadErrors" value="true"/>
@@ -34,7 +36,9 @@ Checkstyle configuration that checks the sun coding conventions with a few minor
     <module name="IllegalImport"/>
     <module name="RedundantImport"/>
     <module name="UnusedImports"/>
-    <module name="LineLength"/>
+    <module name="LineLength">
+      <property name="max" value="120"/>
+    </module>
     <module name="MethodLength"/>
     <module name="ParameterNumber"/>
     <module name="EmptyForIteratorPad"/>
@@ -87,7 +91,10 @@ Checkstyle configuration that checks the sun coding conventions with a few minor
   <module name="NewlineAtEndOfFile"/>
   <module name="Translation"/>
   <module name="FileLength"/>
-  <module name="FileTabCharacter"/>
+  <module name="FileTabCharacter">
+    <property name="severity" value="ignore"/>
+    <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+  </module>
   <module name="RegexpSingleline">
     <property name="format" value="\s+$"/>
     <property name="message" value="Line has trailing spaces."/>
