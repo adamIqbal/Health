@@ -51,7 +51,7 @@ public class ControlModule {
     }
 
     // data.script
-
+    data = data.where((record) -> record.getNumberValue("value") > 200);
     String output = Output.formatTable(data);
 
     try {
