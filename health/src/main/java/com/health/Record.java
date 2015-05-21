@@ -2,6 +2,7 @@ package com.health;
 
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -153,6 +154,45 @@ public final class Record {
      */
     public void setValue(final String name, final String value) {
         this.setValue(name, value, ValueType.String);
+    }
+
+    /**
+     * Adds a copy of this record to the given table. The table must have
+     * identical columns to the table that this record belongs to.
+     *
+     * @param table
+     *            the table to copy the record to.
+     */
+    public void copyTo(final Table table) {
+        Objects.requireNonNull(table);
+
+        List<Column> columns1 = this.table.getColumns();
+        List<Column> columns2 = table.getColumns();
+        int length = columns1.size();
+
+        if (length != columns2.size()) {
+            throw new IllegalArgumentException(
+                    "The given table must have the same columns as the table that this record belongs to.");
+        }
+
+        for (int i = 0; i < length; i++) {
+
+            ValueType type1 = columns1.get(i).getType();
+            ValueType type2 = columns2.get(i).getType();
+
+            if (type1 != type2) {
+                throw new IllegalArgumentException(
+                        "The given table must have the same columns as the table that this record belongs to.");
+            }
+        }
+
+        Record copy = new Record(table);
+
+        copy.values = new Object[length];
+
+        for (int i = 0; i < length; i++) {
+            copy.values[i] = this.values[i];
+        }
     }
 
     private Object getValue(final String name, final EnumSet<ValueType> types) {
