@@ -41,7 +41,7 @@ class XmlWizardListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		XmlWizard xml = new XmlWizard();
+		XmlWizard xml = new XmlWizard("data/configXmls/");
 	}
 	
 }
