@@ -12,7 +12,6 @@ import java.util.Iterator;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 import javax.swing.border.SoftBevelBorder;
 
 public class XmlWizard extends JFrame {
@@ -21,12 +20,7 @@ public class XmlWizard extends JFrame {
 		this.setLayout(new BorderLayout());
 		this.setSize(500, 500);
 		
-		try {
-			this.add(new XmlPanel(path), BorderLayout.CENTER);
-		} catch (IOException e) {
-			//Some file not found warning
-			e.printStackTrace();
-		}
+		this.add(new XmlFilePanel(path), BorderLayout.WEST);
 		
 		this.setTitle("XML Editor");
 		this.setVisible(true);
@@ -34,32 +28,50 @@ public class XmlWizard extends JFrame {
 	
 }
 
-class XmlPanel extends JPanel {
-	public XmlPanel(String path) throws IOException {
+class XmlFilePanel extends JPanel {	
+	public XmlFilePanel(String path) {
 		super();
-		
 		DefaultListModel<Path> listModel = new DefaultListModel<Path>();
 		this.add(new FileList(path, listModel));
-		
+	}
+}
+
+class XmlEditPanel extends JPanel {
+	public XmlEditPanel() {
+		super();
+	}
+}
+
+class XmlButtonPanel extends JPanel {
+	public XmlButtonPanel() {
+		super();
 	}
 }
 
 class FileList extends JList<Path> {
-	public FileList(String path, DefaultListModel<Path> listModel) throws IOException {
+	public FileList(String path, DefaultListModel<Path> listModel) {
 		super(listModel);
 		this.setPreferredSize(new Dimension(200,300));
 		this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
 		this.setBackground(Color.WHITE);
 		
 		Path dir = Paths.get(path);
-		DirectoryStream<Path> stream = Files.newDirectoryStream(dir);
-		Iterator<Path> iterator = stream.iterator();
-		
-		while(iterator.hasNext()) {
-			listModel.addElement(iterator.next());
+
+		try {
+			DirectoryStream<Path> stream;
+			stream = Files.newDirectoryStream(dir);
+			Iterator<Path> iterator = stream.iterator();
+			
+			while(iterator.hasNext()) {
+				listModel.addElement(iterator.next().getFileName());
+			}
+		} catch (IOException e) {
+			//Directory not found, add no elements
 		}
+		
+		//Just dummy Path objects
 		for(int i = 0; i < 10; i++) {
-			listModel.addElement(Paths.get("path", "to", "files"));
+			listModel.addElement(Paths.get("path", "to", "files", Integer.toString(i)));
 		}
 		
 	}
