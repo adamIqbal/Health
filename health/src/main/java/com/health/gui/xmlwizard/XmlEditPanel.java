@@ -136,18 +136,26 @@ class XmlDelimiterEditPanel extends JPanel {
 
 class XmlColumnEditPanel extends JPanel implements ActionListener {
 	private JPanel columnPanel = new JPanel(new GridLayout(0,1));
+	private JPanel buttonPanel = new JPanel();
 	private JButton addColumnButton = new JButton("Add extra column");
+	private Dimension preferredDim;
+	
+	//Maximum amount of columns
+	private final int maxColumns = 10;
 	
 	public XmlColumnEditPanel() {
 		super();
 		
-		this.setLayout(new GridLayout(0,1));
+		this.setLayout(new BorderLayout());
+		
+		preferredDim = new Dimension(100,25);
 		
 		addColumnButton.addActionListener(this);
-		addColumnButton.setPreferredSize(new Dimension(100,100));
+		buttonPanel.setPreferredSize(new Dimension(150,50));
+		buttonPanel.add(addColumnButton);
 		
-		this.add(columnPanel);
-		this.add(addColumnButton);
+		this.add(columnPanel, BorderLayout.CENTER);
+		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
 	public void setColumns(List<String> columns, List<ValueType> columnTypes) {
@@ -160,6 +168,8 @@ class XmlColumnEditPanel extends JPanel implements ActionListener {
 			JPanel column = new JPanel();
 			JTextField columnName = new JTextField();
 			JTextField columnValue = new JTextField();
+			columnName.setPreferredSize(preferredDim);
+			columnValue.setPreferredSize(preferredDim);
 			
 			columnName.setText(columns.get(i));
 			columnValue.setText(columnTypes.get(i).toString());
@@ -196,9 +206,15 @@ class XmlColumnEditPanel extends JPanel implements ActionListener {
 	}
 	
 	public void addColumn() {
-		JPanel panel = new JPanel();		
-		panel.add(new JTextField(" "));
-		panel.add(new JTextField(" "));
+		JPanel panel = new JPanel();	
+		JTextField columnName = new JTextField();
+		JTextField columnValue = new JTextField();
+		
+		columnName.setPreferredSize(preferredDim);
+		columnValue.setPreferredSize(preferredDim);
+		
+		panel.add(columnName);
+		panel.add(columnValue);
 		
 		this.columnPanel.add(panel);
 		this.columnPanel.repaint();
@@ -207,8 +223,12 @@ class XmlColumnEditPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		addColumn();		
-		System.out.println("Add column button pressed");
+		if(this.columnPanel.getComponents().length <= maxColumns) {
+			addColumn();
+		}	
+		else {
+			System.out.println("Maximum columns is " + maxColumns + " (determined in XmlColumnEditPanel class)");
+		}
 	}
 	
 }
