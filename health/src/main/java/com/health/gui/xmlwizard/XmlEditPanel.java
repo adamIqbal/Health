@@ -133,10 +133,16 @@ class XmlDelimiterEditPanel extends JPanel {
 }
 
 class XmlColumnEditPanel extends JPanel {
+	private JPanel columnPanel = new JPanel(new GridLayout(0,1));
+	private JButton addColumnButton = new JButton("Add extra column");
+	
 	public XmlColumnEditPanel() {
 		super();
 		
 		this.setLayout(new GridLayout(0,1));
+		
+		this.add(columnPanel);
+		this.add(addColumnButton);
 	}
 	
 	public void setColumns(List<String> columns, List<ValueType> columnTypes) {
@@ -154,13 +160,13 @@ class XmlColumnEditPanel extends JPanel {
 			columnValue.setText(columnTypes.get(i).toString());
 			column.add(columnName);
 			column.add(columnValue);
-			this.add(column);
+			this.columnPanel.add(column);
 		}
 	}
 	
 	public List<String> getColumns() {
 		ArrayList<String> columns = new ArrayList<String>();
-		for(Component comp : this.getComponents()) {
+		for(Component comp : this.columnPanel.getComponents()) {
 			JPanel column = (JPanel) comp;
 			columns.add(((JTextField) column.getComponents()[0]).getText());
 		}
@@ -170,7 +176,7 @@ class XmlColumnEditPanel extends JPanel {
 	
 	public List<ValueType> getColumnTypes() {
 		ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
-		for(Component comp : this.getComponents()) {
+		for(Component comp : this.columnPanel.getComponents()) {
 			JPanel column = (JPanel) comp;
 			
 			if(((JTextField) column.getComponents()[1]).getText().equals(ValueType.String.toString())) {
