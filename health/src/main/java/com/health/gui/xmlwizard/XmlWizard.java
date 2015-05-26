@@ -1,0 +1,58 @@
+package com.health.gui.xmlwizard;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class XmlWizard extends JFrame implements ActionListener {
+	private XmlFilePanel filePanel;
+	private XmlEditPanel editPanel;
+	
+	public XmlWizard(String path) {
+		super();
+		this.setSize(500, 500);
+				
+		filePanel = new XmlFilePanel(path);
+		editPanel = new XmlEditPanel();
+		
+		this.getContentPane().add(filePanel);
+		filePanel.addActionListenerToNewFileButton(this);
+		filePanel.addActionListenerToSelectFileButton(this);
+		editPanel.addActionListenerToContinueButton(this);
+			
+		this.setTitle("XML Editor");
+		this.setVisible(true);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton source = (JButton) e.getSource();
+		if(source.equals(filePanel.getNewFileButton())) {
+			this.getContentPane().remove(filePanel);
+			this.setContentPane(editPanel);
+			this.repaint();
+			this.revalidate();
+		}
+		else if(source.equals(filePanel.getSelectFileButton())) {
+			if(filePanel.getSelectedFile() != null) {
+				System.out.println("Selected XML: " + filePanel.getSelectedFile().toString());
+				
+				editPanel.loadCurrentValues(filePanel.getSelectedFile());
+				this.getContentPane().remove(filePanel);
+				this.setContentPane(editPanel);
+				this.repaint();
+				this.revalidate();	
+			}
+		}
+		else if(source.equals(editPanel.getContinueButton())) {
+			System.out.println(source.toString());
+			XmlConfigObject config = editPanel.getValues();
+			System.out.println(config.toString());
+		}
+		else {
+			System.out.println(source.toString());
+		}
+	}
+}

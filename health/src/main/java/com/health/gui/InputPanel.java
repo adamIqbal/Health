@@ -8,6 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import com.health.gui.xmlwizard.XmlWizard;
+
 /**
  * Class creates and fills the input panel under the input tab.
  *

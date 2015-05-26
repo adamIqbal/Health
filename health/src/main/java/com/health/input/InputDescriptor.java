@@ -131,6 +131,22 @@ public final class InputDescriptor {
     public String getEndDelimiter() {
         return endDelimeter;
     }
+    
+    /**
+     * Gets a List containing the names of the columns as described in the input file
+     * @return a List of Strings
+     */
+    public List<String> getColumns() {
+    	return columns;
+    }
+    
+    /**
+     * Gets a List containing the ValueType of the columns as described in the input file
+     * @return a List of ValueType objects
+     */
+    public List<ValueType> getColumnTypes() {
+    	return columnTypes;
+    }
 
     private Element parseXml(final String path)
             throws ParserConfigurationException,
