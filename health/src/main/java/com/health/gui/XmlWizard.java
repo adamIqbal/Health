@@ -30,6 +30,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import com.health.input.InputDescriptor;
+import com.health.input.InputException;
+
 public class XmlWizard extends JFrame implements ActionListener {
 	XmlFilePanel filePanel;
 	XmlDelimiterEditPanel delimPanel;
@@ -59,11 +62,14 @@ public class XmlWizard extends JFrame implements ActionListener {
 			this.revalidate();
 		}
 		else if(source.equals(filePanel.getSelectFileButton())) {
-			delimPanel.setSelectedXML(filePanel.getSelectedFile());
-			this.getContentPane().remove(filePanel);
-			this.setContentPane(delimPanel);
-			this.repaint();
-			this.revalidate();			
+			if(filePanel.getSelectedFile() != null) {
+				delimPanel.setSelectedXML(filePanel.getSelectedFile());
+				System.out.println("Selected XML: " + filePanel.getSelectedFile().toString());
+				this.getContentPane().remove(filePanel);
+				this.setContentPane(delimPanel);
+				this.repaint();
+				this.revalidate();	
+			}
 		}
 	}
 }
@@ -126,18 +132,23 @@ class XmlFilePanel extends JPanel {
 }
 
 class XmlDelimiterEditPanel extends JPanel {
-	private Path selectedXML;
+	private JTextField startDelimField, endDelimField, delimiterField;
+	private JLabel startDelimLabel, endDelimLabel, delimiterLabel;
+	private InputDescriptor id;
 	
 	public XmlDelimiterEditPanel() {
 		super();
 		this.setLayout(new GridLayout(0,2));
-		JLabel startDelimLabel = new JLabel("Start Delimiter");
-		JLabel endDelimLabel = new JLabel("End Delimiter");
-		JLabel delimiterLabel = new JLabel("Delimiter");
+		startDelimLabel = new JLabel("Start Delimiter");
+		endDelimLabel = new JLabel("End Delimiter");
+		delimiterLabel = new JLabel("Delimiter");
 		
-		JTextField startDelimField = new JTextField();
-		JTextField endDelimField = new JTextField();
-		JTextField delimiterField = new JTextField();
+		startDelimField = new JTextField();
+		startDelimField.setHorizontalAlignment(JTextField.CENTER);
+		endDelimField = new JTextField();
+		endDelimField.setHorizontalAlignment(JTextField.CENTER);
+		delimiterField = new JTextField();
+		delimiterField.setHorizontalAlignment(JTextField.CENTER);
 		
 		this.add(startDelimLabel);
 		this.add(startDelimField);
@@ -147,14 +158,31 @@ class XmlDelimiterEditPanel extends JPanel {
 		this.add(endDelimField);
 	}
 
-	public Path getSelectedXML() {
-		return selectedXML;
-	}
-
 	public void setSelectedXML(Path selectedXML) {
-		this.selectedXML = selectedXML;
+		try {
+			this.id = new InputDescriptor(selectedXML.toString());
+			
+			this.startDelimField.setText(this.getStartDelimiter());
+			this.endDelimField.setText(this.getEndDelimiter());
+			this.delimiterField.setText(this.getDelimiter());
+			
+		} catch (ParserConfigurationException | SAXException | IOException
+				| InputException e) {
+			System.out.println("Error creating inputdescriptor! "+selectedXML.toString());
+		}
 	}
 	
+	public String getStartDelimiter() {
+		return this.id.getStartDelimiter();
+	}
+	
+	public String getEndDelimiter() {
+		return this.id.getEndDelimiter();
+	}
+	
+	public String getDelimiter() {
+		return this.id.getDelimiter();
+	}
 }
 
 class FileList extends JList<Path> {
@@ -172,7 +200,7 @@ class FileList extends JList<Path> {
 			Iterator<Path> iterator = stream.iterator();
 			
 			while(iterator.hasNext()) {
-				listModel.addElement(iterator.next().getFileName());
+				listModel.addElement(iterator.next());
 			}
 		} catch (IOException e) {
 			//Directory not found, add no elements
