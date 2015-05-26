@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import javassist.compiler.ast.Pair;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -25,201 +27,222 @@ import com.health.ValueType;
  * of an input file.
  */
 public final class InputDescriptor {
-    private String startDelimeter;
-    private String endDelimeter;
-    private String delimeter;
-    private String format;
-    private List<String> columns;
-    private List<ValueType> columnTypes;
+	private String startDelimeter;
+	private String endDelimeter;
+	private String delimeter;
+	private String format;
+	private List<String> columns;
+	private List<ValueType> columnTypes;
+	private StartCell startCell;
 
-    /**
-     * Creates a new {@link InputDescriptor}, give the path of the input
-     * descriptor file.
-     *
-     * @param path
-     *            the path of the input descriptor file.
-     * @throws ParserConfigurationException
-     *             if a DocumentBuilder cannot be created which satisfies the
-     *             configuration requested.
-     * @throws SAXException
-     *             if any parse error occur.
-     * @throws IOException
-     *             if any IO errors occur.
-     * @throws InputException
-     *             if the input descriptor file is not formatted correctly.
-     */
-    public InputDescriptor(final String path)
-            throws ParserConfigurationException,
-            SAXException, IOException, InputException {
-        Objects.requireNonNull(path);
+	/**
+	 * Creates a new {@link InputDescriptor}, give the path of the input
+	 * descriptor file.
+	 *
+	 * @param path
+	 *            the path of the input descriptor file.
+	 * @throws ParserConfigurationException
+	 *             if a DocumentBuilder cannot be created which satisfies the
+	 *             configuration requested.
+	 * @throws SAXException
+	 *             if any parse error occur.
+	 * @throws IOException
+	 *             if any IO errors occur.
+	 * @throws InputException
+	 *             if the input descriptor file is not formatted correctly.
+	 */
+	public InputDescriptor(final String path)
+			throws ParserConfigurationException, SAXException, IOException,
+			InputException {
+		Objects.requireNonNull(path);
 
-        columns = new ArrayList<String>();
-        columnTypes = new ArrayList<ValueType>();
+		columns = new ArrayList<String>();
+		columnTypes = new ArrayList<ValueType>();
 
-        Element root = parseXml(path);
+		Element root = parseXml(path);
 
-        try {
-            validate(root);
-            extractAttributes(root);
-            extractColumns(root);
-        } catch (InputException ex) {
-            throw new InputException(
-                    String.format(
-                            "An exception occured when reading input "
-                                    + "descriptor %s: %s",
-                            path, ex.getMessage()), ex);
-        }
-    }
+		try {
+			validate(root);
+			extractAttributes(root);
+			extractColumns(root);
+		} catch (InputException ex) {
+			throw new InputException(String.format(
+					"An exception occured when reading input "
+							+ "descriptor %s: %s", path, ex.getMessage()), ex);
+		}
+	}
 
-    /**
-     * Creates an empty table based on this input descriptor.
-     *
-     * @return an empty table based on this input descriptor.
-     */
-    public Table buildTable() {
-        int size = columns.size();
+	/**
+	 * Creates an empty table based on this input descriptor.
+	 *
+	 * @return an empty table based on this input descriptor.
+	 */
+	public Table buildTable() {
+		int size = columns.size();
 
-        Column[] tableColumns = new Column[size];
+		Column[] tableColumns = new Column[size];
 
-        // Create the column objects
-        for (int i = 0; i < size; i++) {
-            tableColumns[i] = new Column(columns.get(i), i, columnTypes.get(i));
-        }
+		// Create the column objects
+		for (int i = 0; i < size; i++) {
+			tableColumns[i] = new Column(columns.get(i), i, columnTypes.get(i));
+		}
 
-        // Create a table with the columns
-        return new Table(Arrays.asList(tableColumns));
-    }
+		// Create a table with the columns
+		return new Table(Arrays.asList(tableColumns));
+	}
 
-    /**
-     * Gets the format of the input file. For example <code>txt</code> or
-     * <code>xlsx</code>.
-     *
-     * @return the format of the input file.
-     */
-    public String getFormat() {
-        return format;
-    }
+	/**
+	 * Gets the startcell object needed for xls and xlsx files, to determine
+	 * where the table starts.
+	 *
+	 * @return
+	 */
+	public StartCell getStartCell() {
+		return startCell;
+	}
 
-    /**
-     * Gets the delimiter between columns of a <code>txt</code> input file.
-     *
-     * @return the delimiter between columns of a <code>txt</code> input file;
-     *         or null if there is no delimiter.
-     */
-    public String getDelimiter() {
-        return delimeter;
-    }
+	/**
+	 * Gets the list of Columns
+	 * @return
+	 */
+	public List<String> getColumns(){
+		return columns;
+	}
+	/**
+	 * Gets the format of the input file. For example <code>txt</code> or
+	 * <code>xlsx</code>.
+	 *
+	 * @return the format of the input file.
+	 */
+	public String getFormat() {
+		return format;
+	}
 
-    /**
-     * Gets delimiter indicating the start of the data of a <code>txt</code>
-     * input file.
-     *
-     * @return delimiter indicating the start of the data of a <code>txt</code>
-     *         input file; or null if there is no start delimiter.
-     */
-    public String getStartDelimiter() {
-        return startDelimeter;
-    }
+	/**
+	 * Gets the delimiter between columns of a <code>txt</code> input file.
+	 *
+	 * @return the delimiter between columns of a <code>txt</code> input file;
+	 *         or null if there is no delimiter.
+	 */
+	public String getDelimiter() {
+		return delimeter;
+	}
 
-    /**
-     * Gets delimiter indicating the end of the data of a <code>txt</code> input
-     * file.
-     *
-     * @return delimiter indicating the end of the data of a <code>txt</code>
-     *         input file; or null if there is no end delimiter.
-     */
-    public String getEndDelimiter() {
-        return endDelimeter;
-    }
+	/**
+	 * Gets delimiter indicating the start of the data of a <code>txt</code>
+	 * input file.
+	 *
+	 * @return delimiter indicating the start of the data of a <code>txt</code>
+	 *         input file; or null if there is no start delimiter.
+	 */
+	public String getStartDelimiter() {
+		return startDelimeter;
+	}
 
-    private Element parseXml(final String path)
-            throws ParserConfigurationException,
-            SAXException, IOException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
+	/**
+	 * Gets delimiter indicating the end of the data of a <code>txt</code> input
+	 * file.
+	 *
+	 * @return delimiter indicating the end of the data of a <code>txt</code>
+	 *         input file; or null if there is no end delimiter.
+	 */
+	public String getEndDelimiter() {
+		return endDelimeter;
+	}
 
-        Document document = builder.parse(new File(path));
+	private Element parseXml(final String path)
+			throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
 
-        Element root = document.getDocumentElement();
+		Document document = builder.parse(new File(path));
 
-        root.normalize();
+		Element root = document.getDocumentElement();
 
-        return root;
-    }
+		root.normalize();
 
-    private void extractAttributes(final Element root) {
-        assert root != null;
+		return root;
+	}
 
-        format = root.getAttribute("format");
+	private void extractAttributes(final Element root) {
+		assert root != null;
 
-        if (root.hasAttribute("delimeter")) {
-            delimeter = root.getAttribute("delimeter");
-        }
+		format = root.getAttribute("format");
 
-        if (root.hasAttribute("start")) {
-            startDelimeter = root.getAttribute("start");
-        }
+		if (root.hasAttribute("delimeter")) {
+			delimeter = root.getAttribute("delimeter");
+		}
 
-        if (root.hasAttribute("end")) {
-            endDelimeter = root.getAttribute("end");
-        }
-    }
+		if (root.hasAttribute("start")) {
+			startDelimeter = root.getAttribute("start");
+		}
 
-    private void extractColumns(final Element root) throws InputException {
-        assert root != null;
+		if (root.hasAttribute("end")) {
+			endDelimeter = root.getAttribute("end");
+		}
 
-        // Get the descendant column elements from the root element
-        NodeList children = root.getElementsByTagName("column");
+		if (root.hasAttribute("startRow") && root.hasAttribute("startColumn")) {
+			int startRow = Integer.parseInt(root.getAttribute("startRow"));
+			int startColumn = Integer
+					.parseInt(root.getAttribute("startColumn"));
+			startCell = new StartCell(startRow, startColumn);
+		}
+	}
 
-        // Populate the columns list
-        for (int i = 0; i < children.getLength(); i++) {
-            Element column = (Element) children.item(i);
+	private void extractColumns(final Element root) throws InputException {
+		assert root != null;
 
-            columns.add(column.getTextContent());
-            columnTypes.add(getColumnType(column));
-        }
-    }
+		// Get the descendant column elements from the root element
+		NodeList children = root.getElementsByTagName("column");
 
-    private static ValueType getColumnType(final Element column)
-            throws InputException {
-        assert column != null;
+		// Populate the columns list
+		for (int i = 0; i < children.getLength(); i++) {
+			Element column = (Element) children.item(i);
 
-        if (!column.hasAttribute("type")) {
-            return ValueType.String;
-        }
+			columns.add(column.getTextContent());
+			columnTypes.add(getColumnType(column));
+		}
+	}
 
-        try {
-            return ValueType.valueOf(column.getAttribute("type"));
-        } catch (IllegalArgumentException ex) {
-            throw new InputException(String.format(
-                    "Column '%s' has an invalid type: '%s'.",
-                    column.getTextContent(),
-                    column.getAttribute("type")), ex);
-        }
-    }
+	private static ValueType getColumnType(final Element column)
+			throws InputException {
+		assert column != null;
 
-    private void validate(final Element root) throws InputException {
-        assert root != null;
+		if (!column.hasAttribute("type")) {
+			return ValueType.String;
+		}
 
-        // The document must contain a root element named 'data'
-        if (root.getTagName() != "data") {
-            throw new InputException(
-                    "An input descriptor file must contain a root element "
-                            + "named 'data'.");
-        }
+		try {
+			return ValueType.valueOf(column.getAttribute("type"));
+		} catch (IllegalArgumentException ex) {
+			throw new InputException(String.format(
+					"Column '%s' has an invalid type: '%s'.",
+					column.getTextContent(), column.getAttribute("type")), ex);
+		}
+	}
 
-        // The root element must have a an attribute named 'format'
-        if (!root.hasAttribute("format")) {
-            throw new InputException(
-                    "The root element of an input descriptor file must have an "
-                            + "attribute named 'format'.");
-        }
+	private void validate(final Element root) throws InputException {
+		assert root != null;
 
-        // The input descriptor must contain at least one column
-        if (root.getElementsByTagName("column").getLength() <= 0) {
-            throw new InputException(
-                    "An input descriptor file must contain at least one column "
-                            + "element.");
-        }
-    }
+		// The document must contain a root element named 'data'
+		if (root.getTagName() != "data") {
+			throw new InputException(
+					"An input descriptor file must contain a root element "
+							+ "named 'data'.");
+		}
+
+		// The root element must have a an attribute named 'format'
+		if (!root.hasAttribute("format")) {
+			throw new InputException(
+					"The root element of an input descriptor file must have an "
+							+ "attribute named 'format'.");
+		}
+
+		// The input descriptor must contain at least one column
+		if (root.getElementsByTagName("column").getLength() <= 0) {
+			throw new InputException(
+					"An input descriptor file must contain at least one column "
+							+ "element.");
+		}
+	}
 }
