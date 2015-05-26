@@ -1,6 +1,6 @@
 package com.health;
 
-import GUI.GUImain;
+import com.health.gui.GUImain;
 
 /**
  * Utility class containing the entry point for the program.
