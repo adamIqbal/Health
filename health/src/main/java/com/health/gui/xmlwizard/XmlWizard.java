@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 public class XmlWizard extends JFrame implements ActionListener {
 	private XmlFilePanel filePanel;
 	private XmlEditPanel editPanel;
+	private XmlSavePanel savePanel;
 	
 	public XmlWizard(String path) {
 		super();
@@ -16,6 +17,7 @@ public class XmlWizard extends JFrame implements ActionListener {
 				
 		filePanel = new XmlFilePanel(path);
 		editPanel = new XmlEditPanel();
+		savePanel = new XmlSavePanel();
 		
 		this.getContentPane().add(filePanel);
 		filePanel.addActionListenerToNewFileButton(this);
@@ -47,9 +49,12 @@ public class XmlWizard extends JFrame implements ActionListener {
 			}
 		}
 		else if(source.equals(editPanel.getContinueButton())) {
-			System.out.println(source.toString());
 			XmlConfigObject config = editPanel.getValues();
-			System.out.println(config.toString());
+			savePanel.setValues(config);
+			this.getContentPane().remove(editPanel);
+			this.setContentPane(savePanel);
+			this.repaint();
+			this.revalidate();	
 		}
 		else {
 			System.out.println(source.toString());
