@@ -25,7 +25,7 @@ public class XmlSavePanel extends JPanel {
 	
 	public void setValues(XmlConfigObject xml_param) {
 		this.xml = xml_param;
-		preview.setText(xml.toString());
+		preview.setText(xml.toXMLString());
 		fileNameField.setText(xml.path.toAbsolutePath().toString());
 	}
 	 

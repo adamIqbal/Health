@@ -37,4 +37,25 @@ public class XmlConfigObject {
 				+ ", columns=" + columns + ", columnTypes=" + columnTypes
 				+ ", path=" + path + "]";
 	}
+	
+	public String toXMLString() {
+		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+"\n\r";
+		String dataStart = "<data format=\"text\" start=\""+ this.startDelimiter +"\" end=\""+this.endDelimiter+"\" delimeter=\""+this.delimiter+"\">"+"\n\r";
+		
+		String columnTags = "";
+		int n = columns.size();
+		
+		//if columns List and columntype List are not of equal length, there is something wrong.
+		if(n != this.columnTypes.size()) {
+			return null;
+		}
+		
+		for(int i = 0; i < n; i++) {
+			columnTags += "\t"+"<column type=\""+this.columnTypes.get(i)+"\">"+this.columns.get(i)+"</column>"+"\n\r";
+		}
+		
+		String dataEnd = "</data>";
+		
+		return header+dataStart+columnTags+dataEnd;
+	}
 }
