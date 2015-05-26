@@ -28,7 +28,7 @@ class XmlFilePanel extends JPanel {
 	private JButton selectFileButton;
 	private FileList fileList;
 
-	public XmlFilePanel(String path) {
+	public XmlFilePanel(Path path) {
 		super();
 		this.setLayout(new BorderLayout());
 		
@@ -68,17 +68,15 @@ class XmlFilePanel extends JPanel {
 }
 
 class FileList extends JList<Path> {
-	public FileList(String path, DefaultListModel<Path> listModel) {
+	public FileList(Path path, DefaultListModel<Path> listModel) {
 		super(listModel);
 		this.setPreferredSize(new Dimension(200,300));
 		this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
 		this.setBackground(Color.WHITE);
-		
-		Path dir = Paths.get(path);
 
 		try {
 			DirectoryStream<Path> stream;
-			stream = Files.newDirectoryStream(dir);
+			stream = Files.newDirectoryStream(path);
 			Iterator<Path> iterator = stream.iterator();
 			
 			while(iterator.hasNext()) {

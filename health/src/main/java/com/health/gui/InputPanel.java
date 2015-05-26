@@ -3,6 +3,7 @@ package com.health.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Paths;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -43,7 +44,7 @@ class XmlWizardListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		XmlWizard xml = new XmlWizard("data/configXmls/");
+		XmlWizard xml = new XmlWizard(Paths.get("data","configXmls"));
 	}
 	
 }

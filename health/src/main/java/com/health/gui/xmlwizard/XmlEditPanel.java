@@ -27,6 +27,8 @@ public class XmlEditPanel extends JPanel {
 	private Path xml;
 	private XmlDelimiterEditPanel delimPanel;
 	private XmlColumnEditPanel columnPanel;
+	
+	private JButton backButton;
 	private JButton continueButton;
 	
 	/**
@@ -59,7 +61,7 @@ public class XmlEditPanel extends JPanel {
 	 * Loads current values of the selected XML file en sets the fields of the panel
 	 * @param xml Path of XML file to edit
 	 */
-	public void loadCurrentValues(Path xml) {
+	public void setValues(Path xml) {
 		try {
 			InputDescriptor id = new InputDescriptor(xml.toString());
 			delimPanel.setValues(id.getStartDelimiter(), id.getEndDelimiter(), id.getDelimiter());
@@ -93,22 +95,31 @@ public class XmlEditPanel extends JPanel {
 class XmlDelimiterEditPanel extends JPanel {
 	private JTextField startDelimField, endDelimField, delimiterField;
 	private JLabel startDelimLabel, endDelimLabel, delimiterLabel;
+	//for some reason it does not work yet.
+	//private Dimension preferredDim;
 	
 	public XmlDelimiterEditPanel() {
 		super();
 		
+		//Preferred dimensions for the textfields
+		//preferredDim = new Dimension(200,50);
+		
 		this.setLayout(new GridLayout(0,2));
 		//Create labels for delimiters
 		startDelimLabel = new JLabel("Start Delimiter");
+		//startDelimLabel.setPreferredSize(preferredDim);
 		endDelimLabel = new JLabel("End Delimiter");
 		delimiterLabel = new JLabel("Delimiter");
 		//Create input textfields for delimiters
 		startDelimField = new JTextField();
 		startDelimField.setHorizontalAlignment(JTextField.CENTER);
+		//startDelimField.setPreferredSize(preferredDim);
 		endDelimField = new JTextField();
 		endDelimField.setHorizontalAlignment(JTextField.CENTER);
+		//endDelimField.setPreferredSize(preferredDim);
 		delimiterField = new JTextField();
 		delimiterField.setHorizontalAlignment(JTextField.CENTER);
+		//delimiterField.setPreferredSize(preferredDim);
 		//Add to delimiter panel
 		this.add(startDelimLabel);
 		this.add(startDelimField);
