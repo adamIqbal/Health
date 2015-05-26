@@ -12,7 +12,7 @@ public class XmlConfigObject {
 	public Path path;
 
 	public XmlConfigObject() {
-		
+		this.path = null;
 	}
 	
 	public void setDelimiters(String startDelim, String endDelim, String delim) {
