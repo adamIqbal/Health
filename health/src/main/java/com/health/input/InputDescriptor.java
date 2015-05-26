@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import javassist.compiler.ast.Pair;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -95,19 +93,21 @@ public final class InputDescriptor {
 	 * Gets the startcell object needed for xls and xlsx files, to determine
 	 * where the table starts.
 	 *
-	 * @return
+	 * @return the startcell of the table.
 	 */
 	public StartCell getStartCell() {
 		return startCell;
 	}
 
 	/**
-	 * Gets the list of Columns
-	 * @return
+	 * Gets the list of Columns.
+	 *
+	 * @return the lis of colomns.
 	 */
-	public List<String> getColumns(){
+	public List<String> getColumns() {
 		return columns;
 	}
+
 	/**
 	 * Gets the format of the input file. For example <code>txt</code> or
 	 * <code>xlsx</code>.
