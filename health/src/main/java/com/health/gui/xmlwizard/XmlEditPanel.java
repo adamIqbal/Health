@@ -2,7 +2,9 @@ package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -132,7 +134,7 @@ class XmlDelimiterEditPanel extends JPanel {
  	}
 }
 
-class XmlColumnEditPanel extends JPanel {
+class XmlColumnEditPanel extends JPanel implements ActionListener {
 	private JPanel columnPanel = new JPanel(new GridLayout(0,1));
 	private JButton addColumnButton = new JButton("Add extra column");
 	
@@ -140,6 +142,9 @@ class XmlColumnEditPanel extends JPanel {
 		super();
 		
 		this.setLayout(new GridLayout(0,1));
+		
+		addColumnButton.addActionListener(this);
+		addColumnButton.setPreferredSize(new Dimension(100,100));
 		
 		this.add(columnPanel);
 		this.add(addColumnButton);
@@ -188,6 +193,22 @@ class XmlColumnEditPanel extends JPanel {
 		}
 		
 		return columnTypes;
+	}
+	
+	public void addColumn() {
+		JPanel panel = new JPanel();		
+		panel.add(new JTextField(" "));
+		panel.add(new JTextField(" "));
+		
+		this.columnPanel.add(panel);
+		this.columnPanel.repaint();
+		this.columnPanel.revalidate();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		addColumn();		
+		System.out.println("Add column button pressed");
 	}
 	
 }
