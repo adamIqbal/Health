@@ -1,10 +1,14 @@
 package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
-public class XmlSavePanel extends JPanel {
+public class XmlSavePanel extends JPanel implements ActionListener {
 	private XmlConfigObject xml;
 	private JTextArea preview;
 	private JPanel buttonPanel;
@@ -14,6 +18,7 @@ public class XmlSavePanel extends JPanel {
 		this.setLayout(new BorderLayout());
 		
 		preview = new JTextArea();
+		preview.setEditable(false);
 		preview.setLineWrap(true);
 		preview.setWrapStyleWord(true);
 		preview.setPreferredSize(getPreferredSize());
@@ -34,6 +39,36 @@ public class XmlSavePanel extends JPanel {
 			JButton saveButton = new JButton("Save");
 			buttonPanel.add(saveButton);
 		}
+	}
+	
+	private boolean save() {
+		//Get the String to write
+		String xmlString = xml.toXMLString();
+		//Get path to write to
+		String path = xml.path.toString();
+		
+		//TODO write to file
+		
+		//return if write was successful
+		return false;
+		
+	}
+	
+	private boolean saveAs() {
+		//Get the String to write
+		String xmlString = xml.toXMLString();
+		
+		//TODO write to file
+		
+		
+		//return if write was successful
+		return false;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	 
 }

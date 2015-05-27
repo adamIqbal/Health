@@ -12,9 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -112,13 +114,13 @@ class XmlDelimiterEditPanel extends JPanel {
 		delimiterLabel = new JLabel("Delimiter");
 		//Create input textfields for delimiters
 		startDelimField = new JTextField();
-		startDelimField.setHorizontalAlignment(JTextField.CENTER);
+		startDelimField.setHorizontalAlignment(SwingConstants.CENTER);
 		//startDelimField.setPreferredSize(preferredDim);
 		endDelimField = new JTextField();
-		endDelimField.setHorizontalAlignment(JTextField.CENTER);
+		endDelimField.setHorizontalAlignment(SwingConstants.CENTER);
 		//endDelimField.setPreferredSize(preferredDim);
 		delimiterField = new JTextField();
-		delimiterField.setHorizontalAlignment(JTextField.CENTER);
+		delimiterField.setHorizontalAlignment(SwingConstants.CENTER);
 		//delimiterField.setPreferredSize(preferredDim);
 		//Add to delimiter panel
 		this.add(startDelimLabel);
@@ -178,12 +180,18 @@ class XmlColumnEditPanel extends JPanel implements ActionListener {
 		for(int i = 0; i < size; i++) {
 			JPanel column = new JPanel();
 			JTextField columnName = new JTextField();
-			JTextField columnValue = new JTextField();
+			ValueType[] valueTypes = {ValueType.String, ValueType.Number};
+			JComboBox<ValueType> columnValue = new JComboBox<ValueType>(valueTypes);
+			
 			columnName.setPreferredSize(preferredDim);
 			columnValue.setPreferredSize(preferredDim);
 			
 			columnName.setText(columns.get(i));
-			columnValue.setText(columnTypes.get(i).toString());
+
+			if(!columnTypes.get(i).equals(ValueType.String)) {
+				columnValue.setSelectedIndex(1);
+			}
+
 			column.add(columnName);
 			column.add(columnValue);
 			this.columnPanel.add(column);
@@ -205,12 +213,12 @@ class XmlColumnEditPanel extends JPanel implements ActionListener {
 		for(Component comp : this.columnPanel.getComponents()) {
 			JPanel column = (JPanel) comp;
 			
-			if(((JTextField) column.getComponents()[1]).getText().equals(ValueType.String.toString())) {
+			if(((JComboBox<ValueType>)column.getComponents()[1]).getSelectedItem().equals(ValueType.String)) {
 				columnTypes.add(ValueType.String);
 			}
 			else {
 				columnTypes.add(ValueType.Number);
-			}
+			}			
 		}
 		
 		return columnTypes;
