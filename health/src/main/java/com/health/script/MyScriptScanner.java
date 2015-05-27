@@ -20,7 +20,9 @@ public final class MyScriptScanner implements Scanner {
 
         for (TokenName token : TokenName.values()) {
             if (token.getType() == TokenType.KEYWORD
-                    || token.getType() == TokenType.TYPE) {
+                    || token.getType() == TokenType.TYPE
+                    || token.getType() == TokenType.BOOL_LITERAL
+                    || token.getType() == TokenType.NULL_LITERAL) {
                 this.keywordMap.put(token.getLexeme(), token);
             } else if (token.getType() == TokenType.OPERATOR
                     || token.getType() == TokenType.PUNCTUATOR) {
@@ -98,11 +100,20 @@ public final class MyScriptScanner implements Scanner {
         TokenName keyword = this.keywordMap.get(identifier.getLexeme());
 
         if (keyword != null) {
+            Object value = null;
+
+            if (keyword == TokenName.TRUE) {
+                value = true;
+            } else if (keyword == TokenName.FALSE) {
+                value = false;
+            }
+
             return new Token(
                     identifier.getScript(),
                     identifier.getStart(),
                     identifier.getEnd(),
-                    keyword);
+                    keyword,
+                    value);
         } else {
             return identifier;
         }
@@ -171,8 +182,15 @@ public final class MyScriptScanner implements Scanner {
 
         int end = reader.getPosition();
 
-        return new Token(reader.getScript(), start, end,
+        Token number = new Token(reader.getScript(), start, end,
                 TokenName.NUMBER_LITERAL);
+
+        // Parse the number
+        String lexeme = number.getLexeme();
+        double value = Double.parseDouble(lexeme);
+        number.setValue(value);
+
+        return number;
     }
 
     private static Token readStringLiteral(final ScriptReader reader) {
