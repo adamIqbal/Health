@@ -5,7 +5,7 @@ import com.health.script.TokenName;
 import com.health.script.TokenReader;
 import com.health.script.AST.Expressions.StatementExpression;
 
-public class ExpressionStatement extends Statement {
+public class ExpressionStatement implements Statement {
     public final StatementExpression Expression;
     public final Token Semicolon;
 

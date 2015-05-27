@@ -5,7 +5,7 @@ import com.health.script.TokenName;
 import com.health.script.TokenReader;
 import com.health.script.AST.LocalVariableDeclaration;
 
-public class DeclarationStatement extends Statement {
+public class DeclarationStatement implements Statement {
     public final LocalVariableDeclaration Declaration;
     public final Token Semicolon;
 
