@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -15,7 +17,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.health.gui.FileListing;
 
-public class XmlSavePanel extends JPanel implements ActionListener {
+public class XmlSavePanel extends JPanel {
 	private XmlConfigObject xml;
 	private JTextArea preview;
 	private JPanel buttonPanel;
@@ -33,14 +35,7 @@ public class XmlSavePanel extends JPanel implements ActionListener {
 		
 		buttonPanel = new JPanel();
 		JButton saveAsButton = new JButton("Save as..");
-		saveAsButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveAs();
-			}
-			
-		});
+		saveAsButton.addActionListener(new XmlSaveAsListener());
 		buttonPanel.add(saveAsButton);
 		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
@@ -69,7 +64,7 @@ public class XmlSavePanel extends JPanel implements ActionListener {
 		
 	}
 	
-	private boolean saveAs() {
+	private void saveAs() throws IOException {
 		//Get the String to write
 		String xmlString = xml.toXMLString();
 		
@@ -84,20 +79,19 @@ public class XmlSavePanel extends JPanel implements ActionListener {
 		}
 		
 		if(target != null) {
+			FileUtils.writeStringToFile(target, xmlString);
+		}
+	}
+	
+	private class XmlSaveAsListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
 			try {
-				FileUtils.writeStringToFile(target, xmlString);
-			} catch (IOException e) {
-				System.out.println("SaveAs error!");
+				saveAs();
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(new JFrame(), "'Save as..' operation has failed. Please try again.", "Error!", JOptionPane.WARNING_MESSAGE);
 			}
 		}
-		
-		//return if write was successful
-		return false;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
 	}
 	 
 }
