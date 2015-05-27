@@ -3,10 +3,17 @@ package com.health.gui.xmlwizard;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+
+import org.apache.commons.io.FileUtils;
+
+import com.health.gui.FileListing;
 
 public class XmlSavePanel extends JPanel implements ActionListener {
 	private XmlConfigObject xml;
@@ -26,6 +33,14 @@ public class XmlSavePanel extends JPanel implements ActionListener {
 		
 		buttonPanel = new JPanel();
 		JButton saveAsButton = new JButton("Save as..");
+		saveAsButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				saveAs();
+			}
+			
+		});
 		buttonPanel.add(saveAsButton);
 		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
@@ -58,8 +73,23 @@ public class XmlSavePanel extends JPanel implements ActionListener {
 		//Get the String to write
 		String xmlString = xml.toXMLString();
 		
-		//TODO write to file
+		//Save to xml file
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Specify where to save");
 		
+		File target = null;
+		int selection = fileChooser.showSaveDialog(this);
+		if(selection == JFileChooser.APPROVE_OPTION) {
+			target = fileChooser.getSelectedFile();
+		}
+		
+		if(target != null) {
+			try {
+				FileUtils.writeStringToFile(target, xmlString);
+			} catch (IOException e) {
+				System.out.println("SaveAs error!");
+			}
+		}
 		
 		//return if write was successful
 		return false;
@@ -67,7 +97,6 @@ public class XmlSavePanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	 
