@@ -18,8 +18,8 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
 /**
- * Screen where the user can either select a xml file to edit, or create a new
- * xml file
+ * Represents the panel where the user can either select a xml file to edit, or
+ * create a new xml file
  * 
  * @author Bjorn
  *
@@ -66,25 +66,31 @@ class XmlFilePanel extends JPanel {
 	public Path getSelectedFile() {
 		return this.fileList.getSelectedValue();
 	}
-}
 
-class FileList extends JList<Path> {
-	public FileList(Path path, DefaultListModel<Path> listModel) {
-		super(listModel);
-		this.setPreferredSize(new Dimension(200, 300));
-		this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
-		this.setBackground(Color.WHITE);
+	/**
+	 * Lists the XML files in the specified folder
+	 * 
+	 * @author Bjorn van der Laan
+	 *
+	 */
+	private class FileList extends JList<Path> {
+		public FileList(Path path, DefaultListModel<Path> listModel) {
+			super(listModel);
+			this.setPreferredSize(new Dimension(200, 300));
+			this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+			this.setBackground(Color.WHITE);
 
-		try {
-			DirectoryStream<Path> stream;
-			stream = Files.newDirectoryStream(path);
-			Iterator<Path> iterator = stream.iterator();
+			try {
+				DirectoryStream<Path> stream;
+				stream = Files.newDirectoryStream(path);
+				Iterator<Path> iterator = stream.iterator();
 
-			while (iterator.hasNext()) {
-				listModel.addElement(iterator.next());
+				while (iterator.hasNext()) {
+					listModel.addElement(iterator.next());
+				}
+			} catch (IOException e) {
+				// Directory not found, add no elements
 			}
-		} catch (IOException e) {
-			// Directory not found, add no elements
 		}
 	}
 }

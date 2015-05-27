@@ -5,6 +5,12 @@ import java.util.List;
 
 import com.health.ValueType;
 
+/**
+ * Models a XML Config file and providing methods to write is as a String
+ * 
+ * @author Bjorn van der Laan
+ *
+ */
 public class XmlConfigObject {
 	public String startDelimiter, endDelimiter, delimiter;
 	public List<String> columns;
@@ -15,15 +21,15 @@ public class XmlConfigObject {
 		this.path = null;
 	}
 
+	public void setColumns(List<String> columns, List<ValueType> columnTypes) {
+		this.columns = columns;
+		this.columnTypes = columnTypes;
+	}
+
 	public void setDelimiters(String startDelim, String endDelim, String delim) {
 		this.startDelimiter = startDelim;
 		this.endDelimiter = endDelim;
 		this.delimiter = delim;
-	}
-
-	public void setColumns(List<String> columns, List<ValueType> columnTypes) {
-		this.columns = columns;
-		this.columnTypes = columnTypes;
 	}
 
 	public void setPath(Path xml) {
@@ -38,6 +44,11 @@ public class XmlConfigObject {
 				+ ", path=" + path + "]";
 	}
 
+	/**
+	 * Formats the object as XML.
+	 * 
+	 * @return a String in a XML format
+	 */
 	public String toXMLString() {
 		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
 		String dataStart = "<data format=\"text\" start=\""

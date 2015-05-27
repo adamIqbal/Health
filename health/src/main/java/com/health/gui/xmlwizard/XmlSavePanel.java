@@ -17,6 +17,13 @@ import org.apache.commons.io.FileUtils;
 
 import com.health.gui.FileListing;
 
+/**
+ * Represents the panel where the user can save its new or edited XML Config
+ * file
+ * 
+ * @author Bjorn van der Laan
+ *
+ */
 public class XmlSavePanel extends JPanel {
 	private XmlConfigObject xml;
 	private JTextArea preview;
@@ -44,26 +51,14 @@ public class XmlSavePanel extends JPanel {
 		this.xml = xml_param;
 		preview.setText(xml.toXMLString());
 
+		// Not implemented yet. No must have.
 		// Add save button if editing an existing file
-		if (xml.path != null) {
-			JButton saveButton = new JButton("Save");
-			buttonPanel.add(saveButton);
-		}
+		/*
+		 * if (xml.path != null) { JButton saveButton = new JButton("Save");
+		 * buttonPanel.add(saveButton); }
+		 */
 	}
-
-	private boolean save() {
-		// Get the String to write
-		String xmlString = xml.toXMLString();
-		// Get path to write to
-		String path = xml.path.toString();
-
-		// TODO write to file
-
-		// return if write was successful
-		return false;
-
-	}
-
+	
 	private void saveAs() throws IOException {
 		// Get the String to write
 		String xmlString = xml.toXMLString();
@@ -83,6 +78,14 @@ public class XmlSavePanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Listens if the user presses the 'Save as..' button. Opens a JFileChooser
+	 * to specify save location. Displays a warning dialog if the save operation
+	 * fails.
+	 * 
+	 * @author Bjorn van der Laan
+	 *
+	 */
 	private class XmlSaveAsListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -91,7 +94,7 @@ public class XmlSavePanel extends JPanel {
 			} catch (IOException e1) {
 				JOptionPane.showMessageDialog(new JFrame(),
 						"'Save as..' operation has failed. Please try again.",
-						"Error!", JOptionPane.WARNING_MESSAGE);
+						"Error!", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

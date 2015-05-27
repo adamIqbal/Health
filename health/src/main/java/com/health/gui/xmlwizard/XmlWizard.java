@@ -6,11 +6,12 @@ import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- * The frame of the XML Wizard. 
- * Contains all panels and controls transition between them.
+ * The frame of the XML Wizard. Contains all panels and controls transition
+ * between them.
  * 
  * @author Bjorn van der Laan
  *
@@ -22,7 +23,9 @@ public class XmlWizard extends JFrame {
 
 	/**
 	 * Constructs a XmlWizard containing the wizard panels
-	 * @param path a Path object referring to the Config XML folder
+	 * 
+	 * @param path
+	 *            a Path object referring to the Config XML folder
 	 */
 	public XmlWizard(Path path) {
 		super();
@@ -33,7 +36,7 @@ public class XmlWizard extends JFrame {
 		savePanel = new XmlSavePanel();
 
 		this.getContentPane().add(filePanel);
-		
+
 		XmlWizardListener wizardListener = new XmlWizardListener(this);
 		wizardListener.attachListenerToButtons();
 
@@ -43,7 +46,9 @@ public class XmlWizard extends JFrame {
 
 	/**
 	 * Changes the current visible panel.
-	 * @param next the JPanel that will be made visible
+	 * 
+	 * @param next
+	 *            the JPanel that will be made visible
 	 */
 	protected void changePanel(JPanel next) {
 		this.getContentPane().removeAll();
@@ -51,9 +56,11 @@ public class XmlWizard extends JFrame {
 		this.repaint();
 		this.revalidate();
 	}
-	
+
 	/**
-	 * Returns the XmlFilePanel. This method is used by the private class implementing ActionListener
+	 * Returns the XmlFilePanel. This method is used by the private class
+	 * implementing ActionListener
+	 * 
 	 * @return the XmlFilePanel
 	 */
 	protected XmlFilePanel getFilePanel() {
@@ -61,7 +68,9 @@ public class XmlWizard extends JFrame {
 	}
 
 	/**
-	 * Returns the XmlEditPanel. This method is used by the private class implementing ActionListener
+	 * Returns the XmlEditPanel. This method is used by the private class
+	 * implementing ActionListener
+	 * 
 	 * @return the XmlEditPanel
 	 */
 	protected XmlEditPanel getEditPanel() {
@@ -69,7 +78,9 @@ public class XmlWizard extends JFrame {
 	}
 
 	/**
-	 * Returns the XmlSavePanel. This method is used by the private class implementing ActionListener
+	 * Returns the XmlSavePanel. This method is used by the private class
+	 * implementing ActionListener
+	 * 
 	 * @return the XmlSavePanel
 	 */
 	protected XmlSavePanel getSavePanel() {
@@ -106,6 +117,10 @@ public class XmlWizard extends JFrame {
 				if (filePanel.getSelectedFile() != null) {
 					editPanel.setValues(filePanel.getSelectedFile());
 					wizardFrame.changePanel(editPanel);
+				} else {
+					JOptionPane.showMessageDialog(new JFrame(),
+							"You have not selected a file yet!", "Error!",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 			} else if (source.equals(editPanel.getContinueButton())) {
 				XmlConfigObject config = editPanel.getValues();
@@ -113,9 +128,10 @@ public class XmlWizard extends JFrame {
 				wizardFrame.changePanel(savePanel);
 			}
 		}
-		
+
 		/**
-		 * Attaches the XmlWizardListener to the buttons in the different panels.
+		 * Attaches the XmlWizardListener to the buttons in the different
+		 * panels.
 		 */
 		public void attachListenerToButtons() {
 			filePanel.addActionListenerToNewFileButton(this);
