@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.xml.parsers.ParserConfigurationException;
@@ -40,11 +41,6 @@ public class XmlEditPanel extends JPanel {
 	// private JButton backButton;
 	private JButton continueButton;
 
-	/**
-	 * 
-	 * @param xml
-	 *            path to the xml to edit
-	 */
 	public XmlEditPanel() {
 		super();
 		this.setLayout(new BorderLayout());
@@ -179,9 +175,6 @@ public class XmlEditPanel extends JPanel {
 		private JButton addColumnButton = new JButton("Add extra column");
 		private Dimension preferredDim;
 
-		// Maximum amount of columns
-		private final int maxColumns = 10;
-
 		public XmlColumnEditPanel() {
 			super();
 
@@ -193,7 +186,7 @@ public class XmlEditPanel extends JPanel {
 			buttonPanel.setPreferredSize(new Dimension(150, 50));
 			buttonPanel.add(addColumnButton);
 
-			this.add(columnPanel, BorderLayout.CENTER);
+			this.add(new JScrollPane(columnPanel), BorderLayout.CENTER);
 			this.add(buttonPanel, BorderLayout.SOUTH);
 		}
 
@@ -206,18 +199,15 @@ public class XmlEditPanel extends JPanel {
 			for (int i = 0; i < size; i++) {
 				JPanel column = new JPanel();
 				JTextField columnName = new JTextField();
-				ValueType[] valueTypes = { ValueType.String, ValueType.Number };
 				JComboBox<ValueType> columnValue = new JComboBox<ValueType>(
-						valueTypes);
+						ValueType.values());
 
 				columnName.setPreferredSize(preferredDim);
 				columnValue.setPreferredSize(preferredDim);
 
 				columnName.setText(columns.get(i));
 
-				if (!columnTypes.get(i).equals(ValueType.String)) {
-					columnValue.setSelectedIndex(1);
-				}
+				columnValue.setSelectedItem(columnTypes.get(i));
 
 				column.add(columnName);
 				column.add(columnValue);
@@ -254,7 +244,8 @@ public class XmlEditPanel extends JPanel {
 		public void addColumn() {
 			JPanel panel = new JPanel();
 			JTextField columnName = new JTextField();
-			JTextField columnValue = new JTextField();
+			JComboBox<ValueType> columnValue = new JComboBox<ValueType>(
+					ValueType.values());
 
 			columnName.setPreferredSize(preferredDim);
 			columnValue.setPreferredSize(preferredDim);
@@ -269,13 +260,7 @@ public class XmlEditPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (this.columnPanel.getComponents().length <= maxColumns) {
-				addColumn();
-			} else {
-				System.out.println("Maximum columns is " + maxColumns
-						+ " (determined in XmlColumnEditPanel class)");
-			}
+			addColumn();
 		}
-
 	}
 }
