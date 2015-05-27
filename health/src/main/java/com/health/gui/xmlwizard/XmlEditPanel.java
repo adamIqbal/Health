@@ -99,6 +99,8 @@ public class XmlEditPanel extends JPanel {
 		if (this.xml != null) {
 			values.setPath(this.xml);
 		}
+		
+		System.out.println(columnPanel.getColumns());
 
 		return values;
 	}
@@ -225,7 +227,7 @@ public class XmlEditPanel extends JPanel {
 			return columns;
 		}
 
-		public List<ValueType> getColumnTypes() {
+		public List<ValueType> getColumnTypes() {			
 			ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
 			for (Component comp : this.columnPanel.getComponents()) {
 				JPanel column = (JPanel) comp;
@@ -249,6 +251,8 @@ public class XmlEditPanel extends JPanel {
 
 			columnName.setPreferredSize(preferredDim);
 			columnValue.setPreferredSize(preferredDim);
+			
+			columnName.setText("");
 
 			panel.add(columnName);
 			panel.add(columnValue);

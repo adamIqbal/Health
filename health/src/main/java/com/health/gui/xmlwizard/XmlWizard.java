@@ -13,6 +13,9 @@ import javax.swing.JPanel;
  * The frame of the XML Wizard. Contains all panels and controls transition
  * between them.
  * 
+ * TODO make it possible to add columns with no label
+ * TODO implement way to delete columns
+ * 
  * @author Bjorn van der Laan
  *
  */
