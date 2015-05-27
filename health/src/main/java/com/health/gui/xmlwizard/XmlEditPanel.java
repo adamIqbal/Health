@@ -30,7 +30,7 @@ public class XmlEditPanel extends JPanel {
 	private XmlDelimiterEditPanel delimPanel;
 	private XmlColumnEditPanel columnPanel;
 
-	private JButton backButton;
+	//private JButton backButton;
 	private JButton continueButton;
 
 	/**

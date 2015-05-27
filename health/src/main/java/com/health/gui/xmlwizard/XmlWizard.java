@@ -8,12 +8,22 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * The frame of the XML Wizard. 
+ * Contains all panels and controls transition between them.
+ * 
+ * @author Bjorn van der Laan
+ *
+ */
 public class XmlWizard extends JFrame {
 	private XmlFilePanel filePanel;
 	private XmlEditPanel editPanel;
-
 	private XmlSavePanel savePanel;
 
+	/**
+	 * Constructs a XmlWizard containing the wizard panels
+	 * @param path a Path object referring to the Config XML folder
+	 */
 	public XmlWizard(Path path) {
 		super();
 		this.setSize(500, 500);
@@ -23,36 +33,68 @@ public class XmlWizard extends JFrame {
 		savePanel = new XmlSavePanel();
 
 		this.getContentPane().add(filePanel);
-		XmlWizardListener wizardListener = new XmlWizardListener(this,
-				filePanel, editPanel, savePanel);
-		filePanel.addActionListenerToNewFileButton(wizardListener);
-		filePanel.addActionListenerToSelectFileButton(wizardListener);
-		editPanel.addActionListenerToContinueButton(wizardListener);
+		
+		XmlWizardListener wizardListener = new XmlWizardListener(this);
+		wizardListener.attachListenerToButtons();
 
 		this.setTitle("XML Editor");
 		this.setVisible(true);
 	}
 
-	public void changePanel(JPanel next) {
+	/**
+	 * Changes the current visible panel.
+	 * @param next the JPanel that will be made visible
+	 */
+	protected void changePanel(JPanel next) {
 		this.getContentPane().removeAll();
 		this.setContentPane(next);
 		this.repaint();
 		this.revalidate();
 	}
+	
+	/**
+	 * Returns the XmlFilePanel. This method is used by the private class implementing ActionListener
+	 * @return the XmlFilePanel
+	 */
+	protected XmlFilePanel getFilePanel() {
+		return filePanel;
+	}
 
+	/**
+	 * Returns the XmlEditPanel. This method is used by the private class implementing ActionListener
+	 * @return the XmlEditPanel
+	 */
+	protected XmlEditPanel getEditPanel() {
+		return editPanel;
+	}
+
+	/**
+	 * Returns the XmlSavePanel. This method is used by the private class implementing ActionListener
+	 * @return the XmlSavePanel
+	 */
+	protected XmlSavePanel getSavePanel() {
+		return savePanel;
+	}
+
+	/**
+	 * XmlWizardListener handles all transitions between panels of the XmlWizard
+	 * It implements the ActionListener interface
+	 * 
+	 * @author Bjorn van der Laan
+	 *
+	 */
 	private class XmlWizardListener implements ActionListener {
 		private XmlWizard wizardFrame;
 		private XmlFilePanel filePanel;
 		private XmlEditPanel editPanel;
 		private XmlSavePanel savePanel;
 
-		public XmlWizardListener(XmlWizard xw, XmlFilePanel fp,
-				XmlEditPanel ep, XmlSavePanel sp) {
+		public XmlWizardListener(XmlWizard xw) {
 			super();
 			wizardFrame = xw;
-			filePanel = fp;
-			editPanel = ep;
-			savePanel = sp;
+			filePanel = wizardFrame.getFilePanel();
+			editPanel = wizardFrame.getEditPanel();
+			savePanel = wizardFrame.getSavePanel();
 		}
 
 		@Override
@@ -70,6 +112,15 @@ public class XmlWizard extends JFrame {
 				savePanel.setValues(config);
 				wizardFrame.changePanel(savePanel);
 			}
+		}
+		
+		/**
+		 * Attaches the XmlWizardListener to the buttons in the different panels.
+		 */
+		public void attachListenerToButtons() {
+			filePanel.addActionListenerToNewFileButton(this);
+			filePanel.addActionListenerToSelectFileButton(this);
+			editPanel.addActionListenerToContinueButton(this);
 		}
 	}
 }
