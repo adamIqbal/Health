@@ -6,57 +6,70 @@ import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-public class XmlWizard extends JFrame implements ActionListener {
+public class XmlWizard extends JFrame {
 	private XmlFilePanel filePanel;
 	private XmlEditPanel editPanel;
+
 	private XmlSavePanel savePanel;
-	
+
 	public XmlWizard(Path path) {
 		super();
 		this.setSize(500, 500);
-				
+
 		filePanel = new XmlFilePanel(path);
 		editPanel = new XmlEditPanel();
 		savePanel = new XmlSavePanel();
-		
+
 		this.getContentPane().add(filePanel);
-		filePanel.addActionListenerToNewFileButton(this);
-		filePanel.addActionListenerToSelectFileButton(this);
-		editPanel.addActionListenerToContinueButton(this);
-			
+		XmlWizardListener wizardListener = new XmlWizardListener(this,
+				filePanel, editPanel, savePanel);
+		filePanel.addActionListenerToNewFileButton(wizardListener);
+		filePanel.addActionListenerToSelectFileButton(wizardListener);
+		editPanel.addActionListenerToContinueButton(wizardListener);
+
 		this.setTitle("XML Editor");
 		this.setVisible(true);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		JButton source = (JButton) e.getSource();
-		if(source.equals(filePanel.getNewFileButton())) {
-			this.getContentPane().remove(filePanel);
-			this.setContentPane(editPanel);
-			this.repaint();
-			this.revalidate();
+	public void changePanel(JPanel next) {
+		this.getContentPane().removeAll();
+		this.setContentPane(next);
+		this.repaint();
+		this.revalidate();
+	}
+
+	private class XmlWizardListener implements ActionListener {
+		private XmlWizard wizardFrame;
+		private XmlFilePanel filePanel;
+		private XmlEditPanel editPanel;
+		private XmlSavePanel savePanel;
+
+		public XmlWizardListener(XmlWizard xw, XmlFilePanel fp,
+				XmlEditPanel ep, XmlSavePanel sp) {
+			super();
+			wizardFrame = xw;
+			filePanel = fp;
+			editPanel = ep;
+			savePanel = sp;
 		}
-		else if(source.equals(filePanel.getSelectFileButton())) {
-			if(filePanel.getSelectedFile() != null) {				
-				editPanel.setValues(filePanel.getSelectedFile());
-				this.getContentPane().remove(filePanel);
-				this.setContentPane(editPanel);
-				this.repaint();
-				this.revalidate();	
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JButton source = (JButton) e.getSource();
+			if (source.equals(filePanel.getNewFileButton())) {
+				wizardFrame.changePanel(editPanel);
+			} else if (source.equals(filePanel.getSelectFileButton())) {
+				if (filePanel.getSelectedFile() != null) {
+					editPanel.setValues(filePanel.getSelectedFile());
+					wizardFrame.changePanel(editPanel);
+				}
+			} else if (source.equals(editPanel.getContinueButton())) {
+				XmlConfigObject config = editPanel.getValues();
+				savePanel.setValues(config);
+				wizardFrame.changePanel(savePanel);
 			}
-		}
-		else if(source.equals(editPanel.getContinueButton())) {
-			XmlConfigObject config = editPanel.getValues();
-			savePanel.setValues(config);
-			this.getContentPane().remove(editPanel);
-			this.setContentPane(savePanel);
-			this.repaint();
-			this.revalidate();	
-		}
-		else {
-			System.out.println(source.toString());
 		}
 	}
 }
