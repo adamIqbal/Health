@@ -3,7 +3,7 @@ package com.health.script.AST.Expressions;
 import com.health.script.TokenReader;
 import com.health.script.AST.AssignmentOperator;
 
-public final class Assignment extends Expression implements StatementExpression {
+public final class Assignment implements Expression, StatementExpression {
     public final UnaryExpression Left;
     public final AssignmentOperator Operator;
     public final Expression Right;

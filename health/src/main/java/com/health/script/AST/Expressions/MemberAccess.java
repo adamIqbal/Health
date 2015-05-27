@@ -4,7 +4,7 @@ import com.health.script.Token;
 import com.health.script.TokenName;
 import com.health.script.TokenReader;
 
-public final class MemberAccess extends PrimaryExpression {
+public final class MemberAccess implements PrimaryExpression {
     public final PrimaryExpression Expression;
     public final Token Period;
     public final Identifier Identifier;

@@ -4,7 +4,7 @@ import com.health.script.Token;
 import com.health.script.TokenReader;
 import com.health.script.TokenType;
 
-public final class Identifier extends PrimaryExpression {
+public final class Identifier implements PrimaryExpression {
     public final Token Identifier;
 
     private Identifier(final Token identifier) {

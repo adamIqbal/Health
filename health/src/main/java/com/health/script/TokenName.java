@@ -13,8 +13,11 @@ public enum TokenName {
     IDENTIFIER(null, TokenType.IDENTIFIER),
 
     // Literals
-    NUMBER_LITERAL(null, TokenType.LITERAL),
-    STRING_LITERAL(null, TokenType.LITERAL),
+    NUMBER_LITERAL(null, TokenType.NUMBER_LITERAL),
+    STRING_LITERAL(null, TokenType.STRING_LITERAL),
+    NULL("null", TokenType.NULL_LITERAL),
+    TRUE("true", TokenType.BOOL_LITERAL),
+    FALSE("false", TokenType.BOOL_LITERAL),
 
     // Primitive types
     VAR("var", TokenType.KEYWORD),

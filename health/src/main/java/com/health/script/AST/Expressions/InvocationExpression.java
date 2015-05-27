@@ -5,8 +5,7 @@ import com.health.script.TokenName;
 import com.health.script.TokenReader;
 import com.health.script.AST.ArgumentList;
 
-public final class InvocationExpression extends PrimaryExpression implements
-        StatementExpression {
+public final class InvocationExpression implements PrimaryExpression, StatementExpression {
     public final PrimaryExpression Expression;
     public final Token OpenParenthesis;
     public final ArgumentList Arguments;

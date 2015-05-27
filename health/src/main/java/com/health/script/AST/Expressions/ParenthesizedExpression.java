@@ -4,7 +4,7 @@ import com.health.script.Token;
 import com.health.script.TokenName;
 import com.health.script.TokenReader;
 
-public final class ParenthesizedExpression extends PrimaryExpression {
+public final class ParenthesizedExpression implements PrimaryExpression {
     public final Token OpenParenthesis;
     public final Expression Expression;
     public final Token CloseParenthesis;

@@ -3,7 +3,7 @@ package com.health.script.AST.QueryExpressions;
 import com.health.script.TokenReader;
 import com.health.script.AST.Expressions.NonAssignmentExpression;
 
-public class QueryExpression extends NonAssignmentExpression {
+public final class QueryExpression implements NonAssignmentExpression {
     public final FromClause FromClause;
     public final QueryBody QueryBody;
 

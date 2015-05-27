@@ -5,7 +5,7 @@ import com.health.script.TokenName;
 import com.health.script.TokenReader;
 import com.health.script.AST.MemberDeclaratorList;
 
-public final class AnonymousObjectCreationExpression extends PrimaryExpression {
+public final class AnonymousObjectCreationExpression implements PrimaryExpression {
     public final Token New;
     public final Token OpenBrace;
     public final MemberDeclaratorList MemberDeclarators;

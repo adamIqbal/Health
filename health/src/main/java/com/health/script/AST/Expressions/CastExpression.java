@@ -5,7 +5,7 @@ import com.health.script.TokenName;
 import com.health.script.TokenReader;
 import com.health.script.AST.Type;
 
-public final class CastExpression extends UnaryExpression {
+public final class CastExpression implements UnaryExpression {
     public final Token OpenParenthesis;
     public final Type Type;
     public final Token CloseParenthesis;
