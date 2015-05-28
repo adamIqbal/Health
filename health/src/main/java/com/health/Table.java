@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Represents a collection of {@link Column}s and {@link Record}s.
@@ -124,6 +125,28 @@ public final class Table implements Iterable<Chunk> {
      */
     public Iterable<Record> getRecords() {
         return this.records;
+    }
+
+    /**
+     * Creates a new table containing only the records for which the given
+     * predicate is evaluated as true.
+     *
+     * @param predicate
+     *            a predicate that determines whether or not to add a given
+     *            record to the new table.
+     * @return a new table containing only the records for which the given
+     *         predicate is evaluated as true.
+     */
+    public Table where(final Function<Record, Boolean> predicate) {
+        Table constrained = new Table(this.columns);
+
+        for (Record record : this.records) {
+            if (predicate.apply(record)) {
+                record.copyTo(constrained);
+            }
+        }
+
+        return constrained;
     }
 
     /**
