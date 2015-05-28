@@ -16,28 +16,39 @@ import com.googlecode.charts4j.DataUtil;
 import com.googlecode.charts4j.Fills;
 import com.googlecode.charts4j.GCharts;
 import com.googlecode.charts4j.Plots;
+import com.googlecode.charts4j.collect.Lists;
 
-//import java.awt.image.BufferedImage;
+import java.awt.List;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-//import javax.imageio.ImageIO;
-//import javax.swing.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
+import org.mockito.internal.util.collections.ArrayUtils;
 
+//How often do patients measure themselves before they enter data into Mijnnierinzicht?
 public class FreqBar {
 	
-	//public static void main(String args[]) throws Exception {
-		//double[] arIn = {1,2,4,3,5,6,3,2,4,3,4,4};
-		//makeBarChart(arIn);
-		
-	///}
 	
-	public static URL makeBarChart(double[] arIn) throws IOException{
-
-		//double[] arIn = {1,2,4,3,5,6,3,2,4,3,4,4};
-		double[][] arOut = new double[12][2];
-		double[] arCheck = new double[12];
+	public static void main(String args[]) throws Exception {
+		//temp
+		//double[] list = {23,40,30,50,32};
+		//makeBarChart(list);
+		
+		//double[] arIn = {1,2,4,3,5,6,3,2,4,5};
+		//double[] ar2 = {34,2,43,54,5,4,43,43,43,6,5};
+		
+		
+		
+		double[] intAr = {1,2,4,3,5,6,3,2,4,3,4,4};
+		for(double i:intAr){
+			Double.toString(i);//.toString();
+		}
+		String[] arIn = intAr;
+		String[][] arOut = new String[12][2];
+		String[] arCheck = new String[12];
 		boolean check = false;
 		
 		int count = 0;
@@ -48,13 +59,30 @@ public class FreqBar {
 			for(int k=0; k<arIn.length; k++){
 				if(arOut[k][0] == arIn[i]){
 					int ind = k;
-					double val = arOut[ind][1];
+					double val = (Double) arOut[ind][1];
 					val = val + 1;
 					arOut[ind][1] = val;
 					check = true;
 					break;
 				}
 			}
+			/*
+			if(Arrays.asList(arCheck).contains(arIn[i])){
+				int ind = 0;
+				
+				for (int k = 0 ; k < 12; k++){
+			         if (Double.valueOf(arOut[k][0]).equals(arIn[i])){
+			              ind = k;
+			              break;
+			         }
+				}
+				//int ind = Arrays.asList(arOut).indexOf(arIn[i]);
+				double val = arOut[ind][1];
+				val = val + 1;
+				arOut[ind][1] = val;
+			}
+			else{
+				*/
 			if(check == false){
 				arCheck[count2] = arIn[i];
 				arOut[count][0] = arIn[i];
@@ -70,33 +98,31 @@ public class FreqBar {
 		System.out.println(Arrays.toString(arCheck));
 		System.out.println(Arrays.deepToString(arOut));//Arrays.toString(arOut[1]));
 		
-		URL url = makeBarChart(arOut);
-        System.out.println(url);
-
-		return url;
+		makeBarChart(arOut);
+		
 	}
 	
-	public static URL makeBarChart(double[][] arIn) throws IOException{
+	public static void makeBarChart(Object[][] ar) throws IOException{
 		//Defining data
-		double[] dataAr = new double[arIn.length];
+		Object[] dataAr = new Object[ar.length];
 		
 		int count = 0;
 		
-		for(int i=0; i<arIn.length; i++){
-			dataAr[count] = arIn[i][1];
+		for(int i=0; i<ar.length; i++){
+			dataAr[count] = ar[i][1];
 			count = count + 1;
 		}
 		String[] labelsAr = new String[count];
 		count = 0;
-		for(int k=0; k<arIn.length; k++){
-			labelsAr[count] = String.valueOf(arIn[k][0]);
+		for(int k=0; k<ar.length; k++){
+			labelsAr[count] = String.valueOf(ar[k][0]);
 			count = count + 1;
 		}
 		ArrayList<String> list = new ArrayList<String>(Arrays.asList(labelsAr));
 		ArrayList<String> newList = new ArrayList<String>();
 		//System.out.println(list);
-		//int[] rem = new int[labelsAr.length];
-		//int countRem = 0;
+		int[] rem = new int[labelsAr.length];
+		int countRem = 0;
 		for(int n=0; n<list.size() ;n++){
 			if(!list.get(n).equals("0.0") && !list.get(n).equals(null)){
 				//rem[countRem] = n;
@@ -143,12 +169,9 @@ public class FreqBar {
         chart.setTitle("Frequency Test Bar Chart", BLACK, 17);
         chart.setBackgroundFill(Fills.newSolidFill(LIGHTGREY));
         URL url = new URL(chart.toURLString());
-        System.out.println(url);
-        //showChart(url);
-        return(url);
+        showChart(url);
 	}
 	
-	/*
 	public static void showChart(URL url) throws IOException{
 		BufferedImage image = ImageIO.read(url);
 		JLabel label = new JLabel(new ImageIcon(image));
@@ -158,5 +181,5 @@ public class FreqBar {
 	    f.pack();
 	    f.setLocation(200,200);
 	    f.setVisible(true);
-	}*/
+	}
 }
