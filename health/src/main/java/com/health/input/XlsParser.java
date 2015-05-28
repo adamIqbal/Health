@@ -49,22 +49,33 @@ public final class XlsParser implements Parser {
 
 		Sheet sheet = wb.getSheetAt(0);
 		for (Row row : sheet) {
-			// if at startrow or beyond
+			// if at start row or beyond
 			if (rowCount >= startCell.getStartRow()) {
 				Record tableRow = new Record(table);
 
 				int columnCountTableRow = 0;
 				for (int i = startCell.getStartColumn() - 1; i < columnsCount
 						+ startCell.getStartColumn() - 1; i++) {
-					tableRow.setValue(columnCountTableRow, row.getCell(i)
-							.toString());
+					switch(table.getColumn(columnCountTableRow).getType()){
+					case String:
+						tableRow.setValue(columnCountTableRow,row.getCell(i).toString());
+						break;
+					case Number:
+						tableRow.setValue(columnCountTableRow, Double.parseDouble(row.getCell(i).toString()));
+						break;
+					default:
+						 // The type was null, this should never happen
+	                    assert false;
+	                    throw new InputException("Internal error.",
+	                            new Exception("Column.getType() returned null."));
+					}
+					
 					columnCountTableRow++;
 				}
 
 			}
 
 			rowCount++;
-			// list.add(row);
 		}
 
 		wb.close();
