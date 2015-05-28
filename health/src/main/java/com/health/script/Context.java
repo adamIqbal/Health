@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 import com.health.script.runtime.LValue;
+import com.health.script.runtime.NonModifiableLValue;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.ScriptType;
 import com.health.script.runtime.Value;
@@ -48,6 +49,21 @@ public final class Context {
         }
 
         this.types.put(symbol, type);
+    }
+
+    public void declareStaticType(final ScriptType type) throws ScriptRuntimeException {
+        declareStaticType(type.getName(), type);
+    }
+
+    public void declareStaticType(final String symbol, final ScriptType type) throws ScriptRuntimeException {
+        Objects.requireNonNull(type);
+
+        if (this.variables.containsKey(symbol)) {
+            throw new ScriptRuntimeException(String.format(
+                    "The current context already contains a definition for '%s'.", symbol));
+        }
+
+        this.variables.put(symbol, new NonModifiableLValue(type, type.makeInstance()));
     }
 
     public boolean isDefined(final String symbol) {

@@ -2,7 +2,7 @@ package com.health.script.runtime;
 
 import java.util.Objects;
 
-public final class LValue {
+public class LValue {
     private Value value;
     private final ScriptType type;
 
@@ -16,25 +16,31 @@ public final class LValue {
         Objects.requireNonNull(type);
 
         this.type = type;
-        this.set(value);
+        this.value = value;
+
+        checkType(type, value);
     }
 
-    public ScriptType getType() {
+    public final ScriptType getType() {
         return this.type;
     }
 
-    public Value get() {
+    public final Value get() {
         return this.value;
     }
 
     public void set(final Value value) throws ScriptRuntimeException {
-        if (value != null) {
-            if (!this.type.isAssignableFrom(value.getType())) {
-                throw new ScriptRuntimeException(String.format(
-                        "Cannot convert '%s' to '%s'.", type.getName(), value.getType().getName()));
-            }
-        }
+        checkType(type, value);
 
         this.value = value;
+    }
+
+    private static void checkType(final ScriptType type, final Value value) throws ScriptRuntimeException {
+        if (value != null) {
+            if (!type.isAssignableFrom(value.getType())) {
+                throw new ScriptRuntimeException(String.format(
+                        "Cannot convert '%s' to '%s'.", value.getType().getName(), type.getName()));
+            }
+        }
     }
 }

@@ -161,7 +161,6 @@ public final class MyScriptInterpreter implements Interpreter {
             String symbol = memberAccess.Identifier.Identifier.getLexeme();
 
             return obj.getMember(symbol);
-
         } else {
             throw new ScriptRuntimeException(String.format(
                     "Expression '%s' is not an l-value.", expr.getClass().getName()));
