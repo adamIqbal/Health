@@ -1,8 +1,10 @@
 package com.health.gui.xmlwizard;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 
+import com.health.FileType;
 import com.health.ValueType;
 
 /**
@@ -12,7 +14,8 @@ import com.health.ValueType;
  *
  */
 public class XmlConfigObject {
-	public String startDelimiter, endDelimiter, delimiter;
+	public FileType type;
+	public String[] values;
 	public List<String> columns;
 	public List<ValueType> columnTypes;
 	public Path path;
@@ -26,22 +29,23 @@ public class XmlConfigObject {
 		this.columnTypes = columnTypes;
 	}
 
-	public void setDelimiters(String startDelim, String endDelim, String delim) {
-		this.startDelimiter = startDelim;
-		this.endDelimiter = endDelim;
-		this.delimiter = delim;
+	public void setValues(String[] values) {
+		this.values = values;
 	}
 
 	public void setPath(Path xml) {
 		this.path = xml;
 	}
+	
+	public void setType(FileType type) {
+		this.type = type;
+	}
 
 	@Override
 	public String toString() {
-		return "XmlConfigObject [startDelimiter=" + startDelimiter
-				+ ", endDelimiter=" + endDelimiter + ", delimiter=" + delimiter
-				+ ", columns=" + columns + ", columnTypes=" + columnTypes
-				+ ", path=" + path + "]";
+		return "XmlConfigObject [type=" + type + ", values="
+				+ Arrays.toString(values) + ", columns=" + columns
+				+ ", columnTypes=" + columnTypes + ", path=" + path + "]";
 	}
 
 	/**
@@ -50,10 +54,31 @@ public class XmlConfigObject {
 	 * @return a String in a XML format
 	 */
 	public String toXMLString() {
+		String xml = null;
+		
+		switch(this.type) {
+		case TXT:
+			xml = this.toXMLStringTXT();
+			break;
+		case XLS:
+			break;
+		default:
+			break;
+		}
+		
+		return xml;
+	}
+	
+	public String toXMLStringTXT() {
+		String startDelimiter = this.values[0];
+		String endDelimiter = this.values[0];
+		String delimiter = this.values[0];
+		
+		
 		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
 		String dataStart = "<data format=\"text\" start=\""
-				+ this.startDelimiter + "\" end=\"" + this.endDelimiter
-				+ "\" delimeter=\"" + this.delimiter + "\">" + "\n\r";
+				+ startDelimiter + "\" end=\"" + endDelimiter
+				+ "\" delimeter=\"" + delimiter + "\">" + "\n\r";
 
 		String columnTags = "";
 		int n = columns.size();

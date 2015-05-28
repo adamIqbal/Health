@@ -1,14 +1,18 @@
 package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,6 +26,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.health.FileType;
 import com.health.ValueType;
 import com.health.input.InputDescriptor;
 import com.health.input.InputException;
@@ -35,7 +40,7 @@ import com.health.input.InputException;
  */
 public class XmlEditPanel extends JPanel {
 	private Path xml;
-	private XmlDelimiterEditPanel delimPanel;
+	private XmlStartEditPanel startPanel;
 	private XmlColumnEditPanel columnPanel;
 
 	// private JButton backButton;
@@ -45,8 +50,8 @@ public class XmlEditPanel extends JPanel {
 		super();
 		this.setLayout(new BorderLayout());
 
-		delimPanel = new XmlDelimiterEditPanel();
-		this.add(delimPanel, BorderLayout.WEST);
+		startPanel = new XmlStartEditPanel();
+		this.add(startPanel, BorderLayout.WEST);
 
 		columnPanel = new XmlColumnEditPanel();
 		this.add(columnPanel, BorderLayout.CENTER);
@@ -64,6 +69,28 @@ public class XmlEditPanel extends JPanel {
 	}
 
 	/**
+	 * Models the input values as a {@link XmlConfigObject} and returns it
+	 * 
+	 * @return XmlConfigObject containing the input values
+	 */
+	public XmlConfigObject getValues() {
+		XmlConfigObject config = new XmlConfigObject();
+		
+		config.setType(startPanel.getSelectedType());
+		
+		config.values = startPanel.getValues(config.type);
+
+		config.setColumns(columnPanel.getColumns(),
+				columnPanel.getColumnTypes());
+
+		if (this.xml != null) {
+			config.setPath(this.xml);
+		}
+
+		return config;
+	}
+	
+	/**
 	 * Loads current values of the selected XML file en sets the fields of the
 	 * panel
 	 * 
@@ -73,98 +100,27 @@ public class XmlEditPanel extends JPanel {
 	public void setValues(Path xml) {
 		try {
 			InputDescriptor id = new InputDescriptor(xml.toString());
-			delimPanel.setValues(id.getStartDelimiter(), id.getEndDelimiter(),
-					id.getDelimiter());
+			
+			//set values according to file format
+			if(id.getFormat().equals("xlsx") || id.getFormat().equals("xls")) {
+				//TODO XLS support
+			}
+			//else for now default to TXT format
+			else {
+				String[] values = {id.getStartDelimiter(), id.getEndDelimiter(),
+						id.getDelimiter()};
+				startPanel.setValues(values, FileType.TXT);
+			}
+			
+			//set the columns
 			columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
 			this.xml = xml;
 		} catch (ParserConfigurationException | SAXException | IOException
 				| InputException e) {
 			System.out.println("Error loading: " + xml.toString());
 		}
-	}
-
-	/**
-	 * Models the input values as a {@link XmlConfigObject} and returns it
-	 * 
-	 * @return XmlConfigObject containing the input values
-	 */
-	public XmlConfigObject getValues() {
-		XmlConfigObject values = new XmlConfigObject();
-		String[] delims = delimPanel.getValues();
-		values.setDelimiters(delims[0], delims[1], delims[2]);
-
-		values.setColumns(columnPanel.getColumns(),
-				columnPanel.getColumnTypes());
-
-		if (this.xml != null) {
-			values.setPath(this.xml);
-		}
-		
-		System.out.println(columnPanel.getColumns());
-
-		return values;
-	}
-
-	/**
-	 * Represents the panel one can edit the delimiters
-	 * 
-	 * @author Bjorn van der Laan
-	 *
-	 */
-	private class XmlDelimiterEditPanel extends JPanel {
-		private JTextField startDelimField, endDelimField, delimiterField;
-		private JLabel startDelimLabel, endDelimLabel, delimiterLabel;
-
-		// for some reason it does not work yet.
-		// private Dimension preferredDim;
-
-		public XmlDelimiterEditPanel() {
-			super();
-
-			// Preferred dimensions for the textfields
-			// preferredDim = new Dimension(200,50);
-
-			this.setLayout(new GridLayout(0, 2));
-			// Create labels for delimiters
-			startDelimLabel = new JLabel("Start Delimiter");
-			// startDelimLabel.setPreferredSize(preferredDim);
-			endDelimLabel = new JLabel("End Delimiter");
-			delimiterLabel = new JLabel("Delimiter");
-			// Create input textfields for delimiters
-			startDelimField = new JTextField();
-			startDelimField.setHorizontalAlignment(SwingConstants.CENTER);
-			// startDelimField.setPreferredSize(preferredDim);
-			endDelimField = new JTextField();
-			endDelimField.setHorizontalAlignment(SwingConstants.CENTER);
-			// endDelimField.setPreferredSize(preferredDim);
-			delimiterField = new JTextField();
-			delimiterField.setHorizontalAlignment(SwingConstants.CENTER);
-			// delimiterField.setPreferredSize(preferredDim);
-			// Add to delimiter panel
-			this.add(startDelimLabel);
-			this.add(startDelimField);
-			this.add(delimiterLabel);
-			this.add(delimiterField);
-			this.add(endDelimLabel);
-			this.add(endDelimField);
-		}
-
-		public void setValues(String startDelim, String endDelim, String delim) {
-			this.startDelimField.setText(startDelim);
-			this.endDelimField.setText(endDelim);
-			this.delimiterField.setText(delim);
-		}
-
-		public String[] getValues() {
-			String[] values = new String[3];
-			values[0] = this.startDelimField.getText();
-			values[1] = this.endDelimField.getText();
-			values[2] = this.delimiterField.getText();
-
-			return values;
-		}
-	}
-
+	}	
+	
 	/**
 	 * Represents the panel one can edit the columns
 	 * 
