@@ -25,7 +25,6 @@ import com.health.ValueType;
  * of an input file.
  */
 public final class InputDescriptor {
-
 	private String startDelimeter;
 	private String endDelimeter;
 	private String delimeter;
@@ -109,6 +108,14 @@ public final class InputDescriptor {
 		return columns;
 	}
 
+	/**
+     * Gets a List containing the ValueType of the columns as described in the input file
+     * @return a List of ValueType objects
+     */
+    public List<ValueType> getColumnTypes() {
+    	return columnTypes;
+    }
+    
 	/**
 	 * Gets the format of the input file. For example <code>txt</code> or
 	 * <code>xlsx</code>.
