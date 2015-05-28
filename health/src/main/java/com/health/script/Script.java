@@ -1,5 +1,8 @@
 package com.health.script;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -92,10 +95,13 @@ public final class Script {
      * @param path
      *            the path of the script file.
      * @return a script with the contents of the given file.
+     * @throws IOException
+     *             if an I/O error occurs reading from the file.
      */
-    public static Script fromFile(final String path) {
-        // TODO: Read a text file and create a script object
-        return null;
+    public static Script fromFile(final String path) throws IOException {
+        String text = new String(Files.readAllBytes(Paths.get(path)));
+
+        return new Script(text);
     }
 
     /**
