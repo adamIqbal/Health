@@ -3,12 +3,11 @@ package com.health.script.runtime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 public final class ScriptTypeBuilder {
     private boolean built = false;
     private String typeName;
-    private Function<Value[], Value> contructor;
+    private ScriptFunction<Value[], Value> contructor;
     private final Map<String, ScriptField> fields;
     private final Map<String, ScriptMethod> methods;
 
@@ -35,7 +34,7 @@ public final class ScriptTypeBuilder {
         methods.put(method.getName(), method);
     }
 
-    public void defineConstructor(final Function<Value[], Value> constructor) {
+    public void defineConstructor(final ScriptFunction<Value[], Value> constructor) {
         Objects.requireNonNull(constructor);
 
         this.contructor = constructor;

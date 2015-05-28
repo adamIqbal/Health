@@ -3,7 +3,6 @@ package com.health.script.runtime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 import com.health.Utils;
 
@@ -11,7 +10,7 @@ public final class ScriptType {
     private final String name;
     private final Map<String, ScriptField> fields;
     private final Map<String, ScriptMethod> methods;
-    private final Function<Value[], Value> constructor;
+    private final ScriptFunction<Value[], Value> constructor;
 
     public ScriptType(
             final String name,
@@ -24,7 +23,7 @@ public final class ScriptType {
             final String name,
             final Map<String, ScriptField> fields,
             final Map<String, ScriptMethod> methods,
-            final Function<Value[], Value> constructor) {
+            final ScriptFunction<Value[], Value> constructor) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(fields);
         Objects.requireNonNull(methods);

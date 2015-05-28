@@ -3,7 +3,7 @@ package com.health.script.runtime;
 /**
  * Indicates an exception when interpreting a script.
  */
-public class ScriptRuntimeException extends Exception {
+public class ScriptRuntimeException extends RuntimeException {
     private static final long serialVersionUID = -8317543700753590433L;
 
     /**
