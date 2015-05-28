@@ -21,6 +21,8 @@ public enum TokenName {
 
     // Primitive types
     VAR("var", TokenType.KEYWORD),
+    OBJECT("object", TokenType.TYPE),
+    BOOL("bool", TokenType.TYPE),
     NUMBER("number", TokenType.TYPE),
     STRING("string", TokenType.TYPE),
 

@@ -14,6 +14,11 @@ public class Value {
     static {
         ScriptTypeBuilder object = new ScriptTypeBuilder();
         object.setTypeName("object");
+        object.defineConstructor((args) -> new Value());
+        object.defineMethod(new ScriptMethod("toString",
+                (args) -> {
+                    return new StringValue(args[0].toString());
+                }));
 
         Value.objectType = object.buildType();
     }
@@ -38,6 +43,11 @@ public class Value {
     }
 
     public final LValue getMember(final String symbol) throws ScriptRuntimeException {
+        if (!this.type.hasMember(symbol)) {
+            throw new ScriptRuntimeException(String.format("Type '%s' does not define a member named '%s'.",
+                    this.getType().getName(), symbol));
+        }
+
         return Utils.firstNonNull(
                 () -> getMethod(symbol),
                 () -> getField(symbol));
@@ -51,10 +61,9 @@ public class Value {
                     this.getType().getName(), symbol));
         }
 
-        ScriptDelegate delegate = method.createDelegate();
+        ScriptDelegate delegate = method.createDelegate(this);
 
-        // TOOD: Not correct, this shouldn't be an LValue
-        return new LValue(delegate.getType(), delegate);
+        return new NonModifiableLValue(delegate.getType(), delegate);
     }
 
     public final LValue getField(String symbol) throws ScriptRuntimeException {

@@ -7,6 +7,11 @@ public final class NumberValue extends Value {
     static {
         ScriptTypeBuilder number = new ScriptTypeBuilder();
         number.setTypeName("number");
+        number.defineConstructor((args) -> new NumberValue());
+        number.defineMethod(new ScriptMethod("toString",
+                (args) -> {
+                    return new StringValue(Double.toString(((NumberValue) args[0]).getValue()));
+                }));
 
         NumberValue.type = number.buildType();
     }

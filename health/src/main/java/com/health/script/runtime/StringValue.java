@@ -7,6 +7,11 @@ public final class StringValue extends Value {
     static {
         ScriptTypeBuilder string = new ScriptTypeBuilder();
         string.setTypeName("string");
+        string.defineConstructor((args) -> new StringValue());
+        string.defineMethod(new ScriptMethod("toString",
+                (args) -> {
+                    return new StringValue(((StringValue) args[0]).value);
+                }));
 
         StringValue.type = string.buildType();
     }

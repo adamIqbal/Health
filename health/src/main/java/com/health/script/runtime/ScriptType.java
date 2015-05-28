@@ -3,6 +3,7 @@ package com.health.script.runtime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import com.health.Utils;
 
@@ -10,11 +11,20 @@ public final class ScriptType {
     private final String name;
     private final Map<String, ScriptField> fields;
     private final Map<String, ScriptMethod> methods;
+    private final Function<Value[], Value> constructor;
 
     public ScriptType(
             final String name,
             final Map<String, ScriptField> fields,
             final Map<String, ScriptMethod> methods) {
+        this(name, fields, methods, null);
+    }
+
+    public ScriptType(
+            final String name,
+            final Map<String, ScriptField> fields,
+            final Map<String, ScriptMethod> methods,
+            final Function<Value[], Value> constructor) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(fields);
         Objects.requireNonNull(methods);
@@ -22,21 +32,16 @@ public final class ScriptType {
         this.name = name;
         this.fields = fields;
         this.methods = methods;
+
+        if (constructor == null) {
+            this.constructor = (args) -> new ComplexValue(this);
+        } else {
+            this.constructor = constructor;
+        }
     }
 
-    public Value makeInstance() {
-        switch (this.name) {
-        case "object":
-            return new Value();
-        case "bool":
-            return new BooleanValue();
-        case "number":
-            return new NumberValue();
-        case "string":
-            return new StringValue();
-        default:
-            return new ComplexValue(this);
-        }
+    public Value makeInstance(Value[] args) {
+        return this.constructor.apply(args);
     }
 
     public String getName() {
@@ -90,6 +95,6 @@ public final class ScriptType {
     }
 
     public boolean isAssignableFrom(ScriptType type) {
-        return type.getName().equals("object") || this == type;
+        return this.getName().equals("object") || this == type;
     }
 }

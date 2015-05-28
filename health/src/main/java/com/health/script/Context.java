@@ -21,7 +21,7 @@ public final class Context {
     }
 
     public void declareLocal(final String symbol, final ScriptType type) throws ScriptRuntimeException {
-        declareLocal(symbol, type, type.makeInstance());
+        declareLocal(symbol, type, type.makeInstance(new Value[0]));
     }
 
     public void declareLocal(final String symbol, final ScriptType type, final Value value)
@@ -63,7 +63,7 @@ public final class Context {
                     "The current context already contains a definition for '%s'.", symbol));
         }
 
-        this.variables.put(symbol, new NonModifiableLValue(type, type.makeInstance()));
+        this.variables.put(symbol, new NonModifiableLValue(type, type.makeInstance(new Value[0])));
     }
 
     public boolean isDefined(final String symbol) {
