@@ -56,20 +56,23 @@ public final class XlsParser implements Parser {
 				int columnCountTableRow = 0;
 				for (int i = startCell.getStartColumn() - 1; i < columnsCount
 						+ startCell.getStartColumn() - 1; i++) {
-					switch(table.getColumn(columnCountTableRow).getType()){
+					switch (table.getColumn(columnCountTableRow).getType()) {
 					case String:
-						tableRow.setValue(columnCountTableRow,row.getCell(i).toString());
+						tableRow.setValue(columnCountTableRow, row.getCell(i)
+								.toString());
 						break;
 					case Number:
-						tableRow.setValue(columnCountTableRow, Double.parseDouble(row.getCell(i).toString()));
+						tableRow.setValue(columnCountTableRow,
+								Double.parseDouble(row.getCell(i).toString()));
 						break;
 					default:
-						 // The type was null, this should never happen
-	                    assert false;
-	                    throw new InputException("Internal error.",
-	                            new Exception("Column.getType() returned null."));
+						// The type was null, this should never happen
+						assert false;
+						throw new InputException(
+								"Internal error.",
+								new Exception("Column.getType() returned null."));
 					}
-					
+
 					columnCountTableRow++;
 				}
 
