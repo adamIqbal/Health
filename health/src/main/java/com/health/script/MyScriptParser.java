@@ -4,7 +4,15 @@ import java.util.List;
 
 import com.health.script.AST.Program;
 
-public class MyScriptParser implements Parser {
+/**
+ * Implements a parser for the script.
+ *
+ * @author Martijn
+ */
+public final class MyScriptParser implements Parser {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Program parse(final List<Token> tokens) {
         TokenReader reader = new TokenReader(tokens);

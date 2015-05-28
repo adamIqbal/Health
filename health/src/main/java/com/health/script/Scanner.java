@@ -3,17 +3,15 @@ package com.health.script;
 import java.util.List;
 
 /**
- * TODO.
- *
- * @author Martijn
+ * Interface for a scanner of a script.
  */
 public interface Scanner {
     /**
-     * TODO. scanner.
+     * Scans the given script reader and returns the scanned list of tokens.
      *
      * @param reader
-     *            asdf.
-     * @return asfg.
+     *            the script reader to scan.
+     * @return the scanned list of tokens.
      */
     List<Token> scan(final ScriptReader reader);
 }

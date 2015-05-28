@@ -4,10 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Script {
+/**
+ * Represents a script.
+ *
+ * @author Martijn
+ */
+public final class Script {
     private final String text;
     private final List<Integer> lineStarts;
 
+    /**
+     * Creates a new script with the given text.
+     *
+     * @param text
+     *            the text.
+     */
     public Script(final String text) {
         Objects.requireNonNull(text);
 
@@ -15,11 +26,23 @@ public class Script {
         this.lineStarts = Script.findLineStarts(text);
     }
 
+    /**
+     * Gets the text of this script.
+     *
+     * @return the text of this script.
+     */
     public String getText() {
         return this.text;
     }
 
-    public int getColumn(int index) {
+    /**
+     * Gets the column for a given index in the text.
+     *
+     * @param index
+     *            the index in the text for which to retrieve the column.
+     * @return the column for the given index in the text.
+     */
+    public int getColumn(final int index) {
         if (index < 0 || index >= this.text.length()) {
             throw new IndexOutOfBoundsException();
         }
@@ -35,7 +58,14 @@ public class Script {
         return index - lineStart + 1;
     }
 
-    public int getLine(int index) {
+    /**
+     * Gets the line for a given index in the text.
+     *
+     * @param index
+     *            the index in the text for which to retrieve the line.
+     * @return the line for the given index in the text.
+     */
+    public int getLine(final int index) {
         if (index < 0 || index >= this.text.length()) {
             throw new IndexOutOfBoundsException();
         }
@@ -56,10 +86,27 @@ public class Script {
         return this.text;
     }
 
+    /**
+     * Reads a script from a given file.
+     *
+     * @param path
+     *            the path of the script file.
+     * @return a script with the contents of the given file.
+     */
     public static Script fromFile(final String path) {
-        return new Script("");
+        // TODO: Read a text file and create a script object
+        return null;
     }
 
+    /**
+     * Finds the indices in the text where a new line begins, for the getColumn
+     * and getLine functions.
+     *
+     * @param text
+     *            the text for which to find the indices of the line starts.
+     * @return a list containing the indices in the text where a new line
+     *         begins.
+     */
     private static List<Integer> findLineStarts(final String text) {
         assert text != null;
 

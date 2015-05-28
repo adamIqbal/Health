@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO.
+ * Implements a scanner for the script.
  *
  * @author Martijn
  */
@@ -14,10 +14,14 @@ public final class MyScriptScanner implements Scanner {
     private Map<String, TokenName> keywordMap;
     private SymbolMap symbolMap;
 
+    /**
+     * Creates a new scanner.
+     */
     public MyScriptScanner() {
         this.keywordMap = new HashMap<String, TokenName>();
         this.symbolMap = new SymbolMap();
 
+        // Populate the keyword and symbol maps from the TokenName enumeration
         for (TokenName token : TokenName.values()) {
             if (token.getType() == TokenType.KEYWORD
                     || token.getType() == TokenType.TYPE
@@ -31,10 +35,14 @@ public final class MyScriptScanner implements Scanner {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Token> scan(final ScriptReader reader) {
         List<Token> tokens = new ArrayList<Token>();
 
+        // Read all tokens until readNext returns null, and add them to a list
         while (true) {
             Token next = readNext(reader);
 
@@ -51,6 +59,8 @@ public final class MyScriptScanner implements Scanner {
     private void skipWhitespace(final ScriptReader reader) {
         int ch = reader.peek();
 
+        // Read while the current character is a whitespace character or until
+        // the EOF has been reached
         while (ch != -1 && Character.isWhitespace((char) ch)) {
             reader.skip(1);
 
@@ -61,12 +71,14 @@ public final class MyScriptScanner implements Scanner {
     private Token readNext(final ScriptReader reader) {
         skipWhitespace(reader);
 
+        // If the EOF has been reached, return null
         if (reader.peek() == -1) {
             return null;
         }
 
         char next = (char) reader.peek();
 
+        // Determine the type of token and read the token
         if (next == '_' || Character.isLetter(next)) {
             return readIdentifierOrKeyword(reader);
         } else if (Character.isDigit(next)
@@ -80,12 +92,16 @@ public final class MyScriptScanner implements Scanner {
             return readBlockComment(reader);
         }
 
+        // The token wasn't one of the above, try looking it up in the symbol
+        // map
         Token symbol = this.symbolMap.tryRead(reader);
 
+        // If the token was a symbol in the symbol map, return it
         if (symbol != null) {
             return symbol;
         }
 
+        // The token is an unknown token
         return readUnknown(reader);
     }
 
@@ -95,13 +111,21 @@ public final class MyScriptScanner implements Scanner {
     }
 
     private Token readIdentifierOrKeyword(final ScriptReader reader) {
+        // Read the token as an identifier
         Token identifier = readIdentifier(reader);
 
+        // Look up the token's lexeme in the keyword map to see if it is a
+        // keyword
         TokenName keyword = this.keywordMap.get(identifier.getLexeme());
 
         if (keyword != null) {
+            // If the token is a keyword, return a new token with the right
+            // TokenName
+
             Object value = null;
 
+            // Since true and false are keywords but have special values, they
+            // must be handled here
             if (keyword == TokenName.TRUE) {
                 value = true;
             } else if (keyword == TokenName.FALSE) {
@@ -115,6 +139,7 @@ public final class MyScriptScanner implements Scanner {
                     keyword,
                     value);
         } else {
+            // Otherwise just return the identifier
             return identifier;
         }
     }
@@ -125,6 +150,7 @@ public final class MyScriptScanner implements Scanner {
 
         int start = reader.getPosition();
 
+        // Read the sequence of alphanumeric and _ characters
         while (true) {
             char next = (char) reader.peek();
 
@@ -205,6 +231,7 @@ public final class MyScriptScanner implements Scanner {
         // Skip the "
         reader.skip(1);
 
+        // Read until and un-escaped " or end of line
         while (true) {
             int next = reader.peek();
 
@@ -213,6 +240,10 @@ public final class MyScriptScanner implements Scanner {
 
                 end = reader.getPosition();
 
+                if (next == -1 || next == '\n') {
+                    // TODO: In case of EOF or newline, add a diagnostic
+                }
+
                 break;
             }
 
@@ -220,7 +251,8 @@ public final class MyScriptScanner implements Scanner {
                 int escaped = readEscapedCharacter(reader);
 
                 if (escaped == -1) {
-                    // TODO: Add diagnostic
+                    // TODO: The character was not a valid escape character, add
+                    // a diagnostic
                     string.append((char) escaped);
                 } else {
                     string.append((char) escaped);
@@ -282,6 +314,7 @@ public final class MyScriptScanner implements Scanner {
         // Skip the //
         reader.skip(2);
 
+        // Read until a newline or until the EOF has been reached
         while (true) {
             int next = reader.peek();
 
@@ -307,6 +340,7 @@ public final class MyScriptScanner implements Scanner {
         // Skip the /*
         reader.skip(2);
 
+        // Read until a */ or until the EOF has been reached
         while (true) {
             int next = reader.peek();
 
