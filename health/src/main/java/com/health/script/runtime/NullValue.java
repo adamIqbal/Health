@@ -1,24 +1,26 @@
 package com.health.script.runtime;
 
+/**
+ * Represents a null value in the script.
+ */
 public final class NullValue extends Value {
-    private double value;
-
+    /**
+     * Creates a new null value.
+     */
     public NullValue() {
         super(Value.getStaticType());
     }
 
-    public double getValue() {
-        return this.value;
-    }
-
-    public void setValue(double value) {
-        this.value = value;
-    }
-
+    /**
+     * Gets the {@link ScriptType} corresponding to {@link NullValue}.
+     *
+     * @return the {@link ScriptType} corresponding to {@link NullValue}.
+     */
     public static ScriptType getStaticType() {
         return Value.getStaticType();
     }
 
+    @Override
     public String toString() {
         return "<null>";
     }
