@@ -86,11 +86,9 @@ public class LValue {
      *             if the given type is not assignable from the given value.
      */
     private static void checkType(final ScriptType type, final Value value) throws ScriptRuntimeException {
-        if (value != null) {
-            if (!type.isAssignableFrom(value.getType())) {
-                throw new ScriptRuntimeException(String.format(
-                        "Cannot convert '%s' to '%s'.", value.getType().getName(), type.getName()));
-            }
+        if (value != null && !type.isAssignableFrom(value.getType())) {
+            throw new ScriptRuntimeException(String.format(
+                    "Cannot convert '%s' to '%s'.", value.getType().getName(), type.getName()));
         }
     }
 }

@@ -82,7 +82,7 @@ public final class MyScriptScanner implements Scanner {
         if (next == '_' || Character.isLetter(next)) {
             return readIdentifierOrKeyword(reader);
         } else if (Character.isDigit(next)
-                || (next == '.' && Character.isDigit(reader.peek(1)))) {
+                || next == '.' && Character.isDigit(reader.peek(1))) {
             return readNumberLiteral(reader);
         } else if (next == '"') {
             return readStringLiteral(reader);
@@ -106,8 +106,11 @@ public final class MyScriptScanner implements Scanner {
     }
 
     private Token readUnknown(final ScriptReader reader) {
-        // TODO Auto-generated method stub
-        return null;
+        int start = reader.getPosition();
+
+        reader.skip(1);
+
+        return new Token(reader.getScript(), start, start + 1, TokenName.UNKNOWN);
     }
 
     private Token readIdentifierOrKeyword(final ScriptReader reader) {
@@ -240,9 +243,9 @@ public final class MyScriptScanner implements Scanner {
 
                 end = reader.getPosition();
 
-                if (next == -1 || next == '\n') {
-                    // TODO: In case of EOF or newline, add a diagnostic
-                }
+                // TODO: In case of EOF or newline, add a diagnostic
+                // if (next == -1 || next == '\n') {
+                // }
 
                 break;
             }

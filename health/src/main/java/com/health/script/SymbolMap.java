@@ -69,7 +69,7 @@ public final class SymbolMap {
         Objects.requireNonNull(reader);
 
         String symbol = this.readLongestPotentialSymbol(reader);
-        TokenName name = this.findSymbol(reader, symbol);
+        TokenName name = this.findSymbol(symbol);
 
         if (name != null) {
             int length = name.getLexeme().length();
@@ -129,8 +129,7 @@ public final class SymbolMap {
      * @return the largest symbol in a given string, or null if a symbol could
      *         not be found.
      */
-    private TokenName findSymbol(final ScriptReader reader,
-            final String candidateSymbol) {
+    private TokenName findSymbol(final String candidateSymbol) {
         String symbol = candidateSymbol;
         int length = symbol.length();
 
