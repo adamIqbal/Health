@@ -79,7 +79,7 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
 		return columns;
 	}
 
-	public List<ValueType> getColumnTypes() {			
+	public List<ValueType> getColumnTypes() {
 		ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
 		for (Component comp : this.columnPanel.getComponents()) {
 			JPanel column = (JPanel) comp;
@@ -103,7 +103,7 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
 
 		columnName.setPreferredSize(preferredDim);
 		columnValue.setPreferredSize(preferredDim);
-		
+
 		columnName.setText("");
 
 		panel.add(columnName);

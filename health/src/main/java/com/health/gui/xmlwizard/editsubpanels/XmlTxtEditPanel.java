@@ -23,7 +23,7 @@ public class XmlTxtEditPanel extends XmlStartEditSubPanel {
 
 	public XmlTxtEditPanel() {
 		super();
-		
+
 		type = FileType.TXT;
 
 		// Preferred dimensions for the textfields
@@ -56,7 +56,7 @@ public class XmlTxtEditPanel extends XmlStartEditSubPanel {
 
 	@Override
 	public void setValues(String[] delimiters) {
-		//String startDelim, String endDelim, String delim
+		// String startDelim, String endDelim, String delim
 		this.startDelimField.setText(delimiters[0]);
 		this.endDelimField.setText(delimiters[1]);
 		this.delimiterField.setText(delimiters[2]);

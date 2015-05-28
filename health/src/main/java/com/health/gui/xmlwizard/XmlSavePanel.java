@@ -15,8 +15,6 @@ import javax.swing.JTextArea;
 
 import org.apache.commons.io.FileUtils;
 
-import com.health.gui.FileListing;
-
 /**
  * Represents the panel where the user can save its new or edited XML Config
  * file
@@ -58,7 +56,7 @@ public class XmlSavePanel extends JPanel {
 		 * buttonPanel.add(saveButton); }
 		 */
 	}
-	
+
 	private void saveAs() throws IOException {
 		// Get the String to write
 		String xmlString = xml.toXMLString();

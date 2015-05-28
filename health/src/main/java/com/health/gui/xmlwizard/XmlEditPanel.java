@@ -1,33 +1,17 @@
 package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
 import com.health.FileType;
-import com.health.ValueType;
 import com.health.input.InputDescriptor;
 import com.health.input.InputException;
 
@@ -75,9 +59,9 @@ public class XmlEditPanel extends JPanel {
 	 */
 	public XmlConfigObject getValues() {
 		XmlConfigObject config = new XmlConfigObject();
-		
+
 		config.setType(startPanel.getSelectedType());
-		
+
 		config.values = startPanel.getValues(config.type);
 
 		config.setColumns(columnPanel.getColumns(),
@@ -89,7 +73,7 @@ public class XmlEditPanel extends JPanel {
 
 		return config;
 	}
-	
+
 	/**
 	 * Loads current values of the selected XML file en sets the fields of the
 	 * panel
@@ -100,24 +84,24 @@ public class XmlEditPanel extends JPanel {
 	public void setValues(Path xml) {
 		try {
 			InputDescriptor id = new InputDescriptor(xml.toString());
-			
-			//set values according to file format
-			if(id.getFormat().equals("xlsx") || id.getFormat().equals("xls")) {
-				//TODO XLS support
+
+			// set values according to file format
+			if (id.getFormat().equals("xlsx") || id.getFormat().equals("xls")) {
+				// TODO XLS support
 			}
-			//else for now default to TXT format
+			// else for now default to TXT format
 			else {
-				String[] values = {id.getStartDelimiter(), id.getEndDelimiter(),
-						id.getDelimiter()};
+				String[] values = { id.getStartDelimiter(),
+						id.getEndDelimiter(), id.getDelimiter() };
 				startPanel.setValues(values, FileType.TXT);
 			}
-			
-			//set the columns
+
+			// set the columns
 			columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
 			this.xml = xml;
 		} catch (ParserConfigurationException | SAXException | IOException
 				| InputException e) {
 			System.out.println("Error loading: " + xml.toString());
 		}
-	}	
+	}
 }

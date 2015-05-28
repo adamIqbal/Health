@@ -36,7 +36,7 @@ public class XmlConfigObject {
 	public void setPath(Path xml) {
 		this.path = xml;
 	}
-	
+
 	public void setType(FileType type) {
 		this.type = type;
 	}
@@ -55,8 +55,8 @@ public class XmlConfigObject {
 	 */
 	public String toXMLString() {
 		String xml = null;
-		
-		switch(this.type) {
+
+		switch (this.type) {
 		case TXT:
 			xml = this.toXMLStringTXT();
 			break;
@@ -65,20 +65,19 @@ public class XmlConfigObject {
 		default:
 			break;
 		}
-		
+
 		return xml;
 	}
-	
+
 	public String toXMLStringTXT() {
 		String startDelimiter = this.values[0];
 		String endDelimiter = this.values[0];
 		String delimiter = this.values[0];
-		
-		
+
 		String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
-		String dataStart = "<data format=\"text\" start=\""
-				+ startDelimiter + "\" end=\"" + endDelimiter
-				+ "\" delimeter=\"" + delimiter + "\">" + "\n\r";
+		String dataStart = "<data format=\"text\" start=\"" + startDelimiter
+				+ "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
+				+ "\">" + "\n\r";
 
 		String columnTags = "";
 		int n = columns.size();

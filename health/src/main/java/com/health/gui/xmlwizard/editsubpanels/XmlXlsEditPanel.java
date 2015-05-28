@@ -9,11 +9,11 @@ import com.health.FileType;
  * @author Bjorn van der Laan
  *
  */
-public class XmlXlsEditPanel extends XmlStartEditSubPanel { 
+public class XmlXlsEditPanel extends XmlStartEditSubPanel {
 	public XmlXlsEditPanel() {
 		super();
 		type = FileType.XLS;
-		
+
 		JLabel placeholder = new JLabel("XLS!");
 		this.add(placeholder);
 	}
