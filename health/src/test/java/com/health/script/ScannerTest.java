@@ -12,7 +12,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
 /**
- * Unit test for MyScriptScanner.
+ * Unit test for MyScriptScanner (and SymbolMap).
  */
 @RunWith(Parameterized.class)
 public class ScannerTest {
@@ -97,8 +97,11 @@ public class ScannerTest {
                 { "/*\"comment*\"", names(TokenName.BLOCK_COMMENT) },
                 { "/*\n*/", names(TokenName.BLOCK_COMMENT) },
                 { "/**/ident", names(TokenName.BLOCK_COMMENT, TokenName.IDENTIFIER) },
-                // Symbol
+                // Symbols
                 { ".", names(TokenName.PERIOD) },
+                { "=", names(TokenName.EQUALS) },
+                { "==", names(TokenName.EQUALS_EQUALS) },
+                { ")=", names(TokenName.CLOSE_PARENTHESIS, TokenName.EQUALS) },
                 // Unknown
                 { "#", names(TokenName.UNKNOWN) },
                 { "/", names(TokenName.UNKNOWN) },
