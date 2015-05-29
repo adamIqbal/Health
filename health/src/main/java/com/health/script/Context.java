@@ -5,10 +5,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
+import com.health.script.runtime.BooleanValue;
 import com.health.script.runtime.LValue;
 import com.health.script.runtime.NonModifiableLValue;
+import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.ScriptType;
+import com.health.script.runtime.StringValue;
+import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
 
 /**
@@ -26,6 +30,13 @@ public final class Context {
     public Context() {
         this.types = new HashMap<String, ScriptType>();
         this.variables = new HashMap<String, LValue>();
+
+        // Declare all the standard type
+        this.declareType(Value.getStaticType());
+        this.declareType(BooleanValue.getStaticType());
+        this.declareType(NumberValue.getStaticType());
+        this.declareType(StringValue.getStaticType());
+        this.declareType(TableValue.getStaticType());
     }
 
     /**
