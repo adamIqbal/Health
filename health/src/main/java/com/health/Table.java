@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
@@ -119,12 +120,12 @@ public final class Table implements Iterable<Chunk> {
     }
 
     /**
-     * Returns an {@link Iterable} containing all records in this table.
+     * Returns an {@link List} containing all records in this table.
      *
-     * @return an {@link Iterable} containing all records in this table.
+     * @return an {@link List} containing all records in this table.
      */
-    public Iterable<Record> getRecords() {
-        return this.records;
+    public List<Record> getRecords() {
+        return Collections.unmodifiableList(this.records);
     }
 
     /**
@@ -147,6 +148,70 @@ public final class Table implements Iterable<Chunk> {
         }
 
         return constrained;
+    }
+
+    /**
+     * Groups the records of this table on the given key, and projects the
+     * groups onto a table identical to the current table using the given result
+     * selector.
+     *
+     * @param keyColumn
+     *            the key on which to group.
+     * @param resultSelector
+     *            a function that projects a group onto a record.
+     * @return the table containing the grouped records.
+     */
+    public Table groupBy(
+            final String keyColumn,
+            final TriFunction<Object, Table, Record> resultSelector) {
+        return this.groupBy(keyColumn, new Table(this.columns), resultSelector);
+    }
+
+    /**
+     * Groups the records of this table on the given key, and projects the
+     * groups onto a given table using the given result selector.
+     *
+     * @param keyColumn
+     *            the key on which to group.
+     * @param resultTable
+     *            the table that will contain the grouped records.
+     * @param resultSelector
+     *            a function that projects a group onto a record.
+     * @return the table containing the grouped records.
+     */
+    public Table groupBy(
+            final String keyColumn,
+            final Table resultTable,
+            final TriFunction<Object, Table, Record> resultSelector) {
+        if (this.getColumn(keyColumn) == null) {
+            throw new IllegalArgumentException(String.format(
+                    "The table does not contain a column named '%s'.",
+                    keyColumn));
+        }
+
+        Map<Object, Table> groups = new HashMap<Object, Table>();
+
+        // Group all the records by their key
+        for (Record record : this.records) {
+            Object key = record.getValue(keyColumn);
+            Table group = groups.get(key);
+
+            if (group == null) {
+                group = new Table(this.columns);
+                groups.put(key, group);
+            }
+
+            record.copyTo(group);
+        }
+
+        // Convert each group to a single record
+        for (Entry<Object, Table> entry : groups.entrySet()) {
+            Record result = new Record(resultTable);
+
+            resultSelector.apply(entry.getKey(), entry.getValue(), result);
+        }
+
+        return resultTable;
     }
 
     /**

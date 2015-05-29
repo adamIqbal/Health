@@ -4,6 +4,6 @@
 	<column type="Number">value</column>
 	<column type="String">unit</column>
 	<column type="Number">misc</column>
-	<column type="Number">date</column>
-	<column type="Number">time</column>
+	<column type="String">date</column>
+	<column type="String">time</column>
 </data>
