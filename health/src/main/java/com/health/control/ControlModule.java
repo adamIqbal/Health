@@ -1,9 +1,10 @@
 package com.health.control;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
-import com.health.*;
+import com.health.Table;
 import com.health.output.Output;
 
 /**
@@ -11,116 +12,79 @@ import com.health.output.Output;
  *
  */
 public class ControlModule {
-  private Table data;
-  private String script;
+    private final String script;
+    private List<Table> data;
 
-  private Table dataset;
+    /**
+     * Creates a new control module with the given script and data.
+     *
+     * @param parsedData
+     *            the script.
+     * @param script
+     *            the data.
+     */
+    public ControlModule(final String script, final List<Table> parsedData) {
+        Objects.requireNonNull(script);
 
-  /**
-	 * 
-	 */
-  public ControlModule() {
-    this.data = null;
-    this.script = null;
-    this.dataset = null;
-  }
-
-  /**
-   * @param data
-   * @param script
-   */
-  public ControlModule(Table data, String script) {
-    setData(data);
-    setScript(script);
-    this.dataset = null;
-  }
-
-  public ControlModule(Table data) {
-    setData(data);
-    this.dataset = null;
-  }
-
-  /**
-   * Start analysis based on script
-   * 
-   * @return
-   */
-  public String startAnalysis() {
-    if (this.data == null) {// || this.script == null) {
-      return null;
+        this.script = script;
+        setData(parsedData);
     }
 
-    // data.script
-    data = data.where((record) -> record.getNumberValue("value") > 200);
-    String output = Output.formatTable(data);
+    /**
+     * Start analysis based on the script.
+     * 
+     * @return
+     */
+    public String startAnalysis() {
+        String output = null;
 
-    try {
-      Output.writeTable("output.txt", data);
-    } catch (IOException e) {
-      System.out.println(" data could not be written to file");
+        if (this.data.size() > 0) {
+            Table table = this.data.get(0);
+
+            table = table.where((record) -> record.getNumberValue("value") > 200);
+
+            output = Output.formatTable(table);
+
+            try {
+                Output.writeTable("output.txt", table);
+            } catch (IOException e) {
+                System.out.println(" data could not be written to file");
+            }
+        }
+
+        return output;
     }
 
-    return output;
-  }
+    /**
+     * Gets the data of this control module.
+     *
+     * @return the data of this control module.
+     */
+    public List<Table> getData() {
+        return data;
+    }
 
-  /**
-   * returns result of the script
-   */
-  public void getResults() {
+    /**
+     * Sets the data of this control module.
+     *
+     * @param data
+     *            the data of this control module.
+     */
+    public void setData(List<Table> data) {
+        this.data = data;
+    }
 
-  }
+    /**
+     * Gets the script of this control module.
+     *
+     * @return the script of this control module.
+     */
+    public String getScript() {
+        return script;
+    }
 
-  /**
-   * @return
-   */
-  public Table getData() {
-    return data;
-  }
-
-  /**
-   * @param data2
-   */
-  public void setData(Table data2) {
-    this.data = data2;
-  }
-
-  /**
-   * @return
-   */
-  public String getScript() {
-    return script;
-  }
-
-  /**
-   * @param script
-   */
-  public void setScript(String script) {
-    this.script = script;
-  }
-
-  /**
-   * @return
-   */
-  public Table getDataset() {
-    return dataset;
-  }
-
-  /**
-   * @param dataset
-   */
-  public void setDataset(Table dataset) {
-    this.dataset = dataset;
-  }
-
-  /*
-   * (non-Javadoc)
-   * 
-   * @see java.lang.Object#toString()
-   */
-  @Override
-  public String toString() {
-    return "ControlModule [data=" + data.toString() + ", script=" + script + ", dataset=" + dataset
-        + "]";
-  }
-
+    @Override
+    public String toString() {
+        return "ControlModule [data=" + data.toString() + ", script=" + script + "]";
+    }
 }
