@@ -1,4 +1,4 @@
-package com.health.gui.xmlwizard.editsubpanels;
+package com.health.gui.xmlwizard.starteditsubpanels;
 
 import javax.swing.JPanel;
 

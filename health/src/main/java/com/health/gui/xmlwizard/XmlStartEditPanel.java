@@ -10,9 +10,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import com.health.FileType;
-import com.health.gui.xmlwizard.editsubpanels.XmlStartEditSubPanel;
-import com.health.gui.xmlwizard.editsubpanels.XmlTxtEditPanel;
-import com.health.gui.xmlwizard.editsubpanels.XmlXlsEditPanel;
+import com.health.gui.xmlwizard.starteditsubpanels.XmlStartEditSubPanel;
+import com.health.gui.xmlwizard.starteditsubpanels.XmlTxtEditPanel;
+import com.health.gui.xmlwizard.starteditsubpanels.XmlXlsEditPanel;
 
 /**
  * Displays options to modify elements of the config xml that are not about the
