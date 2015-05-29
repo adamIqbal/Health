@@ -81,11 +81,9 @@ public class XmlEditPanel extends JPanel {
         XmlConfigObject config = new XmlConfigObject();
 
         config.setType(startPanel.getSelectedType());
-
-        config.values = startPanel.getValues(config.type);
-
-        config.setColumns(columnPanel.getColumns(),
-                columnPanel.getColumnTypes());
+        config.setValues(startPanel.getValues(config.getType()));
+        config.setColumns(columnPanel.getColumns());
+        config.setColumnTypes(columnPanel.getColumnTypes());
 
         if (this.xml != null) {
             config.setPath(this.xml);
