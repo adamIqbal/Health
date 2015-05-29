@@ -347,7 +347,7 @@ public final class MyScriptScanner implements Scanner {
         while (true) {
             int next = reader.peek();
 
-            if (next == -1 || next == '\n') {
+            if (next == -1) {
                 break;
             }
 
