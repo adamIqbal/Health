@@ -20,30 +20,24 @@ public class FreqBarTest {
 	
 	@Test
 	public void test() throws IOException {
-		//fail("Not yet implemented");
-		//double[] ar1 = {1,2,4,3,5,6,3,2,4,5};
-		//double[] ar2 = {34,2,43,54,5,4,43,43,43,6,5};
 		double[] ar = {1,2,4,3,5,6,3,2,4,3,4,4};
-		URL url = FreqBar.makeBarChart(ar);
-		System.out.println(url);
-		showChar(url);
+		String title = "Test1";
+		URL url = FreqBar.makeBarChart(ar, title);
+		showChart(url, title);
 	}
 	
 	@Test
 	public void test2() throws IOException {
-		//fail("Not yet implemented");
-		//double[] ar1 = {1,2,4,3,5,6,3,2,4,5};
-		//double[] ar2 = {34,2,43,54,5,4,43,43,43,6,5};
-		double[][] ar = {{1,1},{2,2},{4,4},{3,3},{5,1},{6,3}};//2,4,3,5,6,3,2,4,3,4,4};
-		URL url = FreqBar.makeBarChart(ar);
-		System.out.println(url);
-		showChar(url);
+		double[][] ar = {{1,1},{2,2},{4,4},{3,3},{5,1},{6,3}};
+		String title = "Test2";
+		URL url = FreqBar.makeBarChart(ar, title);
+		showChart(url, title);
 	}
 
-	private static void showChar(URL url) throws IOException {
-		// TODO Auto-generated method stub
+	private static void showChart(URL url, String title) throws IOException {
 		BufferedImage image = ImageIO.read(url);
-		File file = new File("Chart1.jpeg");
+		String t = title + ".jpeg";
+		File file = new File(t);
 		ImageIO.write(image,  "JPEG", file);
 		JLabel label = new JLabel(new ImageIcon(image));
 		JFrame f = new JFrame();
@@ -52,8 +46,6 @@ public class FreqBarTest {
 	    f.pack();
 	    f.setLocation(200,200);
 	    f.setVisible(true);
-	}
-
-	
+	}	
 	
 }

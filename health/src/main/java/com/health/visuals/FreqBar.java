@@ -17,34 +17,22 @@ import com.googlecode.charts4j.Fills;
 import com.googlecode.charts4j.GCharts;
 import com.googlecode.charts4j.Plots;
 
-//import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-//import javax.imageio.ImageIO;
-//import javax.swing.*;
 
 
 public class FreqBar {
 	
-	//public static void main(String args[]) throws Exception {
-		//double[] arIn = {1,2,4,3,5,6,3,2,4,3,4,4};
-		//makeBarChart(arIn);
+	public static URL makeBarChart(double[] arIn, String title) throws IOException{
 		
-	///}
-	
-	public static URL makeBarChart(double[] arIn) throws IOException{
-
-		//double[] arIn = {1,2,4,3,5,6,3,2,4,3,4,4};
-		double[][] arOut = new double[12][2];
-		double[] arCheck = new double[12];
+		double[][] arOut = new double[arIn.length][2];
+		// For checking if event is already 
 		boolean check = false;
 		
 		int count = 0;
-		int count2 = 0;
-		for(int i=0; i<12; i++){ /* length arIn */
-			System.out.println(arIn[i]);
-			//if(arChk != false){
+		for(int i=0; i<arIn.length; i++){ 
+			// Check if value is already present in arOut
 			for(int k=0; k<arIn.length; k++){
 				if(arOut[k][0] == arIn[i]){
 					int ind = k;
@@ -55,108 +43,93 @@ public class FreqBar {
 					break;
 				}
 			}
+			// Else put it in arOut
 			if(check == false){
-				arCheck[count2] = arIn[i];
 				arOut[count][0] = arIn[i];
 				arOut[count][1] = 1;
 				count = count + 1;
-				count2 = count2 + 1;
 			}
-			check = false;
-			
+			check = false;	
 		}
-		System.out.println(Arrays.toString(arIn));
-
-		System.out.println(Arrays.toString(arCheck));
-		System.out.println(Arrays.deepToString(arOut));//Arrays.toString(arOut[1]));
 		
-		URL url = makeBarChart(arOut);
-        System.out.println(url);
-
+		URL url = makeBarChart(arOut, title);
 		return url;
 	}
 	
-	public static URL makeBarChart(double[][] arIn) throws IOException{
-		//Defining data
+	public static URL makeBarChart(double[][] arIn, String title) throws IOException{
+		// Defining data
 		double[] dataAr = new double[arIn.length];
-		
+		// Set count to 0
 		int count = 0;
-		
+		// Copy second column of input array into dataArray
 		for(int i=0; i<arIn.length; i++){
 			dataAr[count] = arIn[i][1];
 			count = count + 1;
+		}	
+		// Get maximum value of dataArray
+		double maxVal = dataAr[0];
+		for(int m = 0; m < dataAr.length; m++) {
+			if (dataAr[m] > maxVal) {
+				maxVal = dataAr[m];
+			}
 		}
+		// Defining labels
 		String[] labelsAr = new String[count];
 		count = 0;
+		// Create labels
 		for(int k=0; k<arIn.length; k++){
 			labelsAr[count] = String.valueOf(arIn[k][0]);
 			count = count + 1;
 		}
+		// Turn labels into list
 		ArrayList<String> list = new ArrayList<String>(Arrays.asList(labelsAr));
 		ArrayList<String> newList = new ArrayList<String>();
-		//System.out.println(list);
-		//int[] rem = new int[labelsAr.length];
-		//int countRem = 0;
+		// Delete values from original label array that are useless and that are not going to be used as labels
+		// Do this by copying useful ones in new ArrayList
 		for(int n=0; n<list.size() ;n++){
 			if(!list.get(n).equals("0.0") && !list.get(n).equals(null)){
-				//rem[countRem] = n;
-				//countRem = countRem + 1;
-				//list.remove(n);//list.set(n, null);
 				newList.add(list.get(n));
-			}
-			
+			}	
 		}
 		
-		
+		// Transform labels list to array
 		String[] labelsUse = newList.toArray(new String[newList.size()]);
-		System.out.println(Arrays.toString(labelsUse));
 		
-		final int MAX_EVENT = 10; //define definite value later
-		Data data = DataUtil.scaleWithinRange(0,  10, dataAr); //use to be calculated frequency info from input
+		// Add data to the chart
+		final double MAX_EVENT = maxVal + 1; 
+		Data data = DataUtil.scaleWithinRange(0,  MAX_EVENT, dataAr); 
 		BarChartPlot dat = Plots.newBarChartPlot(data, RED, "Data");
 		BarChart chart = GCharts.newBarChart(dat);
 		
-		//Defining axis
-		AxisStyle axisStyle = AxisStyle.newAxisStyle(BLACK, 13, AxisTextAlignment.CENTER);
-		
+		//Defining axis (labels etc)
+		AxisStyle axisStyle = AxisStyle.newAxisStyle(BLACK, 13, AxisTextAlignment.CENTER);		
 		AxisLabels event = AxisLabelsFactory.newAxisLabels("Event", 50.0);
 		event.setAxisStyle(axisStyle);
-		//AxisLabels events = AxisLabelsFactory.newAxisLabels("Event1", "Event2", "Event3", "Event4", "Event5", "Event 6");
 		AxisLabels events = AxisLabelsFactory.newAxisLabels(Arrays.asList(labelsUse));
 		events.setAxisStyle(axisStyle);
 		AxisLabels frequency = AxisLabelsFactory.newAxisLabels("Frequency", 50.0);
 		frequency.setAxisStyle(axisStyle);
-		
 		AxisLabels freqCount = AxisLabelsFactory.newNumericRangeAxisLabels(0, MAX_EVENT);
 		freqCount.setAxisStyle(axisStyle);
 		
-		// Adding axis info to chart.
+		// Add the axis info to the chart.
         chart.addYAxisLabels(freqCount);
         chart.addYAxisLabels(frequency);
         chart.addXAxisLabels(events);
         chart.addXAxisLabels(event);
         chart.setHorizontal(false);
+        
+        //size should be calculate based on frequencies and amount of labels
         chart.setSize(650, 450);
         chart.setSpaceBetweenGroupsOfBars(20);
 		
-        
-        chart.setTitle("Frequency Test Bar Chart", BLACK, 17);
+        // Set title and background
+        chart.setTitle(title, BLACK, 17);
         chart.setBackgroundFill(Fills.newSolidFill(LIGHTGREY));
+        
+        // Create url of the chart
         URL url = new URL(chart.toURLString());
-        System.out.println(url);
-        //showChart(url);
+        
         return(url);
 	}
-	
-	/*
-	public static void showChart(URL url) throws IOException{
-		BufferedImage image = ImageIO.read(url);
-		JLabel label = new JLabel(new ImageIcon(image));
-		JFrame f = new JFrame();
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    f.getContentPane().add(label);
-	    f.pack();
-	    f.setLocation(200,200);
-	    f.setVisible(true);
-	}*/
 }
