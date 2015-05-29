@@ -45,7 +45,7 @@ public class Value {
 
         // Create an l-value for every field so that it can be assigned to
         for (ScriptField field : type.getFields()) {
-            this.fields.put(field.getName(), new LValue(type));
+            this.fields.put(field.getName(), new LValue(field.getType()));
         }
     }
 
