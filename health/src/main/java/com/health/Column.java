@@ -11,6 +11,7 @@ public class Column {
     private final String name;
     private final int index;
     private final ValueType type;
+    private boolean isFrequencyColumn;
 
     /**
      * Constructs a new column with the given name, index and type.
@@ -38,6 +39,7 @@ public class Column {
         this.name = name;
         this.index = index;
         this.type = type;
+        this.isFrequencyColumn = false;
     }
 
     /**
@@ -65,5 +67,28 @@ public class Column {
      */
     public final ValueType getType() {
         return this.type;
+    }
+
+    /**
+     * Gets the boolean that describes whether this column is a frequency
+     * column.
+     * 
+     * @return the boolean that describes whether this column is a frequency
+     *         column
+     */
+    public final boolean getIsFrequencyColumn() {
+        return this.isFrequencyColumn;
+    }
+
+    /**
+     * Sets the boolean that describes whether this column is a frequency
+     * column.
+     * 
+     * @param param
+     *            the boolean that describes whether this column is a frequency
+     *            column
+     */
+    public final void setIsFrequencyColumn(boolean param) {
+        this.isFrequencyColumn = param;
     }
 }

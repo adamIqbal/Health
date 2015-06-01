@@ -7,9 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -30,90 +32,102 @@ import com.health.input.InputException;
  */
 public class ScriptPanel extends JPanel {
 
-  private static JTextArea scriptArea;
-
-  /**
-   * function creates and fill the panel.
-   */
-  public ScriptPanel() {
-
-    this.setLayout(new BorderLayout());
-
-    JPanel panel = new JPanel(new BorderLayout());
-
-    scriptArea = new JTextArea(2, 1);
-    scriptArea.setBorder(BorderFactory.createLineBorder(Color.black));
-
-    panel.add(scriptArea, BorderLayout.CENTER);
-
-    JButton startAnalasisButton = new JButton("Start Analysis");
-    startAnalasisButton.addActionListener(new ListenForStartAnalysis());
-
-    JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-    southPanel.add(startAnalasisButton);
-    panel.add(southPanel, BorderLayout.SOUTH);
-
-    JTextField textAbove = new JTextField("Script: ");
-    textAbove.setEditable(false);
-    textAbove.setDisabledTextColor(Color.black);
-
-    panel.add(textAbove, BorderLayout.NORTH);
-    panel.setBorder(new EmptyBorder(10, 80, 10, 80));
-
-    this.add(panel, BorderLayout.CENTER);
-
-  }
-
-  /**
-   * get the script area component.
-   *
-   * @return scriptArea the component of the scriptarea.
-   */
-  public static JTextArea getScriptArea() {
-    return scriptArea;
-  }
-
-  /**
-   * handle start analysis button.
-   *
-   * @author daan
-   *
-   */
-  private class ListenForStartAnalysis implements ActionListener {
+    private static JTextArea scriptArea;
 
     /**
-     * Makes inputData array and calls the control module.
-     *
-     * @param event
+     * function creates and fill the panel.
      */
-    public void actionPerformed(final ActionEvent event) {
-      ArrayList<FileListingRow> files = FileListing.getFileListingRows();
-      String xmlFormat = "";
-      String fileString = "";
-      Table parsedData = null;
+    public ScriptPanel() {
 
-      for (int i = 0; i < files.size(); i++) {
-        xmlFormat = files.get(i).getXmlFormat().getSelectedItem().toString();
-        fileString = files.get(i).getFileString();
-        xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
+        this.setLayout(new BorderLayout());
 
-        System.out.println(xmlFormat + " " + fileString);
-      }
+        JPanel panel = new JPanel(new BorderLayout());
 
-      try {
-        parsedData = Input.readTable(fileString, xmlFormat);
-      } catch (IOException | ParserConfigurationException | SAXException | InputException e1) {
-        System.out.println("Error: Something went wrong parsing the config and data!");
-        e1.printStackTrace();
-      }
+        scriptArea = new JTextArea(2, 1);
+        scriptArea.setBorder(BorderFactory.createLineBorder(Color.black));
 
-      String script = ScriptPanel.getScriptArea().getText();
+        panel.add(scriptArea, BorderLayout.CENTER);
 
-      ControlModule control = new ControlModule(parsedData, script);
-      String output = control.startAnalysis();
+        JButton startAnalasisButton = new JButton("Start Analysis");
+        startAnalasisButton.addActionListener(new ListenForStartAnalysis());
 
-      OutputDataPanel.displayData(output);
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        southPanel.add(startAnalasisButton);
+        panel.add(southPanel, BorderLayout.SOUTH);
+
+        JTextField textAbove = new JTextField("Script: ");
+        textAbove.setEditable(false);
+        textAbove.setDisabledTextColor(Color.black);
+
+        panel.add(textAbove, BorderLayout.NORTH);
+        panel.setBorder(new EmptyBorder(10, 80, 10, 80));
+
+        this.add(panel, BorderLayout.CENTER);
 
     }
-  }
+
+    /**
+     * get the script area component.
+     *
+     * @return scriptArea the component of the scriptarea.
+     */
+    public static JTextArea getScriptArea() {
+        return scriptArea;
+    }
+
+    /**
+     * handle start analysis button.
+     *
+     * @author daan
+     *
+     */
+    private class ListenForStartAnalysis implements ActionListener {
+
+        /**
+         * Makes inputData array and calls the control module.
+         *
+         * @param event
+         */
+        public void actionPerformed(final ActionEvent event) {
+            List<FileListingRow> files = FileListing.getFileListingRows();
+            List<Table> parsedData = new ArrayList<Table>();
+
+            for (int i = 0; i < files.size(); i++) {
+                String xmlFormat = files.get(i).getXmlFormat().getSelectedItem().toString();
+                String fileString = files.get(i).getFileString();
+                xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
+
+                try {
+                    parsedData.add(Input.readTable(fileString, xmlFormat));
+                } catch (IOException | ParserConfigurationException | SAXException | InputException e) {
+                    System.out.println("Error: Something went wrong parsing the config and data!");
+
+                    e.printStackTrace();
+                }
+            }
+
+            String script = ScriptPanel.getScriptArea().getText();
+
+            ControlModule control = new ControlModule(script, parsedData);
+
+            String output = null;
+
+            try {
+                output = control.startAnalysis();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                output = e.getMessage();
+
+                JOptionPane.showMessageDialog(
+                        null,
+                        String.format("An unhandled exception occured while executing the script: %s.", output),
+                        "Script runtime exception",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+            OutputDataPanel.displayData(output);
+
+        }
+    }
 }
