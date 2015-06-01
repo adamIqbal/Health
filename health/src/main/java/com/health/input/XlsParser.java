@@ -2,6 +2,9 @@ package com.health.input;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Objects;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -64,6 +67,21 @@ public final class XlsParser implements Parser {
 					case Number:
 						tableRow.setValue(columnCountTableRow,
 								Double.parseDouble(row.getCell(i).toString()));
+						break;
+					case Date:
+						if (config.getDateFormat() != null) {
+							try {
+								DateTimeFormatter formatter = DateTimeFormatter
+
+								.ofPattern(config.getDateFormat());
+								LocalDate dateValue = LocalDate.parse(row
+										.getCell(i).toString(), formatter);
+								tableRow.setValue(columnCountTableRow,
+										dateValue);
+							} catch (DateTimeParseException e) {
+								break;
+							}
+						}
 						break;
 					default:
 						// The type was null, this should never happen

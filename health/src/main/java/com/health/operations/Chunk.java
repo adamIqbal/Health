@@ -2,6 +2,8 @@ package com.health.operations;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -74,7 +76,11 @@ public final class Chunk {
 		tmp.setValue("name", "Dolf");
 		tmp.setValue("meetwaarde2", 10.0);
 
-		LocalDate day1 = LocalDate.of(2012, 12, 18);
+
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d[d]/M/yyyy");
+		LocalDate day1 = LocalDate.parse("10/2/2013", formatter);
+		System.out.println(day1.toString());
 		Period per = Period.ofDays(1);
 		LocalDate day2 = day1.plus(per);
 
@@ -176,7 +182,6 @@ public final class Chunk {
 									.getStringValue(columns.get(k).getName()));
 							break;
 						case Number:
-							System.out.println(columns.get(k).getType());
 							chunkedRecord.setValue(k, records.get(i)
 									.getNumberValue(columns.get(k).getName()));
 							break;
