@@ -14,7 +14,6 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
-import com.health.input.Aggregator;
 import com.health.output.Output;
 
 /**
