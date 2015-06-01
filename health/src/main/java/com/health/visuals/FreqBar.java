@@ -16,10 +16,18 @@ import com.xeiam.xchart.SwingWrapper;
 
 /**
  * Generates a Frequency Bar Diagram based on a Table object.
+ * 
  * @author Bjorn van der Laan & Lizzy Scholten
  *
  */
-public class FreqBar {
+public final class FreqBar {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private FreqBar() {
+        Object nullObject = null;
+    }
+
     /**
      * Generates a Frequency Bar diagram.
      * 
@@ -29,55 +37,66 @@ public class FreqBar {
      *            Column to display frequency of
      */
     public static void frequencyBar(final Table table, final String column) {
-        //Check if the Table contains a frequency column
+        // Check if the Table contains a frequency column
         Column freqColumn = null;
-        for(Column c : table.getColumns()) {
-            if(c.getIsFrequencyColumn() == true) {
+        for (Column c : table.getColumns()) {
+            if (c.getIsFrequencyColumn()) {
                 freqColumn = c;
             }
         }
-        
-        if(freqColumn != null) {
-            Map<String, Integer> freqMap = formatFrequencyMap(table, freqColumn.getName(), column);
-            makeBarChart(freqMap);
+
+        if (freqColumn != null) {
+            Map<String, Integer> freqMap = formatFrequencyMap(table,
+                    freqColumn.getName(), column);
+            makeBarChart(freqMap); 
         }
-        //Create frequency map based on column
+        // Create frequency map based on column
         else {
             Map<String, Integer> freqMap = createFrequencyMap(table, column);
             makeBarChart(freqMap);
         }
     }
-    
+
     /**
-     * Creates a frequency map from the input Table to serve as input for makeBarChart.
-     * @param table Table to use
-     * @param freqColumn the frequency column
-     * @param column the column
+     * Creates a frequency map from the input Table to serve as input for
+     * makeBarChart.
+     * 
+     * @param table
+     *            Table to use
+     * @param freqColumn
+     *            the frequency column
+     * @param column
+     *            the column
      * @return frequency map
      */
-    private static Map<String, Integer> formatFrequencyMap(final Table table, final String freqColumn, final String column) {        
+    private static Map<String, Integer> formatFrequencyMap(final Table table,
+            final String freqColumn, final String column) {
         // Create map to save frequencies
         Map<String, Integer> freqMap = new HashMap<String, Integer>();
-        
-        for(Chunk c : table) {
-            for(Record r : c) {
+
+        for (Chunk c : table) {
+            for (Record r : c) {
                 String value = r.getValue(column).toString();
                 int frequency = (int) r.getValue(freqColumn);
                 freqMap.put(value, frequency);
             }
         }
-        
+
         return freqMap;
     }
-    
+
     /**
-     * Counts the occurences of each value of column and creates a frequency map.
-     * Used when no the table contains no frequency column
-     * @param table Table to use
-     * @param column Column to count
+     * Counts the occurences of each value of column and creates a frequency
+     * map. Used when no the table contains no frequency column
+     * 
+     * @param table
+     *            Table to use
+     * @param column
+     *            Column to count
      * @return frequency map
      */
-    private static Map<String, Integer> createFrequencyMap(final Table table, final String column) {        
+    private static Map<String, Integer> createFrequencyMap(final Table table,
+            final String column) {
         // Create map to save frequencies
         Map<String, Integer> freqMap = new HashMap<String, Integer>();
 
@@ -93,10 +112,16 @@ public class FreqBar {
                 }
             }
         }
-        
+
         return freqMap;
     }
 
+    /**
+     * Creates a frequency bar diagram based on the frequency map
+     * 
+     * @param freqMap
+     *            frequency map
+     */
     private static void makeBarChart(final Map<String, Integer> freqMap) {
         // Convert input data for processing
         ArrayList<String> labels = new ArrayList<String>(freqMap.keySet());
