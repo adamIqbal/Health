@@ -3,7 +3,13 @@ package com.health.visuals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.health.Chunk;
+import com.health.Column;
+import com.health.Record;
+import com.health.Table;
 import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.ChartBuilder;
 import com.xeiam.xchart.StyleManager.ChartType;
@@ -14,27 +20,38 @@ import com.xeiam.xchart.SwingWrapper;
 public class FreqBarDef{
 	
 	public static void main(String[] args){
-		//Number[][] ar = {{1,1},{2,2},{4,4},{3,3},{5,1},{6,3}};
-		//makeBarChart(ar);
 		
-		Number[] ar2 = {1,2,4,3,5,6,3,2,4,3,4,4};
-		makeBarChart(ar2);
-		/*
-		 * 
-		// Create Chart 
-		Chart chart = new ChartBuilder().chartType(ChartType.Bar).width(800).height(600).title("Score Histogram").xAxisTitle("Event").yAxisTitle("Frequency").build();
-		
-		//new ArrayList<String>(Arrays.asList(new String[] { "Blue", "Red", "Green", "Yellow" }))
-		
-		
-		chart.addSeries("test 1", new double[] { 1, 2, 4, 3, 5, 6 }, new double[] { 1, 2, 4, 3, 1, 3 });
-		 
-		// Customize Chart
-		chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
-		
-		//double[][] ar = {{1,1},{2,2},{4,4},{3,3},{5,1},{6,3}}
-		new SwingWrapper(chart).displayChart();
-		*/
+	}
+	
+	/**
+	 * Generates a Frequency Bar diagram.
+	 * @param table Table to use
+	 * @param column Column to display frequency of
+	 */
+	public static void frequencyBar(Table table, String column) {
+	    //Get the Column to calculate frequency of
+	    Column selectedColumn = table.getColumn(column);
+	    int columnIndex = selectedColumn.getIndex();
+	    String columnName = selectedColumn.getName();
+	    
+	    //Create map to save frequencies
+	    Map<Object, Integer> freqMap = new HashMap<Object, Integer>();
+	    
+	    for(Chunk c : table) {
+	        for(Record r : c) {
+	            //Get value of record
+	            Object value = r.getValue(columnName);
+	            if(!freqMap.containsKey(value)) {
+	                freqMap.put(value, 1);
+	            }
+	            else {
+	                int currentFrequency = freqMap.get(value);
+	                freqMap.replace(value, ++currentFrequency);
+	            }
+	        }
+	    }
+	    
+	    System.out.println(freqMap.toString());
 	}
 
 
