@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,8 @@ import com.health.output.Output;
  *
  */
 public final class Chunk {
+
+	public static String countColumnName = "count";
 
 	public static void main(String[] args0) {
 		Column[] tableColumns = new Column[4];
@@ -51,7 +54,7 @@ public final class Chunk {
 		tmp.setValue("date", 10.0);
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Dolf");
-		tmp.setValue("meetwaarde2", 10.0);
+		tmp.setValue("meetwaarde2", -1.0);
 
 		tmp = new Record(table);
 		tmp.setValue("date", 10.0);
@@ -63,7 +66,7 @@ public final class Chunk {
 		tmp.setValue("date", 10.0);
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Piet");
-		tmp.setValue("meetwaarde2", 10.0);
+		tmp.setValue("meetwaarde2", 3.0);
 
 		tmp = new Record(table);
 		tmp.setValue("date", 10.0);
@@ -78,7 +81,7 @@ public final class Chunk {
 		Map<String, AggregateFunctions> operations = new HashMap<String, AggregateFunctions>();
 
 		operations.put("meetwaarde1", AggregateFunctions.Average);
-		operations.put("meetwaarde2", AggregateFunctions.Sum);
+		operations.put("meetwaarde2", AggregateFunctions.Min);
 
 		Table chunkedTable = chunkByString(table, "name", operations);
 
@@ -119,13 +122,25 @@ public final class Chunk {
 	 * 
 	 * @param table
 	 * @param operations
+	 *            a map of columns and their aggreagate operation.
 	 * @param column
 	 *            on which the data is chunked with the same string.
 	 * @return
 	 */
 	public static Table chunkByString(Table table, String column,
 			Map<String, AggregateFunctions> operations) {
-		Table chunkedTable = new Table(table.getColumns());
+		// make new list because of read only and addition of count
+		List<Column> chunkedTableColumns = new ArrayList<Column>();
+
+		Iterator<Column> it = table.getColumns().iterator();
+		while (it.hasNext()) {
+			chunkedTableColumns.add(it.next());
+		}
+
+		Column countColumn = new Column(countColumnName, table.getColumns()
+				.size(), ValueType.Number);
+		chunkedTableColumns.add(countColumn);
+		Table chunkedTable = new Table(chunkedTableColumns);
 
 		ArrayList<String> found = new ArrayList<String>();
 		List<Record> records = table.getRecords();
@@ -172,6 +187,9 @@ public final class Chunk {
 							// error
 						}
 					}
+					// set the count
+					chunkedRecord.setValue(countColumnName,
+							(double) chunk.size());
 				}
 
 			}
