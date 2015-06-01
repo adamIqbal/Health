@@ -80,6 +80,14 @@ public class Column {
         return this.isFrequencyColumn;
     }
 
+    /**
+     * Sets the boolean that describes whether this column is a frequency
+     * column.
+     * 
+     * @param param
+     *            the boolean that describes whether this column is a frequency
+     *            column
+     */
     public final void setIsFrequencyColumn(boolean param) {
         this.isFrequencyColumn = param;
     }
