@@ -13,5 +13,10 @@ public enum ValueType {
     /**
      * String type.
      */
-    String
+    String,
+    /**
+     * Date type.
+     */
+    Date
+    
 }
