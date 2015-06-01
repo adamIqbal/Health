@@ -29,10 +29,8 @@ public class FreqBar {
      *            Column to display frequency of
      */
     public static void frequencyBar(final Table table, final String column) {
-        // Get the Column to calculate frequency of
-        Column selectedColumn = table.getColumn(column);
-        String columnName = selectedColumn.getName();
-
+        String columnName = column;
+        
         // Create map to save frequencies
         Map<String, Integer> freqMap = new HashMap<String, Integer>();
 
