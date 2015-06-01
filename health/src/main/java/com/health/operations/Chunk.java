@@ -1,13 +1,7 @@
 package com.health.operations;
 
-import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +11,6 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
-import com.health.output.Output;
 
 /**
  * A class for all chunking operations.
@@ -27,8 +20,11 @@ import com.health.output.Output;
  */
 public final class Chunk {
 
-	public static String countColumnName = "count";
-
+	/**
+	 * now used to set the columnsName of the count columns should be changed
+	 */
+	public static final String countColumnName = "count";
+	/*
 	public static void main(String[] args0) {
 		Column[] tableColumns = new Column[4];
 		tableColumns[0] = new Column("date", 0, ValueType.Number);
@@ -76,9 +72,8 @@ public final class Chunk {
 		tmp.setValue("name", "Dolf");
 		tmp.setValue("meetwaarde2", 10.0);
 
-
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d[d]/M/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter
+				.ofPattern("d[d]/M/yyyy");
 		LocalDate day1 = LocalDate.parse("10/2/2013", formatter);
 		System.out.println(day1.toString());
 		Period per = Period.ofDays(1);
@@ -94,17 +89,23 @@ public final class Chunk {
 		System.out.println(Output.formatTable(chunkedTable));
 
 	}
-
+*/
 	/**
-	 * 
+	 * A function to chunk a dataSet by time.
+	 *
 	 * @param table
+	 *            the Table to be chunked.
 	 * @param column
+	 *            the column on which to chunk should be a column of type Date.
 	 * @param operations
+	 *            a map of columns and their aggreagate operation.
 	 * @param period
+	 *            the period between chunk, could be days, months, years.
 	 * @return
 	 */
-	public static Table chunkByDate(Table table, String column,
-			Map<String, AggregateFunctions> operations, Period period) {
+	public static Table chunkByTime(final Table table, final String column,
+			final Map<String, AggregateFunctions> operations,
+			final Period period) {
 
 		Table chunkedTable = new Table(table.getColumns());
 
@@ -133,8 +134,8 @@ public final class Chunk {
 	 *            on which the data is chunked with the same string.
 	 * @return
 	 */
-	public static Table chunkByString(Table table, String column,
-			Map<String, AggregateFunctions> operations) {
+	public static Table chunkByString(final Table table, final String column,
+			final Map<String, AggregateFunctions> operations) {
 		// make new list because of read only and addition of count
 		List<Column> chunkedTableColumns = new ArrayList<Column>();
 
@@ -203,8 +204,8 @@ public final class Chunk {
 		return chunkedTable;
 	}
 
-	private static double aggregate(List<Record> chunk, String column,
-			AggregateFunctions function) {
+	private static double aggregate(final List<Record> chunk,
+			final String column, final AggregateFunctions function) {
 		double[] values = new double[chunk.size()];
 
 		for (int i = 0; i < chunk.size(); i++) {

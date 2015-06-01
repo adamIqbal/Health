@@ -110,13 +110,15 @@ public final class InputDescriptor {
 	}
 
 	/**
-     * Gets a List containing the ValueType of the columns as described in the input file
-     * @return a List of ValueType objects
-     */
-    public List<ValueType> getColumnTypes() {
-    	return columnTypes;
-    }
-    
+	 * Gets a List containing the ValueType of the columns as described in the
+	 * input file.
+	 * 
+	 * @return a List of ValueType objects
+	 */
+	public List<ValueType> getColumnTypes() {
+		return columnTypes;
+	}
+
 	/**
 	 * Gets the format of the input file. For example <code>txt</code> or
 	 * <code>xlsx</code>.
@@ -210,17 +212,16 @@ public final class InputDescriptor {
 
 			columns.add(column.getTextContent());
 			ValueType type = getColumnType(column);
-			if(type == ValueType.Date ){
-				if(column.hasAttribute("format")){
+			if (type == ValueType.Date) {
+				if (column.hasAttribute("format")) {
 					this.dateFormat = column.getAttribute("format");
-				}else{
+				} else {
 					type = ValueType.String;
 				}
 			}
-			
+
 			columnTypes.add(type);
-			
-			
+
 		}
 	}
 

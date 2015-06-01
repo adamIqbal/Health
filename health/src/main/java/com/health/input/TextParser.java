@@ -67,11 +67,12 @@ public final class TextParser implements Parser {
 				case Date:
 					if (config.getDateFormat() != null) {
 						try {
-						DateTimeFormatter formatter = DateTimeFormatter
-								.ofPattern(config.getDateFormat());
-						LocalDate dateValue = LocalDate.parse(value, formatter);
-						record.setValue(j, dateValue);
-						}catch(DateTimeParseException e){
+							DateTimeFormatter formatter = DateTimeFormatter
+									.ofPattern(config.getDateFormat());
+							LocalDate dateValue = LocalDate.parse(value,
+									formatter);
+							record.setValue(j, dateValue);
+						} catch (DateTimeParseException e) {
 							break;
 						}
 					} else {

@@ -92,7 +92,7 @@ public final class Record {
 		// Retrieve the value for a number and cast it to String
 		return (String) this.getValue(name, EnumSet.of(ValueType.String));
 	}
-	
+
 	/**
 	 * Gets the {@link LocalDate} value of the column with the given name.
 	 *

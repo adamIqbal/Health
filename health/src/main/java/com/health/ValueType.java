@@ -18,5 +18,5 @@ public enum ValueType {
      * Date type.
      */
     Date
-    
+
 }
