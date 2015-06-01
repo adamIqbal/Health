@@ -29,6 +29,11 @@ public class FreqBar {
      *            Column to display frequency of
      */
     public static void frequencyBar(final Table table, final String column) {
+        Map<String, Integer> freqMap = createFrequencyMap(table, column);
+        makeBarChart(freqMap);
+    }
+    
+    private static Map<String, Integer> createFrequencyMap(Table table, String column) {
         String columnName = column;
         
         // Create map to save frequencies
@@ -46,7 +51,8 @@ public class FreqBar {
                 }
             }
         }
-        makeBarChart(freqMap);
+        
+        return freqMap;
     }
 
     private static void makeBarChart(final Map<String, Integer> freqMap) {

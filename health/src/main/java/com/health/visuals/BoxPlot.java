@@ -29,6 +29,7 @@ public class BoxPlot {
 
     /**
      * Creates a Map containing frequencies of column values within the Chunk.
+     * 
      * @param chunk the Chunk to use
      * @param column the column to count
      * @return a Map containing the frequencies
