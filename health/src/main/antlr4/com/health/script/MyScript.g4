@@ -10,7 +10,7 @@ statement
     ;
 
 declarationStatement
-    : localVariableDeclaration
+    : localVariableDeclaration ';'
     ;
 
 expressionStatement
@@ -22,7 +22,7 @@ localVariableDeclaration
     ;
 
 localVariableType
-    : 'var'
+    : VAR
     | type
     ;
 
@@ -100,13 +100,13 @@ literal
     | NULL
     ;
 
-IDENTIFIER
-    : [a-zA-Z0-9][a-zA-Z0-9_]*
-    ;
+VAR: 'var';
+TRUE: 'true';
+FALSE: 'false';
 
 BOOL
-    : 'true'
-    | 'false'
+    : TRUE
+    | FALSE
     ;
 
 NUMBER
@@ -123,6 +123,14 @@ NULL
     : 'null'
     ;
 
-fragment EXPONENT: [eE][+-] ;
+IDENTIFIER
+    : [a-zA-Z0-9][a-zA-Z0-9_]*
+    ;
+
+SPACES
+    : [ \t\r\n] -> skip
+    ;
+
+fragment EXPONENT: [eE][+-]DECIMAL_DIGITS ;
 fragment DECIMAL_DIGITS: DECIMAL_DIGIT+ ;
 fragment DECIMAL_DIGIT: [0-9] ;
