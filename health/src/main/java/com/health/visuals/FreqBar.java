@@ -27,6 +27,29 @@ public final class FreqBar {
     private FreqBar() {
         Object nullObject = null;
     }
+    
+    /**
+     * Generates a Frequency bar diagram.
+     * @param table Table to use
+     */
+    public static void frequencyBar(final Table table) {
+        // Check if the Table contains a frequency column
+        Column freqColumn = null;
+        Column dateColumn = null;
+        for (Column c : table.getColumns()) {
+            if (c.getIsFrequencyColumn()) {
+                freqColumn = c;
+            }
+            else if(c.getType() == ValueType.Date) {
+                
+            }
+        }
+        if (freqColumn != null) {
+            Map<String, Integer> freqMap = formatFrequencyMap(table,
+                    freqColumn.getName(), column);
+            makeBarChart(freqMap); 
+        }
+    }
 
     /**
      * Generates a Frequency Bar diagram.
@@ -37,19 +60,6 @@ public final class FreqBar {
      *            Column to display frequency of
      */
     public static void frequencyBar(final Table table, final String column) {
-        // Check if the Table contains a frequency column
-        Column freqColumn = null;
-        for (Column c : table.getColumns()) {
-            if (c.getIsFrequencyColumn()) {
-                freqColumn = c;
-            }
-        }
-
-        if (freqColumn != null) {
-            Map<String, Integer> freqMap = formatFrequencyMap(table,
-                    freqColumn.getName(), column);
-            makeBarChart(freqMap); 
-        }
         // Create frequency map based on column
         else {
             Map<String, Integer> freqMap = createFrequencyMap(table, column);
