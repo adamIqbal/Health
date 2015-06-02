@@ -29,26 +29,6 @@ import com.xeiam.xchart.SwingWrapper;
  *
  */
 public final class FreqBar {
-
-    /**
-     * Temporary main method used for testing.
-     * 
-     * @param args
-     */
-    public static void main(final String[] args) {
-        String filePath = "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
-        String configPath = "/home/bjorn/Documents/Context/Health/health/data/configXmls/admireTxtConfig.xml";
-
-        try {
-            Table table = Input.readTable(filePath, configPath);
-            frequencyBar(table, "date");
-            // method to test
-        } catch (IOException | ParserConfigurationException | SAXException
-                | InputException e) {
-            System.out.println("Error!");
-        }
-    }
-
     /**
      * Private constructor to prevent instantiation.
      */
