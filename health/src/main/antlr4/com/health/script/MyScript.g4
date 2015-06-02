@@ -37,7 +37,7 @@ localVariableDeclarator
     ;
 
 statementExpression
-    : primaryExpression '(' argumentList ')'
+    : primaryExpression
     | assignmentExpression
     ;
 
@@ -58,7 +58,7 @@ nonAssignmentExpression
 
 primaryExpression
     : literal                                   # literalExpression
-    | IDENTIFIER                                # identifierExpression    
+    | IDENTIFIER                                # lookupExpression
     | '(' expression ')'                        # parenthesizedExpression
     | primaryExpression '.' IDENTIFIER          # memberAccessExpression        
     | primaryExpression '(' argumentList ')'    # invocationExpression
@@ -94,20 +94,32 @@ typeName
     ;
 
 literal
-    : BOOL
-    | NUMBER
-    | STRING
-    | NULL
+    : boolLiteral
+    | numberLiteral
+    | stringLiteral
+    | nullLiteral
+    ;
+
+boolLiteral
+    : TRUE
+    | FALSE
+    ;
+
+numberLiteral
+    : NUMBER
+    ;
+
+stringLiteral
+    : STRING
+    ;
+
+nullLiteral
+    : NULL
     ;
 
 VAR: 'var';
 TRUE: 'true';
 FALSE: 'false';
-
-BOOL
-    : TRUE
-    | FALSE
-    ;
 
 NUMBER
     : DECIMAL_DIGITS '.' DECIMAL_DIGITS EXPONENT?
