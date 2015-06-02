@@ -69,7 +69,7 @@ public class GUImain extends JFrame {
 		this.setLocation(xPos, yPos);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setTitle("kidney");
+		this.setTitle("Vidney");
 	}
 
 }
