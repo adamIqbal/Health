@@ -2,101 +2,93 @@ package com.health.visuals;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.entity.CategoryItemEntity;
-import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.labels.BoxAndWhiskerToolTipGenerator;
-import org.jfree.chart.labels.CategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.Outlier;
-import org.jfree.chart.renderer.OutlierList;
-import org.jfree.chart.renderer.OutlierListCollection;
 import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
-import org.jfree.chart.renderer.category.CategoryItemRendererState;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RectangleEdge;
+import org.xml.sax.SAXException;
 
 import com.health.Chunk;
 import com.health.Record;
+import com.health.Table;
+import com.health.ValueType;
+import com.health.input.Input;
+import com.health.input.InputException;
 
-public class BoxPlot {
+/**
+ * Generates a Box and Whisker plot based on a Table object.
+ * 
+ * @author Bjorn van der Laan
+ *
+ */
+public final class BoxPlot {
 
+    /**
+     * Temporary main method for testing.
+     * 
+     * @param args
+     */
     public static void main(final String[] args) {
+        String filePath = "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
+        String configPath = "/home/bjorn/Documents/Context/Health/health/data/configXmls/admireTxtConfig.xml";
 
-        boxPlot();
-
-    }
-
-    private static BoxAndWhiskerCategoryDataset createSampleDataset() {
-        final int seriesCount = 1;
-        final int categoryCount = 1;
-        final int entityCount = 22;
-
-        final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
-        for (int i = 0; i < seriesCount; i++) {
-            for (int j = 0; j < categoryCount; j++) {
-                final List list = new ArrayList();
-
-                // Here you add the values
-                for (int k = 0; k < entityCount; k++) {
-                    final double value1 = 10.0 + Math.random() * 3;
-                    list.add(new Double(value1));
-                    final double value2 = 11.25 + Math.random(); // concentrate
-                                                                 // values in
-                                                                 // the middle
-                    list.add(new Double(value2));
-                }
-
-                dataset.add(list, "Series " + i, " Type " + j);
-            }
-
+        try {
+            Table table = Input.readTable(filePath, configPath);
+            boxPlot(table, "value");
+        } catch (IOException | ParserConfigurationException | SAXException
+                | InputException e) {
+            System.out.println("Error!");
         }
-
-        return dataset;
     }
 
     /**
-     * Creates a diagram with for each Chunk a BoxPlot.
+     * Private constructor to prevent instantiation.
+     */
+    private BoxPlot() {
+        Object nullObject = null;
+    }
+
+    /**
+     * Creates a diagram with for each Chunk a BoxPlot. The selected column must
+     * have type ValueType.Number
      * 
      * @param table
      *            Table to use
+     * @param column
+     *            column to use
      */
-    public static void boxPlot() {
-        final String xName = "Type";
-        final String yName = "Value";
+    public static void boxPlot(final Table table, final String column) {
+        final String xName = "Plotted column: " + column;
+        final String yName = "";
         final Dimension frameDimension = new Dimension(500, 500);
+        final double margin = 0.20;
 
         ApplicationFrame frame = new ApplicationFrame("Vidney");
         frame.setSize(frameDimension);
 
-        // TODO replace sample dataset with real
-        final BoxAndWhiskerCategoryDataset dataset = createSampleDataset();
+        final BoxAndWhiskerCategoryDataset dataset = formatDataset(table,
+                column);
+        if (dataset == null) {
+            System.out
+                    .println("Column selected for BoxPlot does not contain Numbers");
+            return;
+        }
 
         final CategoryAxis xAxis = new CategoryAxis(xName);
-        xAxis.setLowerMargin(0.20);
-        xAxis.setUpperMargin(0.20);
+        xAxis.setLowerMargin(margin);
+        xAxis.setUpperMargin(margin);
         final NumberAxis yAxis = new NumberAxis(yName);
         yAxis.setAutoRangeIncludesZero(false);
 
@@ -110,52 +102,37 @@ public class BoxPlot {
         final JFreeChart chart = new JFreeChart("Boxplot", new Font(
                 "SansSerif", Font.BOLD, 14), plot, true);
         final ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(450, 270));
+
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
     }
 
     /**
-     * Creates a Map containing frequencies of column values within the Chunk.
+     * Creates a dataset object in the right format.
      * 
-     * @param chunk
-     *            the Chunk to use
-     * @param column
-     *            the column to count
-     * @return a Map containing the frequencies
+     * @param table
+     *            Table to use
+     * @param numberColumn
+     *            name of the column
+     * @return
      */
-    private Map<String, Integer> createFrequencyMap(Chunk chunk, String column) {
-        String columnName = column;
+    private static BoxAndWhiskerCategoryDataset formatDataset(
+            final Table table, final String numberColumn) {
+        final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
+        final List<Double> list = new ArrayList<Double>();
 
-        // Create map to save frequencies
-        Map<String, Integer> freqMap = new HashMap<String, Integer>();
-
-        for (Record record : chunk) {
-            // Get value of record
-            String value = record.getValue(columnName).toString();
-            if (!freqMap.containsKey(value)) {
-                freqMap.put(value, 1);
-            } else {
-                int currentFrequency = freqMap.get(value);
-                freqMap.replace(value, ++currentFrequency);
-            }
+        // Column type must be Number
+        if (!(table.getColumn(numberColumn).getType() == ValueType.Number)) {
+            return null;
         }
 
-        return freqMap;
+        for (Chunk chunk : table) {
+            for (Record record : chunk) {
+                list.add((Double) record.getValue(numberColumn));
+            }
+        }
+        String seriesName = numberColumn + " series";
+        dataset.add(list, seriesName, "");
+        return dataset;
     }
-
-    // public static void main(String[] args) {
-    // String filePath =
-    // "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
-    // String configPath =
-    // "/home/bjorn/Documents/Context/Health/health/data/configXmls/admireTxtConfig.xml";
-    //
-    // try {
-    // Table table = Input.readTable(filePath, configPath);
-    // // method to test
-    // } catch (IOException | ParserConfigurationException | SAXException
-    // | InputException e) {
-    // System.out.println("Error!");
-    // }
-    // }
 }
