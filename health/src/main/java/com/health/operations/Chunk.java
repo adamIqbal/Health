@@ -1,16 +1,23 @@
 package com.health.operations;
 
+import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.poi.ss.formula.functions.Columns;
 
 import com.health.AggregateFunctions;
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.health.output.Output;
 
 /**
  * A class for all chunking operations.
@@ -24,10 +31,10 @@ public final class Chunk {
 	 * now used to set the columnsName of the count columns should be changed
 	 */
 	public static final String countColumnName = "count";
-	/*
+
 	public static void main(String[] args0) {
 		Column[] tableColumns = new Column[4];
-		tableColumns[0] = new Column("date", 0, ValueType.Number);
+		tableColumns[0] = new Column("date", 0, ValueType.Date);
 		tableColumns[1] = new Column("meetwaarde1", 1, ValueType.Number);
 		tableColumns[2] = new Column("name", 2, ValueType.String);
 		tableColumns[3] = new Column("meetwaarde2", 3, ValueType.Number);
@@ -37,59 +44,54 @@ public final class Chunk {
 		// fill the table
 		Record tmp = new Record(table);
 
-		tmp.setValue("date", 10.0);
+		tmp.setValue("date", LocalDate.parse("2013-12-11"));
 		tmp.setValue("meetwaarde1", 8.0);
 		tmp.setValue("name", "Piet");
 		tmp.setValue("meetwaarde2", 20.0);
 
 		tmp = new Record(table);
-		tmp.setValue("date", 10.0);
+		tmp.setValue("date", LocalDate.parse("2013-12-12"));
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Hein");
 		tmp.setValue("meetwaarde2", 10.0);
 
 		tmp = new Record(table);
-		tmp.setValue("date", 10.0);
+		tmp.setValue("date", LocalDate.parse("2013-12-13"));
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Dolf");
 		tmp.setValue("meetwaarde2", -1.0);
 
 		tmp = new Record(table);
-		tmp.setValue("date", 10.0);
+		tmp.setValue("date", LocalDate.parse("2013-12-14"));
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Piet");
 		tmp.setValue("meetwaarde2", 10.0);
 
 		tmp = new Record(table);
-		tmp.setValue("date", 10.0);
+		tmp.setValue("date", LocalDate.parse("2013-12-15"));
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Piet");
 		tmp.setValue("meetwaarde2", 3.0);
 
 		tmp = new Record(table);
-		tmp.setValue("date", 10.0);
+		tmp.setValue("date", LocalDate.parse("2013-12-16"));
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Dolf");
 		tmp.setValue("meetwaarde2", 10.0);
 
-		DateTimeFormatter formatter = DateTimeFormatter
-				.ofPattern("d[d]/M/yyyy");
-		LocalDate day1 = LocalDate.parse("10/2/2013", formatter);
-		System.out.println(day1.toString());
-		Period per = Period.ofDays(1);
-		LocalDate day2 = day1.plus(per);
+		Period per = Period.ofDays(4);
 
 		Map<String, AggregateFunctions> operations = new HashMap<String, AggregateFunctions>();
 
 		operations.put("meetwaarde1", AggregateFunctions.Average);
 		operations.put("meetwaarde2", AggregateFunctions.Min);
 
-		Table chunkedTable = chunkByString(table, "name", operations);
+		Table chunkedTable = chunkByTime(table, "date", operations, per);
 
 		System.out.println(Output.formatTable(chunkedTable));
 
 	}
-*/
+
 	/**
 	 * A function to chunk a dataSet by time.
 	 *
@@ -107,19 +109,57 @@ public final class Chunk {
 			final Map<String, AggregateFunctions> operations,
 			final Period period) {
 
-		Table chunkedTable = new Table(table.getColumns());
+		Table chunkedTable = new Table(createChunkTableColumns(table, column));
+		List<Column> chunkTableCols = chunkedTable.getColumns();
 
-		// find first date
+		LocalDate beginPer = getFirstDate(table, column);
+		LocalDate lastDate = getLastDate(table, column);
+		LocalDate endOfPer = LocalDate.MIN;
 
-		// new date tmp = first date + period.
+		while (!lastDate.isBefore(endOfPer)) {
+			endOfPer = beginPer.plus(period);
 
-		// make record[] for all record where date < tmp && date >= first date
+			List<Record> chunk = makeTimeChunk(table, column, beginPer,
+					endOfPer);
+			
+			Record chunkedRecord = new Record(chunkedTable);
 
-		// aggregate the records
+			for (int j = 0; j < chunkTableCols.size(); j++) {
+				String columnName = chunkTableCols.get(j).getName();
 
-		// add record to chunkedTable
+				// if in operations do aggregate and set value
+				if (operations.containsKey(columnName)) {
+					double tmpValue = aggregate(chunk, columnName,
+							operations.get(columnName));
+					chunkedRecord.setValue(j, tmpValue);
 
-		// increment dates and loop back
+				} else {
+					switch (chunkTableCols.get(j).getType()) {
+					case String:
+						chunkedRecord.setValue(columnName, chunk.get(0)
+								.getStringValue(columnName));
+						break;
+					case Number:
+						if (columnName.equals(countColumnName)) {
+							chunkedRecord.setValue(countColumnName,
+									(double)chunk.size());
+						} else {
+							chunkedRecord.setValue(columnName, chunk.get(0)
+									.getNumberValue(columnName));
+						}
+						break;
+					case Date:
+						chunkedRecord.setValue(columnName, chunk.get(0)
+								.getDateValue(columnName));
+						break;
+					default:
+						// error
+					}
+				}
+			}
+
+			beginPer = endOfPer;
+		}
 
 		return chunkedTable;
 	}
@@ -137,16 +177,9 @@ public final class Chunk {
 	public static Table chunkByString(final Table table, final String column,
 			final Map<String, AggregateFunctions> operations) {
 		// make new list because of read only and addition of count
-		List<Column> chunkedTableColumns = new ArrayList<Column>();
+		List<Column> chunkedTableColumns = createChunkTableColumns(table,
+				column);
 
-		Iterator<Column> it = table.getColumns().iterator();
-		while (it.hasNext()) {
-			chunkedTableColumns.add(it.next());
-		}
-
-		Column countColumn = new Column(countColumnName, table.getColumns()
-				.size(), ValueType.Number);
-		chunkedTableColumns.add(countColumn);
 		Table chunkedTable = new Table(chunkedTableColumns);
 
 		ArrayList<String> found = new ArrayList<String>();
@@ -187,7 +220,8 @@ public final class Chunk {
 									.getNumberValue(columns.get(k).getName()));
 							break;
 						case Date:
-							// make possible for Dates
+							chunkedRecord.setValue(k, records.get(i)
+									.getDateValue(columns.get(k).getName()));
 							break;
 						default:
 							// error
@@ -213,5 +247,72 @@ public final class Chunk {
 		}
 
 		return Aggregator.aggregate(values, function);
+	}
+
+	private static List<Column> createChunkTableColumns(final Table table,
+			final String column) {
+		// make new list because of read only and addition of count
+		List<Column> chunkedTableColumns = new ArrayList<Column>();
+
+		Iterator<Column> it = table.getColumns().iterator();
+		while (it.hasNext()) {	
+			chunkedTableColumns.add(it.next());
+		}
+
+		Column countColumn = new Column(countColumnName, table.getColumns()
+				.size(), ValueType.Number);
+		countColumn.setIsFrequencyColumn(true);
+		chunkedTableColumns.add(countColumn);
+
+		return chunkedTableColumns;
+	}
+
+	private static LocalDate getFirstDate(final Table table, final String column) {
+		LocalDate res = LocalDate.MAX;
+		List<Record> records = table.getRecords();
+		Iterator<Record> it = records.iterator();
+
+		while (it.hasNext()) {
+			LocalDate tmp = it.next().getDateValue(column);
+			if (tmp.isBefore(res)) {
+				res = tmp;
+			}
+		}
+
+		return res;
+	}
+
+	private static LocalDate getLastDate(final Table table, final String column) {
+		LocalDate res = LocalDate.MIN;
+		List<Record> records = table.getRecords();
+		Iterator<Record> it = records.iterator();
+
+		while (it.hasNext()) {
+			LocalDate tmp = it.next().getDateValue(column);
+			if (tmp.isAfter(res)) {
+				res = tmp;
+			}
+		}
+
+		return res;
+	}
+
+	private static List<Record> makeTimeChunk(final Table table,
+			final String column, final LocalDate beginOfPer,
+			final LocalDate endOfPer) {
+		List<Record> chunk = new ArrayList<Record>();
+
+		List<Record> records = table.getRecords();
+		Iterator<Record> it = records.iterator();
+
+		while (it.hasNext()) {
+			Record tmpRec = it.next();
+			LocalDate tmpDate = tmpRec.getDateValue(column);
+			if ((tmpDate.isAfter(beginOfPer) || tmpDate.isEqual(beginOfPer))
+					&& tmpDate.isBefore(endOfPer)) {
+				chunk.add(tmpRec);
+			}
+		}
+		return chunk;
 	}
 }
