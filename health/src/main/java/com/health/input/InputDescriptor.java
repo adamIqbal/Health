@@ -32,6 +32,7 @@ public final class InputDescriptor {
 	private List<String> columns;
 	private List<ValueType> columnTypes;
 	private StartCell startCell;
+	private String dateFormat;
 
 	/**
 	 * Creates a new {@link InputDescriptor}, give the path of the input
@@ -109,13 +110,15 @@ public final class InputDescriptor {
 	}
 
 	/**
-     * Gets a List containing the ValueType of the columns as described in the input file
-     * @return a List of ValueType objects
-     */
-    public List<ValueType> getColumnTypes() {
-    	return columnTypes;
-    }
-    
+	 * Gets a List containing the ValueType of the columns as described in the
+	 * input file.
+	 * 
+	 * @return a List of ValueType objects
+	 */
+	public List<ValueType> getColumnTypes() {
+		return columnTypes;
+	}
+
 	/**
 	 * Gets the format of the input file. For example <code>txt</code> or
 	 * <code>xlsx</code>.
@@ -208,7 +211,17 @@ public final class InputDescriptor {
 			Element column = (Element) children.item(i);
 
 			columns.add(column.getTextContent());
-			columnTypes.add(getColumnType(column));
+			ValueType type = getColumnType(column);
+			if (type == ValueType.Date) {
+				if (column.hasAttribute("format")) {
+					this.dateFormat = column.getAttribute("format");
+				} else {
+					type = ValueType.String;
+				}
+			}
+
+			columnTypes.add(type);
+
 		}
 	}
 
@@ -252,5 +265,12 @@ public final class InputDescriptor {
 					"An input descriptor file must contain at least one column "
 							+ "element.");
 		}
+	}
+
+	/**
+	 * @return the dateFormat.
+	 */
+	public String getDateFormat() {
+		return dateFormat;
 	}
 }

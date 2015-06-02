@@ -30,13 +30,14 @@ public class TextParserTest {
 	        
 	        actual = tp.parse(txtPath, id);
 		} catch (Exception e) {
+			e.printStackTrace();
 			assertTrue(false);
 		}
         assertNotNull(actual);
         
         List<Column> actualColumns = actual.getColumns();
         String[] expectedNames = {"type", "value", "unit", "misc", "date", "time"};
-        ValueType[] expectedTypes = {ValueType.String, ValueType.Number, ValueType.String, ValueType.Number, ValueType.Number, ValueType.Number};
+        ValueType[] expectedTypes = {ValueType.String, ValueType.Number, ValueType.String, ValueType.Number, ValueType.Date, ValueType.Number};
         for(int i = 0; i < 6; i++) {
         	Column col = actualColumns.get(i);
         	assertEquals(expectedNames[i], col.getName());
