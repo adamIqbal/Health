@@ -7,7 +7,7 @@ public enum Constraints {
 	 */
 	GreaterThan,
 	/**
-	 * Samller than
+	 * Smaller than
 	 */
 	SmallerThan,
 	/**

@@ -3,7 +3,7 @@ package com.health.operations;
 import com.health.AggregateFunctions;
 
 /**
- * A class which preforms all agregate functions.
+ * A class which preforms all aggregate functions.
  *
  * @author daan
  *
@@ -26,8 +26,11 @@ public class Aggregator {
 	 */
 	public static double aggregate(final double[] values,
 			final AggregateFunctions function) {
+	  
 		double result;
+		
 		switch (function) {
+		
 		case Average:
 			result = average(values);
 			break;
@@ -40,6 +43,7 @@ public class Aggregator {
 		case Max:
 			result = max(values);
 			break;
+			
 		default:
 			result = average(values);
 		}
