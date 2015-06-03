@@ -65,7 +65,30 @@ primaryExpression
     ;
 
 chunkExpression
-    : 'chunk' tableIdent=IDENTIFIER 'by' columnIdent=IDENTIFIER columnAggregateOperation*
+    : 'chunk' tableIdent=IDENTIFIER 'by' 'column'? columnIdent=IDENTIFIER periodSpecifier? columnAggregateOperation*
+    ;
+
+periodSpecifier
+    : 'per' period
+    ;
+
+period
+    : singularTimeUnit
+    | NUMBER pluralTimeUnit
+    ;
+
+singularTimeUnit
+    : 'day'
+    | 'week'
+    | 'month'
+    | 'year'
+    ;
+
+pluralTimeUnit
+    : 'days'
+    | 'weeks'
+    | 'months'
+    | 'years'
     ;
 
 constrainExpression
