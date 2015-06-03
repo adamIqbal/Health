@@ -10,20 +10,15 @@ import com.health.script.runtime.ScriptType;
 import com.health.script.runtime.Value;
 
 public final class StatementListener extends MyScriptBaseListener {
-    private Context context;
+    private final Context context;
+    private final ExpressionValueVisitor expressionVisitor;
     private ScriptType localVariableDeclarationType;
-    private ExpressionValueVisitor expressionVisitor;
-    private ExpressionLValueVisitor lValueVisitor;
 
     public StatementListener(final Context context) {
         Objects.requireNonNull(context);
 
         this.context = context;
         this.expressionVisitor = new ExpressionValueVisitor(context);
-        this.lValueVisitor = new ExpressionLValueVisitor(context);
-
-        this.expressionVisitor.setLValueVisitor(this.lValueVisitor);
-        this.lValueVisitor.setExpressionVisitor(this.expressionVisitor);
     }
 
     @Override

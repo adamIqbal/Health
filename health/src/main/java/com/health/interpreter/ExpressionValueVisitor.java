@@ -17,17 +17,14 @@ import com.health.script.runtime.StringValue;
 import com.health.script.runtime.Value;
 
 public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
-    private Context context;
-    private ExpressionLValueVisitor lValueVisitor;
+    private final Context context;
+    private final ExpressionLValueVisitor lValueVisitor;
 
     public ExpressionValueVisitor(final Context context) {
         Objects.requireNonNull(context);
 
         this.context = context;
-    }
-
-    public void setLValueVisitor(ExpressionLValueVisitor visitor) {
-        this.lValueVisitor = visitor;
+        this.lValueVisitor = new ExpressionLValueVisitor(context, this);
     }
 
     @Override
@@ -65,7 +62,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
 
     @Override
     public Value visitLookupExpression(final MyScriptParser.LookupExpressionContext ctx) {
-        return this.lValueVisitor.visit(ctx).get();
+        return this.lValueVisitor.visitLookupExpression(ctx).get();
     }
 
     @Override
@@ -75,7 +72,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
 
     @Override
     public Value visitMemberAccessExpression(final MyScriptParser.MemberAccessExpressionContext ctx) {
-        return this.lValueVisitor.visit(ctx).get();
+        return this.lValueVisitor.visitMemberAccessExpression(ctx).get();
     }
 
     @Override
@@ -98,6 +95,10 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
     public Value visitAssignmentExpression(final MyScriptParser.AssignmentExpressionContext ctx) {
         LValue left = this.lValueVisitor.visit(ctx.primaryExpression());
         Value right = super.visit(ctx.expression());
+
+        if (left == null) {
+            throw new ScriptRuntimeException("The left-hand side of an assignment must be a variable.");
+        }
 
         left.set(right);
 

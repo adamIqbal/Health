@@ -10,37 +10,14 @@ import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.Value;
 
 public final class ExpressionLValueVisitor extends MyScriptBaseVisitor<LValue> {
-    private Context context;
-    private ExpressionValueVisitor expressionVisitor;
+    private final Context context;
+    private final ExpressionValueVisitor expressionVisitor;
 
-    public ExpressionLValueVisitor(final Context context) {
+    public ExpressionLValueVisitor(final Context context, final ExpressionValueVisitor expressionVisitor) {
         Objects.requireNonNull(context);
 
         this.context = context;
-    }
-
-    public void setExpressionVisitor(ExpressionValueVisitor visitor) {
-        this.expressionVisitor = visitor;
-    }
-
-    @Override
-    public LValue visitBoolLiteral(final MyScriptParser.BoolLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public LValue visitNumberLiteral(final MyScriptParser.NumberLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public LValue visitStringLiteral(final MyScriptParser.StringLiteralContext ctx) {
-        return null;
-    }
-
-    @Override
-    public LValue visitNullLiteral(final MyScriptParser.NullLiteralContext ctx) {
-        return null;
+        this.expressionVisitor = expressionVisitor;
     }
 
     @Override
@@ -64,10 +41,5 @@ public final class ExpressionLValueVisitor extends MyScriptBaseVisitor<LValue> {
 
         // Get the l-value of the member being accessed
         return obj.getMember(ctx.IDENTIFIER().getText());
-    }
-
-    @Override
-    public LValue visitInvocationExpression(final MyScriptParser.InvocationExpressionContext ctx) {
-        return null;
     }
 }
