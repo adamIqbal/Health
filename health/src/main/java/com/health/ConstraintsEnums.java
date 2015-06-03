@@ -1,6 +1,6 @@
 package com.health;
 
-public enum Constraints {
+public enum ConstraintsEnums {
 
 	/**
 	 * Greater than
