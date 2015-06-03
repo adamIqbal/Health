@@ -14,8 +14,9 @@ import org.xml.sax.SAXException;
 import com.health.Table;
 import com.health.input.Input;
 import com.health.input.InputException;
+import com.health.visuals.BoxPlot;
 
-public class FreqBarTest {
+public class BoxPlotTest {
     @Before
     public void setUp() {
         String filePath = "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
@@ -24,7 +25,7 @@ public class FreqBarTest {
         
         try {
             table = Input.readTable(filePath, configPath);
-            FreqBar.frequencyBar(table, "date");
+            BoxPlot.boxPlot(table, "value");
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.assertTrue("Exception is thrown during setUp", false);
