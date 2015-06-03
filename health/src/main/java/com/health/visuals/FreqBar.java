@@ -37,8 +37,11 @@ public final class FreqBar {
     }
 
     /**
-     * Generates a Frequency bar diagram. This variant has no column specified
-     * and chooses the last date column in the Table object.
+     * Generates a Frequency bar diagram. 
+     * <p>
+     * This variant has no column specified.
+     * It chooses the last date column and last frequency column in the Table object.
+     * </p>
      * 
      * @param table
      *            Table to use
@@ -121,7 +124,7 @@ public final class FreqBar {
                 freqMap.put(value, frequency);
             }
         }
-
+        
         return freqMap;
     }
 

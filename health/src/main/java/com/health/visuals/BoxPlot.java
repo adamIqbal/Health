@@ -21,6 +21,7 @@ import org.jfree.ui.ApplicationFrame;
 import org.xml.sax.SAXException;
 
 import com.health.Chunk;
+import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
@@ -40,17 +41,44 @@ public final class BoxPlot {
     private BoxPlot() {
         Object nullObject = null;
     }
+    
+    /**
+     * Creates a diagram with for each Chunk a BoxPlot.
+     * <p>
+     * This variant does not need a column specified. It just picks a column of the right type.
+     * </p>
+     * @param table Table to use
+     */
+    public static void boxPlot(final Table table) {
+        //no column is given, so just pick a column with type ValueType.Number
+        Column column = null;
+        for (Column c : table.getColumns()) {
+            if (c.getType() == ValueType.Number) {
+                column = c;
+                break;
+            }
+        }
+        
+        boxPlot(table, column.getName());
+    }
 
     /**
      * Creates a diagram with for each Chunk a BoxPlot. The selected column must
      * have type ValueType.Number
      * 
+     * TODO handling when column is not of type ValueType.Number
+     * 
      * @param table
      *            Table to use
      * @param column
-     *            column to use
+     *            column to use. Must be of type ValueType.Number
      */
     public static void boxPlot(final Table table, final String column) {
+        if (!(table.getColumn(column).getType() == ValueType.Number)) {
+            System.out.println("Column must be of type Number");
+            return;
+        }
+        
         final String xName = "Plotted column: " + column;
         final String yName = "";
         final Dimension frameDimension = new Dimension(500, 500);
@@ -63,7 +91,7 @@ public final class BoxPlot {
                 column);
         if (dataset == null) {
             System.out
-                    .println("Column selected for BoxPlot does not contain Numbers");
+                    .println("Dataset is empty");
             return;
         }
 
@@ -73,16 +101,11 @@ public final class BoxPlot {
         final NumberAxis yAxis = new NumberAxis(yName);
         yAxis.setAutoRangeIncludesZero(false);
 
-        final BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
-        renderer.setMeanVisible(false);
-        renderer.setFillBox(true);
-        renderer.setBaseToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        final BoxAndWhiskerRenderer renderer = createRenderer(false, true);
+        
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
                 renderer);
-
-        final JFreeChart chart = new JFreeChart("Boxplot", new Font(
-                "SansSerif", Font.BOLD, 14), plot, true);
-        final ChartPanel chartPanel = new ChartPanel(chart);
+        final ChartPanel chartPanel = createChartPanel(plot);
 
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
@@ -94,18 +117,14 @@ public final class BoxPlot {
      * @param table
      *            Table to use
      * @param numberColumn
-     *            name of the column
+     *            name of the column. 
+     *            Must be of type ValueType.Number            
      * @return
      */
     private static BoxAndWhiskerCategoryDataset formatDataset(
-            final Table table, final String numberColumn) {
+            final Table table, final String numberColumn) {       
         final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
         final List<Double> list = new ArrayList<Double>();
-
-        // Column type must be Number
-        if (!(table.getColumn(numberColumn).getType() == ValueType.Number)) {
-            return null;
-        }
 
         for (Chunk chunk : table) {
             for (Record record : chunk) {
@@ -115,5 +134,31 @@ public final class BoxPlot {
         String seriesName = numberColumn + " series";
         dataset.add(list, seriesName, "");
         return dataset;
+    }
+    
+    /**
+     * Creates a Renderer object to that can draw the BoxPlot.
+     * @return a BoxAndWhiskerRenderer that can render the boxplot
+     */
+    private final static BoxAndWhiskerRenderer createRenderer(final boolean meanVisible, final boolean fillBox) {
+        BoxAndWhiskerRenderer renderer = new BoxAndWhiskerRenderer();
+        renderer.setMeanVisible(meanVisible);
+        renderer.setFillBox(fillBox);
+        renderer.setBaseToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
+        
+        return renderer;
+    }
+    
+    /**
+     * Creates a ChartPanel to draw the plot on.
+     * @param plot
+     * @return a ChartPanel containing the plot
+     */
+    private final static ChartPanel createChartPanel(CategoryPlot plot) {
+        final JFreeChart chart = new JFreeChart("Boxplot", new Font(
+                "SansSerif", Font.BOLD, 14), plot, true);
+        final ChartPanel chartPanel = new ChartPanel(chart);
+        
+        return chartPanel;
     }
 }
