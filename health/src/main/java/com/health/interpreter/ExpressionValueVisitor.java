@@ -1,15 +1,9 @@
 package com.health.interpreter;
 
-import java.time.Period;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
-import com.health.AggregateFunctions;
-import com.health.Table;
-import com.health.operations.Chunk;
 import com.health.script.MyScriptBaseVisitor;
 import com.health.script.MyScriptParser;
 import com.health.script.runtime.BooleanValue;
@@ -20,7 +14,6 @@ import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.ScriptDelegate;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.StringValue;
-import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
 
 public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
@@ -113,92 +106,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
 
     @Override
     public Value visitChunkExpression(final MyScriptParser.ChunkExpressionContext ctx) {
-        String tableIdent = ctx.tableIdent.getText();
-        String columnIdent = ctx.columnIdent.getText();
-
-        LValue tableVar = context.lookup(tableIdent);
-
-        if (!TableValue.getStaticType().isAssignableFrom(tableVar.getType())) {
-            throw new ScriptRuntimeException("Chunking can only be performed on a table instance.");
-        }
-
-        Table table = ((TableValue) tableVar.get()).getValue();
-
-        if (table.getColumn(columnIdent) == null) {
-            throw new ScriptRuntimeException(String.format("Table '%s' does not define a column named '%s'.",
-                    tableIdent, columnIdent));
-        }
-
-        Map<String, AggregateFunctions> aggregateFunctions = evaluateAggragateOperations(ctx.columnAggregateOperation());
-
-        if (ctx.periodSpecifier() != null) {
-            Period period = evaluatePeriod(ctx.periodSpecifier().period());
-
-            return new TableValue(Chunk.chunkByTime(table, columnIdent, aggregateFunctions, period));
-        } else {
-            return new TableValue(Chunk.chunkByString(table, columnIdent, aggregateFunctions));
-        }
-    }
-
-    private Period evaluatePeriod(final MyScriptParser.PeriodContext ctx) {
-        if (ctx.singularTimeUnit() != null) {
-            switch (ctx.singularTimeUnit().getText()) {
-            case "day":
-                return Period.ofDays(1);
-            case "week":
-                return Period.ofWeeks(1);
-            case "month":
-                return Period.ofMonths(1);
-            case "year":
-                return Period.ofYears(1);
-            default:
-                throw new ScriptRuntimeException("");
-            }
-        } else {
-            int number = (int) Double.parseDouble(ctx.NUMBER().getText());
-
-            switch (ctx.pluralTimeUnit().getText()) {
-            case "days":
-                return Period.ofDays(number);
-            case "weeks":
-                return Period.ofWeeks(number);
-            case "months":
-                return Period.ofMonths(number);
-            case "years":
-                return Period.ofYears(number);
-            default:
-                throw new ScriptRuntimeException("");
-            }
-        }
-    }
-
-    private Map<String, AggregateFunctions> evaluateAggragateOperations(
-            final List<MyScriptParser.ColumnAggregateOperationContext> columnAggregateOperation) {
-        Map<String, AggregateFunctions> aggregateFunctions = new HashMap<String, AggregateFunctions>();
-
-        for (MyScriptParser.ColumnAggregateOperationContext ctx : columnAggregateOperation) {
-            aggregateFunctions.put(ctx.IDENTIFIER().getText(), evaluateAggragateOperation(ctx.aggregateOperation()));
-        }
-
-        return aggregateFunctions;
-    }
-
-    private AggregateFunctions evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
-        switch (ctx.getText()) {
-        case "count":
-            // FIXME: Add count aggregate
-            return AggregateFunctions.Average;
-        case "average":
-            return AggregateFunctions.Average;
-        case "sum":
-            return AggregateFunctions.Sum;
-        case "min":
-            return AggregateFunctions.Min;
-        case "max":
-            return AggregateFunctions.Max;
-        default:
-            throw new ScriptRuntimeException(String.format("Unknown aggregate function '%s'.", ctx.getText()));
-        }
+        return ChunkExpressionInterpreter.interpret(ctx, context);
     }
 
     /**
