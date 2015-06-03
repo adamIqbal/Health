@@ -65,11 +65,23 @@ primaryExpression
     ;
 
 chunkExpression
-    : 'chunk'
+    : 'chunk' tableIdent=IDENTIFIER 'by' columnIdent=IDENTIFIER columnAggregateOperation*
     ;
 
 constrainExpression
     : 'constrain'
+    ;
+
+columnAggregateOperation
+    : ',' aggregateOperation 'of' IDENTIFIER
+    ;
+
+aggregateOperation
+    : 'count'
+    | 'average'
+    | 'sum'
+    | 'min'
+    | 'max'
     ;
 
 argumentList

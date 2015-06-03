@@ -104,6 +104,11 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
         return right;
     }
 
+    @Override
+    public Value visitChunkExpression(final MyScriptParser.ChunkExpressionContext ctx) {
+        return null;
+    }
+
     /**
      * Evaluates the arguments for a given {@link ArgumentList}.
      *
