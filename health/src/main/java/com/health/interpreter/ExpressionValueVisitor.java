@@ -1,11 +1,18 @@
 package com.health.interpreter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+import com.health.AggregateFunctions;
+import com.health.Table;
+import com.health.operations.Chunk;
 import com.health.script.MyScriptBaseVisitor;
 import com.health.script.MyScriptParser;
+import com.health.script.MyScriptParser.AggregateOperationContext;
+import com.health.script.MyScriptParser.ColumnAggregateOperationContext;
 import com.health.script.runtime.BooleanValue;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.LValue;
@@ -14,6 +21,7 @@ import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.ScriptDelegate;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.StringValue;
+import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
 
 public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
@@ -53,9 +61,9 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
         assert text.length() >= 2;
 
         // Strip the quotes
-        text = text.substring(1, text.length() - 2);
+        text = text.substring(1, text.length() - 1);
 
-        return new StringValue();
+        return new StringValue(text);
     }
 
     @Override
@@ -106,7 +114,54 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
 
     @Override
     public Value visitChunkExpression(final MyScriptParser.ChunkExpressionContext ctx) {
-        return null;
+        String tableIdent = ctx.tableIdent.getText();
+        String columnIdent = ctx.columnIdent.getText();
+
+        LValue variable = context.lookup(tableIdent);
+
+        if (!TableValue.getStaticType().isAssignableFrom(variable.getType())) {
+            throw new ScriptRuntimeException("Chunking can only be performed on a table instance.");
+        }
+
+        Table table = ((TableValue) variable.get()).getValue();
+
+        if (table.getColumn(columnIdent) == null) {
+            throw new ScriptRuntimeException(String.format("Table '%s' does not define a column named '%s'.",
+                    tableIdent, columnIdent));
+        }
+
+        Map<String, AggregateFunctions> aggregateFunctions = evaluateAggragateOperations(ctx.columnAggregateOperation());
+
+        return new TableValue(Chunk.chunkByString(table, columnIdent, aggregateFunctions));
+    }
+
+    private Map<String, AggregateFunctions> evaluateAggragateOperations(
+            final List<ColumnAggregateOperationContext> columnAggregateOperation) {
+        Map<String, AggregateFunctions> aggregateFunctions = new HashMap<String, AggregateFunctions>();
+
+        for (ColumnAggregateOperationContext ctx : columnAggregateOperation) {
+            aggregateFunctions.put(ctx.IDENTIFIER().getText(), evaluateAggragateOperation(ctx.aggregateOperation()));
+        }
+
+        return aggregateFunctions;
+    }
+
+    private AggregateFunctions evaluateAggragateOperation(final AggregateOperationContext ctx) {
+        switch (ctx.getText()) {
+        case "count":
+            // FIXME: Add count aggregate
+            return AggregateFunctions.Average;
+        case "average":
+            return AggregateFunctions.Average;
+        case "sum":
+            return AggregateFunctions.Sum;
+        case "min":
+            return AggregateFunctions.Min;
+        case "max":
+            return AggregateFunctions.Max;
+        default:
+            throw new ScriptRuntimeException(String.format("Unknown aggregate function '%s'.", ctx.getText()));
+        }
     }
 
     /**
