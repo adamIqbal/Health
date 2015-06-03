@@ -61,7 +61,7 @@ primaryExpression
     | IDENTIFIER                                # lookupExpression
     | '(' expression ')'                        # parenthesizedExpression
     | primaryExpression '.' IDENTIFIER          # memberAccessExpression        
-    | primaryExpression '(' argumentList ')'    # invocationExpression
+    | primaryExpression '(' argumentList? ')'   # invocationExpression
     ;
 
 chunkExpression
