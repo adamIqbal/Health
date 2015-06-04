@@ -1,14 +1,13 @@
 package com.health.operations;
 
-import com.health.Column;
 
 public class ColumnConnection {
 
 	private String column1;
 	private String column2;
 	private String newName;
-	
-	public ColumnConnection(String column1, String column2, String newName){
+
+	public ColumnConnection(final String column1, final String column2, final String newName) {
 		this.setColumn1(column1);
 		this.setColumn2(column2);
 		this.setNewName(newName);
@@ -17,42 +16,45 @@ public class ColumnConnection {
 	/**
 	 * @return the newName
 	 */
-	public String getNewName() {
+	public final String getNewName() {
 		return newName;
 	}
 
 	/**
-	 * @param newName the newName to set
+	 * @param newName
+	 *            the newName to set
 	 */
-	public void setNewName(String newName) {
+	public final void setNewName(final String newName) {
 		this.newName = newName;
 	}
 
 	/**
 	 * @return the column2
 	 */
-	public String getColumn2() {
+	public final String getColumn2() {
 		return column2;
 	}
 
 	/**
-	 * @param column2 the column2 to set
+	 * @param column2
+	 *            the column2 to set
 	 */
-	public void setColumn2(String column2) {
+	public final void setColumn2(final String column2) {
 		this.column2 = column2;
 	}
 
 	/**
 	 * @return the column1
 	 */
-	public String getColumn1() {
+	public final String getColumn1() {
 		return column1;
 	}
 
 	/**
-	 * @param column1 the column1 to set
+	 * @param column1
+	 *            the column1 to set
 	 */
-	public void setColumn1(String column1) {
+	public final void setColumn1(final String column1) {
 		this.column1 = column1;
 	}
 }

@@ -76,11 +76,12 @@ public final class Chunk {
 		tmp.setValue("name", "Dolf");
 		tmp.setValue("meetwaarde2", 10.0);
 
-//		Period per = Period.ofDays(4);
-//		Map<String, AggregateFunctions> operations = new HashMap<String, AggregateFunctions>();
+		// Period per = Period.ofDays(4);
+		// Map<String, AggregateFunctions> operations = new HashMap<String,
+		// AggregateFunctions>();
 
-//		operations.put("meetwaarde1", AggregateFunctions.Average);
-//		operations.put("meetwaarde2", AggregateFunctions.Min);
+		// operations.put("meetwaarde1", AggregateFunctions.Average);
+		// operations.put("meetwaarde2", AggregateFunctions.Min);
 
 		Column[] tableColumns2 = new Column[4];
 		tableColumns2[0] = new Column("datum", 0, ValueType.Date);
@@ -89,7 +90,7 @@ public final class Chunk {
 		tableColumns2[3] = new Column("meetwaarde4", 3, ValueType.Number);
 
 		Table table2 = new Table(Arrays.asList(tableColumns2));
-		
+
 		tmp = new Record(table2);
 		tmp.setValue("datum", LocalDate.parse("2013-11-15"));
 		tmp.setValue("meetwaarde3", 10.0);
@@ -101,12 +102,12 @@ public final class Chunk {
 		tmp.setValue("meetwaarde3", 10.0);
 		tmp.setValue("name", "Dolf");
 		tmp.setValue("meetwaarde4", 10.0);
-		
+
 		List<ColumnConnection> connections = new ArrayList<ColumnConnection>();
 		connections.add(new ColumnConnection("date", "datum", "date"));
-		
+
 		Table chunkedTable = Connect.connect(table, table2, connections);
-		
+
 		System.out.println(Output.formatTable(chunkedTable));
 
 	}
@@ -122,14 +123,15 @@ public final class Chunk {
 	 *            a map of columns and their aggreagate operation.
 	 * @param period
 	 *            the period between chunk, could be days, months, years.
-	 * @return
+	 * @return a chunked Table.
 	 */
 	public static Table chunkByTime(final Table table, final String column,
 			final Map<String, AggregateFunctions> operations,
 			final Period period) {
 
 		String countColumnName = countColumnNameTemplate + column;
-		Table chunkedTable = new Table(createChunkTableColumns(table, column, countColumnName));
+		Table chunkedTable = new Table(createChunkTableColumns(table, column,
+				countColumnName));
 		List<Column> chunkTableCols = chunkedTable.getColumns();
 
 		LocalDate beginPer = getFirstDate(table, column);
@@ -141,7 +143,7 @@ public final class Chunk {
 
 			List<Record> chunk = makeTimeChunk(table, column, beginPer,
 					endOfPer);
-			
+
 			Record chunkedRecord = new Record(chunkedTable);
 
 			for (int j = 0; j < chunkTableCols.size(); j++) {
@@ -162,7 +164,7 @@ public final class Chunk {
 					case Number:
 						if (columnName.equals(countColumnName)) {
 							chunkedRecord.setValue(countColumnName,
-									(double)chunk.size());
+									(double) chunk.size());
 						} else {
 							chunkedRecord.setValue(columnName, chunk.get(0)
 									.getNumberValue(columnName));
@@ -187,17 +189,17 @@ public final class Chunk {
 	/**
 	 * chunks the data on same string, in the given column.
 	 * 
-	 * @param table
+	 * @param table the table to be chunked.
 	 * @param operations
 	 *            a map of columns and their aggreagate operation.
 	 * @param column
 	 *            on which the data is chunked with the same string.
-	 * @return
+	 * @return a chunked Table.
 	 */
 	public static Table chunkByString(final Table table, final String column,
 			final Map<String, AggregateFunctions> operations) {
 		// make new list because of read only and addition of count
-		
+
 		String countColumnName = countColumnNameTemplate + column;
 		List<Column> chunkedTableColumns = createChunkTableColumns(table,
 				column, countColumnName);
@@ -277,7 +279,7 @@ public final class Chunk {
 		List<Column> chunkedTableColumns = new ArrayList<Column>();
 
 		Iterator<Column> it = table.getColumns().iterator();
-		while (it.hasNext()) {	
+		while (it.hasNext()) {
 			chunkedTableColumns.add(it.next());
 		}
 

@@ -19,6 +19,12 @@ import com.health.ValueType;
 public class Connect {
 
 	/**
+	 * 
+	 */
+	protected Connect(){
+		
+	}
+	/**
 	 * A function which connects two Table objects and return one table object
 	 * ordered by date.
 	 *
@@ -86,7 +92,7 @@ public class Connect {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param col
 	 *            the column to look for.
 	 * @param connections
@@ -94,8 +100,8 @@ public class Connect {
 	 * @return the index of the the connection in the list. If not found return
 	 *         -1;
 	 */
-	private static int isInConnections(Column col,
-			List<ColumnConnection> connections) {
+	private static int isInConnections(final Column col,
+			final List<ColumnConnection> connections) {
 		Iterator<ColumnConnection> it = connections.iterator();
 		int index = 0;
 		while (it.hasNext()) {
@@ -110,8 +116,8 @@ public class Connect {
 
 	}
 
-	private static void addRecords(Table tableNew, Table tableToAdd,
-			List<ColumnConnection> connections) {
+	private static void addRecords(final Table tableNew, final Table tableToAdd,
+			final List<ColumnConnection> connections) {
 		List<Record> recList = tableToAdd.getRecords();
 		List<Column> colList = tableToAdd.getColumns();
 
@@ -151,7 +157,7 @@ public class Connect {
 		}
 	}
 
-	private static Table sortTable(Table table, String colName) {
+	private static Table sortTable(final Table table, final String colName) {
 		List<Record> records = table.getRecords();
 		Table sortedTable = new Table(table.getColumns());
 		int[] found = new int[records.size()];
