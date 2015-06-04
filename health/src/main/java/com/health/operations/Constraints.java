@@ -1,41 +1,63 @@
 package com.health.operations;
 
-import com.health.ConstraintsEnums;
-import static com.health.operations.functions.ConstrainFunctions.*;
+import java.util.function.Function;
+
+import com.health.Record;
+
 import com.health.Table;
 
 public class Constraints {
 
-  public static Table constrain(final Table table, final Object column, final ConstraintsEnums cst) {
-    Table constrainedTable = table;
+  /**
+   * Creates a new table containing only the records for which the given predicate is evaluated as
+   * true.
+   *
+   * @param predicate
+   *          a predicate that determines whether or not to add a given record to the new table.
+   * @return a new table containing only the records for which the given predicate is evaluated as
+   *         true.
+   */
+  public static Table constrain(final Function<Record, Boolean> predicate, Table table) {
+    Table constrained = new Table(table.getColumns());
 
-    switch (cst) {
-
-    case EqualTo:
-      constrainedTable = equal(table, column);
-      break;
-    case GreaterOrEqual:
-      constrainedTable = greatereq(table, column);
-      break;
-    case GreaterThan:
-      constrainedTable = greater(table, column);
-      break;
-    case SmallerOrEqual:
-      constrainedTable = smallereq(table, column);
-      break;
-    case SmallerThan:
-      constrainedTable = smaller(table, column);
-      break;
-
-    default:
-      // FIXME: ERROR
-      System.out.println("default case reached in constraints, FIX this error handling!");
+    for (Record record : table.getRecords()) {
+      if (predicate.apply(record)) {
+        record.copyTo(constrained);
+      }
     }
 
-    return constrainedTable;
-
+    return constrained;
   }
+
+  // public static Table constrain(final Table table, final String column, final Object value,
+  // final ConstraintsEnums cst) {
+  //
+  // Table constrainedTable = table;
+  //
+  // switch (cst) {
+  //
+  // case EqualTo:
+  // constrainedTable = equal(table, column);
+  // break;
+  // case GreaterOrEqual:
+  // constrainedTable = greatereq(table, column);
+  // break;
+  // case GreaterThan:
+  // constrainedTable = greater(table, column);
+  // break;
+  // case SmallerOrEqual:
+  // constrainedTable = smallereq(table, column);
+  // break;
+  // case SmallerThan:
+  // constrainedTable = smaller(table, column);
+  // break;
+  //
+  // default:
+  // // FIXME: ERROR
+  // System.out.println("default case reached in constraints, FIX this error handling!");
+  // }
+  //
+  // return constrainedTable;
+  //
+  // }
 }
-
-// constraint by double/string/date
-
