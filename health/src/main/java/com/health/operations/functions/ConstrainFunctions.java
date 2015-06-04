@@ -4,8 +4,19 @@ import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.StringValue;
 import com.health.script.runtime.Value;
 
+/**
+ * A utility class, which consists of functions which can be used by the script for ==,=>,<= operations.
+ *
+ */
 public final class ConstrainFunctions {
 
+  /**
+   * Function to determine whether the value gained through input is greater than value in the table
+   * @param columns original value from the column
+   * @param value  value which is gained through input
+   * @return boolean if condition is met or exception
+   * @throws Exception thrown if there are no valid arguments
+   */
   public static boolean greater(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
       NumberValue d = (NumberValue) value;
@@ -27,6 +38,13 @@ public final class ConstrainFunctions {
 
   }
   
+  /**
+   * Function to determine whether the value gained through input is greater than or equal to value in the table
+   * @param columns original value from the column
+   * @param value  value which is gained through input
+   * @return boolean if condition is met or exception
+   * @throws Exception thrown if there are no valid arguments
+   */
   public static boolean greatereq(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
       NumberValue d = (NumberValue) value;
@@ -48,7 +66,13 @@ public final class ConstrainFunctions {
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
 
   }
-
+  /**
+   * Function to determine whether the value gained through input is smaller than or equal to value in the table
+   * @param columns original value from the column
+   * @param value  value which is gained through input
+   * @return boolean if condition is met or exception
+   * @throws Exception thrown if there are no valid arguments
+   */
   public static boolean smallereq(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
       NumberValue d = (NumberValue) value;
@@ -69,7 +93,13 @@ public final class ConstrainFunctions {
 
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
-
+  /**
+   * Function to determine whether the value gained through input is smaller than to value in the table
+   * @param columns original value from the column
+   * @param value  value which is gained through input
+   * @return boolean if condition is met or exception
+   * @throws Exception thrown if there are no valid arguments
+   */
   public static boolean smaller(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
       NumberValue d = (NumberValue) value;
@@ -90,7 +120,13 @@ public final class ConstrainFunctions {
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
 
   }
-
+  /**
+   * Function to determine whether the value gained through input is equal to value in the table
+   * @param columns original value from the column
+   * @param value  value which is gained through input
+   * @return boolean if condition is met or exception
+   * @throws Exception thrown if there are no valid arguments
+   */
   public static boolean equal(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
           NumberValue d = (NumberValue) value;
