@@ -38,9 +38,7 @@ public final class BoxPlot {
     
     /**
      * Creates a diagram with for each Chunk a BoxPlot.
-     * <p>
      * This variant does not need a column specified. It just picks a column of the right type.
-     * </p>
      * @param table Table to use
      */
     public static void boxPlot(final Table table) {
@@ -59,13 +57,9 @@ public final class BoxPlot {
     /**
      * Creates a diagram with for each Chunk a BoxPlot. The selected column must
      * have type ValueType.Number
-<<<<<<< HEAD
-     *
-=======
      * 
      * TODO handling when column is not of type ValueType.Number
      * 
->>>>>>> 590e82766b72b7135739a53bb466ab1858a9cc35
      * @param table
      *            Table to use
      * @param column
