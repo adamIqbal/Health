@@ -7,8 +7,18 @@ import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.TableValue;
 
 public abstract class TableExpressionInterpreter {
-    protected static Table lookupTable(final String tableName, final Context context) {
-        LValue var = context.lookup(tableName);
+    protected final Context context;
+    protected final ExpressionValueVisitor expressionVisitor;
+
+    protected TableExpressionInterpreter(
+            final Context context,
+            final ExpressionValueVisitor expressionVisitor) {
+        this.context = context;
+        this.expressionVisitor = expressionVisitor;
+    }
+
+    protected Table lookupTable(final String tableName) {
+        LValue var = this.context.lookup(tableName);
 
         if (!TableValue.getStaticType().isAssignableFrom(var.getType())) {
             throw new ScriptRuntimeException("Chunking can only be performed on a table instance.");

@@ -19,12 +19,16 @@ import com.health.script.runtime.Value;
 public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
     private final Context context;
     private final ExpressionLValueVisitor lValueVisitor;
+    private final ChunkExpressionInterpreter chunkExpressionInterpreter;
+    private final ConstrainExpressionInterpreter constrainExpressionInterpreter;
 
     public ExpressionValueVisitor(final Context context) {
         Objects.requireNonNull(context);
 
         this.context = context;
         this.lValueVisitor = new ExpressionLValueVisitor(context, this);
+        this.chunkExpressionInterpreter = new ChunkExpressionInterpreter(context, this);
+        this.constrainExpressionInterpreter = new ConstrainExpressionInterpreter(context, this);
     }
 
     @Override
@@ -94,12 +98,12 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
 
     @Override
     public Value visitChunkExpression(final MyScriptParser.ChunkExpressionContext ctx) {
-        return ChunkExpressionInterpreter.interpret(ctx, context);
+        return this.chunkExpressionInterpreter.interpret(ctx);
     }
 
     @Override
     public Value visitConstrainExpression(final MyScriptParser.ConstrainExpressionContext ctx) {
-        return ConstrainExpressionInterpreter.interpret(ctx, context);
+        return this.constrainExpressionInterpreter.interpret(ctx);
     }
 
     /**

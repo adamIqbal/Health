@@ -15,14 +15,17 @@ import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
 
 public final class ChunkExpressionInterpreter extends TableExpressionInterpreter {
-    private ChunkExpressionInterpreter() {
+    protected ChunkExpressionInterpreter(
+            final Context context,
+            final ExpressionValueVisitor expressionVisitor) {
+        super(context, expressionVisitor);
     }
 
-    public static Value interpret(final MyScriptParser.ChunkExpressionContext ctx, final Context context) {
+    public Value interpret(final MyScriptParser.ChunkExpressionContext ctx) {
         String tableIdent = ctx.tableIdent.getText();
         String columnIdent = ctx.columnIdent.getText();
 
-        Table table = lookupTable(tableIdent, context);
+        Table table = this.lookupTable(tableIdent);
 
         verifyHasColumn(table, tableIdent, columnIdent);
 
