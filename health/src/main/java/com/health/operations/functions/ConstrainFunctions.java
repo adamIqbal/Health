@@ -15,7 +15,7 @@ public final class ConstrainFunctions {
 
     if (columns instanceof String && value instanceof StringValue) {
 
-      return true;
+      throw new IllegalArgumentException("Can not invoke greater on String.");
     }
 
     // if (columns instanceof Date && value instanceof DateValue) {
@@ -37,7 +37,7 @@ public final class ConstrainFunctions {
 
     if (columns instanceof String && value instanceof StringValue) {
 
-      return true;
+      throw new IllegalArgumentException("Can not invoke greatereq on String.");
     }
 
     // if (columns instanceof Date && value instanceof DateValue) {
