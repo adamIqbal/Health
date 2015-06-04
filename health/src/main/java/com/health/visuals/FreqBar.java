@@ -1,21 +1,14 @@
 package com.health.visuals;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.health.Chunk;
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
-import com.health.input.Input;
-import com.health.input.InputException;
 import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.ChartBuilder;
 import com.xeiam.xchart.StyleManager.ChartType;
@@ -24,7 +17,7 @@ import com.xeiam.xchart.SwingWrapper;
 
 /**
  * Generates a Frequency Bar Diagram based on a Table object.
- * 
+ *
  * @author Bjorn van der Laan & Lizzy Scholten
  *
  */
@@ -33,13 +26,13 @@ public final class FreqBar {
      * Private constructor to prevent instantiation.
      */
     private FreqBar() {
-        Object nullObject = null;
+    	//Nothing happens
     }
 
     /**
      * Generates a Frequency bar diagram. This variant has no column specified
      * and chooses the last date column in the Table object.
-     * 
+     *
      * @param table
      *            Table to use
      */
@@ -68,7 +61,7 @@ public final class FreqBar {
 
     /**
      * Generates a Frequency Bar diagram.
-     * 
+     *
      * @param table
      *            Table to use
      * @param column
@@ -84,14 +77,12 @@ public final class FreqBar {
         }
         // If the Table contains a frequency column, use it to format the
         // frequency map
-        if (freqColumn != null) {
-            Map<String, Integer> freqMap = formatFrequencyMap(table,
-                    freqColumn.getName(), column);
-            makeBarChart(freqMap, column);
-        }
         // Else if no frequency column exists, count occurrences of values in
         // the specified column
-        else {
+        if (freqColumn != null) {
+            Map<String, Integer> freqMap = formatFrequencyMap(table, freqColumn.getName(), column);
+            makeBarChart(freqMap, column);
+        } else {
             Map<String, Integer> freqMap = createFrequencyMap(table, column);
             makeBarChart(freqMap, column);
         }
@@ -100,7 +91,7 @@ public final class FreqBar {
     /**
      * Creates a frequency map from the input Table to serve as input for
      * makeBarChart.
-     * 
+     *
      * @param table
      *            Table to use
      * @param freqColumn
@@ -126,9 +117,9 @@ public final class FreqBar {
     }
 
     /**
-     * Counts the occurences of each value of column and creates a frequency
+     * Counts the occurrences of each value of column and creates a frequency
      * map. Used when no the table contains no frequency column
-     * 
+     *
      * @param table
      *            Table to use
      * @param column
@@ -157,8 +148,8 @@ public final class FreqBar {
     }
 
     /**
-     * Creates a frequency bar diagram based on the frequency map
-     * 
+     * Creates a frequency bar diagram based on the frequency map.
+     *
      * @param freqMap
      *            frequency map
      */

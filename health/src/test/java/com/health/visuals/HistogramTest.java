@@ -14,36 +14,38 @@ import com.health.input.Input;
 import com.health.input.InputException;
 
 /**
- * Frequency bar test.
- * @author Bjorn van der Laan
- * Only checkstyle done by Lizzy Scholten
+ * Histogram test.
+ * @author Lizzy Scholten
  *
  */
-public class FreqBarTest {
+public class HistogramTest {
+
 	/**
 	 * Setup.
 	 */
-    @Before
+	@Before
 	public final void setUp() {
-        String filePath = "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
-        String configPath = "/home/bjorn/Documents/Context/Health/health/data/configXmls/admireTxtConfig.xml";
+        String filePath = "/Users/lizzy/Documents/GitHub/healthgit/Health/health/data/data_use/txtData.txt";
+        String configPath = "/Users/lizzy/Documents/GitHub/healthgit/Health/health/data/configXmls/admireTxtConfig.xml";
         Table table;
 
         try {
             table = Input.readTable(filePath, configPath);
-            FreqBar.frequencyBar(table, "date");
+            //Bins should be input.
+            final int bins = 13;
+            Histogram.createHistogram(table, "value", bins);
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.assertTrue("Exception is thrown during setUp", false);
         }
     }
 
-    /**
-     * Empty.
-     */
+
+	/**
+	 * Empty.
+	 */
     @Test
-    public final void test() {
+	public final void test() {
         //fail("Not yet implemented");
     }
-
 }

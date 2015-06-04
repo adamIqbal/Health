@@ -2,11 +2,8 @@ package com.health.visuals;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -18,18 +15,15 @@ import org.jfree.chart.renderer.category.BoxAndWhiskerRenderer;
 import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
-import org.xml.sax.SAXException;
 
 import com.health.Chunk;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
-import com.health.input.Input;
-import com.health.input.InputException;
 
 /**
  * Generates a Box and Whisker plot based on a Table object.
- * 
+ *
  * @author Bjorn van der Laan
  *
  */
@@ -38,13 +32,13 @@ public final class BoxPlot {
      * Private constructor to prevent instantiation.
      */
     private BoxPlot() {
-        Object nullObject = null;
+        //Nothing happens
     }
 
     /**
      * Creates a diagram with for each Chunk a BoxPlot. The selected column must
      * have type ValueType.Number
-     * 
+     *
      * @param table
      *            Table to use
      * @param column
@@ -90,7 +84,7 @@ public final class BoxPlot {
 
     /**
      * Creates a dataset object in the right format.
-     * 
+     *
      * @param table
      *            Table to use
      * @param numberColumn
