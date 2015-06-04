@@ -1,5 +1,8 @@
 package com.health.visuals;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,7 +34,7 @@ public class FreqBarTest {
 
         try {
             table = Input.readTable(filePath, configPath);
-            FreqBar.frequencyBar(table, "date");
+            //FreqBar.frequencyBar(table, "date");
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.assertTrue("Exception is thrown during setUp", false);
@@ -43,7 +46,7 @@ public class FreqBarTest {
      */
     @Test
     public final void test() {
-        //fail("Not yet implemented");
+        fail("Not implemented yet");
     }
 
 }

@@ -1,5 +1,7 @@
 package com.health.visuals;
 
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,7 +33,7 @@ public class BoxPlotTest {
 
         try {
             table = Input.readTable(filePath, configPath);
-            BoxPlot.boxPlot(table, "value");
+            //BoxPlot.boxPlot(table, "value");
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.assertTrue("Exception is thrown during setUp", false);
@@ -43,7 +45,7 @@ public class BoxPlotTest {
      */
     @Test
 	public final void test() {
-        //fail("Not yet implemented");
+        fail("Not implemented yet");
     }
 
 }
