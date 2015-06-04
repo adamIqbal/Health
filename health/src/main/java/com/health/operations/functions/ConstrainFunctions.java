@@ -1,42 +1,119 @@
 package com.health.operations.functions;
 
-import com.health.Table;
+import com.health.script.runtime.NumberValue;
+import com.health.script.runtime.StringValue;
+import com.health.script.runtime.Value;
 
 public final class ConstrainFunctions {
 
-  public static Table greater(Table table, Object columns) {
-    Table constrainedTable = table;
+  public static boolean greater(Object columns, Value value) throws Exception {
+    if (value instanceof NumberValue && columns instanceof Double) {
 
-    return constrainedTable;
+      return true;
+
+    }
+
+    if (columns instanceof String && value instanceof StringValue) {
+
+      return true;
+    }
+
+    // if (columns instanceof Date && value instanceof DateValue) {
+    //
+    // return true;
+    // }
+    // FIXME: add dateValue
+
+    throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+
+  }
+  
+  public static boolean greatereq(Object columns, Value value) throws Exception {
+    if (value instanceof NumberValue && columns instanceof Double) {
+
+      return true;
+
+    }
+
+    if (columns instanceof String && value instanceof StringValue) {
+
+      return true;
+    }
+
+    // if (columns instanceof Date && value instanceof DateValue) {
+    //
+    // return true;
+    // }
+    // FIXME: add dateValue
+
+    throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
 
   }
 
-  public static Table greatereq(Table table, Object columns) {
-    Table constrainedTable = table;
+  public static boolean smallereq(Object columns, Value value) throws Exception {
+    if (value instanceof NumberValue && columns instanceof Double) {
 
-    return constrainedTable;
+      return true;
+
+    }
+
+    if (columns instanceof String && value instanceof StringValue) {
+
+      throw new IllegalArgumentException("Can not invoke smallereq on String.");
+    }
+
+    // if (columns instanceof Date && value instanceof DateValue) {
+    //
+    // return true;
+    // }
+    // FIXME: add dateValue
+
+    throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+  }
+
+  public static boolean smaller(Object columns, Value value) throws Exception {
+    if (value instanceof NumberValue && columns instanceof Double) {
+
+      return true;
+
+    }
+
+    if (columns instanceof String && value instanceof StringValue) {
+
+      throw new IllegalArgumentException("Can not invoke smaller on String.");
+    }
+
+    // if (columns instanceof Date && value instanceof DateValue) {
+    //
+    // return true;
+    // }
+    // FIXME: add dateValue
+
+    throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
 
   }
 
-  public static Table smallereq(Table table, Object columns) {
-    Table constrainedTable = table;
+  public static boolean equal(Object columns, Value value) throws Exception {
+    if (value instanceof NumberValue && columns instanceof Double) {
+          NumberValue d = (NumberValue) value;
+      return (double) columns == d.getValue();
 
-    return constrainedTable;
+    }
+
+    if (columns instanceof String && value instanceof StringValue) {
+       StringValue str  = (StringValue) value;
+        return columns.toString().equals(str.getValue());
+    }
+
+    // if (columns instanceof Date && value instanceof DateValue) {
+    //
+    // return true;
+    // }
+    // FIXME: add dateValue
+
+    throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
 
   }
 
-  public static Table smaller(Table table, Object columns) {
-    Table constrainedTable = table;
-
-    return constrainedTable;
-
-  }
-
-  public static Table equal(Table table, Object columns) {
-    Table constrainedTable = table;
-
-    return constrainedTable;
-
-  }
 
 }
