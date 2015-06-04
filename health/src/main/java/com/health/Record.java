@@ -40,7 +40,7 @@ public final class Record {
 	public Table getTable() {
 		return this.table;
 	}
-
+	
 	/**
 	 * Gets an iterable containing the values in this record.
 	 *

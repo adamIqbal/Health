@@ -2,15 +2,12 @@ package com.health.operations;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.poi.ss.formula.functions.Columns;
 
 import com.health.AggregateFunctions;
 import com.health.Column;
@@ -30,7 +27,7 @@ public final class Chunk {
 	/**
 	 * now used to set the columnsName of the count columns should be changed
 	 */
-	public static final String countColumnName = "count";
+	private static final String countColumnNameTemplate = "count_";
 
 	public static void main(String[] args0) {
 		Column[] tableColumns = new Column[4];
@@ -44,7 +41,7 @@ public final class Chunk {
 		// fill the table
 		Record tmp = new Record(table);
 
-		tmp.setValue("date", LocalDate.parse("2013-12-11"));
+		tmp.setValue("date", LocalDate.parse("2013-12-20"));
 		tmp.setValue("meetwaarde1", 8.0);
 		tmp.setValue("name", "Piet");
 		tmp.setValue("meetwaarde2", 20.0);
@@ -62,13 +59,13 @@ public final class Chunk {
 		tmp.setValue("meetwaarde2", -1.0);
 
 		tmp = new Record(table);
-		tmp.setValue("date", LocalDate.parse("2013-12-14"));
+		tmp.setValue("date", LocalDate.parse("2013-12-10"));
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Piet");
 		tmp.setValue("meetwaarde2", 10.0);
 
 		tmp = new Record(table);
-		tmp.setValue("date", LocalDate.parse("2013-12-15"));
+		tmp.setValue("date", LocalDate.parse("2013-11-15"));
 		tmp.setValue("meetwaarde1", 10.0);
 		tmp.setValue("name", "Piet");
 		tmp.setValue("meetwaarde2", 3.0);
@@ -79,15 +76,37 @@ public final class Chunk {
 		tmp.setValue("name", "Dolf");
 		tmp.setValue("meetwaarde2", 10.0);
 
-		Period per = Period.ofDays(4);
+//		Period per = Period.ofDays(4);
+//		Map<String, AggregateFunctions> operations = new HashMap<String, AggregateFunctions>();
 
-		Map<String, AggregateFunctions> operations = new HashMap<String, AggregateFunctions>();
+//		operations.put("meetwaarde1", AggregateFunctions.Average);
+//		operations.put("meetwaarde2", AggregateFunctions.Min);
 
-		operations.put("meetwaarde1", AggregateFunctions.Average);
-		operations.put("meetwaarde2", AggregateFunctions.Min);
+		Column[] tableColumns2 = new Column[4];
+		tableColumns2[0] = new Column("datum", 0, ValueType.Date);
+		tableColumns2[1] = new Column("meetwaarde3", 1, ValueType.Number);
+		tableColumns2[2] = new Column("name", 2, ValueType.String);
+		tableColumns2[3] = new Column("meetwaarde4", 3, ValueType.Number);
 
-		Table chunkedTable = chunkByTime(table, "date", operations, per);
+		Table table2 = new Table(Arrays.asList(tableColumns2));
+		
+		tmp = new Record(table2);
+		tmp.setValue("datum", LocalDate.parse("2013-11-15"));
+		tmp.setValue("meetwaarde3", 10.0);
+		tmp.setValue("name", "Piet");
+		tmp.setValue("meetwaarde4", 3.0);
 
+		tmp = new Record(table2);
+		tmp.setValue("datum", LocalDate.parse("2013-12-16"));
+		tmp.setValue("meetwaarde3", 10.0);
+		tmp.setValue("name", "Dolf");
+		tmp.setValue("meetwaarde4", 10.0);
+		
+		List<ColumnConnection> connections = new ArrayList<ColumnConnection>();
+		connections.add(new ColumnConnection("date", "datum", "date"));
+		
+		Table chunkedTable = Connect.connect(table, table2, connections);
+		
 		System.out.println(Output.formatTable(chunkedTable));
 
 	}
@@ -109,7 +128,8 @@ public final class Chunk {
 			final Map<String, AggregateFunctions> operations,
 			final Period period) {
 
-		Table chunkedTable = new Table(createChunkTableColumns(table, column));
+		String countColumnName = countColumnNameTemplate + column;
+		Table chunkedTable = new Table(createChunkTableColumns(table, column, countColumnName));
 		List<Column> chunkTableCols = chunkedTable.getColumns();
 
 		LocalDate beginPer = getFirstDate(table, column);
@@ -177,8 +197,10 @@ public final class Chunk {
 	public static Table chunkByString(final Table table, final String column,
 			final Map<String, AggregateFunctions> operations) {
 		// make new list because of read only and addition of count
+		
+		String countColumnName = countColumnNameTemplate + column;
 		List<Column> chunkedTableColumns = createChunkTableColumns(table,
-				column);
+				column, countColumnName);
 
 		Table chunkedTable = new Table(chunkedTableColumns);
 
@@ -250,7 +272,7 @@ public final class Chunk {
 	}
 
 	private static List<Column> createChunkTableColumns(final Table table,
-			final String column) {
+			final String column, final String countColumnName) {
 		// make new list because of read only and addition of count
 		List<Column> chunkedTableColumns = new ArrayList<Column>();
 

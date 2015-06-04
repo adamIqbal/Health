@@ -91,4 +91,18 @@ public class Column {
     public final void setIsFrequencyColumn(boolean param) {
         this.isFrequencyColumn = param;
     }
+    
+    public final boolean equals(Object other){
+    	if(other instanceof Column){
+    		Column that = (Column)other;
+    		if((this.isFrequencyColumn && that.getIsFrequencyColumn() )||(!this.isFrequencyColumn && !that.getIsFrequencyColumn())){
+    			if(this.name.equals(that.getName())){
+    				if(this.type == that.getType()){
+    					return true;
+    				}
+    			}
+    		}
+    	}
+    	return false;
+    }
 }
