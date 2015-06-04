@@ -97,9 +97,13 @@ constrainExpression
 
 conditionalExpression
     : '(' conditionalExpression ')'
-    | conditionalExpression 'and' condition
-    | conditionalExpression 'or' condition
+    | conditionalExpression booleanOperator condition
     | condition
+    ;
+
+booleanOperator
+    : 'and'
+    | 'or'
     ;
 
 condition
