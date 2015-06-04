@@ -40,12 +40,5 @@ public class BoxPlotTest {
         }*/
     }
 
-    /**
-     * Empty.
-     */
-    @Test
-	public final void test() {
-        fail("Not implemented yet");
-    }
 
 }

@@ -41,12 +41,5 @@ public class FreqBarTest {
         }*/
     }
 
-    /**
-     * Empty.
-     */
-    @Test
-    public final void test() {
-        fail("Not implemented yet");
-    }
 
 }

@@ -37,13 +37,4 @@ public class HistogramTest {
             Assert.assertTrue("Exception is thrown during setUp", false);
         }*/
     }
-
-
-	/**
-	 * Empty.
-	 */
-    @Test
-	public final void test() {
-        //fail("Not yet implemented");
-    }
 }
