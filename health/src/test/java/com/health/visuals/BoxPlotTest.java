@@ -27,7 +27,7 @@ public class BoxPlotTest {
 	 */
     @Before
 	public final void setUp() {
-        String filePath = "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
+        /*String filePath = "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
         String configPath = "/home/bjorn/Documents/Context/Health/health/data/configXmls/admireTxtConfig.xml";
         Table table;
 
@@ -37,7 +37,7 @@ public class BoxPlotTest {
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.assertTrue("Exception is thrown during setUp", false);
-        }
+        }*/
     }
 
     /**

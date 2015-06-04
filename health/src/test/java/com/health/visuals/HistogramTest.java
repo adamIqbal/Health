@@ -25,19 +25,17 @@ public class HistogramTest {
 	 */
 	@Before
 	public final void setUp() {
-        String filePath = "/Users/lizzy/Documents/GitHub/healthgit/Health/health/data/data_use/txtData.txt";
-        String configPath = "/Users/lizzy/Documents/GitHub/healthgit/Health/health/data/configXmls/admireTxtConfig.xml";
+	    /*String filePath = "/home/bjorn/Documents/Context/Health/health/data/data_use/txtData.txt";
+        String configPath = "/home/bjorn/Documents/Context/Health/health/data/configXmls/admireTxtConfig.xml";
         Table table;
 
         try {
             table = Input.readTable(filePath, configPath);
-            //Bins should be input.
-            final int bins = 13;
-            Histogram.createHistogram(table, "value", bins);
+            //BoxPlot.boxPlot(table, "value");
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.assertTrue("Exception is thrown during setUp", false);
-        }
+        }*/
     }
 
 
