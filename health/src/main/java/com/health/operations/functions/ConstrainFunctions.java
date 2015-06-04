@@ -5,7 +5,7 @@ import com.health.script.runtime.StringValue;
 import com.health.script.runtime.Value;
 
 /**
- * A utility class, which consists of functions which can be used by the script for ==,=>,<= operations.
+ * A utility class, which consists of functions which can be used by the script for greater than, greater/eq,smaller than, smaller/eq smaller operations.
  *
  */
 public final class ConstrainFunctions {
@@ -15,7 +15,7 @@ public final class ConstrainFunctions {
    * @param columns original value from the column
    * @param value  value which is gained through input
    * @return boolean if condition is met or exception
-   * @throws Exception thrown if there are no valid arguments
+   * @throws Exception thrown if there are no valid arguments 
    */
   public static boolean greater(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
