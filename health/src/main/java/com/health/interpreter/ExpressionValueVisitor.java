@@ -97,6 +97,11 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
         return ChunkExpressionInterpreter.interpret(ctx, context);
     }
 
+    @Override
+    public Value visitConstrainExpression(final MyScriptParser.ConstrainExpressionContext ctx) {
+        return ConstrainExpressionInterpreter.interpret(ctx, context);
+    }
+
     /**
      * Evaluates the arguments for a given {@link ArgumentList}.
      *

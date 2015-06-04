@@ -92,7 +92,26 @@ pluralTimeUnit
     ;
 
 constrainExpression
-    : 'constrain'
+    : 'constrain' tableIdent=IDENTIFIER 'where' conditionalExpression
+    ;
+
+conditionalExpression
+    : '(' conditionalExpression ')'
+    | conditionalExpression 'and' condition
+    | conditionalExpression 'or' condition
+    | condition
+    ;
+
+condition
+    : columnIdent=IDENTIFIER comparisonOperator expression
+    ;
+
+comparisonOperator
+    : '='
+    | '<'
+    | '<='
+    | '>'
+    | '>='
     ;
 
 columnAggregateOperation
