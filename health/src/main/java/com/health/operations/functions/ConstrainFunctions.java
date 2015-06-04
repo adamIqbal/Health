@@ -8,9 +8,8 @@ public final class ConstrainFunctions {
 
   public static boolean greater(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
-
-      return true;
-
+      NumberValue d = (NumberValue) value;
+  return (double) columns< d.getValue();
     }
 
     if (columns instanceof String && value instanceof StringValue) {
@@ -30,8 +29,8 @@ public final class ConstrainFunctions {
   
   public static boolean greatereq(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
-
-      return true;
+      NumberValue d = (NumberValue) value;
+  return (double) columns <= d.getValue();
 
     }
 
@@ -52,8 +51,8 @@ public final class ConstrainFunctions {
 
   public static boolean smallereq(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
-
-      return true;
+      NumberValue d = (NumberValue) value;
+  return (double) columns >= d.getValue();
 
     }
 
@@ -73,9 +72,8 @@ public final class ConstrainFunctions {
 
   public static boolean smaller(Object columns, Value value) throws Exception {
     if (value instanceof NumberValue && columns instanceof Double) {
-
-      return true;
-
+      NumberValue d = (NumberValue) value;
+      return (double) columns > d.getValue();
     }
 
     if (columns instanceof String && value instanceof StringValue) {
