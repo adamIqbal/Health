@@ -1,6 +1,7 @@
 package com.health.operations;
 
 import com.health.ConstraintsEnums;
+import static com.health.operations.functions.ConstrainFunctions.*;
 import com.health.Table;
 
 public class Constraints {
@@ -8,39 +9,32 @@ public class Constraints {
   public static Table constrain(final Table table, final Object column, final ConstraintsEnums cst) {
     Table constrainedTable = table;
 
-    if (column instanceof String) {
-      String constrained = (String) column;
-      constrainEqual(table,column);
+    switch (cst) {
 
-    } else {
+    case EqualTo:
+      constrainedTable = equal(table, column);
+      break;
+    case GreaterOrEqual:
+      constrainedTable = greatereq(table, column);
+      break;
+    case GreaterThan:
+      constrainedTable = greater(table, column);
+      break;
+    case SmallerOrEqual:
+      constrainedTable = smallereq(table, column);
+      break;
+    case SmallerThan:
+      constrainedTable = smaller(table, column);
+      break;
 
-      switch (cst) {
-
-      case EqualTo:
-        constrainedTable = average(values);
-        break;
-      case GreaterOrEqual:
-        constrainedTable = sum(values);
-        break;
-      case GreaterThan:
-        constrainedTable = min(values);
-        break;
-      case SmallerOrEqual:
-        constrainedTable = max(values);
-        break;
-      case SmallerThan:
-        constrainedTable = max(values);
-        break;
-
-      default:
-        // FIXME: ERROR
-      }
-
-      return constrainedTable;
-
+    default:
+      // FIXME: ERROR
+      System.out.println("default case reached in constraints, FIX this error handling!");
     }
-  }
 
+    return constrainedTable;
+
+  }
 }
 
 // constraint by double/string/date
