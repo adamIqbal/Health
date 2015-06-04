@@ -135,17 +135,17 @@ literal
     | nullLiteral
     ;
 
-boolLiteral
-    : TRUE
-    | FALSE
+boolLiteral returns [boolean value]
+    : TRUE {$value = true;}
+    | FALSE {$value = false;}
     ;
 
-numberLiteral
-    : NUMBER
+numberLiteral returns [double value]
+    : NUMBER {$value = Double.parseDouble($NUMBER.text);}
     ;
 
-stringLiteral
-    : STRING
+stringLiteral returns [String value]
+    : STRING {$value = $STRING.text.substring(1, $STRING.text.length() - 1);}
     ;
 
 nullLiteral
@@ -163,7 +163,7 @@ NUMBER
     ;
 
 STRING
-    : '"' ~[""\r\n]* '"'
+    : '"' ~["\r\n]* '"'
     ;
 
 NULL

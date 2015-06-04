@@ -29,30 +29,17 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
 
     @Override
     public Value visitBoolLiteral(final MyScriptParser.BoolLiteralContext ctx) {
-        if (ctx.TRUE() != null) {
-            return new BooleanValue(true);
-        } else {
-            return new BooleanValue(false);
-        }
+        return new BooleanValue(ctx.value);
     }
 
     @Override
     public Value visitNumberLiteral(final MyScriptParser.NumberLiteralContext ctx) {
-        return new NumberValue(Double.parseDouble(ctx.NUMBER().getText()));
+        return new NumberValue(ctx.value);
     }
 
     @Override
     public Value visitStringLiteral(final MyScriptParser.StringLiteralContext ctx) {
-        String text = ctx.STRING().getText();
-
-        // The string should be longer than two characters because of the quote
-        // characters
-        assert text.length() >= 2;
-
-        // Strip the quotes
-        text = text.substring(1, text.length() - 1);
-
-        return new StringValue(text);
+        return new StringValue(ctx.value);
     }
 
     @Override
