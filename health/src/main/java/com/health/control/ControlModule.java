@@ -37,6 +37,7 @@ public class ControlModule {
    * 
    * @return
    */
+
   public String startAnalysis() {
     String output = null;
 
