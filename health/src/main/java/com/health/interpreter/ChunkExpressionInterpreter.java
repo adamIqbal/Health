@@ -22,8 +22,8 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
     }
 
     public Value interpret(final MyScriptParser.ChunkExpressionContext ctx) {
-        String tableIdent = ctx.tableIdent.getText();
-        String columnIdent = ctx.columnIdent.getText();
+        String tableIdent = ctx.table.getText();
+        String columnIdent = ctx.column.getText();
 
         Table table = this.lookupTable(tableIdent);
 

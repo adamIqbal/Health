@@ -21,6 +21,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
     private final ExpressionLValueVisitor lValueVisitor;
     private final ChunkExpressionInterpreter chunkExpressionInterpreter;
     private final ConstrainExpressionInterpreter constrainExpressionInterpreter;
+    private final ConnectExpressionInterpreter connectExpressionInterpreter;
 
     public ExpressionValueVisitor(final Context context) {
         Objects.requireNonNull(context);
@@ -29,6 +30,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
         this.lValueVisitor = new ExpressionLValueVisitor(context, this);
         this.chunkExpressionInterpreter = new ChunkExpressionInterpreter(context, this);
         this.constrainExpressionInterpreter = new ConstrainExpressionInterpreter(context, this);
+        this.connectExpressionInterpreter = new ConnectExpressionInterpreter(context, this);
     }
 
     @Override
@@ -104,6 +106,11 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
     @Override
     public Value visitConstrainExpression(final MyScriptParser.ConstrainExpressionContext ctx) {
         return this.constrainExpressionInterpreter.interpret(ctx);
+    }
+
+    @Override
+    public Value visitConnectExpression(final MyScriptParser.ConnectExpressionContext ctx) {
+        return this.connectExpressionInterpreter.interpret(ctx);
     }
 
     /**

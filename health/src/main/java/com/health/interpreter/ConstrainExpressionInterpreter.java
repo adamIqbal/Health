@@ -22,7 +22,7 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
     }
 
     public Value interpret(final ConstrainExpressionContext ctx) {
-        String tableIdent = ctx.tableIdent.getText();
+        String tableIdent = ctx.table.getText();
 
         Table table = lookupTable(tableIdent);
 
@@ -63,7 +63,7 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
             final ConditionContext ctx,
             final Table table,
             final String tableIdent) {
-        String column = ctx.columnIdent.getText();
+        String column = ctx.column.getText();
 
         verifyHasColumn(table, tableIdent, column);
 

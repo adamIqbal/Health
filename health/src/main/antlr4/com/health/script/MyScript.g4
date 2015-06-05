@@ -54,6 +54,7 @@ nonAssignmentExpression
     : primaryExpression
     | chunkExpression
     | constrainExpression
+    | connectExpression
     ;
 
 primaryExpression
@@ -65,7 +66,7 @@ primaryExpression
     ;
 
 chunkExpression
-    : 'chunk' tableIdent=IDENTIFIER 'by' 'column'? columnIdent=IDENTIFIER periodSpecifier? columnAggregateOperation*
+    : 'chunk' table=IDENTIFIER 'by' 'column'? column=IDENTIFIER periodSpecifier? columnAggregateOperation*
     ;
 
 periodSpecifier
@@ -92,7 +93,7 @@ pluralTimeUnit
     ;
 
 constrainExpression
-    : 'constrain' tableIdent=IDENTIFIER 'where' conditionalExpression
+    : 'constrain' table=IDENTIFIER 'where' conditionalExpression
     ;
 
 conditionalExpression
@@ -107,7 +108,7 @@ booleanOperator
     ;
 
 condition
-    : columnIdent=IDENTIFIER comparisonOperator expression
+    : column=IDENTIFIER comparisonOperator expression
     ;
 
 comparisonOperator
@@ -128,6 +129,19 @@ aggregateOperation
     | 'sum'
     | 'min'
     | 'max'
+    ;
+
+connectExpression
+    : 'connect' table1=IDENTIFIER 'with' table2=IDENTIFIER 'where' columnConnectionList
+    ;
+
+columnConnectionList
+    : columnConnectionList 'and' columnConnection
+    | columnConnection
+    ;
+
+columnConnection
+    : column1=IDENTIFIER '=' column2=IDENTIFIER ('as' newName=IDENTIFIER)?
     ;
 
 argumentList
