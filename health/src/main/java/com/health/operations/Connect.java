@@ -19,11 +19,12 @@ import com.health.ValueType;
 public class Connect {
 
 	/**
-	 * 
+	 *
 	 */
-	protected Connect(){
-		
+	protected Connect() {
+
 	}
+
 	/**
 	 * A function which connects two Table objects and return one table object
 	 * ordered by date.
@@ -37,7 +38,7 @@ public class Connect {
 	 * @return A Table object.
 	 */
 	public static Table connect(final Table table1, final Table table2,
-			List<ColumnConnection> connections) {
+			final List<ColumnConnection> connections) {
 
 		List<Column> connectedTableCols = makeNewTableColumns(
 				table1.getColumns(), table2.getColumns(), connections);
@@ -60,7 +61,7 @@ public class Connect {
 
 	private static List<Column> makeNewTableColumns(
 			final List<Column> table1Cols, final List<Column> table2Cols,
-			List<ColumnConnection> connections) {
+			final List<ColumnConnection> connections) {
 		List<Column> result = new ArrayList<Column>();
 		Iterator<Column> it = table1Cols.iterator();
 
@@ -116,8 +117,8 @@ public class Connect {
 
 	}
 
-	private static void addRecords(final Table tableNew, final Table tableToAdd,
-			final List<ColumnConnection> connections) {
+	private static void addRecords(final Table tableNew,
+			final Table tableToAdd, final List<ColumnConnection> connections) {
 		List<Record> recList = tableToAdd.getRecords();
 		List<Column> colList = tableToAdd.getColumns();
 

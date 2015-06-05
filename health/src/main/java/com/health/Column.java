@@ -11,7 +11,7 @@ public class Column {
 	private final String name;
 	private final int index;
 	private final ValueType type;
-	private boolean isFrequencyColumn;
+	private boolean isFrequencyColumn = false;;
 
 	/**
 	 * Constructs a new column with the given name, index and type.
@@ -94,8 +94,10 @@ public class Column {
 
 	/**
 	 * An equals method for columns.
+	 * @param other an object to compare with.
+	 * @return true if equal to other.
 	 */
-	public final boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (other instanceof Column) {
 			Column that = (Column) other;
 			if ((this.isFrequencyColumn && that.getIsFrequencyColumn())

@@ -3,8 +3,6 @@ package com.health.operations;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +12,6 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
-import com.health.output.Output;
 
 /**
  * A class for all chunking operations.
@@ -29,7 +26,7 @@ public final class Chunk {
 	 */
 	private static final String countColumnNameTemplate = "count_";
 
-	public static void main(String[] args0) {
+	/*public static void main(String[] args0) {
 		Column[] tableColumns = new Column[4];
 		tableColumns[0] = new Column("date", 0, ValueType.Date);
 		tableColumns[1] = new Column("meetwaarde1", 1, ValueType.Number);
@@ -110,7 +107,7 @@ public final class Chunk {
 
 		System.out.println(Output.formatTable(chunkedTable));
 
-	}
+	}*/
 
 	/**
 	 * A function to chunk a dataSet by time.
@@ -189,7 +186,8 @@ public final class Chunk {
 	/**
 	 * chunks the data on same string, in the given column.
 	 * 
-	 * @param table the table to be chunked.
+	 * @param table
+	 *            the table to be chunked.
 	 * @param operations
 	 *            a map of columns and their aggreagate operation.
 	 * @param column

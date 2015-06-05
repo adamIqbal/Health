@@ -41,11 +41,13 @@ public class RecordTest {
         when(column1.getIndex()).thenReturn(0);
         when(column1.getName()).thenReturn("column1");
         when(column1.getType()).thenReturn(ValueType.String);
+        when(column1.getIsFrequencyColumn()).thenReturn(false);
 
         column2 = mock(Column.class);
         when(column2.getIndex()).thenReturn(1);
         when(column2.getName()).thenReturn("column2");
         when(column2.getType()).thenReturn(ValueType.Number);
+        when(column2.getIsFrequencyColumn()).thenReturn(true);
 
         // Create mock table
         table = mock(Table.class);
