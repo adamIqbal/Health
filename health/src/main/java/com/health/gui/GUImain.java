@@ -34,7 +34,7 @@ public class GUImain extends JFrame {
     private static Map<String, VidneyPanel> panelMap;
     
     public static final int width = 1000;
-    public static final int height = 600;
+    public static final int height = 618;
 
     /**
      * Starts up GUI mainly for development.

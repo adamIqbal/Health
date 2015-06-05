@@ -28,7 +28,7 @@ abstract class VidneyPanel extends JSplitPane {
     public VidneyPanel() {
         super();
 
-        final int dividerLocation = 750;
+        final int dividerLocation = 650;
 
         this.setDefaultPanels();
 
