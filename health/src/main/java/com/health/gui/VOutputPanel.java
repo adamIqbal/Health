@@ -15,9 +15,7 @@ public class VOutputPanel extends VidneyPanel {
      */
     public VOutputPanel() {
         super();
-    }
-    
-    public void init() {
+        
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
@@ -28,7 +26,7 @@ public class VOutputPanel extends VidneyPanel {
         JScrollPane scrollforOutputArea = new JScrollPane(outputArea);
         mainPanel.add(scrollforOutputArea, BorderLayout.CENTER);
         
-        this.setMainPanel(mainPanel);
+        this.setLeftComponent(mainPanel);
     }
 
     /**

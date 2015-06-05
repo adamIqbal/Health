@@ -8,8 +8,10 @@ import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.border.MatteBorder;
 
 import externalClasses.FileDrop;
@@ -21,140 +23,140 @@ import externalClasses.FileDrop;
  */
 public class FileListing extends JPanel {
 
-	private static GridBagConstraints fileListingCons;
-	private static JPanel listing = new JPanel();
-	private static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
-	private static int fileCount = 0;
-	private static Color borderColor = Color.BLACK;
+    private static GridBagConstraints fileListingCons;
+    private static JPanel listing = new JPanel();
+    private static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
+    private static int fileCount = 0;
+    private static Color borderColor = Color.BLACK;
 
-	private static final int TOP = 0;
-	private static final int MIDDLE = 1;
-	private static final int BOTTOM = 2;
-	private static final int SINGLE = 3;
+    private static final int TOP = 0;
+    private static final int MIDDLE = 1;
+    private static final int BOTTOM = 2;
+    private static final int SINGLE = 3;
 
-	private static int maxStringLength = 50;
+    private static int maxStringLength = 50;
 
-	/**
-	 * get the data from filelisting.
-	 * @return fileListingRows the file data.
-	 */
-	public static ArrayList<FileListingRow> getFileListingRows() {
-		return fileListingRows;
-	}
+    /**
+     * get the data from filelisting.
+     * @return fileListingRows the file data.
+     */
+    public static ArrayList<FileListingRow> getFileListingRows() {
+        return fileListingRows;
+    }
 
-	/**
-	 * Constructor for the fileListing.
-	 */
-	public FileListing() {
+    /**
+     * Constructor for the fileListing.
+     */
+    public FileListing() {
 
-		this.setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
-		// Set layout and constraints
-		listing.setLayout(new GridBagLayout());
+        // Set layout and constraints
+        listing.setLayout(new GridBagLayout());
 
-		// fileListing.setBorder(BorderFactory.createLineBorder(Color.black));
-		fileListingCons = new GridBagConstraints();
-		fileListingCons.fill = GridBagConstraints.BOTH;
-		fileListingCons.anchor = GridBagConstraints.LINE_START;
+        // fileListing.setBorder(BorderFactory.createLineBorder(Color.black));
+        fileListingCons = new GridBagConstraints();
+        fileListingCons.fill = GridBagConstraints.BOTH;
+        fileListingCons.anchor = GridBagConstraints.LINE_START;
 
-		FileListing.fillFileListing();
+        FileListing.fillFileListing();
 
-		this.add(listing);
-	}
+        this.add(listing);
+    }
 
-	/**
-	 * Function fills the listing with rows in fileListingRows.
-	 */
-	public static void fillFileListing() {
-		listing.removeAll();
-		sortListingByFormat();
-		makeHeaderOfListing();
-		fileListingCons.gridwidth = 1;
-		fileListingCons.gridheight = 1;
-		int rows = fileCount;
+    /**
+     * Function fills the listing with rows in fileListingRows.
+     */
+    public static void fillFileListing() {
+        listing.removeAll();
+        sortListingByFormat();
+        makeHeaderOfListing();
+        fileListingCons.gridwidth = 1;
+        fileListingCons.gridheight = 1;
+        int rows = fileCount;
 
-		if (rows < 20) {
-			rows = 20;
-		}
+        if (rows < 20) {
+            rows = 20;
+        }
 
-		for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < rows; i++) {
 
-			try {
+            try {
 
-				// if format is select format, make single row
-				if (fileListingRows.get(i).getXmlFormat().getSelectedItem()
-						.toString()
-						.equals(FileListingRow.getSelectFormatString())) {
-					makeRow(FileListing.SINGLE, i);
-				}
-				// if not select format but last
-				else if (fileCount == i + 1) {
-					// if in list make bot
-					if (i != 0
-							&& fileListingRows.get(i - 1).hasEqualFormat(
-									fileListingRows.get(i))) {
-						makeRow(FileListing.BOTTOM, i);
-						System.out.println("for last");
-						// else make single
-					} else {
-						makeRow(FileListing.SINGLE, i);
-					}
-				}
-				// if first row of listing and next row is not same format
-				// or previous was different and next is differend
-				else if ((i == 0 || !fileListingRows.get(i - 1).hasEqualFormat(
-						fileListingRows.get(i)))
-						&& !fileListingRows.get(i + 1).hasEqualFormat(
-								fileListingRows.get(i))) {
-					makeRow(FileListing.SINGLE, i);
-				}
-				// if first row of listing and next row has same format
-				// or previous was different and next is same
-				else if ((i == 0 || !fileListingRows.get(i - 1).hasEqualFormat(
-						fileListingRows.get(i)))
-						&& fileListingRows.get(i + 1).hasEqualFormat(
-								fileListingRows.get(i))) {
-					makeRow(FileListing.TOP, i);
-				}
-				// if previous and next are same format make middle row
-				else if (fileListingRows.get(i - 1).hasEqualFormat(
-						fileListingRows.get(i))
-						&& fileListingRows.get(i + 1).hasEqualFormat(
-								fileListingRows.get(i))) {
-					makeRow(FileListing.MIDDLE, i);
-				}
-				// if previous is same but next different
-				else if (fileListingRows.get(i - 1).hasEqualFormat(
-						fileListingRows.get(i))
-						&& !fileListingRows.get(i + 1).hasEqualFormat(
-								fileListingRows.get(i))) {
-					makeRow(FileListing.BOTTOM, i);
-				}
+                // if format is select format, make single row
+                if (fileListingRows.get(i).getXmlFormat().getSelectedItem()
+                        .toString()
+                        .equals(FileListingRow.getSelectFormatString())) {
+                    makeRow(FileListing.SINGLE, i);
+                }
+                // if not select format but last
+                else if (fileCount == i + 1) {
+                    // if in list make bot
+                    if (i != 0
+                            && fileListingRows.get(i - 1).hasEqualFormat(
+                                    fileListingRows.get(i))) {
+                        makeRow(FileListing.BOTTOM, i);
+                        System.out.println("for last");
+                        // else make single
+                    } else {
+                        makeRow(FileListing.SINGLE, i);
+                    }
+                }
+                // if first row of listing and next row is not same format
+                // or previous was different and next is differend
+                else if ((i == 0 || !fileListingRows.get(i - 1).hasEqualFormat(
+                        fileListingRows.get(i)))
+                        && !fileListingRows.get(i + 1).hasEqualFormat(
+                                fileListingRows.get(i))) {
+                    makeRow(FileListing.SINGLE, i);
+                }
+                // if first row of listing and next row has same format
+                // or previous was different and next is same
+                else if ((i == 0 || !fileListingRows.get(i - 1).hasEqualFormat(
+                        fileListingRows.get(i)))
+                        && fileListingRows.get(i + 1).hasEqualFormat(
+                                fileListingRows.get(i))) {
+                    makeRow(FileListing.TOP, i);
+                }
+                // if previous and next are same format make middle row
+                else if (fileListingRows.get(i - 1).hasEqualFormat(
+                        fileListingRows.get(i))
+                        && fileListingRows.get(i + 1).hasEqualFormat(
+                                fileListingRows.get(i))) {
+                    makeRow(FileListing.MIDDLE, i);
+                }
+                // if previous is same but next different
+                else if (fileListingRows.get(i - 1).hasEqualFormat(
+                        fileListingRows.get(i))
+                        && !fileListingRows.get(i + 1).hasEqualFormat(
+                                fileListingRows.get(i))) {
+                    makeRow(FileListing.BOTTOM, i);
+                }
 
-			} catch (IndexOutOfBoundsException e) {
-				// make empty row
-				fileListingCons.gridy = i + 1;
-				for (int j = 0; j < 3; j++) {
-					fileListingCons.gridx = j;
-					JTextField textField = new JTextField();
-					textField.setSize(200, 30);
-					textField.setEditable(false);
-					new FileDrop(textField, textField.getBorder(),
-							new FileDrop.Listener() {
-								public void filesDropped(final File[] files) {
-									for (int i = 0; i < files.length; i++) {
-										FileListing.addFile(files[i]);
-									}
-								}
-							});
-					listing.add(textField, fileListingCons);
-				}
-			}
+            } catch (IndexOutOfBoundsException e) {
+                // make empty row
+                fileListingCons.gridy = i + 1;
+                for (int j = 0; j < 3; j++) {
+                    fileListingCons.gridx = j;
+                    JTextField textField = new JTextField();
+                    textField.setSize(200, 30);
+                    textField.setEditable(false);
+                    new FileDrop(textField, textField.getBorder(),
+                            new FileDrop.Listener() {
+                                public void filesDropped(final File[] files) {
+                                    for (int i = 0; i < files.length; i++) {
+                                        FileListing.addFile(files[i]);
+                                    }
+                                }
+                            });
+                    listing.add(textField, fileListingCons);
+                }
+            }
 
-		}
-		listing.revalidate();
-		listing.repaint();
-	}
+        }
+        listing.revalidate();
+        listing.repaint();
+    }
 
 	/**
 	 * sort the row array by group.

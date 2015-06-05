@@ -23,16 +23,12 @@ public class FileSelectionPanel extends JPanel {
 	 */
 	public FileSelectionPanel() {
 		this.setLayout(new BorderLayout());
+		
+		JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
+		this.add(scrollForFileListing, BorderLayout.CENTER);
 
-		JScrollPane scrolForFileListing = new JScrollPane(
-				new FileListing());
-
-		this.add(scrolForFileListing, BorderLayout.CENTER);
-
-		String toolTipText = "Hint: You can also drag and drop files into the screen";
-		JButton addButton = new JButton("add file");
-		addButton
-				.setToolTipText(toolTipText);
+		JButton addButton = new JButton("Add file");
+		
 		ListenForAddFile lforAddFile = new ListenForAddFile();
 		addButton.addActionListener(lforAddFile);
 

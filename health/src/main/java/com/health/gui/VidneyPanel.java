@@ -1,59 +1,33 @@
 package com.health.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
-abstract class VidneyPanel extends JPanel {
+abstract class VidneyPanel extends JSplitPane {
     private JPanel mainPanel;
     private JPanel sidePanel;
     
     public VidneyPanel() {
         super();
         
-        mainPanel = new JPanel();
-        mainPanel.add(new JLabel("Mainpanel"));
-        mainPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        this.setDefaultPanels();
         
-        sidePanel = new JPanel();
-        sidePanel.add(new JLabel("Sidebar"));
-        sidePanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        this.setContinuousLayout(true);
+        this.setDividerLocation(750);
+        this.setDividerSize(0);
+        setEnabled(false);
         
-        init();
-        
-        buildLayout();
-    }
-    
-    abstract void init();
-    
-    public void buildLayout() {
-        this.setLayout(new GridBagLayout());
-        
-        GridBagConstraints panelConstraints = new GridBagConstraints();
-
-        panelConstraints.insets = new Insets(3,3,3,3);
-        panelConstraints.fill = GridBagConstraints.BOTH;
-        panelConstraints.weightx = 1.0;
-        panelConstraints.weighty = 1.0;
-        
-        panelConstraints.gridheight = 1;
-        
-        panelConstraints.gridx = 0;
-        panelConstraints.gridy = 0;
-        panelConstraints.gridwidth = 2;
-        this.add(mainPanel, panelConstraints);
-        
-        panelConstraints.gridx = 2;
-        panelConstraints.gridy = 0;
-        panelConstraints.gridwidth = 1;
-        this.add(sidePanel, panelConstraints);
-        
-    }
+    }    
 
     protected JPanel getMainPanel() {
         return mainPanel;
@@ -69,6 +43,19 @@ abstract class VidneyPanel extends JPanel {
 
     protected void setSidePanel(JPanel sidePanel) {
         this.sidePanel = sidePanel;
+    }
+    
+    private void setDefaultPanels() {
+        mainPanel = new JPanel();
+        mainPanel.add(new JLabel("Mainpanel"));
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        
+        sidePanel = new JPanel();
+        sidePanel.add(new JLabel("Sidebar"));
+        sidePanel.setBorder(BorderFactory.createLineBorder(Color.RED));
+        
+        this.setLeftComponent(mainPanel);
+        this.setRightComponent(sidePanel);
     }
     
 }

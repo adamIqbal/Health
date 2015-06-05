@@ -32,9 +32,7 @@ public class VScriptPanel extends VidneyPanel {
     
     public VScriptPanel() {
         super();
-    }
-    
-    public void init() {
+        
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
@@ -58,8 +56,8 @@ public class VScriptPanel extends VidneyPanel {
 
         panel.add(textAbove, BorderLayout.NORTH);
         panel.setBorder(new EmptyBorder(10, 80, 10, 80));
-
-        this.setMainPanel(panel);
+        
+        this.setLeftComponent(panel);
     }
     
     /**
