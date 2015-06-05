@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -22,51 +23,35 @@ import org.xml.sax.SAXException;
 
 import com.health.Table;
 import com.health.control.ControlModule;
+import com.health.gui.fileSelection.FileListing;
+import com.health.gui.fileSelection.FileListingRow;
 import com.health.input.Input;
 import com.health.input.InputException;
-
-//import com.health.gui.ScriptPanel.ListenForStartAnalysis;
 
 public class VScriptPanel extends VidneyPanel {
     private static JTextArea scriptArea;
     
     public VScriptPanel() {
         super();
-        
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
 
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout());
 
         scriptArea = new JTextArea(2, 1);
-        scriptArea.setBorder(BorderFactory.createLineBorder(Color.black));
+        scriptArea.setText("");
+        mainPanel.add(scriptArea, BorderLayout.CENTER);
 
-        panel.add(scriptArea, BorderLayout.CENTER);
+        JButton startAnalysisButton = new JButton("Start Analysis");
+        startAnalysisButton.addActionListener(new AnalysisListener());
+        mainPanel.add(startAnalysisButton, BorderLayout.SOUTH);
 
-        JButton startAnalasisButton = new JButton("Start Analysis");
-        startAnalasisButton.addActionListener(new ListenForStartAnalysis());
-
-        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        southPanel.add(startAnalasisButton);
-        panel.add(southPanel, BorderLayout.SOUTH);
-
-        JTextField textAbove = new JTextField("Script: ");
-        textAbove.setEditable(false);
-        textAbove.setDisabledTextColor(Color.black);
-
-        panel.add(textAbove, BorderLayout.NORTH);
-        panel.setBorder(new EmptyBorder(10, 80, 10, 80));
+        JLabel textAbove = new JLabel("Script: ");
+        mainPanel.add(textAbove, BorderLayout.NORTH);
         
-        this.setLeftComponent(panel);
+        this.setLeftComponent(mainPanel);
     }
     
-    /**
-     * get the script area component.
-     *
-     * @return scriptArea the component of the scriptarea.
-     */
-    public static JTextArea getScriptArea() {
-        return scriptArea;
+    protected static String getScriptAreaText() {
+        return scriptArea.getText();
     }
 
     /**
@@ -75,8 +60,11 @@ public class VScriptPanel extends VidneyPanel {
      * @author daan
      *
      */
-    private class ListenForStartAnalysis implements ActionListener {
-
+    private class AnalysisListener implements ActionListener {
+        
+        public AnalysisListener() {
+            super();
+        }
         /**
          * Makes inputData array and calls the control module.
          *
@@ -100,7 +88,7 @@ public class VScriptPanel extends VidneyPanel {
                 }
             }
 
-            String script = ScriptPanel.getScriptArea().getText();
+            String script = VScriptPanel.getScriptAreaText();
 
             ControlModule control = new ControlModule(script, parsedData);
 
@@ -120,8 +108,10 @@ public class VScriptPanel extends VidneyPanel {
                         JOptionPane.ERROR_MESSAGE);
             }
 
-            OutputDataPanel.displayData(output);
+            VOutputPanel.displayData(output);
 
         }
     }
+    
+    
 }

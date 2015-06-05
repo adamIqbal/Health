@@ -1,4 +1,4 @@
-package com.health.gui;
+package com.health.gui.fileSelection;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+
+import com.health.gui.GUImain;
 
 import externalClasses.FileDrop;
 

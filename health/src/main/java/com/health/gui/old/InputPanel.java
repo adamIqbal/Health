@@ -1,4 +1,4 @@
-package com.health.gui;
+package com.health.gui.old;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import com.health.gui.fileSelection.FileSelectionPanel;
 import com.health.gui.xmlwizard.XmlWizard;
 
 /**
