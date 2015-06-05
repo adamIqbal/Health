@@ -1,153 +1,178 @@
 package com.health.visuals;
 
-import static com.googlecode.charts4j.Color.*;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.googlecode.charts4j.AxisLabels;
-import com.googlecode.charts4j.AxisLabelsFactory;
-import com.googlecode.charts4j.AxisStyle;
-import com.googlecode.charts4j.AxisTextAlignment;
-import com.googlecode.charts4j.BarChart;
-import com.googlecode.charts4j.BarChartPlot;
-import com.googlecode.charts4j.Data;
-import com.googlecode.charts4j.DataUtil;
-import com.googlecode.charts4j.Fills;
-import com.googlecode.charts4j.GCharts;
-import com.googlecode.charts4j.Plots;
-
-import java.io.IOException;
-import java.net.URL;
-
+import com.health.Chunk;
+import com.health.Column;
+import com.health.Record;
+import com.health.Table;
+import com.health.ValueType;
+import com.xeiam.xchart.Chart;
+import com.xeiam.xchart.ChartBuilder;
+import com.xeiam.xchart.StyleManager.ChartType;
+import com.xeiam.xchart.StyleManager.LegendPosition;
+import com.xeiam.xchart.SwingWrapper;
 
 /**
- * Creates Bar charts.
- * @author lizzy
+ * Generates a Frequency Bar Diagram based on a Table object.
+ *
+ * @author Bjorn van der Laan &amp; Lizzy Scholten
  *
  */
 public final class FreqBar {
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private FreqBar() {
+    	//Nothing happens
+    }
 
-	private FreqBar() { }
+    /**
+     * Generates a Frequency bar diagram. 
+     * This variant has no column specified.
+     * It chooses the last date column and last frequency column in the Table object.
+     * @param table
+     *            Table to use
+     */
+    public static void frequencyBar(final Table table) {
+        // Check if the Table contains a frequency and a date column
+        Column freqColumn = null;
+        Column dateColumn = null;
+        for (Column c : table.getColumns()) {
+            if (c.getIsFrequencyColumn()) {
+                freqColumn = c;
+            } else if (c.getType() == ValueType.Date) {
+                dateColumn = c;
+            }
+        }
+        // If both exist, format the frequency map based on these columns.
+        if (freqColumn != null && dateColumn != null) {
+            Map<String, Integer> freqMap = formatFrequencyMap(table,
+                    freqColumn.getName(), dateColumn.getName());
+            makeBarChart(freqMap, dateColumn.getName());
+        } else {
+            // Not good.
+            System.out
+                    .println("Table contains either no frequency column or no date column.");
+        }
+    }
 
-	/**
-	 * Possible preprocessing of info.
-	 * @param arIn			the data
-	 * @param title			title of chart
-	 * @return 				the url of the image
-	 * @throws IOException	if input/output exception of some sort has occurred
-	 */
-	public static URL makeBarChart(final double[] arIn, final String title) throws IOException {
-		double[][] arOut = new double[arIn.length][2];
-		// For checking if event is already
-		boolean check = false;
+    /**
+     * Generates a Frequency Bar diagram.
+     *
+     * @param table
+     *            Table to use
+     * @param column
+     *            Column to display frequency of
+     */
+    public static void frequencyBar(final Table table, final String column) {
+        // Check if the Table contains a frequency column
+        Column freqColumn = null;
+        for (Column c : table.getColumns()) {
+            if (c.getIsFrequencyColumn()) {
+                freqColumn = c;
+            }
+        }
+        // If the Table contains a frequency column, use it to format the
+        // frequency map
+        // Else if no frequency column exists, count occurrences of values in
+        // the specified column
+        if (freqColumn != null) {
+            Map<String, Integer> freqMap = formatFrequencyMap(table, freqColumn.getName(), column);
+            makeBarChart(freqMap, column);
+        } else {
+            Map<String, Integer> freqMap = createFrequencyMap(table, column);
+            makeBarChart(freqMap, column);
+        }
+    }
 
-		int count = 0;
-		for (int i = 0; i < arIn.length; i++) {
-			// Check if value is already present in arOut
-			for (int k = 0; k < arIn.length; k++) {
-				if (arOut[k][0] == arIn[i]) {
-					int ind = k;
-					double val = arOut[ind][1];
-					val = val + 1;
-					arOut[ind][1] = val;
-					check = true;
-					break;
-				}
-			}
-			// Else put it in arOut
-			if (!check) {
-				arOut[count][0] = arIn[i];
-				arOut[count][1] = 1;
-				count = count + 1;
-			}
-			check = false;
-		}
+    /**
+     * Creates a frequency map from the input Table to serve as input for
+     * makeBarChart.
+     *
+     * @param table
+     *            Table to use
+     * @param freqColumn
+     *            the frequency column
+     * @param column
+     *            the column
+     * @return frequency map
+     */
+    private static Map<String, Integer> formatFrequencyMap(final Table table,
+            final String freqColumn, final String column) {
+        // Create map to save frequencies
+        Map<String, Integer> freqMap = new HashMap<String, Integer>();
 
-		URL url = makeBarChart(arOut, title);
-		return url;
-	}
+        for (Chunk c : table) {
+            for (Record r : c) {
+                String value = r.getValue(column).toString();
+                int frequency = (int) r.getValue(freqColumn);
+                freqMap.put(value, frequency);
+            }
+        }
+        
+        return freqMap;
+    }
 
-	/**
-	 * Creates url for Bar Chart.
-	 * @param arIn			the data
-	 * @param title			title of chart
-	 * @return 				the url of the image
-	 * @throws IOException	if input/output exception of some sort has occurred
-	 */
-	public static URL makeBarChart(final double[][] arIn, final String title) throws IOException {
-		// Defining data
-		double[] dataAr = new double[arIn.length];
-		// Set count to 0
-		int count = 0;
-		// Copy second column of input array into dataArray
-		for (int i = 0; i < arIn.length; i++) {
-			dataAr[count] = arIn[i][1];
-			count = count + 1;
-		}
-		// Get maximum value of dataArray
-		double maxVal = dataAr[0];
-		for (int m = 0; m < dataAr.length; m++) {
-			if (dataAr[m] > maxVal) {
-				maxVal = dataAr[m];
-			}
-		}
-		// Defining labels
-		String[] labelsAr = new String[count];
-		count = 0;
-		// Create labels
-		for (int k = 0; k < arIn.length; k++) {
-			labelsAr[count] = String.valueOf(arIn[k][0]);
-			count = count + 1;
-		}
-		// Turn labels into list
-		ArrayList<String> list = new ArrayList<String>(Arrays.asList(labelsAr));
-		ArrayList<String> newList = new ArrayList<String>();
-		// Delete values from original label array that are useless and that are not going to be used as labels
-		// Do this by copying useful ones in new ArrayList
-		for (int n = 0; n < list.size(); n++) {
-			if (!list.get(n).equals("0.0") && !list.get(n).equals(null)) {
-				newList.add(list.get(n));
-			}
-		}
+    /**
+     * Counts the occurrences of each value of column and creates a frequency
+     * map. Used when no the table contains no frequency column
+     *
+     * @param table
+     *            Table to use
+     * @param column
+     *            Column to count
+     * @return frequency map
+     */
+    private static Map<String, Integer> createFrequencyMap(final Table table,
+            final String column) {
+        // Create map to save frequencies
+        Map<String, Integer> freqMap = new HashMap<String, Integer>();
 
-		// Transform labels list to array
-		String[] labelsUse = newList.toArray(new String[newList.size()]);
+        for (Chunk c : table) {
+            for (Record r : c) {
+                // Get value of record
+                String value = r.getValue(column).toString();
+                if (!freqMap.containsKey(value)) {
+                    freqMap.put(value, 1);
+                } else {
+                    int currentFrequency = freqMap.get(value);
+                    freqMap.replace(value, ++currentFrequency);
+                }
+            }
+        }
 
-		// Add data to the chart
-		final double maxEvent = maxVal + 1;
-		Data data = DataUtil.scaleWithinRange(0,  maxEvent, dataAr);
-		BarChartPlot dat = Plots.newBarChartPlot(data, RED, "Data");
-		BarChart chart = GCharts.newBarChart(dat);
+        return freqMap;
+    }
 
-		//Defining axis (labels etc)
-		AxisStyle axisStyle = AxisStyle.newAxisStyle(BLACK, 13, AxisTextAlignment.CENTER);
-		AxisLabels event = AxisLabelsFactory.newAxisLabels("Event", 50.0);
-		event.setAxisStyle(axisStyle);
-		AxisLabels events = AxisLabelsFactory.newAxisLabels(Arrays.asList(labelsUse));
-		events.setAxisStyle(axisStyle);
-		AxisLabels frequency = AxisLabelsFactory.newAxisLabels("Frequency", 50.0);
-		frequency.setAxisStyle(axisStyle);
-		AxisLabels freqCount = AxisLabelsFactory.newNumericRangeAxisLabels(0, maxEvent);
-		freqCount.setAxisStyle(axisStyle);
+    /**
+     * Creates a frequency bar diagram based on the frequency map.
+     *
+     * @param freqMap
+     *            frequency map
+     */
+    private static void makeBarChart(final Map<String, Integer> freqMap,
+            final String seriesName) {
+        final int frameWidth = 800;
+        final int frameHeight = 600;
+        // Convert input data for processing
+        ArrayList<String> labels = new ArrayList<String>(freqMap.keySet());
+        ArrayList<Integer> frequency = new ArrayList<Integer>(freqMap.values());
 
-		// Add the axis info to the chart.
-        chart.addYAxisLabels(freqCount);
-        chart.addYAxisLabels(frequency);
-        chart.addXAxisLabels(events);
-        chart.addXAxisLabels(event);
-        chart.setHorizontal(false);
+        // Create Chart
+        Chart chart = new ChartBuilder().chartType(ChartType.Bar)
+                .width(frameWidth).height(frameHeight).title("Score Histogram")
+                .xAxisTitle(seriesName).yAxisTitle("Frequency").build();
 
-        //size should be calculate based on frequencies and amount of labels
-        chart.setSize(650, 450);
-        chart.setSpaceBetweenGroupsOfBars(20);
+        chart.addSeries(seriesName, new ArrayList<String>(labels),
+                new ArrayList<Integer>(frequency));
 
-        // Set title and background
-        chart.setTitle(title, BLACK, 17);
-        chart.setBackgroundFill(Fills.newSolidFill(LIGHTGREY));
-        // Create url of the chart
-        URL url = new URL(chart.toURLString());
+        // Customize Chart
+        chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
 
-        return (url);
-	}
+        new SwingWrapper(chart).displayChart();
+    }
+
 }
