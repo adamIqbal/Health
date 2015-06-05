@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
 
 /**
  * Represents the panel where the script is typed.
- * @author Bjorn van der Laan
+ * @author Bjorn van der Laan and Daan Vermunt
  *
  */
 public class VOutputPanel extends VidneyPanel {
@@ -32,7 +32,7 @@ public class VOutputPanel extends VidneyPanel {
         JScrollPane scrollforOutputArea = new JScrollPane(outputArea);
         mainPanel.add(scrollforOutputArea, BorderLayout.CENTER);
 
-        this.setLeftComponent(mainPanel);
+        this.setLeft(mainPanel);
     }
 
     /**

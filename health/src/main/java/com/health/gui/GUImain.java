@@ -2,9 +2,13 @@ package com.health.gui;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  * The main function for the GUI which initiates the frame.
@@ -22,6 +26,8 @@ public class GUImain extends JFrame {
      * PATHTOXMLFORMAT is the path to all config xmls.
      */
     public static final String PATHTOXMLFORMATS = "data/configXmls/";
+    
+    private static Map<String, VidneyPanel> panelMap;
 
     /**
      * Starts up GUI mainly for development.
@@ -41,6 +47,8 @@ public class GUImain extends JFrame {
     public GUImain() {
         final int width = 1000;
         final int height = 600;
+        
+        panelMap = new HashMap<String, VidneyPanel>();
 
         this.initializeFrame(width, height);
 
@@ -52,8 +60,30 @@ public class GUImain extends JFrame {
         tabbedPane.addTab("Input", inputPanel);
         tabbedPane.addTab("Script", scriptPanel);
         tabbedPane.addTab("Output", outputPanel);
+        
+        panelMap.put("input", inputPanel);
+        panelMap.put("script", scriptPanel);
+        panelMap.put("output", outputPanel);
 
         this.add(tabbedPane);
+        
+        try {
+            boolean nimbusFound = false;
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Metal".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    nimbusFound = true;
+                    break;
+                }
+            }
+            if(!nimbusFound) {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
+            
+        } catch (Exception e) {
+            
+        }
+
 
         this.setVisible(true);
     }
@@ -74,6 +104,10 @@ public class GUImain extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Vidney");
+    }
+    
+    public static VidneyPanel getPanel(String name) {
+        return panelMap.get(name);
     }
 
 }

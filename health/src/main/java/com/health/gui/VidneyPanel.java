@@ -6,6 +6,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Abstract class that is extended by all main panels of the GUI. Defines the
@@ -64,6 +65,11 @@ abstract class VidneyPanel extends JSplitPane {
 
         this.setLeftComponent(mainPanel);
         this.setRightComponent(sidePanel);
+    }
+    
+    protected void setLeft(JPanel panel) {
+        panel.setBorder(new EmptyBorder(20,20,20,20));
+        this.setLeftComponent(panel);
     }
 
 }

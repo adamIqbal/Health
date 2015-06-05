@@ -25,7 +25,7 @@ import com.health.input.InputException;
 
 /**
  * Represents the panel where the script is typed.
- * @author Bjorn van der Laan
+ * @author Bjorn van der Laan and Daan Vermunt
  *
  */
 public class VScriptPanel extends VidneyPanel {
@@ -33,7 +33,7 @@ public class VScriptPanel extends VidneyPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 4322421568728565558L;
-    private static JTextArea scriptArea;
+    private JTextArea scriptArea;
 
     /**
      * Constructor.
@@ -54,14 +54,14 @@ public class VScriptPanel extends VidneyPanel {
         JLabel textAbove = new JLabel("Script: ");
         mainPanel.add(textAbove, BorderLayout.NORTH);
 
-        this.setLeftComponent(mainPanel);
+        this.setLeft(mainPanel);
     }
 
     /**
      * Gets the script as a String.
      * @return a String representation of the script
      */
-    protected static String getScriptAreaText() {
+    protected String getScriptAreaText() {
         return scriptArea.getText();
     }
 
@@ -100,8 +100,9 @@ public class VScriptPanel extends VidneyPanel {
                     e.printStackTrace();
                 }
             }
-
-            String script = VScriptPanel.getScriptAreaText();
+            
+            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("script");
+            String script = scriptPanel.getScriptAreaText();
 
             ControlModule control = new ControlModule(script, parsedData);
 

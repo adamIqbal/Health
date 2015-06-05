@@ -22,6 +22,6 @@ public class VInputPanel extends VidneyPanel {
         super();
 
         JPanel fileSelectionPanel = new FileSelectionPanel();
-        this.setLeftComponent(fileSelectionPanel);
+        this.setLeft(fileSelectionPanel);
     }
 }
