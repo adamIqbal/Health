@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
@@ -16,6 +17,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
+
+import com.health.gui.GUImain;
 
 /**
  * Represents the panel where the user can either select a xml file to edit, or
@@ -33,13 +36,13 @@ class XmlFilePanel extends JPanel {
     private JButton selectFileButton;
     private FileList fileList;
 
-    public XmlFilePanel(final Path path) {
+    public XmlFilePanel() {
         super();
         this.setLayout(new BorderLayout());
 
         // add list model
         DefaultListModel<Path> listModel = new DefaultListModel<Path>();
-        fileList = new FileList(path, listModel);
+        fileList = new FileList(Paths.get(GUImain.PATHTOXMLFORMATS), listModel);
         this.add(fileList, BorderLayout.CENTER);
 
         // add buttons
@@ -82,12 +85,9 @@ class XmlFilePanel extends JPanel {
          * Constant serialized ID used for compatibility.
          */
         private static final long serialVersionUID = 7122730191428505542L;
-        private final int listWidth = 200;
-        private final int listHeight = 300;
 
         public FileList(final Path path, final DefaultListModel<Path> listModel) {
             super(listModel);
-            this.setPreferredSize(new Dimension(listWidth, listHeight));
             this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             this.setBackground(Color.WHITE);
 

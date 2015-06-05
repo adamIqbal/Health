@@ -1,8 +1,7 @@
-package com.health.gui;
+package com.health.gui.fileSelection;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,7 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
+
+import com.health.gui.GUImain;
 
 /**
  * Class that makes the file selection panel.
@@ -19,33 +19,25 @@ import javax.swing.border.EmptyBorder;
  *
  */
 public class FileSelectionPanel extends JPanel {
-
-	private Insets emptyBorderFileListing = new Insets(70, 85, 70, 85);
-
 	/**
 	 * Constructor which set the panel layout and adds.
 	 * components
 	 */
 	public FileSelectionPanel() {
 		this.setLayout(new BorderLayout());
+		
+		JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
+		this.add(scrollForFileListing, BorderLayout.CENTER);
 
-		JScrollPane scrolForFileListing = new JScrollPane(
-				new FileListing());
-
-		this.add(scrolForFileListing, BorderLayout.CENTER);
-
-		String toolTipText = "Hint: You can also drag and drop files into the screen";
-		JButton addButton = new JButton("add file");
-		addButton
-				.setToolTipText(toolTipText);
+		JButton addButton = new JButton("Add file");
+		
 		ListenForAddFile lforAddFile = new ListenForAddFile();
 		addButton.addActionListener(lforAddFile);
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonPanel.add(addButton);
-
+		
 		this.add(buttonPanel, BorderLayout.SOUTH);
-		this.setBorder(new EmptyBorder(emptyBorderFileListing));
 
 	}
 	/**
