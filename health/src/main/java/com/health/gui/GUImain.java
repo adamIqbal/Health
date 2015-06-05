@@ -1,5 +1,6 @@
 package com.health.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.EmptyBorder;
 
 /**
  * The main function for the GUI which initiates the frame.
@@ -27,7 +29,12 @@ public class GUImain extends JFrame {
      */
     public static final String PATHTOXMLFORMATS = "data/configXmls/";
     
+    public static final Color GUI_COLOR = new Color(137, 207, 240);
+    
     private static Map<String, VidneyPanel> panelMap;
+    
+    public static final int width = 1000;
+    public static final int height = 600;
 
     /**
      * Starts up GUI mainly for development.
@@ -44,10 +51,7 @@ public class GUImain extends JFrame {
     /**
      * Makes the frame and and fills tabs.
      */
-    public GUImain() {
-        final int width = 1000;
-        final int height = 600;
-        
+    public GUImain() {        
         panelMap = new HashMap<String, VidneyPanel>();
 
         this.initializeFrame(width, height);
@@ -64,7 +68,8 @@ public class GUImain extends JFrame {
         panelMap.put("input", inputPanel);
         panelMap.put("script", scriptPanel);
         panelMap.put("output", outputPanel);
-
+     
+        tabbedPane.setBackground(GUImain.GUI_COLOR);
         this.add(tabbedPane);
         
         try {

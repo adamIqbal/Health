@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -29,7 +27,7 @@ import com.health.gui.GUImain;
  * @author Bjorn
  *
  */
-public class XmlFilePanel extends JPanel {
+class XmlFilePanel extends JPanel {
     /**
      * Constant serialized ID used for compatibility.
      */
@@ -82,20 +80,17 @@ public class XmlFilePanel extends JPanel {
      * @author Bjorn van der Laan
      *
      */
-    private class FileList extends JList<Path> implements MouseListener {
+    private class FileList extends JList<Path> {
         /**
          * Constant serialized ID used for compatibility.
          */
         private static final long serialVersionUID = 7122730191428505542L;
-        private final int listWidth = 200;
-        private final int listHeight = 300;
 
         public FileList(final Path path, final DefaultListModel<Path> listModel) {
             super(listModel);
-            this.setPreferredSize(new Dimension(listWidth, listHeight));
             this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             this.setBackground(Color.WHITE);
-            
+
             try {
                 DirectoryStream<Path> stream;
                 stream = Files.newDirectoryStream(path);
@@ -107,33 +102,6 @@ public class XmlFilePanel extends JPanel {
             } catch (IOException e) {
                 // Directory not found, add no elements
             }
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                
-            }
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
         }
     }
 }

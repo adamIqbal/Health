@@ -60,7 +60,7 @@ public class FileListing extends JPanel {
         fileListingCons.anchor = GridBagConstraints.LINE_START;
 
         FileListing.fillFileListing();
-
+        
         this.add(listing);
     }
 

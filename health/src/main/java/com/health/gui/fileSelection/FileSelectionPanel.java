@@ -11,6 +11,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.health.gui.GUImain;
+
 /**
  * Class that makes the file selection panel.
  * @author daan
@@ -34,7 +36,7 @@ public class FileSelectionPanel extends JPanel {
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonPanel.add(addButton);
-
+		
 		this.add(buttonPanel, BorderLayout.SOUTH);
 
 	}

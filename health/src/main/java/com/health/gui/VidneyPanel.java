@@ -35,6 +35,7 @@ abstract class VidneyPanel extends JSplitPane {
         this.setContinuousLayout(true);
         this.setDividerLocation(dividerLocation);
         this.setDividerSize(0);
+        
         setEnabled(false);
     }
 
@@ -69,11 +70,13 @@ abstract class VidneyPanel extends JSplitPane {
     
     protected void setLeft(JPanel panel) {
         panel.setBorder(new EmptyBorder(20,20,20,20));
+        panel.setBackground(GUImain.GUI_COLOR);
         this.setLeftComponent(panel);
     }
     
     protected void setRight(JPanel panel) {
         panel.setBorder(new EmptyBorder(20,20,20,20));
+        panel.setBackground(GUImain.GUI_COLOR);
         this.setRightComponent(panel);
     }
 

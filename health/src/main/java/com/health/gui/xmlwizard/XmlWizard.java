@@ -24,75 +24,86 @@ import javax.swing.JPanel;
  * - add it to enum
  * - create a subclass of XmlStartEditSubPanel
  * - write a toXMLString in XmlConfigObject
+ * </p>
  */
 
 /**
  * The frame of the XML Wizard. Contains all panels and controls transition
  * between them.
+ * 
  * @author Bjorn van der Laan
  *
  */
-public class XmlWizard extends JFrame {
-    public static Path path;
-    
-    private final int frameWidth = 500;
-    private final int frameHeight = 500;
-    
-    private static XmlEditPanel editPanel;
-    private static XmlSavePanel savePanel;
+public class XmlWizard extends JPanel {
+    private static Path path;
+
+    private XmlFilePanel filePanel;
+    private XmlEditPanel editPanel;
+    private XmlSavePanel savePanel;
 
     /**
      * Constructs a XmlWizard containing the wizard panels.
-     * This variant is for creating new xmls
-     * @param path
-     *            a Path object referring to the Config XML folder
      */
     public XmlWizard() {
         super();
         XmlWizard.path = null;
-        initWizard();
+        init();
     }
     
     /**
      * Constructs a XmlWizard containing the wizard panels.
-     * This variant is for editing existing xmls
      * @param path
-     *            a Path object referring the selected config xml
+     *            a Path object referring to the Config XML folder
      */
     public XmlWizard(final Path path) {
         super();
         XmlWizard.path = path;
-        initWizard();
+        init();
     }
     
-    public void initWizard() {
-        this.setSize(frameWidth, frameHeight);
-
+    /**
+     * Initializes the panel contents.
+     */
+    private void init() {
+        filePanel = new XmlFilePanel();
         editPanel = new XmlEditPanel();
         savePanel = new XmlSavePanel();
 
-        //XmlWizardListener wizardListener = new XmlWizardListener(this);
-        //wizardListener.attachListenerToButtons();
+        this.add(filePanel);
 
-        this.setTitle("XML Editor");
+        XmlWizardListener wizardListener = new XmlWizardListener(this);
+        wizardListener.attachListenerToButtons();
+
         this.setVisible(true);
     }
 
     /**
      * Changes the current visible panel.
+     * 
      * @param next
      *            the JPanel that will be made visible
      */
     protected final void changePanel(final JPanel next) {
-        this.getContentPane().removeAll();
-        this.setContentPane(next);
+        this.removeAll();
+        this.add(next);
         this.repaint();
         this.revalidate();
     }
 
     /**
+     * Returns the XmlFilePanel. This method is used by the private class.
+     * implementing ActionListener
+     * 
+     * @return the XmlFilePanel
+     */
+    protected final XmlFilePanel getFilePanel() {
+        return filePanel;
+    }
+
+    /**
      * Returns the XmlEditPanel. This method is used by the private class
      * implementing ActionListener
+     * 
      * @return the XmlEditPanel
      */
     protected final XmlEditPanel getEditPanel() {
@@ -102,6 +113,7 @@ public class XmlWizard extends JFrame {
     /**
      * Returns the XmlSavePanel. This method is used by the private class.
      * implementing ActionListener
+     * 
      * @return the XmlSavePanel
      */
     protected final XmlSavePanel getSavePanel() {
@@ -111,10 +123,11 @@ public class XmlWizard extends JFrame {
     /**
      * XmlWizardListener handles all transitions between panels of the
      * XmlWizard. It implements the ActionListener interface.
+     * 
      * @author Bjorn van der Laan
      *
      */
-    /*private class XmlWizardListener implements ActionListener {
+    private class XmlWizardListener implements ActionListener {
         private XmlWizard wizardFrame;
         private XmlFilePanel filePanel;
         private XmlEditPanel editPanel;
@@ -123,6 +136,7 @@ public class XmlWizard extends JFrame {
         public XmlWizardListener(final XmlWizard xw) {
             super();
             wizardFrame = xw;
+            filePanel = wizardFrame.getFilePanel();
             editPanel = wizardFrame.getEditPanel();
             savePanel = wizardFrame.getSavePanel();
         }
@@ -130,8 +144,9 @@ public class XmlWizard extends JFrame {
         @Override
         public void actionPerformed(final ActionEvent e) {
             JButton source = (JButton) e.getSource();
-            
-            if (source.equals(filePanel.getSelectFileButton())) {
+            if (source.equals(filePanel.getNewFileButton())) {
+                wizardFrame.changePanel(editPanel);
+            } else if (source.equals(filePanel.getSelectFileButton())) {
                 if (filePanel.getSelectedFile() != null) {
                     editPanel.setValues(filePanel.getSelectedFile());
                     wizardFrame.changePanel(editPanel);
@@ -140,15 +155,10 @@ public class XmlWizard extends JFrame {
                             "You have not selected a file yet!", "Error!",
                             JOptionPane.INFORMATION_MESSAGE);
                 }
-            } 
-            
-            if (source.equals(editPanel.getContinueButton())) {
+            } else if (source.equals(editPanel.getContinueButton())) {
                 XmlConfigObject config = editPanel.getValues();
                 savePanel.setValues(config);
                 wizardFrame.changePanel(savePanel);
-            }
-            else {
-                
             }
         }
 
@@ -156,8 +166,10 @@ public class XmlWizard extends JFrame {
          * Attaches the XmlWizardListener to the buttons in the different
          * panels.
          */
-        /*public void attachListenerToButtons() {
+        public void attachListenerToButtons() {
+            filePanel.addActionListenerToNewFileButton(this);
+            filePanel.addActionListenerToSelectFileButton(this);
             editPanel.addActionListenerToContinueButton(this);
         }
-    }*/
+    }
 }

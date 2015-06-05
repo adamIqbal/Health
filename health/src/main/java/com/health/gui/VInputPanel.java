@@ -3,7 +3,7 @@ package com.health.gui;
 import javax.swing.JPanel;
 
 import com.health.gui.fileSelection.FileSelectionPanel;
-import com.health.gui.xmlwizard.XmlFilePanel;
+import com.health.gui.xmlwizard.XmlWizard;
 
 /**
  * Represents the panel where all files are loaded into the program.
@@ -25,7 +25,7 @@ public class VInputPanel extends VidneyPanel {
         JPanel fileSelectionPanel = new FileSelectionPanel();
         this.setLeft(fileSelectionPanel);
         
-        XmlFilePanel filePanel = new XmlFilePanel();
+        XmlWizard filePanel = new XmlWizard();
         this.setRight(filePanel);
     }
 }
