@@ -1,42 +1,174 @@
 package com.health.operations.functions;
 
-import com.health.Table;
+import com.health.script.runtime.NumberValue;
+import com.health.script.runtime.StringValue;
+import com.health.script.runtime.Value;
 
+/**
+ * A utility class, which consists of functions which can be used by the script
+ * for greater than, greater/eq,smaller than, smaller/eq smaller operations.
+ *
+ */
 public final class ConstrainFunctions {
+    /**
+     * Function to determine whether the value gained through input is greater
+     * than value in the table.
+     *
+     * @param columns
+     *            original value from the column
+     * @param value
+     *            value which is gained through input
+     * @return boolean if condition is met or exception
+     * @throws IllegalArgumentException
+     *             thrown if there are no valid arguments
+     */
+    public static boolean greater(final Object columns, final Value value) {
+        if (value instanceof NumberValue && columns instanceof Double) {
+            NumberValue d = (NumberValue) value;
 
-  public static Table greater(Table table, Object columns) {
-    Table constrainedTable = table;
+            return (double) columns > d.getValue();
+        }
 
-    return constrainedTable;
+        if (columns instanceof String && value instanceof StringValue) {
+            throw new IllegalArgumentException("Can not invoke greater on String.");
+        }
 
-  }
+        // if (columns instanceof Date && value instanceof DateValue) {
+        //
+        // return true;
+        // }
+        // FIXME: add dateValue
 
-  public static Table greatereq(Table table, Object columns) {
-    Table constrainedTable = table;
+        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+    }
 
-    return constrainedTable;
+    /**
+     * Function to determine whether the value gained through input is greater
+     * than or equal to value in the table.
+     *
+     * @param columns
+     *            original value from the column
+     * @param value
+     *            value which is gained through input
+     * @return boolean if condition is met or exception
+     * @throws IllegalArgumentException
+     *             thrown if there are no valid arguments
+     */
+    public static boolean greaterEq(final Object columns, final Value value) {
+        if (value instanceof NumberValue && columns instanceof Double) {
+            NumberValue d = (NumberValue) value;
 
-  }
+            return (double) columns >= d.getValue();
+        }
 
-  public static Table smallereq(Table table, Object columns) {
-    Table constrainedTable = table;
+        if (columns instanceof String && value instanceof StringValue) {
+            throw new IllegalArgumentException("Can not invoke greatereq on String.");
+        }
 
-    return constrainedTable;
+        // if (columns instanceof Date && value instanceof DateValue) {
+        //
+        // return true;
+        // }
+        // FIXME: add dateValue
 
-  }
+        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+    }
 
-  public static Table smaller(Table table, Object columns) {
-    Table constrainedTable = table;
+    /**
+     * Function to determine whether the value gained through input is smaller
+     * than or equal to value in the table.
+     *
+     * @param columns
+     *            original value from the column
+     * @param value
+     *            value which is gained through input
+     * @return boolean if condition is met or exception
+     * @throws IllegalArgumentException
+     *             thrown if there are no valid arguments
+     */
+    public static boolean smallerEq(final Object columns, final Value value) {
+        if (value instanceof NumberValue && columns instanceof Double) {
+            NumberValue d = (NumberValue) value;
 
-    return constrainedTable;
+            return (double) columns <= d.getValue();
+        }
 
-  }
+        if (columns instanceof String && value instanceof StringValue) {
+            throw new IllegalArgumentException("Can not invoke smallereq on String.");
+        }
 
-  public static Table equal(Table table, Object columns) {
-    Table constrainedTable = table;
+        // if (columns instanceof Date && value instanceof DateValue) {
+        //
+        // return true;
+        // }
+        // FIXME: add dateValue
 
-    return constrainedTable;
+        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+    }
 
-  }
+    /**
+     * Function to determine whether the value gained through input is smaller
+     * than to value in the table.
+     *
+     * @param columns
+     *            original value from the column
+     * @param value
+     *            value which is gained through input
+     * @return boolean if condition is met or exception
+     * @throws IllegalArgumentException
+     *             thrown if there are no valid arguments
+     */
+    public static boolean smaller(final Object columns, final Value value) {
+        if (value instanceof NumberValue && columns instanceof Double) {
+            NumberValue d = (NumberValue) value;
 
+            return (double) columns < d.getValue();
+        }
+
+        if (columns instanceof String && value instanceof StringValue) {
+            throw new IllegalArgumentException("Can not invoke smaller on String.");
+        }
+
+        // if (columns instanceof Date && value instanceof DateValue) {
+        //
+        // return true;
+        // }
+        // FIXME: add dateValue
+
+        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+    }
+
+    /**
+     * Function to determine whether the value gained through input is equal to
+     * value in the table.
+     *
+     * @param columns
+     *            original value from the column
+     * @param value
+     *            value which is gained through input
+     * @return boolean if condition is met or exception
+     * @throws IllegalArgumentException
+     *             thrown if there are no valid arguments
+     */
+    public static boolean equal(final Object columns, final Value value) {
+        if (value instanceof NumberValue && columns instanceof Double) {
+            NumberValue d = (NumberValue) value;
+
+            return (double) columns == d.getValue();
+        }
+
+        if (columns instanceof String && value instanceof StringValue) {
+            StringValue str = (StringValue) value;
+
+            return columns.toString().equals(str.getValue());
+        }
+
+        // if (columns instanceof Date && value instanceof DateValue) {
+        //
+        // return true;
+        // }
+        // FIXME: add dateValue
+
+        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+    }
 }
