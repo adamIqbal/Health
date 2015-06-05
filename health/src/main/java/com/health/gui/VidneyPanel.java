@@ -71,5 +71,10 @@ abstract class VidneyPanel extends JSplitPane {
         panel.setBorder(new EmptyBorder(20,20,20,20));
         this.setLeftComponent(panel);
     }
+    
+    protected void setRight(JPanel panel) {
+        panel.setBorder(new EmptyBorder(20,20,20,20));
+        this.setRightComponent(panel);
+    }
 
 }

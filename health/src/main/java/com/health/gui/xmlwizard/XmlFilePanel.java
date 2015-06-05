@@ -4,10 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
@@ -17,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
+import com.health.gui.GUImain;
+
 /**
  * Represents the panel where the user can either select a xml file to edit, or
  * create a new xml file.
@@ -24,7 +29,7 @@ import javax.swing.border.SoftBevelBorder;
  * @author Bjorn
  *
  */
-class XmlFilePanel extends JPanel {
+public class XmlFilePanel extends JPanel {
     /**
      * Constant serialized ID used for compatibility.
      */
@@ -33,13 +38,13 @@ class XmlFilePanel extends JPanel {
     private JButton selectFileButton;
     private FileList fileList;
 
-    public XmlFilePanel(final Path path) {
+    public XmlFilePanel() {
         super();
         this.setLayout(new BorderLayout());
 
         // add list model
         DefaultListModel<Path> listModel = new DefaultListModel<Path>();
-        fileList = new FileList(path, listModel);
+        fileList = new FileList(Paths.get(GUImain.PATHTOXMLFORMATS), listModel);
         this.add(fileList, BorderLayout.CENTER);
 
         // add buttons
@@ -77,7 +82,7 @@ class XmlFilePanel extends JPanel {
      * @author Bjorn van der Laan
      *
      */
-    private class FileList extends JList<Path> {
+    private class FileList extends JList<Path> implements MouseListener {
         /**
          * Constant serialized ID used for compatibility.
          */
@@ -90,7 +95,7 @@ class XmlFilePanel extends JPanel {
             this.setPreferredSize(new Dimension(listWidth, listHeight));
             this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             this.setBackground(Color.WHITE);
-
+            
             try {
                 DirectoryStream<Path> stream;
                 stream = Files.newDirectoryStream(path);
@@ -102,6 +107,33 @@ class XmlFilePanel extends JPanel {
             } catch (IOException e) {
                 // Directory not found, add no elements
             }
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                
+            }
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
         }
     }
 }
