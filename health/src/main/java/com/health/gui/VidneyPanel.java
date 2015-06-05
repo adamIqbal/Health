@@ -64,8 +64,8 @@ abstract class VidneyPanel extends JSplitPane {
         sidePanel.add(new JLabel("Sidebar"));
         sidePanel.setBorder(BorderFactory.createLineBorder(Color.RED));
 
-        this.setLeftComponent(mainPanel);
-        this.setRightComponent(sidePanel);
+        this.setLeft(mainPanel);
+        this.setRight(sidePanel);
     }
     
     protected void setLeft(JPanel panel) {

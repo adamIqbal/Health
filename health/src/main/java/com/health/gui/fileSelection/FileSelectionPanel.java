@@ -8,6 +8,7 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -25,12 +26,15 @@ public class FileSelectionPanel extends JPanel {
 	 */
 	public FileSelectionPanel() {
 		this.setLayout(new BorderLayout());
+
+		JLabel instructionLabel = new JLabel("Drag your files into the window to start!");
+		this.add(instructionLabel, BorderLayout.NORTH);
 		
 		JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
 		this.add(scrollForFileListing, BorderLayout.CENTER);
 
 		JButton addButton = new JButton("Add file");
-		
+
 		ListenForAddFile lforAddFile = new ListenForAddFile();
 		addButton.addActionListener(lforAddFile);
 
