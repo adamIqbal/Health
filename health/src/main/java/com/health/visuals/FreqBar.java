@@ -18,7 +18,7 @@ import com.xeiam.xchart.SwingWrapper;
 /**
  * Generates a Frequency Bar Diagram based on a Table object.
  *
- * @author Bjorn van der Laan & Lizzy Scholten
+ * @author Bjorn van der Laan &amp; Lizzy Scholten
  *
  */
 public final class FreqBar {
