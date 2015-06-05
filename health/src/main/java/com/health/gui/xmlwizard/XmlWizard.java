@@ -1,11 +1,13 @@
 package com.health.gui.xmlwizard;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -34,33 +36,51 @@ import javax.swing.JPanel;
  * @author Bjorn van der Laan
  *
  */
-public class XmlWizard extends JFrame {
-    private final int frameWidth = 500;
-    private final int frameHeight = 500;
+public class XmlWizard extends JPanel {
+    private static Path path;
+
     private XmlFilePanel filePanel;
     private XmlEditPanel editPanel;
     private XmlSavePanel savePanel;
 
     /**
      * Constructs a XmlWizard containing the wizard panels.
-     * 
+     */
+    public XmlWizard() {
+        super();
+        XmlWizard.path = null;
+        init();
+    }
+    
+    /**
+     * Constructs a XmlWizard containing the wizard panels.
      * @param path
      *            a Path object referring to the Config XML folder
      */
     public XmlWizard(final Path path) {
         super();
-        this.setSize(frameWidth, frameHeight);
-
-        filePanel = new XmlFilePanel(path);
+        XmlWizard.path = path;
+        init();
+    }
+    
+    /**
+     * Initializes the panel contents.
+     */
+    private void init() {
+        this.setLayout(new BorderLayout());
+        
+        filePanel = new XmlFilePanel();
         editPanel = new XmlEditPanel();
         savePanel = new XmlSavePanel();
+        
+        JLabel label = new JLabel("Create or edit XML files here");
+        this.add(label, BorderLayout.NORTH);
 
-        this.getContentPane().add(filePanel);
+        this.add(filePanel, BorderLayout.CENTER);
 
         XmlWizardListener wizardListener = new XmlWizardListener(this);
         wizardListener.attachListenerToButtons();
 
-        this.setTitle("XML Editor");
         this.setVisible(true);
     }
 
@@ -71,8 +91,9 @@ public class XmlWizard extends JFrame {
      *            the JPanel that will be made visible
      */
     protected final void changePanel(final JPanel next) {
-        this.getContentPane().removeAll();
-        this.setContentPane(next);
+        BorderLayout layout = (BorderLayout) this.getLayout();
+        this.remove(layout.getLayoutComponent(BorderLayout.CENTER));
+        this.add(next, BorderLayout.CENTER);
         this.repaint();
         this.revalidate();
     }

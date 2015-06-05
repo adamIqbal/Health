@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -41,16 +42,16 @@ public class XmlEditPanel extends JPanel {
      */
     public XmlEditPanel() {
         super();
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         startPanel = new XmlStartEditPanel();
-        this.add(startPanel, BorderLayout.WEST);
+        this.add(startPanel);
 
         columnPanel = new XmlColumnEditPanel();
-        this.add(columnPanel, BorderLayout.CENTER);
+        this.add(columnPanel);
 
         continueButton = new JButton("Continue");
-        this.add(continueButton, BorderLayout.SOUTH);
+        this.add(continueButton);
     }
 
     /**

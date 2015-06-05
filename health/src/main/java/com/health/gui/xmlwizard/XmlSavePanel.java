@@ -49,7 +49,9 @@ public class XmlSavePanel extends JPanel {
         buttonPanel = new JPanel();
         JButton saveAsButton = new JButton("Save as..");
         saveAsButton.addActionListener(new XmlSaveAsListener());
-        buttonPanel.add(saveAsButton);
+        //JButton returnButton = new JButton("Return to files");
+        ///buttonPanel.add(saveAsButton);
+        //buttonPanel.add(returnButton);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
