@@ -11,13 +11,33 @@ import com.health.script.runtime.Context;
 import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
 
+/**
+ * Represents an interpreter for connecting expressions.
+ */
 public final class ConnectExpressionInterpreter extends TableExpressionInterpreter {
+    /**
+     * Creates a new instance of {@link ConnectExpressionInterpreter} with the
+     * given context and expressionVisitor.
+     *
+     * @param context
+     *            the context.
+     * @param expressionVisitor
+     *            the expressionVisitor.
+     */
     protected ConnectExpressionInterpreter(
             final Context context,
             final ExpressionValueVisitor expressionVisitor) {
         super(context, expressionVisitor);
     }
 
+    /**
+     * Interprets the given ConnectExpressionContext and returns the resulting
+     * value.
+     *
+     * @param ctx
+     *            the connect expression context.
+     * @return the value resulting from evaluating the expression.
+     */
     public Value interpret(final MyScriptParser.ConnectExpressionContext ctx) {
         String table1Ident = ctx.table1.getText();
         String table2Ident = ctx.table2.getText();

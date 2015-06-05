@@ -14,7 +14,21 @@ import com.health.script.MyScriptLexer;
 import com.health.script.MyScriptParser;
 import com.health.script.runtime.Context;
 
-public class Interpreter {
+/**
+ * Represents a script interpreter.
+ */
+public final class Interpreter {
+    private Interpreter() {
+    }
+
+    /**
+     * Interprets the given script.
+     *
+     * @param script
+     *            the script to interpret.
+     * @throws IOException
+     *             if any I/O-exceptions occur.
+     */
     public static void interpret(final String script) throws IOException {
         Objects.requireNonNull(script);
 

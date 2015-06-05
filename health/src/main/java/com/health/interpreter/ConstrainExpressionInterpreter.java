@@ -14,13 +14,33 @@ import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
 
+/**
+ * Represents an interpreter for constraining expressions.
+ */
 public final class ConstrainExpressionInterpreter extends TableExpressionInterpreter {
+    /**
+     * Creates a new instance of {@link ConstrainExpressionInterpreter} with the
+     * given context and expressionVisitor.
+     *
+     * @param context
+     *            the context.
+     * @param expressionVisitor
+     *            the expressionVisitor.
+     */
     protected ConstrainExpressionInterpreter(
             final Context context,
             final ExpressionValueVisitor expressionVisitor) {
         super(context, expressionVisitor);
     }
 
+    /**
+     * Interprets the given ConstrainExpressionContext and returns the resulting
+     * value.
+     *
+     * @param ctx
+     *            the constrain expression context.
+     * @return the value resulting from evaluating the expression.
+     */
     public Value interpret(final ConstrainExpressionContext ctx) {
         String tableIdent = ctx.table.getText();
 
@@ -67,7 +87,7 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
 
         verifyHasColumn(table, tableIdent, column);
 
-        Value value = this.expressionVisitor.visit(ctx.expression());
+        Value value = this.getExpressionVisitor().visit(ctx.expression());
 
         switch (ctx.comparisonOperator().getText()) {
         case "=":

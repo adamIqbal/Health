@@ -9,11 +9,20 @@ import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.ScriptType;
 import com.health.script.runtime.Value;
 
+/**
+ * A listener that listens for statement nodes and processes them.
+ */
 public final class StatementListener extends MyScriptBaseListener {
     private final Context context;
     private final ExpressionValueVisitor expressionVisitor;
     private ScriptType localVariableDeclarationType;
 
+    /**
+     * Creates a new {@link StatementListener} with the given context.
+     *
+     * @param context
+     *            the context.
+     */
     public StatementListener(final Context context) {
         Objects.requireNonNull(context);
 

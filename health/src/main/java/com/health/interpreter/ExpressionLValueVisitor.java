@@ -9,10 +9,21 @@ import com.health.script.runtime.LValue;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.Value;
 
+/**
+ * A visitor that visits expression nodes to evaluate their l-values.
+ */
 public final class ExpressionLValueVisitor extends MyScriptBaseVisitor<LValue> {
     private final Context context;
     private final ExpressionValueVisitor expressionVisitor;
 
+    /**
+     * Creates a new {@link ExpressionLValueVisitor} with the given context.
+     *
+     * @param context
+     *            the context.
+     * @param expressionVisitor
+     *            the expressionVisitor.
+     */
     public ExpressionLValueVisitor(final Context context, final ExpressionValueVisitor expressionVisitor) {
         Objects.requireNonNull(context);
 

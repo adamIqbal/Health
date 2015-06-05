@@ -6,10 +6,22 @@ import com.health.script.runtime.LValue;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.TableValue;
 
+/**
+ * A base class with common functions for interpreter of table expressions.
+ */
 public abstract class TableExpressionInterpreter {
-    protected final Context context;
-    protected final ExpressionValueVisitor expressionVisitor;
+    private final Context context;
+    private final ExpressionValueVisitor expressionVisitor;
 
+    /**
+     * Creates a {@link TableExpressionInterpreter} with the given context and
+     * expressionVisitor.
+     *
+     * @param context
+     *            the context.
+     * @param expressionVisitor
+     *            the expressionVisitor.
+     */
     protected TableExpressionInterpreter(
             final Context context,
             final ExpressionValueVisitor expressionVisitor) {
@@ -17,7 +29,15 @@ public abstract class TableExpressionInterpreter {
         this.expressionVisitor = expressionVisitor;
     }
 
-    protected Table lookupTable(final String tableName) {
+    /**
+     * Looks up a table from the context or throws an exception if the variable
+     * is undefined or not a table.
+     *
+     * @param tableName
+     *            the name of the table to retrieve.
+     * @return the table declared with the given name.
+     */
+    protected final Table lookupTable(final String tableName) {
         LValue var = this.context.lookup(tableName);
 
         if (!TableValue.getStaticType().isAssignableFrom(var.getType())) {
@@ -27,10 +47,39 @@ public abstract class TableExpressionInterpreter {
         return ((TableValue) var.get()).getValue();
     }
 
-    protected static void verifyHasColumn(final Table table, final String tableName, final String column) {
+    /**
+     * Throws an exception if the given table does not define a column with the
+     * given name.
+     *
+     * @param table
+     *            the table to be verified.
+     * @param tableName
+     *            the name of the table.
+     * @param column
+     *            the column to be verified.
+     */
+    protected static final void verifyHasColumn(final Table table, final String tableName, final String column) {
         if (table.getColumn(column) == null) {
             throw new ScriptRuntimeException(String.format("Table '%s' does not define a column named '%s'.",
                     tableName, column));
         }
+    }
+
+    /**
+     * Gets the context.
+     *
+     * @return the context.
+     */
+    protected final Context getContext() {
+        return this.context;
+    }
+
+    /**
+     * Gets the expression visitor.
+     *
+     * @return the expression visitor.
+     */
+    protected final ExpressionValueVisitor getExpressionVisitor() {
+        return this.expressionVisitor;
     }
 }

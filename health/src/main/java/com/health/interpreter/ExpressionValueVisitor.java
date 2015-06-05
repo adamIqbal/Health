@@ -16,17 +16,24 @@ import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.StringValue;
 import com.health.script.runtime.Value;
 
+/**
+ * A visitor that visits expression nodes to evaluate their values.
+ */
 public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
-    private final Context context;
     private final ExpressionLValueVisitor lValueVisitor;
     private final ChunkExpressionInterpreter chunkExpressionInterpreter;
     private final ConstrainExpressionInterpreter constrainExpressionInterpreter;
     private final ConnectExpressionInterpreter connectExpressionInterpreter;
 
+    /**
+     * Creates a new {@link ExpressionValueVisitor} with the given context.
+     *
+     * @param context
+     *            the context.
+     */
     public ExpressionValueVisitor(final Context context) {
         Objects.requireNonNull(context);
 
-        this.context = context;
         this.lValueVisitor = new ExpressionLValueVisitor(context, this);
         this.chunkExpressionInterpreter = new ChunkExpressionInterpreter(context, this);
         this.constrainExpressionInterpreter = new ConstrainExpressionInterpreter(context, this);

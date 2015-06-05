@@ -14,13 +14,33 @@ import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
 
+/**
+ * Represents an interpreter for chunking expressions.
+ */
 public final class ChunkExpressionInterpreter extends TableExpressionInterpreter {
+    /**
+     * Creates a new instance of {@link ChunkExpressionInterpreter} with the
+     * given context and expressionVisitor.
+     *
+     * @param context
+     *            the context.
+     * @param expressionVisitor
+     *            the expressionVisitor.
+     */
     protected ChunkExpressionInterpreter(
             final Context context,
             final ExpressionValueVisitor expressionVisitor) {
         super(context, expressionVisitor);
     }
 
+    /**
+     * Interprets the given ChunkExpressionContext and returns the resulting
+     * value.
+     *
+     * @param ctx
+     *            the chunk expression context.
+     * @return the value resulting from evaluating the expression.
+     */
     public Value interpret(final MyScriptParser.ChunkExpressionContext ctx) {
         String tableIdent = ctx.table.getText();
         String columnIdent = ctx.column.getText();
