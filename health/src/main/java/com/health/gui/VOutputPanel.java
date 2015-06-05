@@ -2,30 +2,36 @@ package com.health.gui;
 
 import java.awt.BorderLayout;
 
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * Represents the panel where the script is typed.
+ * @author Bjorn van der Laan
+ *
+ */
 public class VOutputPanel extends VidneyPanel {
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = -5303011708825739028L;
     private static JTextArea outputArea;
 
     /**
-     * Method to display all outputData.
+     * Constructor.
      */
     public VOutputPanel() {
         super();
-        
+
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
         outputArea = new JTextArea(2, 1);
 
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 50, 30));
-
         JScrollPane scrollforOutputArea = new JScrollPane(outputArea);
         mainPanel.add(scrollforOutputArea, BorderLayout.CENTER);
-        
+
         this.setLeftComponent(mainPanel);
     }
 

@@ -1,22 +1,17 @@
 package com.health.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -28,9 +23,21 @@ import com.health.gui.fileSelection.FileListingRow;
 import com.health.input.Input;
 import com.health.input.InputException;
 
+/**
+ * Represents the panel where the script is typed.
+ * @author Bjorn van der Laan
+ *
+ */
 public class VScriptPanel extends VidneyPanel {
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = 4322421568728565558L;
     private static JTextArea scriptArea;
-    
+
+    /**
+     * Constructor.
+     */
     public VScriptPanel() {
         super();
 
@@ -46,25 +53,28 @@ public class VScriptPanel extends VidneyPanel {
 
         JLabel textAbove = new JLabel("Script: ");
         mainPanel.add(textAbove, BorderLayout.NORTH);
-        
+
         this.setLeftComponent(mainPanel);
     }
-    
+
+    /**
+     * Gets the script as a String.
+     * @return a String representation of the script
+     */
     protected static String getScriptAreaText() {
         return scriptArea.getText();
     }
 
     /**
-     * handle start analysis button.
-     *
-     * @author daan
-     *
+     * Starts the analysis when the button is clicked.
+     * @author Daan Vermunt
      */
     private class AnalysisListener implements ActionListener {
-        
+
         public AnalysisListener() {
             super();
         }
+
         /**
          * Makes inputData array and calls the control module.
          *
@@ -75,14 +85,17 @@ public class VScriptPanel extends VidneyPanel {
             List<Table> parsedData = new ArrayList<Table>();
 
             for (int i = 0; i < files.size(); i++) {
-                String xmlFormat = files.get(i).getXmlFormat().getSelectedItem().toString();
+                String xmlFormat = files.get(i).getXmlFormat()
+                        .getSelectedItem().toString();
                 String fileString = files.get(i).getFileString();
                 xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
 
                 try {
                     parsedData.add(Input.readTable(fileString, xmlFormat));
-                } catch (IOException | ParserConfigurationException | SAXException | InputException e) {
-                    System.out.println("Error: Something went wrong parsing the config and data!");
+                } catch (IOException | ParserConfigurationException
+                        | SAXException | InputException e) {
+                    System.out
+                            .println("Error: Something went wrong parsing the config and data!");
 
                     e.printStackTrace();
                 }
@@ -101,17 +114,18 @@ public class VScriptPanel extends VidneyPanel {
 
                 output = e.getMessage();
 
-                JOptionPane.showMessageDialog(
-                        null,
-                        String.format("An unhandled exception occured while executing the script: %s.", output),
-                        "Script runtime exception",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane
+                        .showMessageDialog(
+                                null,
+                                String.format(
+                                        "An unhandled exception occured while executing the script: %s.",
+                                        output), "Script runtime exception",
+                                JOptionPane.ERROR_MESSAGE);
             }
 
             VOutputPanel.displayData(output);
 
         }
     }
-    
-    
+
 }
