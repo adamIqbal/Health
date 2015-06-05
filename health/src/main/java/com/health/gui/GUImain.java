@@ -36,17 +36,21 @@ public class GUImain extends JFrame {
 	 * Makes the frame and and fills tabs.
 	 */
 	public GUImain() {
+	    final int width = 800;
+	    final int height = 600;
+	    
 		// intialize the frame
-		this.initializeFrame(800, 600);
+		this.initializeFrame(width, height);
 		// define tabbed pane
 		JTabbedPane tabbedPane = new JTabbedPane();
-		JPanel inputPanel = new InputPanel();
-		JPanel outputDataPanel = new OutputDataPanel();
-		JPanel outputVisualPanel = new OutputVisualPanel();
-
+		JPanel inputPanel = new VInputPanel();
+		JPanel scriptPanel = new VScriptPanel();
+		JPanel outputPanel = new VOutputPanel();
+	
 		tabbedPane.addTab("Input", inputPanel);
-		tabbedPane.addTab("Output Data", outputDataPanel);
-		tabbedPane.addTab("Output Visual", outputVisualPanel);
+		tabbedPane.addTab("Script", scriptPanel);
+		tabbedPane.addTab("Output", outputPanel);
+		
 
 		// add tabs to the pane
 		this.add(tabbedPane);

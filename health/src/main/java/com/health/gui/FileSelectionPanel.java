@@ -2,7 +2,6 @@ package com.health.gui;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -11,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 
 /**
  * Class that makes the file selection panel.
@@ -19,9 +17,6 @@ import javax.swing.border.EmptyBorder;
  *
  */
 public class FileSelectionPanel extends JPanel {
-
-	private Insets emptyBorderFileListing = new Insets(70, 85, 70, 85);
-
 	/**
 	 * Constructor which set the panel layout and adds.
 	 * components
@@ -45,7 +40,6 @@ public class FileSelectionPanel extends JPanel {
 		buttonPanel.add(addButton);
 
 		this.add(buttonPanel, BorderLayout.SOUTH);
-		this.setBorder(new EmptyBorder(emptyBorderFileListing));
 
 	}
 	/**
