@@ -1,11 +1,13 @@
 package com.health.gui.xmlwizard;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -65,11 +67,16 @@ public class XmlWizard extends JPanel {
      * Initializes the panel contents.
      */
     private void init() {
+        this.setLayout(new BorderLayout());
+        
         filePanel = new XmlFilePanel();
         editPanel = new XmlEditPanel();
         savePanel = new XmlSavePanel();
+        
+        JLabel label = new JLabel("Create or edit XML files here");
+        this.add(label, BorderLayout.NORTH);
 
-        this.add(filePanel);
+        this.add(filePanel, BorderLayout.CENTER);
 
         XmlWizardListener wizardListener = new XmlWizardListener(this);
         wizardListener.attachListenerToButtons();
@@ -84,8 +91,9 @@ public class XmlWizard extends JPanel {
      *            the JPanel that will be made visible
      */
     protected final void changePanel(final JPanel next) {
-        this.removeAll();
-        this.add(next);
+        BorderLayout layout = (BorderLayout) this.getLayout();
+        this.remove(layout.getLayoutComponent(BorderLayout.CENTER));
+        this.add(next, BorderLayout.CENTER);
         this.repaint();
         this.revalidate();
     }
