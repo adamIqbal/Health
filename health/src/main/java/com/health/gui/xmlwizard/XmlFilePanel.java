@@ -51,6 +51,7 @@ class XmlFilePanel extends JPanel {
         selectFileButton = new JButton("Edit selected file");
         buttonPanel.add(newFileButton);
         buttonPanel.add(selectFileButton);
+        this.setOpaque(false);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
