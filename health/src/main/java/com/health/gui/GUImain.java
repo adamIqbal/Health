@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -32,21 +34,10 @@ public class GUImain extends JFrame {
     public static final Color GUI_COLOR = new Color(137, 207, 240);
     
     private static Map<String, VidneyPanel> panelMap;
+    private JTabbedPane tabbedPane;
     
     public static final int width = 1000;
     public static final int height = 618;
-
-    /**
-     * Starts up GUI mainly for development.
-     *
-     * @param args
-     *            arguments for constructor.
-     */
-    public static void main(final String[] args) {
-
-        new GUImain();
-
-    }
 
     /**
      * Makes the frame and and fills tabs.
@@ -54,49 +45,66 @@ public class GUImain extends JFrame {
     public GUImain() {        
         panelMap = new HashMap<String, VidneyPanel>();
 
-        this.initializeFrame(width, height);
+        this.initializeFrame();
 
-        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane = new JTabbedPane();
         VidneyPanel inputPanel = new VInputPanel();
         VidneyPanel scriptPanel = new VScriptPanel();
         VidneyPanel outputPanel = new VOutputPanel();
 
-        tabbedPane.addTab("Input", inputPanel);
-        tabbedPane.addTab("Script", scriptPanel);
-        tabbedPane.addTab("Output", outputPanel);
-        
-        panelMap.put("input", inputPanel);
-        panelMap.put("script", scriptPanel);
-        panelMap.put("output", outputPanel);
+        addTab("Input", inputPanel);
+        addTab("Script", scriptPanel);
+        addTab("Output", outputPanel);
      
         tabbedPane.setBackground(GUImain.GUI_COLOR);
         this.add(tabbedPane);
-        
+      
         try {
-            boolean nimbusFound = false;
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Metal".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    nimbusFound = true;
-                    break;
-                }
-            }
-            if(!nimbusFound) {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            }
-            
-        } catch (Exception e) {
-            
+            setLookAndFeel("Metal");
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            JOptionPane.showMessageDialog(new JFrame(),
+                    "Error loading the look and feel. Message: " + e.getMessage(), "Error!",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
 
-
         this.setVisible(true);
+    }
+    
+    /**
+     * Adds a tab to the GUI.
+     */
+    private void addTab(String name, VidneyPanel panel) {
+        tabbedPane.addTab(name, panel);
+        panelMap.put(name, panel);
+    }
+    
+    /**
+     * Sets look and feel of the application.
+     * @param name Name of the lookandfeel
+     * @throws UnsupportedLookAndFeelException 
+     * @throws IllegalAccessException 
+     * @throws InstantiationException 
+     * @throws ClassNotFoundException 
+     */
+    private void setLookAndFeel(String name) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+        boolean nimbusFound = false;
+        for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            if (name.equals(info.getName())) {
+                UIManager.setLookAndFeel(info.getClassName());
+                nimbusFound = true;
+                break;
+            }
+        }
+        if(!nimbusFound) {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
     }
 
     /**
      * sets the frame variables.
      */
-    private void initializeFrame(final int width, final int height) {
+    private void initializeFrame() {
         this.setSize(width, height);
 
         Toolkit tk = Toolkit.getDefaultToolkit();
