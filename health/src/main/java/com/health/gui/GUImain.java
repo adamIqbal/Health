@@ -12,10 +12,9 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
 
 /**
- * The main function for the GUI which initiates the frame.
+ * Represents the GUI.
  *
  * @author Daan Vermunt and Bjorn van der Laan
  *
