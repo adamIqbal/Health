@@ -1,44 +1,60 @@
 package com.health.control;
 
-public class InputData {
-	private String xmlPath;
-	private String dataPath;
-	
-	public InputData() {
-		this.xmlPath = null;
-		this.dataPath = null;
-	}
+/**
+ * Represents a 3-tuple consisting of the file path, configuration path and
+ * table name.
+ */
+public final class InputData {
+    private final String configPath;
+    private final String filePath;
+    private final String name;
 
-	public InputData(String xml, String data) {
-		this.xmlPath = xml;
-		this.dataPath = data;
-	}
+    /**
+     * Creates a new instance of {@link InputData} with the given file path,
+     * config path and name.
+     *
+     * @param filePath
+     *            the path to the data file.
+     * @param configPath
+     *            the path to the configuration file.
+     * @param name
+     *            the name of the table.
+     */
+    public InputData(final String filePath, final String configPath, final String name) {
+        this.filePath = filePath;
+        this.configPath = configPath;
+        this.name = name;
+    }
 
-	public String getXmlPath() {
-		return xmlPath;
-	}
+    /**
+     * Gets the path to the data file.
+     *
+     * @return the path to the data file.
+     */
+    public String getFilePath() {
+        return filePath;
+    }
 
-	public void setXmlPath(String xmlPath) {
-		this.xmlPath = xmlPath;
-	}
+    /**
+     * Gets the path to the configuration file.
+     *
+     * @return the path to the configuration file.
+     */
+    public String getConfigPath() {
+        return configPath;
+    }
 
-	public String getDataPath() {
-		return dataPath;
-	}
+    /**
+     * Gets the name of the table.
+     *
+     * @return the name of the table.
+     */
+    public String getName() {
+        return name;
+    }
 
-
-
-	public void setDataPath(String dataPath) {
-		this.dataPath = dataPath;
-	}
-
-
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "InputData [xmlPath=" + xmlPath + ", dataPath=" + dataPath + "]";
-	}
+    @Override
+    public String toString() {
+        return "InputData [filePath=" + filePath + ", configPath=" + configPath + ", name=" + name + "]";
+    }
 }

@@ -26,11 +26,14 @@ public final class Interpreter {
      *
      * @param script
      *            the script to interpret.
+     * @param context
+     *            the script context.
      * @throws IOException
      *             if any I/O-exceptions occur.
      */
-    public static void interpret(final String script) throws IOException {
+    public static void interpret(final String script, final Context context) throws IOException {
         Objects.requireNonNull(script);
+        Objects.requireNonNull(context);
 
         // Converts the script to an input stream for the lexer
         InputStream is = new ByteArrayInputStream(script.getBytes("UTF-8"));
@@ -46,17 +49,7 @@ public final class Interpreter {
         // Create a walker to walk the parse tree for interpreting
         ParseTreeWalker walker = new ParseTreeWalker();
 
-        Context context = Interpreter.createScriptEnvironment();
-
         StatementListener interpreter = new StatementListener(context);
         walker.walk(interpreter, tree);
-    }
-
-    private static Context createScriptEnvironment() {
-        Context context = new Context();
-
-        // TODO: Declare types (and methods)
-
-        return context;
     }
 }
