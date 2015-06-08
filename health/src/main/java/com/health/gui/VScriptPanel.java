@@ -116,10 +116,12 @@ public final class VScriptPanel extends VidneyPanel {
                 String xmlFormat = files.get(i).getXmlFormat().getSelectedItem().toString();
                 String fileString = files.get(i).getFileString();
 
+                // TODO: Name the tables to something other than table0 ... tableN
+                String name = "table" + i;
+
                 xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
 
-                // TODO: Name the tables to something other than table0 ... tableN
-                parsedData.add(new InputData(fileString, xmlFormat, "table" + i));
+                parsedData.add(new InputData(fileString, xmlFormat, name));
             }
 
             return parsedData;
