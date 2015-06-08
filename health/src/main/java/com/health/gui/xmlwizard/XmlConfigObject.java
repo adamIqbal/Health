@@ -14,17 +14,17 @@ import com.health.ValueType;
  *
  */
 public class XmlConfigObject {
-    private FileType type;
-    private String[] values;
-    private List<String> columns;
-    private List<ValueType> columnTypes;
-    private Path path;
+    private FileType type = null;
+    private String[] values = null;
+    private List<String> columns = null;
+    private List<ValueType> columnTypes = null;
+    private Path path = null;
 
     /**
      * Constructs a XmlConfigObject object.
      */
     public XmlConfigObject() {
-        this.path = null;
+        return;
     }
 
     /*

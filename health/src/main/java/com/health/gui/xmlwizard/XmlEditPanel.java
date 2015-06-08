@@ -1,6 +1,6 @@
 package com.health.gui.xmlwizard;
 
-import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -21,7 +21,6 @@ import com.health.input.InputException;
 /**
  * Represents the wizard panel where one can specify the delimiters and columns
  * of the Config XML.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -38,7 +37,7 @@ public class XmlEditPanel extends JPanel {
     private JButton continueButton;
 
     /**
-     * Constructs a XmlEditPanel object
+     * Constructs a XmlEditPanel object.
      */
     public XmlEditPanel() {
         super();
@@ -51,31 +50,19 @@ public class XmlEditPanel extends JPanel {
         this.add(columnPanel);
 
         continueButton = new JButton("Continue");
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                XmlWizard.setXml(getValues());
+                XmlWizard.savePanel.setValues();
+                XmlWizard.nextPanel();
+            }
+        });
         this.add(continueButton);
     }
 
     /**
-     * gets the continueButton attribute.
-     * 
-     * @return JButton continueButton
-     */
-    public final JButton getContinueButton() {
-        return this.continueButton;
-    }
-
-    /**
-     * Adds an ActionListener to the continueButton.
-     * 
-     * @param al
-     *            ActionListener to be added
-     */
-    public final void addActionListenerToContinueButton(final ActionListener al) {
-        continueButton.addActionListener(al);
-    }
-
-    /**
      * Models the input values as a {@link XmlConfigObject} and returns it.
-     * 
      * @return XmlConfigObject containing the input values
      */
     public final XmlConfigObject getValues() {
@@ -89,14 +76,13 @@ public class XmlEditPanel extends JPanel {
         if (this.xml != null) {
             config.setPath(this.xml);
         }
-
+        
         return config;
     }
 
     /**
      * Loads current values of the selected XML file en sets the fields of the
      * panel.
-     * 
      * @param xml
      *            Path of XML file to edit
      */

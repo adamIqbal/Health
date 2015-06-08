@@ -49,35 +49,30 @@ public class XmlSavePanel extends JPanel {
         buttonPanel = new JPanel();
         JButton saveAsButton = new JButton("Save as..");
         saveAsButton.addActionListener(new XmlSaveAsListener());
-        //JButton returnButton = new JButton("Return to files");
-        ///buttonPanel.add(saveAsButton);
-        //buttonPanel.add(returnButton);
+        JButton resetButton = new JButton("Go back to files");
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                XmlWizard.setXml(null);
+                XmlWizard.nextPanel();
+            }
+        });
+        buttonPanel.add(saveAsButton);
+        buttonPanel.add(resetButton);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     /**
      * Sets the values of the components of this panel according to the input
      * object.
-     * 
-     * @param xmlParam
-     *            XmlConfigObject created by the previous panels of the wizard.
      */
-    public final void setValues(final XmlConfigObject xmlParam) {
-        this.xml = xmlParam;
-        preview.setText(xml.toXMLString());
-
-        /*
-         * TODO save operation (instead of save as). Useful when editing
-         * existing config xmls. if (xml.path != null) { JButton saveButton =
-         * new JButton("Save"); buttonPanel.add(saveButton); }
-         */
+    public final void setValues() {
+        preview.setText(XmlWizard.getXml().toXMLString());
     }
 
     private void saveAs() throws IOException {
-        // Get the String to write
-        String xmlString = xml.toXMLString();
+        String xmlString = XmlWizard.getXml().toXMLString();
 
-        // Save to xml file
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Specify where to save");
 

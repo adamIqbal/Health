@@ -3,6 +3,7 @@ package com.health.gui.xmlwizard;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -49,6 +50,15 @@ class XmlFilePanel extends JPanel {
         JPanel buttonPanel = new JPanel();
         newFileButton = new JButton("Create a new file");
         selectFileButton = new JButton("Edit selected file");
+        
+        newFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                XmlWizard.setXml(new XmlConfigObject());
+                XmlWizard.nextPanel();
+            }
+        });
+        
         buttonPanel.add(newFileButton);
         buttonPanel.add(selectFileButton);
         this.setOpaque(false);
