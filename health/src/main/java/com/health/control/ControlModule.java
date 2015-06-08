@@ -11,7 +11,9 @@ import com.health.Table;
 import com.health.input.Input;
 import com.health.input.InputException;
 import com.health.interpreter.Interpreter;
+import com.health.output.Output;
 import com.health.script.runtime.Context;
+import com.health.script.runtime.StringValue;
 import com.health.script.runtime.TableValue;
 
 /**
@@ -88,6 +90,17 @@ public final class ControlModule {
 
     private Context createContext() {
         Context context = new Context();
+
+        context.declareStaticMethod("write", (args) -> {
+            Output.writeTable(((StringValue) args[0]).getValue(), ((TableValue) args[1]).getValue());
+            return null;
+        });
+
+        context.declareStaticMethod("writeFormatted", (args) -> {
+            Output.writeTable(((StringValue) args[0]).getValue(), ((TableValue) args[1]).getValue(),
+                    ((StringValue) args[2]).getValue());
+            return null;
+        });
 
         return context;
     }
