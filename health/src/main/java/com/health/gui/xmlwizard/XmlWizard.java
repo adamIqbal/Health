@@ -1,6 +1,7 @@
 package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
@@ -37,29 +38,19 @@ import javax.swing.JPanel;
  *
  */
 public class XmlWizard extends JPanel {
-    private static Path path;
+    private static XmlConfigObject xml;
 
-    private XmlFilePanel filePanel;
-    private XmlEditPanel editPanel;
-    private XmlSavePanel savePanel;
+    private static JPanel cardPanel;
+    
+    protected static XmlFilePanel filePanel;
+    protected static XmlEditPanel editPanel;
+    protected static XmlSavePanel savePanel;
 
     /**
      * Constructs a XmlWizard containing the wizard panels.
      */
     public XmlWizard() {
         super();
-        XmlWizard.path = null;
-        init();
-    }
-    
-    /**
-     * Constructs a XmlWizard containing the wizard panels.
-     * @param path
-     *            a Path object referring to the Config XML folder
-     */
-    public XmlWizard(final Path path) {
-        super();
-        XmlWizard.path = path;
         init();
     }
     
@@ -69,33 +60,35 @@ public class XmlWizard extends JPanel {
     private void init() {
         this.setLayout(new BorderLayout());
         
+        cardPanel = new JPanel(new CardLayout());
         filePanel = new XmlFilePanel();
         editPanel = new XmlEditPanel();
         savePanel = new XmlSavePanel();
+        cardPanel.add(filePanel, "file");
+        cardPanel.add(editPanel, "edit");
+        cardPanel.add(savePanel, "save");
+        this.add(cardPanel, BorderLayout.CENTER);
         
         JLabel label = new JLabel("Create or edit XML files here");
         this.add(label, BorderLayout.NORTH);
 
-        this.add(filePanel, BorderLayout.CENTER);
-
-        XmlWizardListener wizardListener = new XmlWizardListener(this);
-        wizardListener.attachListenerToButtons();
+        //XmlWizardListener wizardListener = new XmlWizardListener(this);
+        //wizardListener.attachListenerToButtons();
 
         this.setVisible(true);
     }
+    
+    protected static void nextPanel() {
+        CardLayout cl = (CardLayout) cardPanel.getLayout();
+        cl.next(cardPanel);
+    }
 
-    /**
-     * Changes the current visible panel.
-     * 
-     * @param next
-     *            the JPanel that will be made visible
-     */
-    protected final void changePanel(final JPanel next) {
-        BorderLayout layout = (BorderLayout) this.getLayout();
-        this.remove(layout.getLayoutComponent(BorderLayout.CENTER));
-        this.add(next, BorderLayout.CENTER);
-        this.repaint();
-        this.revalidate();
+    protected static XmlConfigObject getXml() {
+        return xml;
+    }
+
+    protected static void setXml(XmlConfigObject xml) {
+        XmlWizard.xml = xml;
     }
 
     /**
@@ -127,6 +120,37 @@ public class XmlWizard extends JPanel {
     protected final XmlSavePanel getSavePanel() {
         return savePanel;
     }
+    
+    /**
+     * Attaches the XmlWizardListener to the buttons in the different
+     * panels.
+     */
+    public void attachListenerToButtons() {
+        filePanel.addActionListenerToNewFileButton(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //this.changePanel(editPanel);
+            }
+        });
+        filePanel.addActionListenerToSelectFileButton(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
+        editPanel.addActionListenerToContinueButton(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+        });
+    }
 
     /**
      * XmlWizardListener handles all transitions between panels of the
@@ -135,18 +159,12 @@ public class XmlWizard extends JPanel {
      * @author Bjorn van der Laan
      *
      */
-    private class XmlWizardListener implements ActionListener {
+    /*private class XmlWizardListener implements ActionListener {
         private XmlWizard wizardFrame;
-        private XmlFilePanel filePanel;
-        private XmlEditPanel editPanel;
-        private XmlSavePanel savePanel;
 
         public XmlWizardListener(final XmlWizard xw) {
             super();
             wizardFrame = xw;
-            filePanel = wizardFrame.getFilePanel();
-            editPanel = wizardFrame.getEditPanel();
-            savePanel = wizardFrame.getSavePanel();
         }
 
         @Override
@@ -156,7 +174,7 @@ public class XmlWizard extends JPanel {
                 wizardFrame.changePanel(editPanel);
             } else if (source.equals(filePanel.getSelectFileButton())) {
                 if (filePanel.getSelectedFile() != null) {
-                    editPanel.setValues(filePanel.getSelectedFile());
+                    editPanel.setValues(XmlWizard.filePanel.getSelectedFile());
                     wizardFrame.changePanel(editPanel);
                 } else {
                     JOptionPane.showMessageDialog(new JFrame(),
@@ -170,14 +188,5 @@ public class XmlWizard extends JPanel {
             }
         }
 
-        /**
-         * Attaches the XmlWizardListener to the buttons in the different
-         * panels.
-         */
-        public void attachListenerToButtons() {
-            filePanel.addActionListenerToNewFileButton(this);
-            filePanel.addActionListenerToSelectFileButton(this);
-            editPanel.addActionListenerToContinueButton(this);
-        }
-    }
+    }*/
 }
