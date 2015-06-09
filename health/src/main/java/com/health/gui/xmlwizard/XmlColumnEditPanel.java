@@ -70,7 +70,8 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
                             "Amount of columns and amount of column types does not match.",
                             "Whoops!", JOptionPane.WARNING_MESSAGE);
         }
-
+        
+        clearColumns();
         for (int i = 0; i < size; i++) {
             JPanel column = new JPanel();
             JTextField columnName = new JTextField();
@@ -89,6 +90,10 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
             this.columnPanel.add(column);
         }
     }
+    
+    public final void clearColumns() {
+        columnPanel.removeAll();
+    }
 
     /**
      * Gets the column names specified in the panel.
@@ -106,7 +111,6 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
 
     /**
      * Gets the column types specified in the panel.
-     * 
      * @return an array containing the types
      */
     public List<ValueType> getColumnTypes() {
