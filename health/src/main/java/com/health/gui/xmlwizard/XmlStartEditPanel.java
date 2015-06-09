@@ -17,7 +17,6 @@ import com.health.gui.xmlwizard.starteditsubpanels.XmlXlsEditPanel;
 /**
  * Displays options to modify elements of the config xml that are not about the
  * columns.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -39,6 +38,10 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
         init();
     }
 
+    /**
+     * Sets the fileType.
+     * @param type type of the config xml
+     */
     public void setFileType(FileType type) {
         fileTypeSelector.setSelectedItem(type);
     }
@@ -69,7 +72,7 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
      * FileType.
      * @param type
      *            FileType specifying the panel you want to call.
-     * @return
+     * @return returns the values entered in the startpanel of this filetype
      */
     public final String[] getValues(final FileType type) {
         if (panels.containsKey(type)) {

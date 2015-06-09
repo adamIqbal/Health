@@ -42,7 +42,6 @@ public class XmlConfigObject {
 
     /**
      * Calls a toXMLString variant method based on the format attribute.
-     * 
      * @return a String in a XML format
      */
     public final String toXMLString() {
@@ -94,7 +93,7 @@ public class XmlConfigObject {
 
         return header + dataStart + columnTags + dataEnd;
     }
-    
+
     /**
      * Generates XML string of a config XML describing a XLS data set.
      * 
@@ -106,7 +105,6 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the type attribute.
-     * 
      * @return the type attribute
      */
     protected final FileType getType() {
@@ -115,7 +113,6 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the type attribute.
-     * 
      * @param type
      *            new value of type
      */
@@ -125,7 +122,6 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the values attribute.
-     * 
      * @return the type attribute
      */
     protected final String[] getValues() {
@@ -134,7 +130,6 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the values attribute.
-     * 
      * @param values
      *            new value of values
      */
@@ -144,7 +139,6 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the columns attribute.
-     * 
      * @return the type attribute
      */
     protected final List<String> getColumns() {
@@ -153,7 +147,6 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the columns attribute.
-     * 
      * @param columns
      *            new value of columns
      */

@@ -2,7 +2,6 @@ package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +26,6 @@ import com.health.gui.GUImain;
 /**
  * Represents the panel where the user can either select a xml file to edit, or
  * create a new xml file.
- * 
  * @author Bjorn
  *
  */
@@ -46,52 +44,51 @@ class XmlFilePanel extends JPanel {
 
         // add list model
         DefaultListModel<Path> listModel = new DefaultListModel<Path>();
-        fileList = new FileList(Paths.get(GUImain.PATH_TO_CONFIG_XML), listModel);
+        fileList = new FileList(Paths.get(GUImain.PATH_TO_CONFIG_XML),
+                listModel);
         this.add(fileList, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1,2));
+        buttonPanel.setLayout(new GridLayout(1, 2));
         newFileButton = new JButton("Create new..");
         selectFileButton = new JButton("Edit selected");
 
         newFileButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 XmlWizard.setXml(new XmlConfigObject());
                 XmlWizard.editPanel.setValues();
                 XmlWizard.nextPanel();
             }
         });
-        
+
         selectFileButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if(fileList.getSelectedValue() != null) {
+            public void actionPerformed(final ActionEvent arg0) {
+                if (fileList.getSelectedValue() != null) {
                     XmlConfigObject xml = new XmlConfigObject();
-                   
+
                     xml.setPath(fileList.getSelectedValue());
                     XmlWizard.setXml(xml);
                     XmlWizard.editPanel.setValues();
-                    
+
                     XmlWizard.nextPanel();
-                }
-                else {
+                } else {
                     JOptionPane.showMessageDialog(new JFrame(),
                             "You have not selected a file yet.", "Warning!",
                             JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
-        
+
         buttonPanel.add(newFileButton);
         buttonPanel.add(selectFileButton);
         this.setOpaque(false);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
-    
+
     /**
      * Lists the XML files in the specified folder.
-     * 
      * @author Bjorn van der Laan
      *
      */
