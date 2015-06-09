@@ -3,10 +3,10 @@ package com.health;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllEvents {
+public class EventList {
     List<Event> eventList;
     
-    public AllEvents(){
+    public EventList(){
         eventList = new ArrayList<Event>();
     }
     
@@ -18,7 +18,11 @@ public class AllEvents {
         return eventList.get(index);
     }
     
-    public List<Event> getEventList(){
+    public List<Event> getList(){
         return eventList;
+    }
+    
+    public void concatList(EventList that){
+        eventList.addAll(that.getList());
     }
 }
