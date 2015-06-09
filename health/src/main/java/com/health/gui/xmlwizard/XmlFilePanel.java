@@ -43,7 +43,7 @@ class XmlFilePanel extends JPanel {
 
         // add list model
         DefaultListModel<Path> listModel = new DefaultListModel<Path>();
-        fileList = new FileList(Paths.get(GUImain.PATHTOXMLFORMATS), listModel);
+        fileList = new FileList(Paths.get(GUImain.PATH_TO_CONFIG_XML), listModel);
         this.add(fileList, BorderLayout.CENTER);
 
         // add buttons
@@ -64,27 +64,7 @@ class XmlFilePanel extends JPanel {
         this.setOpaque(false);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
-
-    public JButton getNewFileButton() {
-        return newFileButton;
-    }
-
-    public JButton getSelectFileButton() {
-        return selectFileButton;
-    }
-
-    public void addActionListenerToNewFileButton(final ActionListener al) {
-        newFileButton.addActionListener(al);
-    }
-
-    public void addActionListenerToSelectFileButton(final ActionListener al) {
-        selectFileButton.addActionListener(al);
-    }
-
-    public Path getSelectedFile() {
-        return this.fileList.getSelectedValue();
-    }
-
+    
     /**
      * Lists the XML files in the specified folder.
      * 

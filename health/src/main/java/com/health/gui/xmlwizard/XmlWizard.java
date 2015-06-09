@@ -72,9 +72,6 @@ public class XmlWizard extends JPanel {
         JLabel label = new JLabel("Create or edit XML files here");
         this.add(label, BorderLayout.NORTH);
 
-        //XmlWizardListener wizardListener = new XmlWizardListener(this);
-        //wizardListener.attachListenerToButtons();
-
         this.setVisible(true);
     }
     
@@ -119,37 +116,6 @@ public class XmlWizard extends JPanel {
      */
     protected final XmlSavePanel getSavePanel() {
         return savePanel;
-    }
-    
-    /**
-     * Attaches the XmlWizardListener to the buttons in the different
-     * panels.
-     */
-    public void attachListenerToButtons() {
-        filePanel.addActionListenerToNewFileButton(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //this.changePanel(editPanel);
-            }
-        });
-        filePanel.addActionListenerToSelectFileButton(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
-            }
-            
-        });
-        editPanel.addActionListenerToContinueButton(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
-            }
-            
-        });
     }
 
     /**
