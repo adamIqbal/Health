@@ -1,13 +1,13 @@
 package com.health.script.runtime;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Represents a date value in the script.
  */
 public final class DateValue extends Value {
   private static ScriptType type;
-  private Date value;
+  private LocalDate value;
 
   static {
     ScriptTypeBuilder number = new ScriptTypeBuilder();
@@ -21,10 +21,10 @@ public final class DateValue extends Value {
   }
 
   /**
-   * Creates a new value with the time it is allocated.
+   * Creates a new value with zero.
    */
   public DateValue() {
-    this(new Date());
+    this(LocalDate.of(0, 0, 0));
   }
 
   /**
@@ -33,7 +33,7 @@ public final class DateValue extends Value {
    * @param value
    *          the value of the date.
    */
-  public DateValue(final Date value) {
+  public DateValue(final LocalDate value) {
     super(DateValue.type);
 
     this.value = value;
@@ -44,7 +44,7 @@ public final class DateValue extends Value {
    *
    * @return the value of this date.
    */
-  public Date getValue() {
+  public LocalDate getValue() {
     return this.value;
   }
 
@@ -54,7 +54,7 @@ public final class DateValue extends Value {
    * @param value
    *          the value of this date.
    */
-  public void setValue(final Date value) {
+  public void setValue(final LocalDate value) {
     this.value = value;
   }
 
