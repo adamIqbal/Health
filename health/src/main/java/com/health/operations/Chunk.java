@@ -12,6 +12,7 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.health.output.Output;
 
 /**
  * A class for all chunking operations.
@@ -26,88 +27,6 @@ public final class Chunk {
 	 */
 	private static final String countColumnNameTemplate = "count_";
 
-	/*public static void main(String[] args0) {
-		Column[] tableColumns = new Column[4];
-		tableColumns[0] = new Column("date", 0, ValueType.Date);
-		tableColumns[1] = new Column("meetwaarde1", 1, ValueType.Number);
-		tableColumns[2] = new Column("name", 2, ValueType.String);
-		tableColumns[3] = new Column("meetwaarde2", 3, ValueType.Number);
-
-		Table table = new Table(Arrays.asList(tableColumns));
-
-		// fill the table
-		Record tmp = new Record(table);
-
-		tmp.setValue("date", LocalDate.parse("2013-12-20"));
-		tmp.setValue("meetwaarde1", 8.0);
-		tmp.setValue("name", "Piet");
-		tmp.setValue("meetwaarde2", 20.0);
-
-		tmp = new Record(table);
-		tmp.setValue("date", LocalDate.parse("2013-12-12"));
-		tmp.setValue("meetwaarde1", 10.0);
-		tmp.setValue("name", "Hein");
-		tmp.setValue("meetwaarde2", 10.0);
-
-		tmp = new Record(table);
-		tmp.setValue("date", LocalDate.parse("2013-12-13"));
-		tmp.setValue("meetwaarde1", 10.0);
-		tmp.setValue("name", "Dolf");
-		tmp.setValue("meetwaarde2", -1.0);
-
-		tmp = new Record(table);
-		tmp.setValue("date", LocalDate.parse("2013-12-10"));
-		tmp.setValue("meetwaarde1", 10.0);
-		tmp.setValue("name", "Piet");
-		tmp.setValue("meetwaarde2", 10.0);
-
-		tmp = new Record(table);
-		tmp.setValue("date", LocalDate.parse("2013-11-15"));
-		tmp.setValue("meetwaarde1", 10.0);
-		tmp.setValue("name", "Piet");
-		tmp.setValue("meetwaarde2", 3.0);
-
-		tmp = new Record(table);
-		tmp.setValue("date", LocalDate.parse("2013-12-16"));
-		tmp.setValue("meetwaarde1", 10.0);
-		tmp.setValue("name", "Dolf");
-		tmp.setValue("meetwaarde2", 10.0);
-
-		// Period per = Period.ofDays(4);
-		// Map<String, AggregateFunctions> operations = new HashMap<String,
-		// AggregateFunctions>();
-
-		// operations.put("meetwaarde1", AggregateFunctions.Average);
-		// operations.put("meetwaarde2", AggregateFunctions.Min);
-
-		Column[] tableColumns2 = new Column[4];
-		tableColumns2[0] = new Column("datum", 0, ValueType.Date);
-		tableColumns2[1] = new Column("meetwaarde3", 1, ValueType.Number);
-		tableColumns2[2] = new Column("name", 2, ValueType.String);
-		tableColumns2[3] = new Column("meetwaarde4", 3, ValueType.Number);
-
-		Table table2 = new Table(Arrays.asList(tableColumns2));
-
-		tmp = new Record(table2);
-		tmp.setValue("datum", LocalDate.parse("2013-11-15"));
-		tmp.setValue("meetwaarde3", 10.0);
-		tmp.setValue("name", "Piet");
-		tmp.setValue("meetwaarde4", 3.0);
-
-		tmp = new Record(table2);
-		tmp.setValue("datum", LocalDate.parse("2013-12-16"));
-		tmp.setValue("meetwaarde3", 10.0);
-		tmp.setValue("name", "Dolf");
-		tmp.setValue("meetwaarde4", 10.0);
-
-		List<ColumnConnection> connections = new ArrayList<ColumnConnection>();
-		connections.add(new ColumnConnection("date", "datum", "date"));
-
-		Table chunkedTable = Connect.connect(table, table2, connections);
-
-		System.out.println(Output.formatTable(chunkedTable));
-
-	}*/
 
 	/**
 	 * A function to chunk a dataSet by time.
@@ -122,13 +41,13 @@ public final class Chunk {
 	 *            the period between chunk, could be days, months, years.
 	 * @return a chunked Table.
 	 */
-	public static Table chunkByTime(final Table table, final String column,
+	public static Table chunkByTime(Table table, final String column,
 			final Map<String, AggregateFunctions> operations,
 			final Period period) {
-
 		String countColumnName = countColumnNameTemplate + column;
 		Table chunkedTable = new Table(createChunkTableColumns(table, column,
 				countColumnName));
+		
 		List<Column> chunkTableCols = chunkedTable.getColumns();
 
 		LocalDate beginPer = getFirstDate(table, column);
@@ -140,39 +59,41 @@ public final class Chunk {
 
 			List<Record> chunk = makeTimeChunk(table, column, beginPer,
 					endOfPer);
-
+			if (!chunk.isEmpty()) {
 			Record chunkedRecord = new Record(chunkedTable);
+			
+				for (int j = 0; j < chunkTableCols.size(); j++) {
+					String columnName = chunkTableCols.get(j).getName();
 
-			for (int j = 0; j < chunkTableCols.size(); j++) {
-				String columnName = chunkTableCols.get(j).getName();
+					// if in operations do aggregate and set value
+					if (operations != null
+							&& operations.containsKey(columnName)) {
+						double tmpValue = aggregate(chunk, columnName,
+								operations.get(columnName));
+						chunkedRecord.setValue(j, tmpValue);
 
-				// if in operations do aggregate and set value
-				if (operations.containsKey(columnName)) {
-					double tmpValue = aggregate(chunk, columnName,
-							operations.get(columnName));
-					chunkedRecord.setValue(j, tmpValue);
-
-				} else {
-					switch (chunkTableCols.get(j).getType()) {
-					case String:
-						chunkedRecord.setValue(columnName, chunk.get(0)
-								.getStringValue(columnName));
-						break;
-					case Number:
-						if (columnName.equals(countColumnName)) {
-							chunkedRecord.setValue(countColumnName,
-									(double) chunk.size());
-						} else {
+					} else {
+						switch (chunkTableCols.get(j).getType()) {
+						case String:
 							chunkedRecord.setValue(columnName, chunk.get(0)
-									.getNumberValue(columnName));
+									.getStringValue(columnName));
+							break;
+						case Number:
+							if (columnName.equals(countColumnName)) {
+								chunkedRecord.setValue(countColumnName,
+										(double) chunk.size());
+							} else {
+								chunkedRecord.setValue(columnName, chunk.get(0)
+										.getNumberValue(columnName));
+							}
+							break;
+						case Date:
+							chunkedRecord.setValue(columnName, chunk.get(0)
+									.getDateValue(columnName));
+							break;
+						default:
+							// error
 						}
-						break;
-					case Date:
-						chunkedRecord.setValue(columnName, chunk.get(0)
-								.getDateValue(columnName));
-						break;
-					default:
-						// error
 					}
 				}
 			}
@@ -181,6 +102,10 @@ public final class Chunk {
 		}
 
 		return chunkedTable;
+	}
+
+	public static String getCountcolumnnametemplate() {
+		return countColumnNameTemplate;
 	}
 
 	/**
@@ -226,7 +151,7 @@ public final class Chunk {
 
 				Record chunkedRecord = new Record(chunkedTable);
 				for (int k = 0; k < columns.size(); k++) {
-					if (operations.containsKey(columns.get(k).getName())) {
+					if (operations != null && operations.containsKey(columns.get(k).getName())) {
 						double tmpValue = aggregate(chunk, columns.get(k)
 								.getName(), operations.get(columns.get(k)
 								.getName()));
