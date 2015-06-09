@@ -3,7 +3,6 @@ package com.health.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,23 +11,19 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.xml.parsers.ParserConfigurationException;
 
-import org.xml.sax.SAXException;
-
-import com.health.Table;
 import com.health.control.ControlModule;
+import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
-import com.health.input.Input;
-import com.health.input.InputException;
 
 /**
  * Represents the panel where the script is typed.
+ *
  * @author Bjorn van der Laan and Daan Vermunt
  *
  */
-public class VScriptPanel extends VidneyPanel {
+public final class VScriptPanel extends VidneyPanel {
     /**
      * Constant serialized ID used for compatibility.
      */
@@ -59,6 +54,7 @@ public class VScriptPanel extends VidneyPanel {
 
     /**
      * Gets the script as a String.
+     *
      * @return a String representation of the script
      */
     protected String getScriptAreaText() {
@@ -67,6 +63,7 @@ public class VScriptPanel extends VidneyPanel {
 
     /**
      * Starts the analysis when the button is clicked.
+     *
      * @author Daan Vermunt
      */
     private class AnalysisListener implements ActionListener {
@@ -81,30 +78,9 @@ public class VScriptPanel extends VidneyPanel {
          * @param event
          */
         public void actionPerformed(final ActionEvent event) {
-            List<FileListingRow> files = FileListing.getFileListingRows();
-            List<Table> parsedData = new ArrayList<Table>();
-
-            for (int i = 0; i < files.size(); i++) {
-                String xmlFormat = files.get(i).getXmlFormat()
-                        .getSelectedItem().toString();
-                String fileString = files.get(i).getFileString();
-                xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
-
-                try {
-                    parsedData.add(Input.readTable(fileString, xmlFormat));
-                } catch (IOException | ParserConfigurationException
-                        | SAXException | InputException e) {
-                    System.out
-                            .println("Error: Something went wrong parsing the config and data!");
-
-                    e.printStackTrace();
-                }
-            }
-            
-            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("script");
-            String script = scriptPanel.getScriptAreaText();
-
-            ControlModule control = new ControlModule(script, parsedData);
+            ControlModule control = new ControlModule();
+            control.setScript(getScript());
+            control.setData(getInputData());
 
             String output = null;
 
@@ -115,17 +91,40 @@ public class VScriptPanel extends VidneyPanel {
 
                 output = e.getMessage();
 
-                JOptionPane
-                        .showMessageDialog(
-                                null,
-                                String.format(
-                                        "An unhandled exception occured while executing the script: %s.",
-                                        output), "Script runtime exception",
-                                JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        null,
+                        String.format("An unhandled exception occured while executing the script: %s.", output),
+                        "Script runtime exception",
+                        JOptionPane.ERROR_MESSAGE);
             }
 
             VOutputPanel.displayData(output);
+        }
 
+        private String getScript() {
+            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("script");
+            String script = scriptPanel.getScriptAreaText();
+
+            return script;
+        }
+
+        private List<InputData> getInputData() {
+            List<FileListingRow> files = FileListing.getFileListingRows();
+            List<InputData> parsedData = new ArrayList<InputData>();
+
+            for (int i = 0; i < files.size(); i++) {
+                String xmlFormat = files.get(i).getXmlFormat().getSelectedItem().toString();
+                String fileString = files.get(i).getFileString();
+
+                // TODO: Name the tables to something other than table0 ... tableN
+                String name = "table" + i;
+
+                xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
+
+                parsedData.add(new InputData(fileString, xmlFormat, name));
+            }
+
+            return parsedData;
         }
     }
 
