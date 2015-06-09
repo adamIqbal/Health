@@ -1,5 +1,6 @@
 package com.health.gui.xmlwizard;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -41,13 +42,13 @@ public class XmlEditPanel extends JPanel {
      */
     public XmlEditPanel() {
         super();
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setLayout(new BorderLayout());
+        this.setOpaque(false);
 
         startPanel = new XmlStartEditPanel();
-        this.add(startPanel);
-
+        this.add(startPanel, BorderLayout.NORTH);
         columnPanel = new XmlColumnEditPanel();
-        this.add(columnPanel);
+        this.add(columnPanel, BorderLayout.CENTER);
 
         continueButton = new JButton("Continue");
         continueButton.addActionListener(new ActionListener() {
@@ -58,7 +59,7 @@ public class XmlEditPanel extends JPanel {
                 XmlWizard.nextPanel();
             }
         });
-        this.add(continueButton);
+        this.add(continueButton, BorderLayout.SOUTH);
     }
 
     /**
