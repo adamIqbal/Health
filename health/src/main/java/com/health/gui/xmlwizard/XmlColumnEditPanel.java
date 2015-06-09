@@ -70,27 +70,16 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
                             "Amount of columns and amount of column types does not match.",
                             "Whoops!", JOptionPane.WARNING_MESSAGE);
         }
-        
+
         clearColumns();
         for (int i = 0; i < size; i++) {
-            JPanel column = new JPanel();
-            JTextField columnName = new JTextField();
-            JComboBox<ValueType> columnValue = new JComboBox<ValueType>(
-                    ValueType.values());
-
-            columnName.setPreferredSize(preferredDim);
-            columnValue.setPreferredSize(preferredDim);
-
-            columnName.setText(columns.get(i));
-
-            columnValue.setSelectedItem(columnTypes.get(i));
-
-            column.add(columnName);
-            column.add(columnValue);
-            this.columnPanel.add(column);
+            addColumn(columns.get(i), columnTypes.get(i));
         }
     }
-    
+
+    /**
+     * Clears the columns of the columnPanel.
+     */
     public final void clearColumns() {
         columnPanel.removeAll();
     }
@@ -113,7 +102,7 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
      * Gets the column types specified in the panel.
      * @return an array containing the types
      */
-    public List<ValueType> getColumnTypes() {
+    public final List<ValueType> getColumnTypes() {
         ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
         for (Component comp : this.columnPanel.getComponents()) {
             JPanel column = (JPanel) comp;
@@ -133,18 +122,33 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
      * Adds a column field and column type field to the panel.
      */
     public final void addColumn() {
-        JPanel panel = new JPanel();
+        addColumn("", ValueType.Number);
+    }
+
+    /**
+     * Adds a column field and column type field to the panel.
+     * @param name
+     *            name of column
+     * @param type
+     *            type of column
+     */
+    public final void addColumn(final String name, final ValueType type) {
+        JPanel panel = new JPanel(new GridLayout(1, 3));
         JTextField columnName = new JTextField();
         JComboBox<ValueType> columnValue = new JComboBox<ValueType>(
                 ValueType.values());
 
         columnName.setPreferredSize(preferredDim);
         columnValue.setPreferredSize(preferredDim);
+        columnValue.setSelectedItem(type);
 
-        columnName.setText("");
+        columnName.setText(name);
+
+        JButton deleteButton = new JButton("Delete");
 
         panel.add(columnName);
         panel.add(columnValue);
+        panel.add(deleteButton);
 
         this.columnPanel.add(panel);
         this.columnPanel.repaint();

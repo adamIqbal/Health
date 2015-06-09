@@ -50,7 +50,7 @@ public class XmlEditPanel extends JPanel {
         continueButton = new JButton("Continue");
         continueButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 XmlWizard.setXml(getValues());
                 XmlWizard.savePanel.setValues();
                 XmlWizard.nextPanel();
@@ -101,7 +101,7 @@ public class XmlEditPanel extends JPanel {
                     startPanel.setValues(values, FileType.TXT);
                     startPanel.setFileType(FileType.TXT);
                 }
-                
+
                 columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
             } catch (ParserConfigurationException | SAXException | IOException
                     | InputException e) {
@@ -110,9 +110,8 @@ public class XmlEditPanel extends JPanel {
                         "The file is not found. Error: " + e.getMessage(),
                         "Error loading file", JOptionPane.ERROR_MESSAGE);
             }
-        }
-        else {
-            //case where new xml is created
+        } else {
+            // case where new xml is created
             startPanel.setValues(null, FileType.TXT);
             columnPanel.clearColumns();
         }

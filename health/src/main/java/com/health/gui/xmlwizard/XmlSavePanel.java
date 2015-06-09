@@ -4,11 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -53,7 +51,7 @@ public class XmlSavePanel extends JPanel {
         JButton resetButton = new JButton("Go back to files");
         resetButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 XmlWizard.setXml(new XmlConfigObject());
                 XmlWizard.nextPanel();
             }
@@ -70,14 +68,13 @@ public class XmlSavePanel extends JPanel {
     public final void setValues() {
         preview.setText(XmlWizard.getXml().toXMLString());
     }
-    
+
     private void saveAs() throws IOException {
         String name = JOptionPane.showInputDialog(new JFrame(),
-                "Please specify a name for this XML file",
-                "Save as..");
+                "Please specify a name for this XML file", "Save as..");
         String filename = GUImain.PATH_TO_CONFIG_XML + name + ".xml";
         File file = new File(filename);
-        
+
         FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
     }
 
@@ -91,9 +88,9 @@ public class XmlSavePanel extends JPanel {
     private class XmlSaveAsListener implements ActionListener {
         @Override
         public void actionPerformed(final ActionEvent e) {
-           try {
+            try {
                 saveAs();
-           } catch (IOException e1) {
+            } catch (IOException e1) {
                 JOptionPane.showMessageDialog(new JFrame(),
                         "'Save as..' operation has failed. Please try again.",
                         "Error!", JOptionPane.ERROR_MESSAGE);
