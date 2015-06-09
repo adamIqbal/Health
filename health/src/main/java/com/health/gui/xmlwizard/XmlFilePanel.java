@@ -3,6 +3,7 @@ package com.health.gui.xmlwizard;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -14,7 +15,9 @@ import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
@@ -46,16 +49,36 @@ class XmlFilePanel extends JPanel {
         fileList = new FileList(Paths.get(GUImain.PATH_TO_CONFIG_XML), listModel);
         this.add(fileList, BorderLayout.CENTER);
 
-        // add buttons
         JPanel buttonPanel = new JPanel();
-        newFileButton = new JButton("Create a new file");
-        selectFileButton = new JButton("Edit selected file");
-        
+        buttonPanel.setLayout(new GridLayout(1,2));
+        newFileButton = new JButton("Create new..");
+        selectFileButton = new JButton("Edit selected");
+
         newFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                XmlWizard.setXml(new XmlConfigObject());
+                XmlWizard.editPanel.setValues();
                 XmlWizard.nextPanel();
+            }
+        });
+        
+        selectFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if(fileList.getSelectedValue() != null) {
+                    XmlConfigObject xml = XmlWizard.getXml();
+                   
+                    xml.setPath(fileList.getSelectedValue());
+                    XmlWizard.setXml(xml);
+                    XmlWizard.editPanel.setValues();
+                    
+                    XmlWizard.nextPanel();
+                }
+                else {
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "You have not selected a file yet.", "Warning!",
+                            JOptionPane.WARNING_MESSAGE);
+                }
             }
         });
         

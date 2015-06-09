@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.nio.file.Path;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -30,7 +28,6 @@ public class XmlEditPanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 2790653737107250316L;
-    private Path xml;
     private XmlStartEditPanel startPanel;
     private XmlColumnEditPanel columnPanel;
 
@@ -73,40 +70,50 @@ public class XmlEditPanel extends JPanel {
         config.setValues(startPanel.getValues(config.getType()));
         config.setColumns(columnPanel.getColumns());
         config.setColumnTypes(columnPanel.getColumnTypes());
+        config.setPath(XmlWizard.getXml().getPath());
 
-        if (this.xml != null) {
-            config.setPath(this.xml);
-        }
-        
         return config;
     }
 
     /**
      * Loads current values of the selected XML file en sets the fields of the
      * panel.
-     * @param xml
-     *            Path of XML file to edit
      */
-    public final void setValues(final Path xml) {
-        try {
-            InputDescriptor id = new InputDescriptor(xml.toString());
+    public final void setValues() {
+        XmlConfigObject xml = XmlWizard.getXml();
+        if (xml.getPath() != null) {
+            try {
+                // I know. But using it to parse the xml
+                InputDescriptor id = new InputDescriptor(xml.getPath()
+                        .toString());
 
-            if (id.getFormat().equals("xlsx") || id.getFormat().equals("xls")) {
+                if (id.getFormat().equals("xlsx")
+                        || id.getFormat().equals("xls")) {
+                    String[] values = {
+                            Integer.toString(id.getStartCell().getStartRow()),
+                            Integer.toString(id.getStartCell().getStartColumn()) };
+                    startPanel.setValues(values, FileType.XLS);
+                    startPanel.setFileType(FileType.XLS);
+                } else {
+                    // default case: txt
+                    String[] values = { id.getStartDelimiter(),
+                            id.getEndDelimiter(), id.getDelimiter() };
+                    startPanel.setValues(values, FileType.TXT);
+                    startPanel.setFileType(FileType.TXT);
+                }
+
+                columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
+            } catch (ParserConfigurationException | SAXException | IOException
+                    | InputException e) {
+                XmlWizard.prevPanel();
                 JOptionPane.showMessageDialog(new JFrame(),
-                        "XLS support has not been implemented yet.", "Whoops!",
-                        JOptionPane.WARNING_MESSAGE);
-            } else {
-                String[] values = { id.getStartDelimiter(),
-                        id.getEndDelimiter(), id.getDelimiter() };
-                startPanel.setValues(values, FileType.TXT);
+                        "The file is not found. Error: " + e.getMessage(),
+                        "Error loading file", JOptionPane.ERROR_MESSAGE);
             }
-
-            // set the columns
-            columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
-            this.xml = xml;
-        } catch (ParserConfigurationException | SAXException | IOException
-                | InputException e) {
-            System.out.println("Error loading: " + xml.toString());
+        }
+        else {
+            //case where new xml is created
+            startPanel.setValues(null, FileType.TXT);
         }
     }
 }

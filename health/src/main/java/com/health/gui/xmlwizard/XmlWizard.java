@@ -2,33 +2,9 @@ package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.nio.file.Path;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-/**
- * TODO make it possible to add columns with no label.
- * TODO implement way to delete columns.
- * TODO modify XmlConfigObject. Make attributes private en create getters/setters.
- * TODO back button.
- * TODO FileListing.fillfilelisting gebruiken om te refreshen na save.
- * TODO Na save meteen afsluiten.
- * TODO Save as alleen format naam automatisch naar goed folder en toevoegen .xml
- */
-
-/**
- * Steps to add new dataset type
- * - add it to enum
- * - create a subclass of XmlStartEditSubPanel
- * - write a toXMLString in XmlConfigObject
- * </p>
- */
 
 /**
  * The frame of the XML Wizard. Contains all panels and controls transition
@@ -38,6 +14,11 @@ import javax.swing.JPanel;
  *
  */
 public class XmlWizard extends JPanel {
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = -3545571479064583466L;
+
     private static XmlConfigObject xml;
 
     private static JPanel cardPanel;
@@ -60,6 +41,8 @@ public class XmlWizard extends JPanel {
     private void init() {
         this.setLayout(new BorderLayout());
         
+        xml = new XmlConfigObject();
+        
         cardPanel = new JPanel(new CardLayout());
         filePanel = new XmlFilePanel();
         editPanel = new XmlEditPanel();
@@ -79,6 +62,20 @@ public class XmlWizard extends JPanel {
         CardLayout cl = (CardLayout) cardPanel.getLayout();
         cl.next(cardPanel);
     }
+    
+    protected static void prevPanel() {
+        CardLayout cl = (CardLayout) cardPanel.getLayout();
+        cl.previous(cardPanel);
+    }
+    
+    /**
+     * Resets the state of the panels.
+     * Does not work yet.
+     */
+    protected static void resetPanels() {
+        editPanel = new XmlEditPanel();
+        savePanel = new XmlSavePanel();
+    }
 
     protected static XmlConfigObject getXml() {
         return xml;
@@ -86,36 +83,6 @@ public class XmlWizard extends JPanel {
 
     protected static void setXml(XmlConfigObject xml) {
         XmlWizard.xml = xml;
-    }
-
-    /**
-     * Returns the XmlFilePanel. This method is used by the private class.
-     * implementing ActionListener
-     * 
-     * @return the XmlFilePanel
-     */
-    protected final XmlFilePanel getFilePanel() {
-        return filePanel;
-    }
-
-    /**
-     * Returns the XmlEditPanel. This method is used by the private class
-     * implementing ActionListener
-     * 
-     * @return the XmlEditPanel
-     */
-    protected final XmlEditPanel getEditPanel() {
-        return editPanel;
-    }
-
-    /**
-     * Returns the XmlSavePanel. This method is used by the private class.
-     * implementing ActionListener
-     * 
-     * @return the XmlSavePanel
-     */
-    protected final XmlSavePanel getSavePanel() {
-        return savePanel;
     }
 
     /**

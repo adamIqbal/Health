@@ -39,16 +39,7 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
         init();
     }
 
-    /**
-     * Constructs an XmlStartEditPanel object with a type specified. This
-     * constructor is used if the user wants to edit an existing config XML.
-     * 
-     * @param type
-     */
-    public XmlStartEditPanel(FileType type) {
-        super();
-        init();
-
+    public void setFileType(FileType type) {
         fileTypeSelector.setSelectedItem(type);
     }
 
@@ -76,7 +67,6 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     /**
      * Calls the getValues method of the panel associated with the specified
      * FileType.
-     * 
      * @param type
      *            FileType specifying the panel you want to call.
      * @return
@@ -90,7 +80,6 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
 
     /**
      * Gets the FileType that is currently selected in fileTypeSelector.
-     * 
      * @return FileType that is currently selected.
      */
     public final FileType getSelectedType() {
@@ -100,7 +89,6 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     /**
      * Calls the setValues method of the panel associated with the specified
      * FileType.
-     * 
      * @param values
      *            array containing the values to set
      * @param type
@@ -114,7 +102,6 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
 
     /**
      * Shows a panel depending on the FileType selected in fileTypeSelector.
-     * 
      * @param evt
      *            ItemEvent object containing information
      */

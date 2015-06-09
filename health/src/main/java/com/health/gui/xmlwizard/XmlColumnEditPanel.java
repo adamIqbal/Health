@@ -21,7 +21,6 @@ import com.health.ValueType;
 
 /**
  * Represents the panel one can edit the columns.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -56,7 +55,6 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
 
     /**
      * Creates the column edit fields according to the selected config XML.
-     * 
      * @param columns
      *            the column names of the config XML
      * @param columnTypes
@@ -94,7 +92,6 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
 
     /**
      * Gets the column names specified in the panel.
-     * 
      * @return an array containing the names
      */
     public final List<String> getColumns() {

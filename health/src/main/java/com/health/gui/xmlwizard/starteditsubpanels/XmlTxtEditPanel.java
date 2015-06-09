@@ -60,10 +60,20 @@ public class XmlTxtEditPanel extends XmlStartEditSubPanel {
 
     @Override
     public final void setValues(final String[] delimiters) {
-        // String startDelim, String endDelim, String delim
-        this.startDelimField.setText(delimiters[0]);
-        this.endDelimField.setText(delimiters[1]);
-        this.delimiterField.setText(delimiters[2]);
+        if(delimiters != null) {
+            this.startDelimField.setText(delimiters[0]);
+            this.endDelimField.setText(delimiters[1]);
+            this.delimiterField.setText(delimiters[2]);
+        }
+        else {
+            clearValues();
+        }
+    }
+    
+    public final void clearValues() {
+        this.startDelimField.setText("");
+        this.endDelimField.setText("");
+        this.delimiterField.setText("");
     }
 
     @Override
