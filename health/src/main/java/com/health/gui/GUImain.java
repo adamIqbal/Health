@@ -28,7 +28,7 @@ public class GUImain extends JFrame {
     /**
      * PATHTOXMLFORMAT is the path to all config xmls.
      */
-    public static final String PATHTOXMLFORMATS = "data/configXmls/";
+    public static final String PATH_TO_CONFIG_XML = "data/configXmls/";
     
     public static final Color GUI_COLOR = new Color(137, 207, 240);
     

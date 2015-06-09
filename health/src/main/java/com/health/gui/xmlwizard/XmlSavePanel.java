@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -14,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import org.apache.commons.io.FileUtils;
+
+import com.health.gui.GUImain;
 
 /**
  * Represents the panel where the user can save its new or edited XML Config.
@@ -86,6 +89,16 @@ public class XmlSavePanel extends JPanel {
             FileUtils.writeStringToFile(target, xmlString);
         }
     }
+    
+    private void saveAs2() throws IOException {
+        String name = JOptionPane.showInputDialog(new JFrame(),
+                "Please specify a name for this XML file",
+                "Save as..");
+        String filename = GUImain.PATH_TO_CONFIG_XML + name + ".xml";
+        File file = new File(filename);
+        
+        FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
+    }
 
     /**
      * Listens if the user presses the 'Save as..' button. Opens a JFileChooser
@@ -98,9 +111,9 @@ public class XmlSavePanel extends JPanel {
     private class XmlSaveAsListener implements ActionListener {
         @Override
         public void actionPerformed(final ActionEvent e) {
-            try {
-                saveAs();
-            } catch (IOException e1) {
+           try {
+                saveAs2();
+           } catch (IOException e1) {
                 JOptionPane.showMessageDialog(new JFrame(),
                         "'Save as..' operation has failed. Please try again.",
                         "Error!", JOptionPane.ERROR_MESSAGE);

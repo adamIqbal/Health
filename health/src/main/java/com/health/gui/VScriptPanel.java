@@ -88,7 +88,7 @@ public class VScriptPanel extends VidneyPanel {
                 String xmlFormat = files.get(i).getXmlFormat()
                         .getSelectedItem().toString();
                 String fileString = files.get(i).getFileString();
-                xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
+                xmlFormat = GUImain.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
 
                 try {
                     parsedData.add(Input.readTable(fileString, xmlFormat));
