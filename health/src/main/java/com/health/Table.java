@@ -1,7 +1,6 @@
 package com.health;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,17 +10,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * Represents a collection of {@link Column}s and {@link Record}s.
  *
  * @author Martijn
  */
-public final class Table implements Iterable<Chunk> {
+public final class Table implements Iterable<Record> {
     private List<Column> columns;
     private Map<String, Column> columnMap;
-    private Chunk records;
+    private List<Record> records;
 
     /**
      * Constructs a table with the given columns. Each column must have a unique
@@ -42,7 +40,7 @@ public final class Table implements Iterable<Chunk> {
 
         this.columns = new ArrayList<Column>();
         this.columnMap = new HashMap<String, Column>();
-        this.records = new Chunk();
+        this.records = new ArrayList<Record>();
 
         for (Column column : columns) {
             this.columns.add(column);
@@ -128,8 +126,6 @@ public final class Table implements Iterable<Chunk> {
         return Collections.unmodifiableList(this.records);
     }
 
-
-
     /**
      * Groups the records of this table on the given key, and projects the
      * groups onto a table identical to the current table using the given result
@@ -200,8 +196,8 @@ public final class Table implements Iterable<Chunk> {
      * @return a chunk iterator that can be used to iterate over this table.
      */
     @Override
-    public Iterator<Chunk> iterator() {
-        return Arrays.asList(this.records).iterator();
+    public Iterator<Record> iterator() {
+        return this.records.iterator();
     }
 
     private static void verifyColumnIndices(final Iterable<Column> columns) {
