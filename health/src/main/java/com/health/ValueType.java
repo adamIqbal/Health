@@ -6,17 +6,21 @@ package com.health;
  * @author Martijn
  */
 public enum ValueType {
-    /**
-     * Number type.
-     */
-    Number,
-    /**
-     * String type.
-     */
-    String,
-    /**
-     * Date type.
-     */
-    Date
+  /**
+   * Number type.
+   */
+  Number,
+  /**
+   * String type.
+   */
+  String,
+  /**
+   * Date type.
+   */
+  Date,
+  /**
+   * Ignore type.
+   */
+  Ignore
 
 }
