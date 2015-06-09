@@ -21,7 +21,6 @@ import com.health.gui.GUImain;
 /**
  * Represents the panel where the user can save its new or edited XML Config.
  * file
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -30,7 +29,6 @@ public class XmlSavePanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -1653095867015812077L;
-    private XmlConfigObject xml;
     private JTextArea preview;
     private JPanel buttonPanel;
 
@@ -56,7 +54,7 @@ public class XmlSavePanel extends JPanel {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                XmlWizard.setXml(null);
+                XmlWizard.setXml(new XmlConfigObject());
                 XmlWizard.nextPanel();
             }
         });
@@ -72,25 +70,8 @@ public class XmlSavePanel extends JPanel {
     public final void setValues() {
         preview.setText(XmlWizard.getXml().toXMLString());
     }
-
-    private void saveAs() throws IOException {
-        String xmlString = XmlWizard.getXml().toXMLString();
-
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Specify where to save");
-
-        File target = null;
-        int selection = fileChooser.showSaveDialog(this);
-        if (selection == JFileChooser.APPROVE_OPTION) {
-            target = fileChooser.getSelectedFile();
-        }
-
-        if (target != null) {
-            FileUtils.writeStringToFile(target, xmlString);
-        }
-    }
     
-    private void saveAs2() throws IOException {
+    private void saveAs() throws IOException {
         String name = JOptionPane.showInputDialog(new JFrame(),
                 "Please specify a name for this XML file",
                 "Save as..");
@@ -111,7 +92,7 @@ public class XmlSavePanel extends JPanel {
         @Override
         public void actionPerformed(final ActionEvent e) {
            try {
-                saveAs2();
+                saveAs();
            } catch (IOException e1) {
                 JOptionPane.showMessageDialog(new JFrame(),
                         "'Save as..' operation has failed. Please try again.",

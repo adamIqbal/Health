@@ -19,6 +19,7 @@ public class XmlConfigObject {
     private List<String> columns = null;
     private List<ValueType> columnTypes = null;
     private Path path = null;
+    private String dateFormat = null;
 
     /**
      * Constructs a XmlConfigObject object.
@@ -53,6 +54,7 @@ public class XmlConfigObject {
             xml = this.toXMLStringTXT();
             break;
         case XLS:
+            xml = this.toXMLStringXLS();
             break;
         default:
             break;
@@ -63,13 +65,12 @@ public class XmlConfigObject {
 
     /**
      * Generates XML string of a config XML describing a TXT data set.
-     * 
      * @return XML string of the config XML
      */
     public final String toXMLStringTXT() {
         String startDelimiter = this.values[0];
-        String endDelimiter = this.values[0];
-        String delimiter = this.values[0];
+        String endDelimiter = this.values[1];
+        String delimiter = this.values[2];
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"text\" start=\"" + startDelimiter
@@ -93,6 +94,15 @@ public class XmlConfigObject {
         String dataEnd = "</data>";
 
         return header + dataStart + columnTags + dataEnd;
+    }
+    
+    /**
+     * Generates XML string of a config XML describing a XLS data set.
+     * 
+     * @return XML string of the config XML
+     */
+    public final String toXMLStringXLS() {
+        return "Writer not implemented yet.";
     }
 
     /**
@@ -154,7 +164,6 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the columnTypes attribute.
-     * 
      * @return the type attribute
      */
     protected final List<ValueType> getColumnTypes() {
@@ -163,7 +172,6 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the columnTypes attribute.
-     * 
      * @param columnTypes
      *            new value of columnTypes
      */
@@ -173,7 +181,6 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the path attribute.
-     * 
      * @return the type attribute
      */
     protected final Path getPath() {
@@ -182,7 +189,6 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the path attribute.
-     * 
      * @param path
      *            new value of path
      */
