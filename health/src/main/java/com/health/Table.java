@@ -48,7 +48,7 @@ public final class Table implements Iterable<Record> {
         }
 
         // Sort the columns by index and make the list read-only
-        this.columns.sort(new ColumnComparator());
+        this.columns.sort((a, b) -> Integer.compare(a.getIndex(), b.getIndex()));
         this.columns = Collections.unmodifiableList(this.columns);
     }
 
