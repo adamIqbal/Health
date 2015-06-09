@@ -37,8 +37,9 @@ public final class ConstrainFunctions {
     }
 
     if (columns instanceof LocalDate && value instanceof DateValue) {
-      LocalDate time = (LocalDate) columns;
-      return time.toString().equals(((DateValue) value).toString());
+
+      return ((LocalDate) columns).isAfter(((DateValue) value).getValue());
+
     }
 
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
@@ -67,11 +68,11 @@ public final class ConstrainFunctions {
       throw new IllegalArgumentException("Can not invoke greatereq on String.");
     }
 
-    // if (columns instanceof Date && value instanceof DateValue) {
-    //
-    // return true;
-    // }
-    // FIXME: add dateValue
+    if (columns instanceof LocalDate && value instanceof DateValue) {
+
+      return greater(columns, value) || equal(columns, value);
+
+    }
 
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
@@ -99,11 +100,11 @@ public final class ConstrainFunctions {
       throw new IllegalArgumentException("Can not invoke smallereq on String.");
     }
 
-    // if (columns instanceof Date && value instanceof DateValue) {
-    //
-    // return true;
-    // }
-    // FIXME: add dateValue
+    if (columns instanceof LocalDate && value instanceof DateValue) {
+
+      return smaller(columns, value) || equal(columns, value);
+
+    }
 
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
@@ -131,11 +132,11 @@ public final class ConstrainFunctions {
       throw new IllegalArgumentException("Can not invoke smaller on String.");
     }
 
-    // if (columns instanceof Date && value instanceof DateValue) {
-    //
-    // return true;
-    // }
-    // FIXME: add dateValue
+    if (columns instanceof LocalDate && value instanceof DateValue) {
+
+      return ((LocalDate) columns).isBefore(((DateValue) value).getValue());
+
+    }
 
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
@@ -165,8 +166,9 @@ public final class ConstrainFunctions {
     }
 
     if (columns instanceof LocalDate && value instanceof DateValue) {
-      LocalDate time = (LocalDate) columns;
-      return time.toString().equals(((DateValue) value).toString());
+
+      return ((LocalDate) columns).isEqual(((DateValue) value).getValue());
+
     }
 
     throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
