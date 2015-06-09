@@ -9,7 +9,6 @@ import com.health.ValueType;
 
 /**
  * Models a XML Config file and providing methods to write is as a String.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -25,7 +24,7 @@ public class XmlConfigObject {
      * Constructs a XmlConfigObject object.
      */
     public XmlConfigObject() {
-        return;
+
     }
 
     /*

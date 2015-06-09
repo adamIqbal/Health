@@ -97,6 +97,7 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     public final void setValues(final String[] values, final FileType type) {
         if (panels.containsKey(type)) {
             panels.get(type).setValues(values);
+            setFileType(type);
         }
     }
 

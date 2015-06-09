@@ -57,6 +57,7 @@ class XmlFilePanel extends JPanel {
         newFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                XmlWizard.setXml(new XmlConfigObject());
                 XmlWizard.editPanel.setValues();
                 XmlWizard.nextPanel();
             }
@@ -66,7 +67,7 @@ class XmlFilePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(fileList.getSelectedValue() != null) {
-                    XmlConfigObject xml = XmlWizard.getXml();
+                    XmlConfigObject xml = new XmlConfigObject();
                    
                     xml.setPath(fileList.getSelectedValue());
                     XmlWizard.setXml(xml);
