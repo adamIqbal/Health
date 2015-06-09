@@ -104,7 +104,6 @@ public class XmlSavePanel extends JPanel {
      * Listens if the user presses the 'Save as..' button. Opens a JFileChooser
      * to specify save location. Displays a warning dialog if the save operation
      * fails.
-     * 
      * @author Bjorn van der Laan
      *
      */
