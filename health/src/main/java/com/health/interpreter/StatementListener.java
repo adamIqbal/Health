@@ -49,31 +49,37 @@ public final class StatementListener extends MyScriptBaseListener {
     public void enterLocalVariableDeclarator(final MyScriptParser.LocalVariableDeclaratorContext ctx) {
         ScriptType type = this.localVariableDeclarationType;
 
-        // If implicit typing is used, the value cannot be initialized to
-        // null
         if (ctx.expression() != null) {
-            Value value = this.expressionVisitor.visit(ctx.expression());
-
-            if (type == null) {
-                if (value == null) {
-                    throw new ScriptRuntimeException("Cannot assign <null> to an implicitly-typed local variable.");
-                } else {
-                    type = value.getType();
-                }
-            }
-
-            // Declare a local variable with the identifier, type and value
-            context.declareLocal(ctx.IDENTIFIER().getText(), type, value);
+            declareLocalWithInitializer(ctx, type);
         } else {
-            // If implicit typing is used, the declarator must contain an
-            // initializer
-            if (type == null) {
-                throw new ScriptRuntimeException("Implicitly-typed local variable must be initialized.");
-            }
-
-            // Declare a local variable with the identifier and type
-            context.declareLocal(ctx.IDENTIFIER().getText(), type);
+            declareLocal(ctx, type);
         }
+    }
+
+    private void declareLocal(final MyScriptParser.LocalVariableDeclaratorContext ctx, final ScriptType type) {
+        // If implicit typing is used, the declarator should have contained an initializer
+        if (type == null) {
+            throw new ScriptRuntimeException("Implicitly-typed local variable must be initialized.");
+        }
+
+        context.declareLocal(ctx.IDENTIFIER().getText(), type);
+    }
+
+    private void declareLocalWithInitializer(final MyScriptParser.LocalVariableDeclaratorContext ctx,
+            final ScriptType type) {
+        Value value = this.expressionVisitor.visit(ctx.expression());
+        ScriptType actualType = type;
+
+        if (actualType == null) {
+            // If implicit typing is used, the value cannot be initialized to null
+            if (value == null) {
+                throw new ScriptRuntimeException("Cannot assign <null> to an implicitly-typed local variable.");
+            } else {
+                actualType = value.getType();
+            }
+        }
+
+        context.declareLocal(ctx.IDENTIFIER().getText(), actualType, value);
     }
 
     private ScriptType getType(final MyScriptParser.LocalVariableTypeContext ctx) throws ScriptRuntimeException {
