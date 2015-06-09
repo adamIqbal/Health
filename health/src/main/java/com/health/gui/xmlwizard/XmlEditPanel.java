@@ -101,7 +101,7 @@ public class XmlEditPanel extends JPanel {
                     startPanel.setValues(values, FileType.TXT);
                     startPanel.setFileType(FileType.TXT);
                 }
-
+                
                 columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
             } catch (ParserConfigurationException | SAXException | IOException
                     | InputException e) {
@@ -114,6 +114,7 @@ public class XmlEditPanel extends JPanel {
         else {
             //case where new xml is created
             startPanel.setValues(null, FileType.TXT);
+            columnPanel.clearColumns();
         }
     }
 }
