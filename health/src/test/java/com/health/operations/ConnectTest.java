@@ -109,7 +109,6 @@ public class ConnectTest {
     
     @Test
     public void testEmptyCells(){
-        System.out.println(Output.formatTable(connectedTable));
         
         List<Record> tableRecs = connectedTable.getRecords();
         
