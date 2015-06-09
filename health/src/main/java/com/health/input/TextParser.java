@@ -64,6 +64,8 @@ public final class TextParser implements Parser {
 				case Number:
 					record.setValue(j, stringToNumber(value, i));
 					break;
+				case Ignore:
+				  break;
 				case Date:
 					if (config.getDateFormat() != null) {
 						try {
