@@ -1,5 +1,7 @@
 package com.health;
 
+import java.time.LocalDate;
+
 public class Event {
     private String codeName;
     private Record rec;
@@ -23,6 +25,10 @@ public class Event {
 
     public void setRecord(Record record) {
         this.rec = record;
+    }
+    
+    public LocalDate getDate(){
+        return rec.getDateValue(rec.getTable().getDateColumn().getName());
     }
     
     
