@@ -14,12 +14,11 @@ import com.health.ValueType;
  * @author daan
  *
  */
-public class Connect {
-
+public final class Connect {
     /**
 	 *
 	 */
-    protected Connect() {
+    private Connect() {
 
     }
 

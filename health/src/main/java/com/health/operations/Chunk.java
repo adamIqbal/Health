@@ -19,6 +19,9 @@ import com.health.Table;
  *
  */
 public final class Chunk {
+    private Chunk() {
+    }
+
     /**
      * A function to chunk a dataSet by time.
      *
