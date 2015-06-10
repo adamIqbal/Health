@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.health.ValueType;
 
@@ -135,6 +136,7 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
     public final void addColumn(final String name, final ValueType type) {
         JPanel panel = new JPanel(new GridLayout(1, 3));
         JTextField columnName = new JTextField();
+        columnName.setHorizontalAlignment(SwingConstants.CENTER);
         JComboBox<ValueType> columnValue = new JComboBox<ValueType>(
                 ValueType.values());
 
@@ -145,6 +147,14 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
         columnName.setText(name);
 
         JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panel.getParent().remove(panel);
+                columnPanel.repaint();
+                columnPanel.revalidate();
+            }
+        });
 
         panel.add(columnName);
         panel.add(columnValue);
