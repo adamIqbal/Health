@@ -27,7 +27,7 @@ public class Aggregator {
 	public static double aggregate(final double[] values,
 			final AggregateFunctions function) {
 	  
-		double result;
+		double result = 0;
 		
 		switch (function) {
 		
@@ -43,9 +43,6 @@ public class Aggregator {
 		case Max:
 			result = max(values);
 			break;
-			
-		default:
-			result = average(values);
 		}
 
 		return result;
