@@ -56,8 +56,8 @@ public class XmlSavePanel extends JPanel {
                 XmlWizard.nextPanel();
             }
         });
-        buttonPanel.add(saveAsButton);
         buttonPanel.add(resetButton);
+        buttonPanel.add(saveAsButton);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
