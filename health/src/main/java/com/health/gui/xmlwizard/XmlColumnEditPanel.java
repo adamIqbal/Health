@@ -134,7 +134,8 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
      *            type of column
      */
     public final void addColumn(final String name, final ValueType type) {
-        JPanel panel = new JPanel(new GridLayout(1, 3));
+        final int amountOfColumns = 3;
+        JPanel panel = new JPanel(new GridLayout(1, amountOfColumns));
         JTextField columnName = new JTextField();
         columnName.setHorizontalAlignment(SwingConstants.CENTER);
         JComboBox<ValueType> columnValue = new JComboBox<ValueType>(

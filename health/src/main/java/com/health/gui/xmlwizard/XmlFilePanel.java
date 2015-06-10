@@ -57,7 +57,7 @@ class XmlFilePanel extends JPanel {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 XmlWizard.setXml(new XmlConfigObject());
-                XmlWizard.editPanel.setValues();
+                XmlWizard.getEditPanel().setValues();
                 XmlWizard.nextPanel();
             }
         });
@@ -70,7 +70,7 @@ class XmlFilePanel extends JPanel {
 
                     xml.setPath(fileList.getSelectedValue());
                     XmlWizard.setXml(xml);
-                    XmlWizard.editPanel.setValues();
+                    XmlWizard.getEditPanel().setValues();
 
                     XmlWizard.nextPanel();
                 } else {

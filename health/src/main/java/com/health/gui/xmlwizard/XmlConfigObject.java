@@ -97,8 +97,30 @@ public class XmlConfigObject {
      * Generates XML string of a config XML describing a XLS data set.
      * @return XML string of the config XML
      */
-    public final String toXMLStringXLS() {
-        return "Writer not implemented yet.";
+    public final String toXMLStringXLS() {        
+        String startRow = this.values[0];
+        String startCol = this.values[1];
+
+        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
+        String dataStart = "<data format=\"xls\" startRow=\""+ startRow +"\" startColumn=\""+ startCol +"\">" + "\n\r";
+
+        String columnTags = "";
+        int n = columns.size();
+
+        // if columns List and columntype List are not of equal length, there is
+        // something wrong.
+        if (n != this.columnTypes.size()) {
+            return null;
+        }
+
+        for (int i = 0; i < n; i++) {
+            columnTags += "\t" + "<column type=\"" + this.columnTypes.get(i)
+                    + "\">" + this.columns.get(i) + "</column>" + "\n\r";
+        }
+
+        String dataEnd = "</data>";
+
+        return header + dataStart + columnTags + dataEnd;
     }
 
     /**

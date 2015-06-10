@@ -39,22 +39,6 @@ abstract class VidneyPanel extends JSplitPane {
         setEnabled(false);
     }
 
-    protected JPanel getMainPanel() {
-        return mainPanel;
-    }
-
-    protected void setMainPanel(final JPanel mainPanel) {
-        this.mainPanel = mainPanel;
-    }
-
-    protected JPanel getSidePanel() {
-        return sidePanel;
-    }
-
-    protected void setSidePanel(final JPanel sidePanel) {
-        this.sidePanel = sidePanel;
-    }
-
     private void setDefaultPanels() {
         mainPanel = new JPanel();
         mainPanel.add(new JLabel("Mainpanel"));
@@ -67,13 +51,13 @@ abstract class VidneyPanel extends JSplitPane {
         this.setLeft(mainPanel);
         this.setRight(sidePanel);
     }
-    
+
     protected void setLeft(final JPanel panel) {
         panel.setBorder(new EmptyBorder(20,20,20,20));
         panel.setBackground(GUImain.GUI_COLOR);
         this.setLeftComponent(panel);
     }
-    
+
     protected void setRight(final JPanel panel) {
         panel.setBorder(new EmptyBorder(20,20,20,20));
         panel.setBackground(GUImain.GUI_COLOR);
