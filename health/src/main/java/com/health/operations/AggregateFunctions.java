@@ -10,6 +10,12 @@ public final class AggregateFunctions {
     private AggregateFunctions() {
     }
 
+    public static AggregateFunction count() {
+        return new AggregateFunction("count", (data) -> {
+            return (double) data.length;
+        });
+    }
+
     public static AggregateFunction average() {
         return new AggregateFunction("average", (data) -> {
             double sum = sum().apply(data);
