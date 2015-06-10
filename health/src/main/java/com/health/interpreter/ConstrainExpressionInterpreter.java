@@ -46,7 +46,7 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
 
         Table table = lookupTable(tableIdent);
 
-        Function<Record, Boolean> predicate = evaluateConditionalExpression(
+        Function<Record, Boolean> predicate = createPredicateFromConditionalExpression(
                 ctx.conditionalExpression(),
                 table,
                 tableIdent);
@@ -54,32 +54,38 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
         return new TableValue(Constraints.constrain(predicate, table));
     }
 
-    private Function<Record, Boolean> evaluateConditionalExpression(
+    private Function<Record, Boolean> createPredicateFromConditionalExpression(
             final ConditionalExpressionContext ctx,
             final Table table,
             final String tableIdent) {
         if (ctx.booleanOperator() != null) {
-            Function<Record, Boolean> left = evaluateConditionalExpression(ctx.conditionalExpression(), table,
-                    tableIdent);
-            Function<Record, Boolean> right = evaluateCondition(ctx.condition(), table, tableIdent);
-
-            if (ctx.booleanOperator().getText().equals("and")) {
-                return (record) -> left.apply(record) && right.apply(record);
-            } else if (ctx.booleanOperator().getText().equals("or")) {
-                return (record) -> left.apply(record) || right.apply(record);
-            } else {
-                assert false;
-
-                throw new ScriptRuntimeException("??");
-            }
+            return createPredicateFromBinaryConditionalExpression(ctx, table, tableIdent);
         } else if (ctx.conditionalExpression() != null) {
-            return evaluateConditionalExpression(ctx.conditionalExpression(), table, tableIdent);
+            return createPredicateFromConditionalExpression(ctx.conditionalExpression(), table, tableIdent);
         } else {
-            return evaluateCondition(ctx.condition(), table, tableIdent);
+            return createPredicateFromCondition(ctx.condition(), table, tableIdent);
         }
     }
 
-    private Function<Record, Boolean> evaluateCondition(
+    private Function<Record, Boolean> createPredicateFromBinaryConditionalExpression(
+            final ConditionalExpressionContext ctx,
+            final Table table,
+            final String tableIdent) {
+        Function<Record, Boolean> left = createPredicateFromConditionalExpression(ctx.conditionalExpression(), table,
+                tableIdent);
+        Function<Record, Boolean> right = createPredicateFromCondition(ctx.condition(), table, tableIdent);
+
+        if (ctx.booleanOperator().getText().equals("and")) {
+            return (record) -> left.apply(record) && right.apply(record);
+        } else if (ctx.booleanOperator().getText().equals("or")) {
+            return (record) -> left.apply(record) || right.apply(record);
+        } else {
+            throw new ScriptRuntimeException(
+                    "Encountered unknown boolean operator '" + ctx.booleanOperator().getText() + "'.");
+        }
+    }
+
+    private Function<Record, Boolean> createPredicateFromCondition(
             final ConditionContext ctx,
             final Table table,
             final String tableIdent) {
@@ -101,9 +107,8 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
         case ">=":
             return (record) -> ConstrainFunctions.greaterEq(record.getValue(column), value);
         default:
-            assert false;
-
-            return null;
+            throw new ScriptRuntimeException(
+                    "Encountered unknown comparison operator '" + ctx.comparisonOperator().getText() + "'.");
         }
     }
 }

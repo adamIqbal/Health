@@ -9,7 +9,6 @@ import com.health.script.MyScriptParser;
 import com.health.script.runtime.BooleanValue;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.LValue;
-import com.health.script.runtime.NullValue;
 import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.ScriptDelegate;
 import com.health.script.runtime.ScriptRuntimeException;
@@ -57,7 +56,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
 
     @Override
     public Value visitNullLiteral(final MyScriptParser.NullLiteralContext ctx) {
-        return new NullValue();
+        return null;
     }
 
     @Override

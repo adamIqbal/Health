@@ -82,7 +82,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         case "year":
             return Period.ofYears(1);
         default:
-            throw new ScriptRuntimeException("");
+            throw new ScriptRuntimeException("Undefined time period '" + ctx.singularTimeUnit().getText() + "'.");
         }
     }
 
@@ -99,7 +99,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         case "years":
             return Period.ofYears(number);
         default:
-            throw new ScriptRuntimeException("");
+            throw new ScriptRuntimeException("Undefined time period '" + ctx.singularTimeUnit().getText() + "'.");
         }
     }
 
@@ -125,7 +125,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         case "max":
             return AggregateFunctions.Max;
         default:
-            throw new ScriptRuntimeException(String.format("Undefined aggregate function '%s'.", ctx.getText()));
+            throw new ScriptRuntimeException("Undefined aggregate function '" + ctx.getText() + "'.");
         }
     }
 }
