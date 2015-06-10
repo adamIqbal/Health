@@ -28,9 +28,18 @@ public class XmlWizard extends JPanel {
 
     private static JPanel cardPanel;
 
-    protected static XmlFilePanel filePanel;
-    protected static XmlEditPanel editPanel;
-    protected static XmlSavePanel savePanel;
+    /**
+     * XmlFilePanel static class.
+     */
+    private static XmlFilePanel filePanel;
+    /**
+     * XmlEditPanel static class.
+     */
+    private static XmlEditPanel editPanel;
+    /**
+     * XmlSavePanel static class.
+     */
+    private static XmlSavePanel savePanel;
 
     /**
      * Constructs a XmlWizard containing the wizard panels.
@@ -103,5 +112,29 @@ public class XmlWizard extends JPanel {
      */
     protected static void setXml(final XmlConfigObject xml) {
         XmlWizard.xml = xml;
+    }
+
+    /**
+     * Gets the filepanel.
+     * @return the filepanel
+     */
+    protected static XmlFilePanel getFilePanel() {
+        return filePanel;
+    }
+
+    /**
+     * Gets the editpanel.
+     * @return the editpanel
+     */
+    protected static XmlEditPanel getEditPanel() {
+        return editPanel;
+    }
+
+    /**
+     * Gets the savepanel.
+     * @return the savepanel
+     */
+    protected static XmlSavePanel getSavePanel() {
+        return savePanel;
     }
 }

@@ -55,7 +55,7 @@ public class VScriptPanel extends VidneyPanel {
         mainPanel.add(textAbove, BorderLayout.NORTH);
 
         this.setLeft(mainPanel);
-        
+
         JPanel sidePanel = new JPanel();
         sidePanel.add(new ScriptPanelSidebar());
         this.setRight(sidePanel);
@@ -65,7 +65,7 @@ public class VScriptPanel extends VidneyPanel {
      * Gets the script as a String.
      * @return a String representation of the script
      */
-    protected String getScriptAreaText() {
+    protected final String getScriptAreaText() {
         return scriptArea.getText();
     }
 
@@ -104,7 +104,7 @@ public class VScriptPanel extends VidneyPanel {
                     e.printStackTrace();
                 }
             }
-            
+
             VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("script");
             String script = scriptPanel.getScriptAreaText();
 

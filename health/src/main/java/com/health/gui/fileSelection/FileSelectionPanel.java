@@ -28,7 +28,6 @@ public class FileSelectionPanel extends JPanel {
      */
     public FileSelectionPanel() {
         super();
-        this.setOpaque(false);
         this.setLayout(new BorderLayout());
 
         JLabel instructionLabel = new JLabel(
