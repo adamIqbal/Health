@@ -1,13 +1,14 @@
 package com.health.interpreter;
 
 import java.time.Period;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import com.health.AggregateFunctions;
 import com.health.Table;
+import com.health.operations.AggregateFunction;
+import com.health.operations.AggregateFunctions;
 import com.health.operations.Chunk;
+import com.health.operations.ColumnAggregateTuple;
 import com.health.script.MyScriptParser;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.ScriptRuntimeException;
@@ -49,15 +50,15 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
 
         verifyHasColumn(table, tableIdent, columnIdent);
 
-        Map<String, AggregateFunctions> aggregateFunctions =
+        List<ColumnAggregateTuple> aggregateFunctions =
                 evaluateAggragateOperations(ctx.columnAggregateOperation());
 
         if (ctx.periodSpecifier() != null) {
             Period period = evaluatePeriod(ctx.periodSpecifier().period());
 
-            return new TableValue(Chunk.chunkByTime(table, columnIdent, aggregateFunctions, period));
+            return new TableValue(Chunk.chunkByPeriod(table, columnIdent, aggregateFunctions, period));
         } else {
-            return new TableValue(Chunk.chunkByString(table, columnIdent, aggregateFunctions));
+            return new TableValue(Chunk.chunkByColumn(table, columnIdent, aggregateFunctions));
         }
     }
 
@@ -103,29 +104,31 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static Map<String, AggregateFunctions> evaluateAggragateOperations(
+    private static List<ColumnAggregateTuple> evaluateAggragateOperations(
             final List<MyScriptParser.ColumnAggregateOperationContext> columnAggregateOperation) {
-        Map<String, AggregateFunctions> aggregateFunctions = new HashMap<String, AggregateFunctions>();
+        List<ColumnAggregateTuple> aggregateFunctions = new ArrayList<ColumnAggregateTuple>();
 
         for (MyScriptParser.ColumnAggregateOperationContext ctx : columnAggregateOperation) {
-            aggregateFunctions.put(ctx.IDENTIFIER().getText(), evaluateAggragateOperation(ctx.aggregateOperation()));
+            aggregateFunctions.add(new ColumnAggregateTuple(
+                    ctx.IDENTIFIER().getText(),
+                    evaluateAggragateOperation(ctx.aggregateOperation())));
         }
 
         return aggregateFunctions;
     }
 
-    private static AggregateFunctions evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
+    private static AggregateFunction evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
         switch (ctx.getText()) {
         case "average":
-            return AggregateFunctions.Average;
+            return AggregateFunctions.average();
         case "sum":
-            return AggregateFunctions.Sum;
+            return AggregateFunctions.sum();
         case "min":
-            return AggregateFunctions.Min;
+            return AggregateFunctions.min();
         case "max":
-            return AggregateFunctions.Max;
+            return AggregateFunctions.max();
         default:
-            throw new ScriptRuntimeException(String.format("Undefined aggregate function '%s'.", ctx.getText()));
+            throw new ScriptRuntimeException("Undefined aggregate function '" + ctx.getText() + "'.");
         }
     }
 }
