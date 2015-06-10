@@ -7,10 +7,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
+ * TODO delete columns
+ * TODO save next to saveAs
+ */
+
+/**
  * The frame of the XML Wizard. Contains all panels and controls transition
  * between them.
  * @author Bjorn van der Laan
- *
  */
 public class XmlWizard extends JPanel {
     /**
