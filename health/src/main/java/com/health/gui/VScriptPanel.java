@@ -50,6 +50,10 @@ public final class VScriptPanel extends VidneyPanel {
         mainPanel.add(textAbove, BorderLayout.NORTH);
 
         this.setLeft(mainPanel);
+        
+        JPanel sidePanel = new JPanel();
+        sidePanel.add(new ScriptPanelSidebar());
+        this.setRight(sidePanel);
     }
 
     /**
