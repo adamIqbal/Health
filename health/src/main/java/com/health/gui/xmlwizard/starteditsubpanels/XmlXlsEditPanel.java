@@ -11,7 +11,6 @@ import com.health.FileType;
 /**
  * Represents the panel to specify parameters of the config XML describing an
  * XLS file that are not column-related.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -29,21 +28,21 @@ public class XmlXlsEditPanel extends XmlStartEditSubPanel {
     public XmlXlsEditPanel() {
         super();
         this.setType(FileType.XLS);
-        this.setLayout(new GridLayout(1,2));
-        
+        this.setLayout(new GridLayout(1, 2));
+
         rowLabel = new JLabel("Start row");
         colLabel = new JLabel("Start column");
         rowField = new JTextField();
         rowField.setHorizontalAlignment(SwingConstants.CENTER);
         colField = new JTextField();
         colField.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         this.add(rowLabel);
         this.add(rowField);
         this.add(colLabel);
         this.add(colField);
     }
-    
+
     @Override
     public final void setValues(final String[] values) {
         rowField.setText(values[0]);

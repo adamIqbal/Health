@@ -6,6 +6,8 @@ import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.health.gui.GUImain;
+
 /**
  * TODO delete columns
  * TODO save next to saveAs
@@ -58,6 +60,7 @@ public class XmlWizard extends JPanel {
         JLabel label = new JLabel("Create or edit XML files here");
         this.add(label, BorderLayout.NORTH);
 
+        this.setBackground(GUImain.GUI_COLOR);
         this.setVisible(true);
     }
 
@@ -86,7 +89,7 @@ public class XmlWizard extends JPanel {
     }
 
     /**
-     * Gets the xml object
+     * Gets the xml object.
      * @return the xml object
      */
     protected static XmlConfigObject getXml() {
@@ -94,10 +97,11 @@ public class XmlWizard extends JPanel {
     }
 
     /**
-     * Sets the xml object
-     * @param xml xml object
+     * Sets the xml object.
+     * @param xml
+     *            xml object
      */
-    protected static void setXml(XmlConfigObject xml) {
+    protected static void setXml(final XmlConfigObject xml) {
         XmlWizard.xml = xml;
     }
 }

@@ -18,7 +18,6 @@ public class XmlConfigObject {
     private List<String> columns = null;
     private List<ValueType> columnTypes = null;
     private Path path = null;
-    private String dateFormat = null;
 
     /**
      * Constructs a XmlConfigObject object.
@@ -96,7 +95,6 @@ public class XmlConfigObject {
 
     /**
      * Generates XML string of a config XML describing a XLS data set.
-     * 
      * @return XML string of the config XML
      */
     public final String toXMLStringXLS() {

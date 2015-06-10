@@ -40,9 +40,10 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
 
     /**
      * Sets the fileType.
-     * @param type type of the config xml
+     * @param type
+     *            type of the config xml
      */
-    public void setFileType(FileType type) {
+    public final void setFileType(final FileType type) {
         fileTypeSelector.setSelectedItem(type);
     }
 

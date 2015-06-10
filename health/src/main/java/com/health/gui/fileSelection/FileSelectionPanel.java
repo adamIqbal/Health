@@ -29,7 +29,7 @@ public class FileSelectionPanel extends JPanel {
 
 		JLabel instructionLabel = new JLabel("Drag your files into the window to start!");
 		this.add(instructionLabel, BorderLayout.NORTH);
-		
+
 		JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
 		this.add(scrollForFileListing, BorderLayout.CENTER);
 
@@ -40,7 +40,7 @@ public class FileSelectionPanel extends JPanel {
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonPanel.add(addButton);
-		
+
 		this.add(buttonPanel, BorderLayout.SOUTH);
 
 	}

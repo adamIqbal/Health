@@ -96,7 +96,7 @@ public class XmlEditPanel extends JPanel {
                     startPanel.setFileType(FileType.XLS);
                 } else {
                     // default case: txt
-                    String[] values = {id.getStartDelimiter(),
+                    String[] values = { id.getStartDelimiter(),
                             id.getEndDelimiter(), id.getDelimiter() };
                     startPanel.setValues(values, FileType.TXT);
                     startPanel.setFileType(FileType.TXT);

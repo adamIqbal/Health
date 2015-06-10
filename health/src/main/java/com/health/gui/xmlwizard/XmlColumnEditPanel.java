@@ -149,7 +149,7 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
         JButton deleteButton = new JButton("Delete");
         deleteButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 panel.getParent().remove(panel);
                 columnPanel.repaint();
                 columnPanel.revalidate();
