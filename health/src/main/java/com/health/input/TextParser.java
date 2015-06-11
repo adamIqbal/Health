@@ -85,7 +85,6 @@ public final class TextParser implements Parser {
       }
     }
 
-    // if (config.getIgnoreLast() > 0)
     table = deleteLastLines(table, config);
 
     return table;
