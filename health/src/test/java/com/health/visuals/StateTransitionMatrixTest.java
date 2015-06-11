@@ -1,8 +1,11 @@
 package com.health.visuals;
 
+import java.awt.EventQueue;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JFrame;
 
 import org.junit.Test;
 
@@ -16,9 +19,13 @@ import com.health.ValueType;
 
 public class StateTransitionMatrixTest {
 
+
 	@Test
 	public void test() {
-/*
+
+		
+		
+		/*
 		
 		Input:
 		List EventSequences, pattern, subset to check within entire event sequence set
@@ -42,6 +49,7 @@ public class StateTransitionMatrixTest {
 
         tmp = new Record(table);
         tmp.setValue(0, LocalDate.of(2, 2, 2));
+        
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
 
@@ -59,7 +67,7 @@ public class StateTransitionMatrixTest {
         tmp.setValue(0, LocalDate.of(4, 2, 3));
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
-    
+        
         EventList eList = new EventList();
 
         Event e1 = new Event("A", table.getRecords().get(0));
