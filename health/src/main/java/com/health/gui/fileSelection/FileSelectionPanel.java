@@ -12,62 +12,66 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import com.health.gui.GUImain;
-
 /**
  * Class that makes the file selection panel.
  * @author daan
  *
  */
 public class FileSelectionPanel extends JPanel {
-	/**
-	 * Constructor which set the panel layout and adds.
-	 * components
-	 */
-	public FileSelectionPanel() {
-		this.setLayout(new BorderLayout());
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = -271558376732604213L;
 
-		JLabel instructionLabel = new JLabel("Drag your files into the window to start!");
-		this.add(instructionLabel, BorderLayout.NORTH);
-		
-		JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
-		this.add(scrollForFileListing, BorderLayout.CENTER);
+    /**
+     * Constructor which set the panel layout and adds. components
+     */
+    public FileSelectionPanel() {
+        super();
+        this.setLayout(new BorderLayout());
 
-		JButton addButton = new JButton("Add file");
+        JLabel instructionLabel = new JLabel(
+                "Drag your files into the window to start!");
+        this.add(instructionLabel, BorderLayout.NORTH);
 
-		ListenForAddFile lforAddFile = new ListenForAddFile();
-		addButton.addActionListener(lforAddFile);
+        JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
+        this.add(scrollForFileListing, BorderLayout.CENTER);
 
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonPanel.add(addButton);
-		
-		this.add(buttonPanel, BorderLayout.SOUTH);
+        JButton addButton = new JButton("Add file");
+        ListenForAddFile lforAddFile = new ListenForAddFile();
+        addButton.addActionListener(lforAddFile);
 
-	}
-	/**
-	 * Listener for the add file button.
-	 *
-	 */
-	private class ListenForAddFile implements ActionListener {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(addButton);
 
-		/**
-		 * Handles the button click.
-		 *
-		 * @param e
-		 */
-		public void actionPerformed(final ActionEvent e) {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setCurrentDirectory(new File(System
-					.getProperty("user.home")));
-			int result = fileChooser.showOpenDialog(null);
+        this.add(buttonPanel, BorderLayout.SOUTH);
 
-			if (result == JFileChooser.APPROVE_OPTION) {
-				FileListing.addFile(
-						fileChooser.getSelectedFile());
+    }
 
-			}
+    /**
+     * Listener for the add file button.
+     *
+     */
+    private class ListenForAddFile implements ActionListener {
 
-		}
+        /**
+         * Handles the button click.
+         *
+         * @param e
+         */
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System
+                    .getProperty("user.home")));
+            int result = fileChooser.showOpenDialog(null);
 
-	}
+            if (result == JFileChooser.APPROVE_OPTION) {
+                FileListing.addFile(fileChooser.getSelectedFile());
+
+            }
+
+        }
+
+    }
 }

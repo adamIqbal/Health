@@ -186,4 +186,14 @@ public final class Table implements Iterable<Record> {
                     "The indices of the columns must be in the range [0, n).");
         }
     }
+    
+    public Column getDateColumn(){
+        for(int i = 0; i < columns.size(); i++){
+            if(columns.get(i).getType() == ValueType.Date){
+                return columns.get(i);
+            }
+        }
+        return null;
+    }
+    
 }

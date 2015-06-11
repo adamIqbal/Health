@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <data format="xls" startRow="4" startColumn="1" ignoreLast="1">
 	<column type="Date" format="d[d]/M[M]/yyyy">date</column>
 	<column type="String">time</column>
@@ -6,3 +7,12 @@
 	<column type="Number">dia</column>
 	<column type="Number">puls</column>
 </data>
+=======
+<data format="xls" startRow="4" startColumn="1">
+	<column type="Number">date</column>
+	<column type="String">time</column>
+	<column type="Number">sys</column>
+	<column type="Number">dia</column>
+	<column type="Number">puls</column>
+</data>
+>>>>>>> master

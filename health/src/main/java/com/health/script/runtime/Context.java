@@ -70,6 +70,21 @@ public final class Context {
     }
 
     /**
+     * Declares a given static method in the context.
+     *
+     * @param symbol
+     *            the name of the method.
+     * @param function
+     *            the actual method.
+     */
+    public void declareStaticMethod(final String symbol, final ScriptFunction<Value[], Value> function) {
+        ScriptMethod method = new ScriptMethod(symbol, function, true);
+        ScriptDelegate delegate = method.createDelegate(null);
+
+        this.declareLocal(symbol, delegate.getType(), delegate);
+    }
+
+    /**
      * Declares a given type.
      *
      * @param type
