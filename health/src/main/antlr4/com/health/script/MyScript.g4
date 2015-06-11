@@ -66,7 +66,7 @@ primaryExpression
     ;
 
 chunkExpression
-    : 'chunk' table=IDENTIFIER 'by' 'column'? column=IDENTIFIER periodSpecifier? columnAggregateOperation*
+    : 'chunk' table=IDENTIFIER 'by' column=IDENTIFIER periodSpecifier? (','? 'select' chunkSelectionList)?
     ;
 
 periodSpecifier
@@ -90,6 +90,23 @@ pluralTimeUnit
     | 'weeks'
     | 'months'
     | 'years'
+    ;
+
+chunkSelectionList
+    : chunkSelectionList ',' columnOrAggregateOperation
+    | columnOrAggregateOperation
+    ;
+
+columnOrAggregateOperation
+    : (aggregateOperation 'of')? column=IDENTIFIER
+    ;
+
+aggregateOperation
+    : 'count'
+    | 'average'
+    | 'sum'
+    | 'min'
+    | 'max'
     ;
 
 constrainExpression
@@ -117,18 +134,6 @@ comparisonOperator
     | '<='
     | '>'
     | '>='
-    ;
-
-columnAggregateOperation
-    : ',' aggregateOperation 'of' IDENTIFIER
-    ;
-
-aggregateOperation
-    : 'count'
-    | 'average'
-    | 'sum'
-    | 'min'
-    | 'max'
     ;
 
 connectExpression
