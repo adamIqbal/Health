@@ -94,7 +94,6 @@ public final class XlsParser implements Parser {
     }
 
     wb.close();
-    table = InputFunctions.deleteLastLines(table, config);
     return table;
 
   }
