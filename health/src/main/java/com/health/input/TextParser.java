@@ -85,6 +85,14 @@ public final class TextParser implements Parser {
       }
     }
 
+    // if (config.getIgnoreLast() > 0)
+    table = deleteLastLines(table, config);
+
+    return table;
+  }
+
+  private Table deleteLastLines(final Table table, final InputDescriptor config) {
+
     int deletions = config.getIgnoreLast();
     int size = table.size();
     List<Record> tab = table.getRecords();
@@ -93,10 +101,9 @@ public final class TextParser implements Parser {
       size--;
       deletions--;
     }
-
     return table;
-  }
 
+  }
 
   private static Double stringToNumber(final String value, final int lineNumber)
       throws InputException {
