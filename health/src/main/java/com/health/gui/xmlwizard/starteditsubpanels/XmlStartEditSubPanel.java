@@ -20,6 +20,7 @@ public abstract class XmlStartEditSubPanel extends JPanel {
      * Gets the values specified in the panel.
      * @return array of values
      */
+    @SuppressWarnings("checkstyle:designforextension")
     public String[] getValues() {
         return null;
     };

@@ -98,7 +98,7 @@ public class GUImain extends JFrame {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    private void setLookAndFeel(String name) throws ClassNotFoundException,
+    private void setLookAndFeel(final String name) throws ClassNotFoundException,
             InstantiationException, IllegalAccessException,
             UnsupportedLookAndFeelException {
         boolean nimbusFound = false;
@@ -137,7 +137,7 @@ public class GUImain extends JFrame {
      * @param name name of the panel
      * @return the panel, or null if it does not exist
      */
-    public static VidneyPanel getPanel(String name) {
+    public static VidneyPanel getPanel(final String name) {
         return panelMap.get(name);
     }
 

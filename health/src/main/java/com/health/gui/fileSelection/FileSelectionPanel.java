@@ -40,7 +40,7 @@ public class FileSelectionPanel extends JPanel {
         JButton addButton = new JButton("Add file");
         ListenForAddFile lforAddFile = new ListenForAddFile();
         addButton.addActionListener(lforAddFile);
-        
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(addButton);
 
