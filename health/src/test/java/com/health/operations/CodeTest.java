@@ -73,7 +73,7 @@ public class CodeTest {
         Event e2 = new Event("B", table.getRecords().get(1));
         Event e3 = new Event("A", table.getRecords().get(2));
         Event e4 = new Event("B", table.getRecords().get(3));
-        Event e5 = new Event("A", table.getRecords().get(4));
+        Event e5 = new Event("C", table.getRecords().get(4));
 
         eList.addEvent(e1);
         eList.addEvent(e2);
@@ -81,11 +81,11 @@ public class CodeTest {
         eList.addEvent(e4);
         eList.addEvent(e5);
         
-        String[] codePattern = {"B", "A"};
+        String[] codePattern = {"A","B"};
         
-        EventSequence eSeq = new EventSequence(codePattern);
+        EventSequence eSeq = new EventSequence(codePattern, true);
         
-        Code.fillEventSequenceWithinPeriod(eSeq, eList, Period.ofYears(1));
+        Code.fillEventSequence(eSeq, eList);
         System.out.println("-----------------");
         System.out.println(eSeq.getSequences().size());
     }
