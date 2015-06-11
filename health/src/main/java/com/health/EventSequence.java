@@ -9,25 +9,27 @@ public class EventSequence {
     private String code;
     private boolean connected;
 
-    public EventSequence(String[] codePattern) {
+    public EventSequence(final String[] codePattern) {
         construct(codePattern, null, false);
     }
 
-    public EventSequence(String[] codePattern, boolean connected) {
+    public EventSequence(final String[] codePattern, final boolean connected) {
         construct(codePattern, null, connected);
     }
 
-    public EventSequence(String[] codePattern, String code, boolean connected) {
+    public EventSequence(final String[] codePattern, final String code,
+            final boolean connected) {
         construct(codePattern, code, connected);
     }
 
-    private void construct(String[] codePattern, String code, boolean connected) {
+    private void construct(final String[] codePattern, final String code,
+            final boolean connected) {
         sequences = new ArrayList<EventList>();
         this.codePattern = codePattern;
         this.connected = connected;
-        if(code == null){
+        if (code == null) {
             makeCodeOfCodePattern();
-        }else{
+        } else {
             this.setCode(code);
         }
     }
@@ -50,12 +52,12 @@ public class EventSequence {
     public boolean isConnected() {
         return connected;
     }
-    
-    public void addSequence(EventList sequence){
+
+    public void addSequence(final EventList sequence) {
         sequences.add(sequence);
     }
-    
-    public void deleteSequence(EventList sequence){
+
+    public void deleteSequence(final EventList sequence) {
         sequences.remove(sequence);
     }
 
@@ -71,7 +73,8 @@ public class EventSequence {
     }
 
     /**
-     * @param code the code to set
+     * @param code
+     *            the code to set
      */
     public void setCode(String code) {
         this.code = code;
