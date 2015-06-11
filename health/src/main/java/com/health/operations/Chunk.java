@@ -23,14 +23,15 @@ public final class Chunk {
     }
 
     /**
-     * A function to chunk a dataSet by time.
+     * A function to chunk a table by a given period.
      *
      * @param table
-     *            the Table to be chunked.
+     *            the {@link Table} to be chunked.
      * @param dateColumn
-     *            the column on which to chunk should be a column of type Date.
+     *            the column on which to chunk. The column must be a column of
+     *            type Date.
      * @param operations
-     *            a map of columns and their aggreagate operation.
+     *            a list of columns and their aggregate operation.
      * @param period
      *            the period between chunk, could be days, months, years.
      * @return a chunked Table.
@@ -46,14 +47,14 @@ public final class Chunk {
     }
 
     /**
-     * chunks the data on same string, in the given column.
+     * A function to chunk a table by equality on the given column.
      *
      * @param table
      *            the table to be chunked.
-     * @param operations
-     *            a map of columns and their aggreagate operation.
      * @param keyColumn
-     *            on which the data is chunked with the same string.
+     *            the column on which to chunk.
+     * @param operations
+     *            a list of columns and their aggregate operation.
      * @return a chunked Table.
      */
     public static Table chunkByColumn(
@@ -63,31 +64,6 @@ public final class Chunk {
         Map<Object, List<Record>> groups = groupByKey(table, keyColumn);
 
         return flattenGroups(table, keyColumn, operations, groups);
-    }
-
-    private static Table flattenGroups(
-            final Table table,
-            final String keyColumn,
-            final List<ColumnAggregateTuple> operations,
-            final Map<Object, List<Record>> groups) {
-        List<Column> columns = createChunkTableColumns(table, keyColumn, operations);
-        Table chunkedTable = new Table(columns);
-
-        for (Entry<Object, List<Record>> entry : groups.entrySet()) {
-            List<Record> chunk = entry.getValue();
-            Record chunkedRecord = new Record(chunkedTable);
-
-            for (ColumnAggregateTuple operation : operations) {
-                double tmpValue = aggregate(
-                        chunk,
-                        operation.getColumn(),
-                        operation.getFunction());
-
-                chunkedRecord.setValue(operation.getColumn(), tmpValue);
-            }
-        }
-
-        return chunkedTable;
     }
 
     private static Map<Object, List<Record>> groupByPeriod(
@@ -118,17 +94,47 @@ public final class Chunk {
 
         for (Record record : table) {
             Object key = record.getValue(column);
-            List<Record> group = groups.get(key);
 
-            if (group == null) {
-                group = new ArrayList<Record>();
-                groups.put(key, group);
-            }
-
-            group.add(record);
+            insertInGroup(groups, key, record);
         }
 
         return groups;
+    }
+
+    private static void insertInGroup(
+            final Map<Object, List<Record>> groups,
+            final Object key,
+            final Record record) {
+        List<Record> group = groups.get(key);
+
+        if (group == null) {
+            group = new ArrayList<Record>();
+            groups.put(key, group);
+        }
+
+        group.add(record);
+    }
+
+    private static Table flattenGroups(
+            final Table table,
+            final String keyColumn,
+            final List<ColumnAggregateTuple> operations,
+            final Map<Object, List<Record>> groups) {
+        List<Column> columns = createChunkTableColumns(table, keyColumn, operations);
+        Table chunkedTable = new Table(columns);
+
+        for (Entry<Object, List<Record>> entry : groups.entrySet()) {
+            List<Record> chunk = entry.getValue();
+            Record chunkedRecord = new Record(chunkedTable);
+
+            for (ColumnAggregateTuple operation : operations) {
+                double value = aggregate(chunk, operation.getColumn(), operation.getFunction());
+
+                chunkedRecord.setValue(operation.getColumn(), value);
+            }
+        }
+
+        return chunkedTable;
     }
 
     private static double aggregate(
