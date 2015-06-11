@@ -41,7 +41,7 @@ public final class FreqBar {
         Column freqColumn = null;
         Column dateColumn = null;
         for (Column c : table.getColumns()) {
-            if (c.getIsFrequencyColumn()) {
+            if (c.isFrequencyColumn()) {
                 freqColumn = c;
             } else if (c.getType() == ValueType.Date) {
                 dateColumn = c;
@@ -71,7 +71,7 @@ public final class FreqBar {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
-            if (c.getIsFrequencyColumn()) {
+            if (c.isFrequencyColumn()) {
                 freqColumn = c;
             }
         }
