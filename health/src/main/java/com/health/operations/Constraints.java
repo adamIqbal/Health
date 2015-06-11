@@ -5,6 +5,9 @@ import java.util.function.Function;
 import com.health.Record;
 import com.health.Table;
 
+/**
+ * A utility class to perform constraining of tables.
+ */
 public final class Constraints {
     private Constraints() {
     }
