@@ -3,6 +3,7 @@ package com.health.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.FontMetrics;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 /**
  * Represents the GUI.
@@ -46,6 +49,14 @@ public class GUImain extends JFrame {
      * Height of the GUI.
      */
     private final int height = 618;
+    /**
+     * Width of the tabs.
+     */
+    private final int tabWidth = 330;
+    /**
+     * Height of the tabs.
+     */
+    private final int tabHeight = 50;
 
     /**
      * Makes the frame and and fills tabs.
@@ -60,11 +71,12 @@ public class GUImain extends JFrame {
         VidneyPanel scriptPanel = new VScriptPanel();
         VidneyPanel outputPanel = new VOutputPanel();
 
-        addTab("Input", inputPanel);
-        addTab("Script", scriptPanel);
-        addTab("Output", outputPanel);
+        addTab("Step 1: Input", inputPanel);
+        addTab("Step 2: Script", scriptPanel);
+        addTab("Step 3: Output", outputPanel);
 
         tabbedPane.setBackground(GUImain.GUI_COLOR);
+        sizeTabs(tabWidth, tabHeight);
         this.add(tabbedPane);
 
         try {
@@ -112,6 +124,20 @@ public class GUImain extends JFrame {
         if (!nimbusFound) {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
+    }
+    
+    private void sizeTabs(int width, int height) {
+        tabbedPane.setUI(new BasicTabbedPaneUI() {
+            @Override
+            protected int calculateTabWidth(
+                    int tabPlacement, int tabIndex, FontMetrics metrics) {
+                return width; 
+            }
+            @Override
+            protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
+                return height;
+            }
+        });
     }
 
     /**
