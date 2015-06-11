@@ -91,6 +91,15 @@ public final class TextParser implements Parser {
     return table;
   }
 
+  /**
+   * Deletes the last x lines which are not needed as specified by the user.
+   * 
+   * @param table
+   *          Gets the table with the redundant lines.
+   * @param config
+   *          Gets the InputDescriptor which is used to create the original file.
+   * @return the new table with deleted lines.
+   */
   private Table deleteLastLines(final Table table, final InputDescriptor config) {
 
     int deletions = config.getIgnoreLast();
