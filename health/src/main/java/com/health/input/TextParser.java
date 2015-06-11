@@ -102,7 +102,6 @@ public final class TextParser implements Parser {
       deletions--;
     }
     return table;
-
   }
 
   private static Double stringToNumber(final String value, final int lineNumber)
