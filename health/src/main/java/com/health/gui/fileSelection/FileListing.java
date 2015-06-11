@@ -31,7 +31,7 @@ public class FileListing extends JPanel {
     private static int fileCount = 0;
     private static Color borderColor = Color.BLACK;
 
-    private final static int TOP = 0;
+    private static final int TOP = 0;
     private static final int MIDDLE = 1;
     private static final int BOTTOM = 2;
     private static final int SINGLE = 3;

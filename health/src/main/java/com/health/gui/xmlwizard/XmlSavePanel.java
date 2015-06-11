@@ -67,13 +67,13 @@ public class XmlSavePanel extends JPanel {
      */
     public final void setValues() {
         preview.setText(XmlWizard.getXml().toXMLString());
-        
-        //if it already has a save button, delete it.
-        if(buttonPanel.getComponents().length == 3) {
+
+        // if it already has a save button, delete it.
+        if (buttonPanel.getComponents().length == 3) {
             buttonPanel.remove(buttonPanel.getComponents()[2]);
         }
         
-        if(XmlWizard.getXml().getPath() != null) {            
+        if (XmlWizard.getXml().getPath() != null) {
             JButton saveButton = new JButton("Save");
             saveButton.addActionListener(new XmlSaveListener());
             buttonPanel.add(saveButton);
@@ -90,16 +90,16 @@ public class XmlSavePanel extends JPanel {
 
         FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
     }
-    
+
     private void saveFile() throws IOException {
         String filename = XmlWizard.getXml().getPath().toString();
         File file = new File(filename);
         FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
-        
+
         JOptionPane.showMessageDialog(new JFrame(),
                 "Your file has been saved.",
                 "Success!", JOptionPane.INFORMATION_MESSAGE);
-        
+
         XmlWizard.setXml(new XmlConfigObject());
         XmlWizard.nextPanel();
     }
@@ -121,7 +121,7 @@ public class XmlSavePanel extends JPanel {
             }
         }
     }
-    
+
     /**
      * Listens if the user presses the Save button.
      * @author Bjorn van der Laan

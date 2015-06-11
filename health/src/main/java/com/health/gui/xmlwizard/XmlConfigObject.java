@@ -97,12 +97,13 @@ public class XmlConfigObject {
      * Generates XML string of a config XML describing a XLS data set.
      * @return XML string of the config XML
      */
-    public final String toXMLStringXLS() {        
+    public final String toXMLStringXLS() {
         String startRow = this.values[0];
         String startCol = this.values[1];
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
-        String dataStart = "<data format=\"xls\" startRow=\""+ startRow +"\" startColumn=\""+ startCol +"\">" + "\n\r";
+        String dataStart = "<data format=\"xls\" startRow=\"" + startRow 
+                + "\" startColumn=\"" + startCol + "\">" + "\n\r";
 
         String columnTags = "";
         int n = columns.size();
