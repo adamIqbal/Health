@@ -5,10 +5,13 @@ import java.util.List;
 import com.health.Record;
 import com.health.Table;
 
+<<<<<<< HEAD
 /**
  * A class for functions with can be called on all input formats.
  *
  */
+=======
+>>>>>>> made a special class for input functions as ignore last
 public class InputFunctions {
 
   /**
