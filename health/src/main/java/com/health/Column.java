@@ -11,7 +11,6 @@ public final class Column {
     private final String name;
     private final int index;
     private final ValueType type;
-    private boolean isFrequencyColumn = false;;
 
     /**
      * Constructs a new column with the given name, index and type.
@@ -39,7 +38,6 @@ public final class Column {
         this.name = name;
         this.index = index;
         this.type = type;
-        this.isFrequencyColumn = false;
     }
 
     /**
@@ -76,20 +74,8 @@ public final class Column {
      * @return the boolean that describes whether this column is a frequency
      *         column
      */
-    public boolean getIsFrequencyColumn() {
-        return this.isFrequencyColumn;
-    }
-
-    /**
-     * Sets the boolean that describes whether this column is a frequency
-     * column.
-     *
-     * @param param
-     *            the boolean that describes whether this column is a frequency
-     *            column
-     */
-    public void setIsFrequencyColumn(final boolean param) {
-        this.isFrequencyColumn = param;
+    public boolean isFrequencyColumn() {
+        return this.name.startsWith("count_");
     }
 
     @Override
@@ -100,13 +86,13 @@ public final class Column {
 
         Column that = (Column) other;
 
-        return this.isFrequencyColumn == that.isFrequencyColumn
+        return this.index == that.index
                 && this.type == that.type
                 && this.name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.index, this.isFrequencyColumn, this.name, this.type);
+        return Objects.hash(this.index, this.name, this.type);
     }
 }
