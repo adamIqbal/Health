@@ -28,7 +28,7 @@ abstract class VidneyPanel extends JSplitPane {
     public VidneyPanel() {
         super();
 
-        //Should be 618 for perfect GoldenRatio between panels
+        // Should be 618 for perfect GoldenRatio between panels
         final int dividerLocation = 650;
 
         this.setDefaultPanels();
@@ -36,24 +36,7 @@ abstract class VidneyPanel extends JSplitPane {
         this.setContinuousLayout(true);
         this.setDividerLocation(dividerLocation);
         this.setDividerSize(0);
-        
         setEnabled(false);
-    }
-
-    protected JPanel getMainPanel() {
-        return mainPanel;
-    }
-
-    protected void setMainPanel(final JPanel mainPanel) {
-        this.mainPanel = mainPanel;
-    }
-
-    protected JPanel getSidePanel() {
-        return sidePanel;
-    }
-
-    protected void setSidePanel(final JPanel sidePanel) {
-        this.sidePanel = sidePanel;
     }
 
     private void setDefaultPanels() {
@@ -68,15 +51,15 @@ abstract class VidneyPanel extends JSplitPane {
         this.setLeft(mainPanel);
         this.setRight(sidePanel);
     }
-    
-    protected void setLeft(JPanel panel) {
-        panel.setBorder(new EmptyBorder(20,20,20,20));
+
+    protected void setLeft(final JPanel panel) {
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         panel.setBackground(GUImain.GUI_COLOR);
         this.setLeftComponent(panel);
     }
-    
-    protected void setRight(JPanel panel) {
-        panel.setBorder(new EmptyBorder(20,20,20,20));
+
+    protected void setRight(final JPanel panel) {
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         panel.setBackground(GUImain.GUI_COLOR);
         this.setRightComponent(panel);
     }

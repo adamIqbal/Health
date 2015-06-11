@@ -17,7 +17,6 @@ import com.health.gui.xmlwizard.starteditsubpanels.XmlXlsEditPanel;
 /**
  * Displays options to modify elements of the config xml that are not about the
  * columns.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -40,15 +39,11 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     }
 
     /**
-     * Constructs an XmlStartEditPanel object with a type specified. This
-     * constructor is used if the user wants to edit an existing config XML.
-     * 
+     * Sets the fileType.
      * @param type
+     *            type of the config xml
      */
-    public XmlStartEditPanel(FileType type) {
-        super();
-        init();
-
+    public final void setFileType(final FileType type) {
         fileTypeSelector.setSelectedItem(type);
     }
 
@@ -76,10 +71,9 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     /**
      * Calls the getValues method of the panel associated with the specified
      * FileType.
-     * 
      * @param type
      *            FileType specifying the panel you want to call.
-     * @return
+     * @return returns the values entered in the startpanel of this filetype
      */
     public final String[] getValues(final FileType type) {
         if (panels.containsKey(type)) {
@@ -90,7 +84,6 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
 
     /**
      * Gets the FileType that is currently selected in fileTypeSelector.
-     * 
      * @return FileType that is currently selected.
      */
     public final FileType getSelectedType() {
@@ -100,7 +93,6 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     /**
      * Calls the setValues method of the panel associated with the specified
      * FileType.
-     * 
      * @param values
      *            array containing the values to set
      * @param type
@@ -109,12 +101,12 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     public final void setValues(final String[] values, final FileType type) {
         if (panels.containsKey(type)) {
             panels.get(type).setValues(values);
+            setFileType(type);
         }
     }
 
     /**
      * Shows a panel depending on the FileType selected in fileTypeSelector.
-     * 
      * @param evt
      *            ItemEvent object containing information
      */

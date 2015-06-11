@@ -50,6 +50,10 @@ public final class VScriptPanel extends VidneyPanel {
         mainPanel.add(textAbove, BorderLayout.NORTH);
 
         this.setLeft(mainPanel);
+
+        JPanel sidePanel = new JPanel();
+        sidePanel.add(new ScriptPanelSidebar());
+        this.setRight(sidePanel);
     }
 
     /**
@@ -57,7 +61,7 @@ public final class VScriptPanel extends VidneyPanel {
      *
      * @return a String representation of the script
      */
-    protected String getScriptAreaText() {
+    protected final String getScriptAreaText() {
         return scriptArea.getText();
     }
 
@@ -119,7 +123,7 @@ public final class VScriptPanel extends VidneyPanel {
                 // TODO: Name the tables to something other than table0 ... tableN
                 String name = "table" + i;
 
-                xmlFormat = GUImain.PATHTOXMLFORMATS + xmlFormat + ".xml";
+                xmlFormat = GUImain.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
 
                 parsedData.add(new InputData(fileString, xmlFormat, name));
             }

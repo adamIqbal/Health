@@ -24,7 +24,7 @@ public class VInputPanel extends VidneyPanel {
 
         JPanel fileSelectionPanel = new FileSelectionPanel();
         this.setLeft(fileSelectionPanel);
-        
+
         XmlWizard filePanel = new XmlWizard();
         this.setRight(filePanel);
     }
