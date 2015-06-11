@@ -143,10 +143,9 @@ public final class InputDescriptor {
   }
 
   /**
-   * Gets the delimiter between columns of a <code>txt</code> input file.
+   * Gets a integer which tells us how many lines from bottom up should be deleted.
    *
-   * @return the delimiter between columns of a <code>txt</code> input file; or null if there is no
-   *         delimiter.
+   * @return the integer which tells us how many lines should be deleted.
    */
   public double getIgnoreLast() {
     return ignoreLast;
