@@ -27,7 +27,7 @@ public final class InputDescriptor {
   private String startDelimeter;
   private String endDelimeter;
   private String delimeter;
-  private double ignoreLast;
+  private int ignoreLast;
   private String format;
   private List<String> columns;
   private List<ValueType> columnTypes;
@@ -147,7 +147,7 @@ public final class InputDescriptor {
    *
    * @return the integer which tells us how many lines should be deleted.
    */
-  public double getIgnoreLast() {
+  public int getIgnoreLast() {
     return ignoreLast;
   }
 
@@ -192,7 +192,7 @@ public final class InputDescriptor {
       endDelimeter = root.getAttribute("end");
     }
     if (root.hasAttribute("ignoreLast")) {
-      ignoreLast = Double.parseDouble(root.getAttribute("ignoreLast"));
+      ignoreLast = Integer.parseInt((root.getAttribute("ignoreLast")));
     }
 
     if (root.hasAttribute("startRow") && root.hasAttribute("startColumn")) {
