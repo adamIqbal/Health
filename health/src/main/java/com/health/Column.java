@@ -107,9 +107,6 @@ public final class Column {
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(this.index)
-                ^ Boolean.hashCode(this.isFrequencyColumn)
-                ^ this.name.hashCode()
-                ^ this.type.hashCode();
+        return Objects.hash(this.index, this.isFrequencyColumn, this.name, this.type);
     }
 }
