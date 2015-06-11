@@ -1,5 +1,5 @@
  <?xml version="1.0" encoding="UTF-8"?>
-<data format="text" start="[" end="]" delimeter=",">
+<data format="text" start="[" end="]" delimeter="," ignoreLast="1">
     <column>type</column>
 	<column type="Number">value</column>
 	<column type="String">unit</column>

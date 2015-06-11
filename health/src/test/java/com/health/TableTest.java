@@ -3,9 +3,7 @@ package com.health;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
-import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.powermock.api.mockito.PowerMockito.mock;
@@ -297,10 +295,12 @@ public class TableTest {
 
     /**
      * Tests whether {@link Table#iterator()} returns an iterator that contains
-     * at least one {@link Chunk}.
+     * one {@link Record}.
      */
     @Test
-    public void iterator_returnsIteratorContainingTable() {
-        assertThat(table, iterableWithSize(greaterThan(0)));
+    public void iterator_givenTableWithOneRecord_returnsIteratorContainingReocrd() {
+        table.addRecord(record);
+
+        assertThat(table, contains(record));
     }
 }
