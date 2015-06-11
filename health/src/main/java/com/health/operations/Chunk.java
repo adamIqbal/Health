@@ -139,7 +139,7 @@ public final class Chunk {
                 if (operation.hasFunction()) {
                     double value = aggregate(chunk, column, operation.getFunction());
 
-                    chunkedRecord.setValue(operation.getFunction().getName() + "_" + operation.getColumn(), value);
+                    chunkedRecord.setValue(operation.getAggregateColumn(), value);
                 } else {
                     chunkedRecord.setValue(operation.getColumn(), chunk.get(0).getValue(column));
                 }
@@ -205,15 +205,12 @@ public final class Chunk {
             final Table table,
             final int index,
             final ColumnAggregateTuple operation) {
-        String name = operation.getColumn();
-        Column column = table.getColumn(name);
+        Column column = table.getColumn(operation.getColumn());
 
         if (operation.hasFunction()) {
-            name = operation.getFunction().getName() + "_" + name;
-
-            return new Column(name, index, ValueType.Number);
+            return new Column(operation.getAggregateColumn(), index, ValueType.Number);
         } else {
-            return new Column(name, index, column.getType());
+            return new Column(operation.getColumn(), index, column.getType());
         }
     }
 
