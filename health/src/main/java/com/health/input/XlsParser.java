@@ -20,82 +20,87 @@ import com.health.Table;
  */
 public final class XlsParser implements Parser {
 
-  /**
-   * Given a path to a xls file and an input descriptor, parses the input file into a {@link Table}.
-   *
-   * @param path
-   *          the path of the input file.
-   * @param config
-   *          the input descriptor.
-   * @return a table representing the parsed input file.
-   * @throws IOException
-   *           if any IO errors occur.
-   * @throws InputException
-   *           if any input errors occur.
-   */
+	/**
+	 * Given a path to a xls file and an input descriptor, parses the input file
+	 * into a {@link Table}.
+	 *
+	 * @param path
+	 *            the path of the input file.
+	 * @param config
+	 *            the input descriptor.
+	 * @return a table representing the parsed input file.
+	 * @throws IOException
+	 *             if any IO errors occur.
+	 * @throws InputException
+	 *             if any input errors occur.
+	 */
 
-  @Override
-  public Table parse(final String path, final InputDescriptor config) throws InputException,
-      IOException {
-    Objects.requireNonNull(path);
-    Objects.requireNonNull(config);
+	@Override
+	public Table parse(final String path, final InputDescriptor config)
+			throws InputException, IOException {
+		Objects.requireNonNull(path);
+		Objects.requireNonNull(config);
 
-    Table table = config.buildTable();
+		Table table = config.buildTable();
 
-    FileInputStream io = new FileInputStream(path);
-    HSSFWorkbook wb = new HSSFWorkbook(io);
+		FileInputStream io = new FileInputStream(path);
+		HSSFWorkbook wb = new HSSFWorkbook(io);
 
-    StartCell startCell = config.getStartCell();
-    int rowCount = 0;
-    int columnsCount = config.getColumns().size();
+		StartCell startCell = config.getStartCell();
+		int rowCount = 0;
+		int columnsCount = config.getColumns().size();
 
-    Sheet sheet = wb.getSheetAt(0);
-    for (Row row : sheet) {
-      // if at start row or beyond
-      if (rowCount >= startCell.getStartRow()) {
-        Record tableRow = new Record(table);
+		Sheet sheet = wb.getSheetAt(0);
+		for (Row row : sheet) {
+			// if at start row or beyond
+			if (rowCount >= startCell.getStartRow()) {
+				Record tableRow = new Record(table);
 
-        int columnCountTableRow = 0;
-        for (int i = startCell.getStartColumn() - 1; i < columnsCount + startCell.getStartColumn()
-            - 1; i++) {
-          switch (table.getColumn(columnCountTableRow).getType()) {
-          case String:
-            tableRow.setValue(columnCountTableRow, row.getCell(i).toString());
-            break;
-          case Number:
-            tableRow.setValue(columnCountTableRow, Double.parseDouble(row.getCell(i).toString()));
-            break;
-          case Date:
-            if (config.getDateFormat() != null) {
-              try {
-                DateTimeFormatter formatter = DateTimeFormatter
+				int columnCountTableRow = 0;
+				for (int i = startCell.getStartColumn() - 1; i < columnsCount
+						+ startCell.getStartColumn() - 1; i++) {
+					switch (table.getColumn(columnCountTableRow).getType()) {
+					case String:
+						tableRow.setValue(columnCountTableRow, row.getCell(i)
+								.toString());
+						break;
+					case Number:
+						tableRow.setValue(columnCountTableRow,
+								Double.parseDouble(row.getCell(i).toString()));
+						break;
+					case Date:
+						if (config.getDateFormat() != null) {
+							try {
+								DateTimeFormatter formatter = DateTimeFormatter
 
-                .ofPattern(config.getDateFormat());
-                LocalDate dateValue = LocalDate.parse(row.getCell(i).toString(), formatter);
-                tableRow.setValue(columnCountTableRow, dateValue);
-              } catch (DateTimeParseException e) {
-                break;
-              }
-            }
-            break;
-          default:
-            // The type was null, this should never happen
-            assert false;
-            throw new InputException("Internal error.", new Exception(
-                "Column.getType() returned null."));
-          }
+								.ofPattern(config.getDateFormat());
+								LocalDate dateValue = LocalDate.parse(row
+										.getCell(i).toString(), formatter);
+								tableRow.setValue(columnCountTableRow,
+										dateValue);
+							} catch (DateTimeParseException e) {
+								break;
+							}
+						}
+						break;
+					default:
+						// The type was null, this should never happen
+						assert false;
+						throw new InputException(
+								"Internal error.",
+								new Exception("Column.getType() returned null."));
+					}
 
-          columnCountTableRow++;
-        }
+					columnCountTableRow++;
+				}
 
-      }
+			}
 
-      rowCount++;
-    }
+			rowCount++;
+		}
 
-    wb.close();
-    table = InputFunctions.deleteLastLines(table, config);
-    return table;
+		wb.close();
+		return table;
 
-  }
+	}
 }
