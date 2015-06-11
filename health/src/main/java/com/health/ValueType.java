@@ -18,9 +18,4 @@ public enum ValueType {
    * Date type.
    */
   Date,
-  /**
-   * Ignore type.
-   */
-  Ignore
-
 }
