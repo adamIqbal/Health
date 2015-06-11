@@ -143,6 +143,16 @@ public final class InputDescriptor {
   }
 
   /**
+   * Gets the delimiter between columns of a <code>txt</code> input file.
+   *
+   * @return the delimiter between columns of a <code>txt</code> input file; or null if there is no
+   *         delimiter.
+   */
+  public double getIgnoreLast() {
+    return ignoreLast;
+  }
+
+  /**
    * Gets delimiter indicating the end of the data of a <code>txt</code> input file.
    *
    * @return delimiter indicating the end of the data of a <code>txt</code> input file; or null if
