@@ -22,9 +22,9 @@ public class Comparison {
      *            between the events in the sequence.
      * @return a Table with a column for every transition between events and one
      *         for between last and first. For example: sequence {A,B,C}, will
-     *         get columns:{A->B, B->C, A->C}.
+     *         get columns:{A-&#62;B, B-&#62;C, A-&#62;C}.
      */
-    public static Table timeBetweenEvents(EventSequence eventSeq) {
+    public static Table timeBetweenEvents(final EventSequence eventSeq) {
         String[] codeSeq = eventSeq.getCodePattern();
         List<Column> colList = makeColListForTBE(codeSeq);
 
@@ -52,7 +52,7 @@ public class Comparison {
         return result;
     }
 
-    private static List<Column> makeColListForTBE(String[] codeSeq) {
+    private static List<Column> makeColListForTBE(final String[] codeSeq) {
         List<Column> result = new ArrayList<Column>();
 
         for (int i = 0; i < codeSeq.length; i++) {
@@ -70,8 +70,8 @@ public class Comparison {
         return result;
     }
 
-    private static void fillTimesBetween(String[] codeSeq,
-            List<EventList> eventSeqList, double[][] timesBetween) {
+    private static void fillTimesBetween(final String[] codeSeq,
+            final List<EventList> eventSeqList, final double[][] timesBetween) {
         for (int i = 0; i < eventSeqList.size(); i++) {
             EventList eList = eventSeqList.get(i);
 
@@ -90,7 +90,7 @@ public class Comparison {
         }
     }
 
-    private static int getTimeBetweenEvents(Event event1, Event event2) {
+    private static int getTimeBetweenEvents(final Event event1, final Event event2) {
         Period per = event1.getDate().until(event2.getDate());
 
         return per.getDays();
