@@ -106,9 +106,9 @@ public class GUImain extends JFrame {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    private void setLookAndFeel(final String name) throws ClassNotFoundException,
-            InstantiationException, IllegalAccessException,
-            UnsupportedLookAndFeelException {
+    private void setLookAndFeel(final String name)
+            throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, UnsupportedLookAndFeelException {
         boolean nimbusFound = false;
         for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             if (name.equals(info.getName())) {
@@ -125,12 +125,14 @@ public class GUImain extends JFrame {
     private void sizeTabs(final int width, final int height) {
         tabbedPane.setUI(new BasicTabbedPaneUI() {
             @Override
-            protected int calculateTabWidth(
-                    final int tabPlacement, final int tabIndex, final FontMetrics metrics) {
+            protected int calculateTabWidth(final int tabPlacement,
+                    final int tabIndex, final FontMetrics metrics) {
                 return width;
             }
+
             @Override
-            protected int calculateTabHeight(final int tabPlacement, final int tabIndex, final int fontHeight) {
+            protected int calculateTabHeight(final int tabPlacement,
+                    final int tabIndex, final int fontHeight) {
                 return height;
             }
         });
@@ -140,9 +142,11 @@ public class GUImain extends JFrame {
      * sets the frame variables.
      */
     private void initializeFrame() {
-        /*int xPos = (dim.width / 2) - (this.getWidth() / 2);
-        int yPos = (dim.height / 2) - (this.getHeight() / 2);
-        this.setLocation(xPos, yPos);*/
+        /*
+         * int xPos = (dim.width / 2) - (this.getWidth() / 2); int yPos =
+         * (dim.height / 2) - (this.getHeight() / 2); this.setLocation(xPos,
+         * yPos);
+         */
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Vidney");
@@ -150,7 +154,8 @@ public class GUImain extends JFrame {
 
     /**
      * Gets a panel by name.
-     * @param name name of the panel
+     * @param name
+     *            name of the panel
      * @return the panel, or null if it does not exist
      */
     public static VidneyPanel getPanel(final String name) {

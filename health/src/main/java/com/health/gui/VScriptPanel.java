@@ -1,13 +1,12 @@
 package com.health.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,6 @@ import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
-import com.health.gui.xmlwizard.XmlWizard;
 
 /**
  * Represents the panel where the script is typed.
@@ -60,70 +58,16 @@ public final class VScriptPanel extends VidneyPanel {
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
-        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        topPanel.add(new JLabel("Script: "));
-        topPanel.add(Box.createRigidArea(new Dimension(100, 0)));
-        VButton loadScriptButton = new VButton("Load existing script");
-
-        loadScriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                JFileChooser loadFile = new JFileChooser();
-                loadFile.setApproveButtonText("Select File");
-                loadFile.setAcceptAllFileFilterUsed(false);
-                FileNameExtensionFilter f1 = new FileNameExtensionFilter(
-                        "Text Files", "txt", "text", "rtf");
-                loadFile.setFileFilter(f1);
-                switch (loadFile.showOpenDialog(new JFrame())) {
-                case JFileChooser.APPROVE_OPTION:
-                    File file = loadFile.getSelectedFile();
-                    try {
-                        VScriptPanel.setScript(file);
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(new JFrame(), "Error",
-                                "Error occured while selecting file",
-                                JOptionPane.OK_OPTION);
-                    }
-                    break;
-                case JFileChooser.ERROR_OPTION:
-                    JOptionPane.showMessageDialog(new JFrame(), "Error",
-                            "Error occured while selecting file",
-                            JOptionPane.OK_OPTION);
-                    loadFile.setSelectedFile(null);
-                }
-            }
-        });
+        topPanel.add(rigidArea());
+        VButton loadScriptButton = createLoadButton();
         topPanel.add(loadScriptButton);
-        VButton clearScriptButton = new VButton("Clear Script");
-        clearScriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                VScriptPanel.setScriptAreaText("");
-            }
-        });
-        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        topPanel.add(rigidArea());
+        VButton clearScriptButton = createClearButton();
         topPanel.add(clearScriptButton);
-        VButton saveScriptButton = new VButton("Save Script");
-        saveScriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                String name = JOptionPane.showInputDialog(new JFrame(),
-                        "Please specify a name for this script file", "Save as..");
-                String filename = "data/scripts/" + name + ".txt";
-                File file = new File(filename);
-
-                try {
-                    FileUtils.writeStringToFile(file, VScriptPanel.getScriptAreaText());
-                } catch (IOException e) {
-                    JOptionPane.showMessageDialog(new JFrame(), "Error",
-                            "Error occured while selecting file. "+e.getCause(),
-                            JOptionPane.OK_OPTION);
-                }
-            }
-        });
-        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        topPanel.add(rigidArea());
+        VButton saveScriptButton = createSaveButton();
         topPanel.add(saveScriptButton);
-        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        topPanel.add(rigidArea());
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
@@ -143,11 +87,104 @@ public final class VScriptPanel extends VidneyPanel {
         return scriptArea.getText();
     }
 
-    private static void setScriptAreaText(String text) {
+    private VButton createSaveButton() {
+        VButton saveScriptButton = new VButton("Save Script");
+        saveScriptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                if (VScriptPanel.getScriptAreaText().equals("")) {
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "You have not typed a script yet.", "Whoops!",
+                            JOptionPane.OK_OPTION);
+                } else {
+                    String name = JOptionPane.showInputDialog(new JFrame(),
+                            "Please specify a name for this script file",
+                            "Save as..");
+                    String filename = "data/scripts/" + name + ".txt";
+                    File file = new File(filename);
+
+                    try {
+                        FileUtils.writeStringToFile(file,
+                                VScriptPanel.getScriptAreaText());
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "Error occured while selecting file.", "Error",
+                                JOptionPane.OK_OPTION);
+                    }
+                }
+            }
+        });
+        return saveScriptButton;
+    }
+
+    private Component rigidArea() {
+        return Box.createRigidArea(new Dimension(50, 0));
+    }
+
+    private VButton createClearButton() {
+        VButton clearScriptButton = new VButton("Clear Script");
+        clearScriptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                VScriptPanel.setScriptAreaText("");
+            }
+        });
+        return clearScriptButton;
+    }
+
+    private VButton createLoadButton() {
+        VButton loadScriptButton = new VButton("Load existing script");
+
+        loadScriptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                JFileChooser loadFile = new JFileChooser();
+                loadFile.setApproveButtonText("Select File");
+                loadFile.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter f1 = new FileNameExtensionFilter(
+                        "Text Files", "txt", "text", "rtf");
+                loadFile.setFileFilter(f1);
+
+                switch (loadFile.showOpenDialog(new JFrame())) {
+                case JFileChooser.APPROVE_OPTION:
+                    File file = loadFile.getSelectedFile();
+                    try {
+                        VScriptPanel.setScript(file);
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(new JFrame(),
+                                "Error occured while selecting file", "Error",
+                                JOptionPane.OK_OPTION);
+                    }
+                    break;
+                case JFileChooser.ERROR_OPTION:
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "Error occured while selecting file", "Error",
+                            JOptionPane.OK_OPTION);
+                    loadFile.setSelectedFile(null);
+                default:
+                    break;
+                }
+            }
+        });
+        return loadScriptButton;
+    }
+
+    /**
+     * Sets the script area text.
+     * @param text
+     *            the text to set
+     */
+    private static void setScriptAreaText(final String text) {
         scriptArea.setText(text);
     }
 
-    protected static void setScript(File file) throws IOException {
+    /**
+     * Reads the txt file containing the script.
+     * @param file
+     *            File containing the script
+     * @throws IOException thrown if there is an IO error
+     */
+    protected static void setScript(final File file) throws IOException {
         String script = FileUtils.readFileToString(file);
         VScriptPanel.setScriptAreaText(script);
 
@@ -196,11 +233,7 @@ public final class VScriptPanel extends VidneyPanel {
         }
 
         private String getScript() {
-            VScriptPanel scriptPanel = (VScriptPanel) GUImain
-                    .getPanel("Step 2: Script");
-            String script = scriptPanel.getScriptAreaText();
-
-            return script;
+            return VScriptPanel.getScriptAreaText();
         }
 
         private List<InputData> getInputData() {

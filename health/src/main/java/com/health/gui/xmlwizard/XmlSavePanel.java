@@ -118,7 +118,7 @@ public class XmlSavePanel extends JPanel {
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(new JFrame(),
                         "'Save as..' operation has failed. Please try again.",
-                        "Error!", JOptionPane.ERROR_MESSAGE);
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -136,7 +136,7 @@ public class XmlSavePanel extends JPanel {
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(new JFrame(),
                         "Save operation has failed. Please try again.",
-                        "Error!", JOptionPane.ERROR_MESSAGE);
+                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

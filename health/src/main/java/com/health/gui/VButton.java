@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+
 /**
  * Represents a extension of JButton with styling applied.
  * @author Bjorn van der Laan
@@ -20,7 +21,8 @@ public class VButton extends JButton {
 
     /**
      * Constructor.
-     * @param text Text on the button
+     * @param text
+     *            Text on the button
      */
     public VButton(final String text) {
         super(text);
