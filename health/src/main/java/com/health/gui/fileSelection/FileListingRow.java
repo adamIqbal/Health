@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import com.health.gui.GUImain;
+import com.health.gui.VButton;
 
 import externalClasses.FileDrop;
 
@@ -99,7 +100,7 @@ public final class FileListingRow {
         fileField.setDisabledTextColor(Color.black);
         fileField.setOpaque(false);
 
-        deleteButton = new JButton("X");
+        deleteButton = new VButton("X");
         lforDelete = new ListenForDeleteFile(fileString);
         deleteButton.addActionListener(lforDelete);
         // filedrop for fileField

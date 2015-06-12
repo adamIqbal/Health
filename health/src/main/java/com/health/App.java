@@ -1,7 +1,6 @@
 package com.health;
 
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.JFrame;
 
 import com.health.gui.GUImain;
 
@@ -21,7 +20,7 @@ final class App {
      * @param args
      *            array of arguments passed to the program.
      */
-    public static void main(final String[] args) {  
+    public static void main(final String[] args) {
         GUImain gui = new GUImain();
     }
 }

@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 import org.apache.commons.io.FileUtils;
 
 import com.health.gui.GUImain;
+import com.health.gui.VButton;
 
 /**
  * Represents the panel where the user can save its new or edited XML Config.
@@ -46,9 +47,9 @@ public class XmlSavePanel extends JPanel {
         this.add(preview, BorderLayout.CENTER);
 
         buttonPanel = new JPanel();
-        JButton saveAsButton = new JButton("Save as..");
+        JButton saveAsButton = new VButton("Save as..");
         saveAsButton.addActionListener(new XmlSaveAsListener());
-        JButton resetButton = new JButton("Go back");
+        JButton resetButton = new VButton("Go back");
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -74,7 +75,7 @@ public class XmlSavePanel extends JPanel {
         }
         
         if (XmlWizard.getXml().getPath() != null) {
-            JButton saveButton = new JButton("Save");
+            JButton saveButton = new VButton("Save");
             saveButton.addActionListener(new XmlSaveListener());
             buttonPanel.add(saveButton);
             buttonPanel.revalidate();

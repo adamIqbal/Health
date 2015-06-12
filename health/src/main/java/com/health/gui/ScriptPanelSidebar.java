@@ -36,7 +36,7 @@ public class ScriptPanelSidebar extends JPanel {
         cards.add(getTextChunking());
         cards.add(getTextConnecting());
 
-        JButton nextButton = new JButton("Next hint!");
+        VButton nextButton = new VButton("Next hint!");
         nextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0) {

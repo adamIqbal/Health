@@ -42,7 +42,7 @@ public final class VScriptPanel extends VidneyPanel {
         scriptArea.setText("");
         mainPanel.add(scriptArea, BorderLayout.CENTER);
 
-        JButton startAnalysisButton = new JButton("Start Analysis");
+        VButton startAnalysisButton = new VButton("Start Analysis");
         startAnalysisButton.addActionListener(new AnalysisListener());
         mainPanel.add(startAnalysisButton, BorderLayout.SOUTH);
 

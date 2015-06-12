@@ -9,7 +9,9 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -66,17 +68,8 @@ public class GUImain extends JFrame {
 
         this.initializeFrame();
 
-        tabbedPane = new JTabbedPane();
-        VidneyPanel inputPanel = new VInputPanel();
-        VidneyPanel scriptPanel = new VScriptPanel();
-        VidneyPanel outputPanel = new VOutputPanel();
-
-        addTab("Step 1: Input", inputPanel);
-        addTab("Step 2: Script", scriptPanel);
-        addTab("Step 3: Output", outputPanel);
-
-        tabbedPane.setBackground(GUImain.GUI_COLOR);
-        sizeTabs(tabWidth, tabHeight);
+        this.createTabbedPane();
+        
         this.add(tabbedPane);
 
         try {
@@ -90,7 +83,23 @@ public class GUImain extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.pack();
         this.setVisible(true);
+    }
+    
+    private void createTabbedPane() {
+        tabbedPane = new JTabbedPane();
+        VidneyPanel inputPanel = new VInputPanel();
+        VidneyPanel scriptPanel = new VScriptPanel();
+        VidneyPanel outputPanel = new VOutputPanel();
+        
+        addTab("Step 1: Input", inputPanel);
+        addTab("Step 2: Script", scriptPanel);
+        addTab("Step 3: Output", outputPanel);
+        
+        tabbedPane.setBackground(GUImain.GUI_COLOR);
+        sizeTabs(tabWidth, tabHeight);
     }
 
     /**
@@ -125,16 +134,16 @@ public class GUImain extends JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
     }
-    
-    private void sizeTabs(int width, int height) {
+
+    private void sizeTabs(final int width, final int height) {
         tabbedPane.setUI(new BasicTabbedPaneUI() {
             @Override
             protected int calculateTabWidth(
-                    int tabPlacement, int tabIndex, FontMetrics metrics) {
-                return width; 
+                    final int tabPlacement, int tabIndex, final FontMetrics metrics) {
+                return width;
             }
             @Override
-            protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
+            protected int calculateTabHeight(final int tabPlacement, final int tabIndex, final int fontHeight) {
                 return height;
             }
         });
@@ -144,16 +153,10 @@ public class GUImain extends JFrame {
      * sets the frame variables.
      */
     private void initializeFrame() {
-        this.setSize(width, height);
-
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension dim = tk.getScreenSize();
-
-        int xPos = (dim.width / 2) - (this.getWidth() / 2);
+        /*int xPos = (dim.width / 2) - (this.getWidth() / 2);
         int yPos = (dim.height / 2) - (this.getHeight() / 2);
-
-        this.setLocation(xPos, yPos);
-        this.setResizable(false);
+        this.setLocation(xPos, yPos);*/
+        
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Vidney");
     }
