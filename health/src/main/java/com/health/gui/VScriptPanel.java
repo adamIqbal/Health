@@ -1,15 +1,27 @@
 package com.health.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.apache.commons.io.FileUtils;
 
 import com.health.control.ControlModule;
 import com.health.control.InputData;
@@ -27,7 +39,7 @@ public final class VScriptPanel extends VidneyPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 4322421568728565558L;
-    private JTextArea scriptArea;
+    private static JTextArea scriptArea;
 
     /**
      * Constructor.
@@ -45,8 +57,54 @@ public final class VScriptPanel extends VidneyPanel {
         startAnalysisButton.addActionListener(new AnalysisListener());
         mainPanel.add(startAnalysisButton, BorderLayout.SOUTH);
 
-        JLabel textAbove = new JLabel("Script: ");
-        mainPanel.add(textAbove, BorderLayout.NORTH);
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
+        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        topPanel.add(new JLabel("Script: "));
+        topPanel.add(Box.createRigidArea(new Dimension(100, 0)));
+        VButton loadScriptButton = new VButton("Load existing script");
+
+        loadScriptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                JFileChooser loadFile = new JFileChooser();
+                loadFile.setApproveButtonText("Select File");
+                loadFile.setAcceptAllFileFilterUsed(false);
+                FileNameExtensionFilter f1 = new FileNameExtensionFilter(
+                        "Text Files", "txt", "text", "rtf");
+                loadFile.setFileFilter(f1);
+                switch (loadFile.showOpenDialog(new JFrame())) {
+                case JFileChooser.APPROVE_OPTION:
+                    File file = loadFile.getSelectedFile();
+                    try {
+                        VScriptPanel.setScript(file);
+                    } catch (IOException e) {
+                        JOptionPane.showMessageDialog(new JFrame(), "Error",
+                                "Error occured while selecting file",
+                                JOptionPane.OK_OPTION);
+                    }
+                    break;
+                case JFileChooser.ERROR_OPTION:
+                    JOptionPane.showMessageDialog(new JFrame(), "Error",
+                            "Error occured while selecting file",
+                            JOptionPane.OK_OPTION);
+                    loadFile.setSelectedFile(null);
+                }
+            }
+        });
+        topPanel.add(loadScriptButton);
+        VButton clearScriptButton = new VButton("Clear Script");
+        clearScriptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                VScriptPanel.setScriptAreaText("");
+            }
+        });
+        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        topPanel.add(clearScriptButton);
+        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+
+        mainPanel.add(topPanel, BorderLayout.NORTH);
 
         this.setLeft(mainPanel);
 
@@ -60,8 +118,18 @@ public final class VScriptPanel extends VidneyPanel {
      *
      * @return a String representation of the script
      */
-    protected String getScriptAreaText() {
+    protected static String getScriptAreaText() {
         return scriptArea.getText();
+    }
+
+    private static void setScriptAreaText(String text) {
+        scriptArea.setText(text);
+    }
+
+    protected static void setScript(File file) throws IOException {
+        String script = FileUtils.readFileToString(file);
+        VScriptPanel.setScriptAreaText(script);
+
     }
 
     /**
@@ -94,18 +162,21 @@ public final class VScriptPanel extends VidneyPanel {
 
                 output = e.getMessage();
 
-                JOptionPane.showMessageDialog(
-                        null,
-                        String.format("An unhandled exception occured while executing the script: %s.", output),
-                        "Script runtime exception",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane
+                        .showMessageDialog(
+                                null,
+                                String.format(
+                                        "An unhandled exception occured while executing the script: %s.",
+                                        output), "Script runtime exception",
+                                JOptionPane.ERROR_MESSAGE);
             }
 
             VOutputPanel.displayData(output);
         }
 
         private String getScript() {
-            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("Step 2: Script");
+            VScriptPanel scriptPanel = (VScriptPanel) GUImain
+                    .getPanel("Step 2: Script");
             String script = scriptPanel.getScriptAreaText();
 
             return script;
@@ -116,10 +187,12 @@ public final class VScriptPanel extends VidneyPanel {
             List<InputData> parsedData = new ArrayList<InputData>();
 
             for (int i = 0; i < files.size(); i++) {
-                String xmlFormat = files.get(i).getXmlFormat().getSelectedItem().toString();
+                String xmlFormat = files.get(i).getXmlFormat()
+                        .getSelectedItem().toString();
                 String fileString = files.get(i).getFileString();
 
-                //TODO: Name the tables to something other than table0 ... tableN
+                // TODO: Name the tables to something other than table0 ...
+                // tableN
                 String name = "table" + i;
 
                 xmlFormat = GUImain.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
