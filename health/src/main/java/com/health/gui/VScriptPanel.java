@@ -100,7 +100,7 @@ public final class VScriptPanel extends VidneyPanel {
                     String name = JOptionPane.showInputDialog(new JFrame(),
                             "Please specify a name for this script file",
                             "Save as..");
-                    String filename = "data/scripts/" + name + ".txt";
+                    String filename = GUImain.PATH_TO_DATA+"scripts/" + name + ".txt";
                     File file = new File(filename);
 
                     try {
@@ -140,7 +140,7 @@ public final class VScriptPanel extends VidneyPanel {
             public void actionPerformed(final ActionEvent arg0) {
                 JFileChooser loadFile = new JFileChooser();
                 loadFile.setApproveButtonText("Select File");
-                loadFile.setCurrentDirectory(new File("data/"));
+                loadFile.setCurrentDirectory(new File(GUImain.PATH_TO_DATA));
                 loadFile.setAcceptAllFileFilterUsed(false);
                 FileNameExtensionFilter f1 = new FileNameExtensionFilter(
                         "Text Files", "txt", "text", "rtf");

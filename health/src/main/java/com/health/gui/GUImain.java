@@ -26,10 +26,13 @@ public class GUImain extends JFrame {
      */
     private static final long serialVersionUID = 4671877202500940942L;
     /**
-     * PATHTOXMLFORMAT is the path to all config xmls.
+     * PATH_TO_DATA is the path to the data folder.
      */
-    public static final String PATH_TO_CONFIG_XML = "data/configXmls/";
-
+    public static final String PATH_TO_DATA = "data/";
+    /**
+     * PATH_TO_CONFIG_XML is the path to all config xmls.
+     */
+    public static final String PATH_TO_CONFIG_XML = PATH_TO_DATA + "configXmls/";
     /**
      * Main color of the GUI.
      */
