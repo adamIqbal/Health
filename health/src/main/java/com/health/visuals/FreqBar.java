@@ -107,8 +107,8 @@ public final class FreqBar {
 
         for (Record r : table) {
             String value = r.getValue(column).toString();
-            int frequency = (int) r.getValue(freqColumn);
-            freqMap.put(value, frequency);
+            double frequency = (Double) r.getValue(freqColumn);
+            freqMap.put(value, (int) frequency);
         }
 
         return freqMap;
