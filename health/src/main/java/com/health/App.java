@@ -1,7 +1,5 @@
 package com.health;
 
-import javax.swing.JFrame;
-
 import com.health.gui.GUImain;
 
 /**
@@ -10,8 +8,6 @@ import com.health.gui.GUImain;
  */
 final class App {
     private App() {
-        // Private constructor to prevent instantiation since Java lacks static
-        // classes
     }
 
     /**
@@ -21,6 +17,6 @@ final class App {
      *            array of arguments passed to the program.
      */
     public static void main(final String[] args) {
-        GUImain gui = new GUImain();
+        new GUImain();
     }
 }

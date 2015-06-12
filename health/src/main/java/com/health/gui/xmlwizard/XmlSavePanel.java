@@ -73,7 +73,7 @@ public class XmlSavePanel extends JPanel {
         if (buttonPanel.getComponents().length == 3) {
             buttonPanel.remove(buttonPanel.getComponents()[2]);
         }
-        
+
         if (XmlWizard.getXml().getPath() != null) {
             JButton saveButton = new VButton("Save");
             saveButton.addActionListener(new XmlSaveListener());

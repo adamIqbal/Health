@@ -64,7 +64,7 @@ public final class AggregateFunctions {
             double min = Double.POSITIVE_INFINITY;
 
             for (int i = 0; i < data.length; i++) {
-                data[i] = Math.min(min, data[i]);
+                min = Math.min(min, data[i]);
             }
 
             return min;
@@ -82,7 +82,7 @@ public final class AggregateFunctions {
             double max = Double.NEGATIVE_INFINITY;
 
             for (int i = 0; i < data.length; i++) {
-                data[i] = Math.max(max, data[i]);
+                max = Math.max(max, data[i]);
             }
 
             return max;

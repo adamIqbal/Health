@@ -13,11 +13,15 @@ import com.health.input.InputException;
 import com.health.interpreter.Interpreter;
 import com.health.output.Output;
 import com.health.script.runtime.Context;
+import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.StringValue;
 import com.health.script.runtime.TableValue;
+import com.health.visuals.BoxPlot;
+import com.health.visuals.FreqBar;
+import com.health.visuals.Histogram;
 
 /**
- * 
+ *
  */
 public final class ControlModule {
     private String script;
@@ -91,6 +95,11 @@ public final class ControlModule {
     private Context createContext() {
         Context context = new Context();
 
+        context.declareStaticMethod("println", (args) -> {
+            System.out.println(((StringValue) args[0]).getValue());
+            return null;
+        });
+
         context.declareStaticMethod("write", (args) -> {
             Output.writeTable(((StringValue) args[0]).getValue(), ((TableValue) args[1]).getValue());
             return null;
@@ -99,6 +108,24 @@ public final class ControlModule {
         context.declareStaticMethod("writeFormatted", (args) -> {
             Output.writeTable(((StringValue) args[0]).getValue(), ((TableValue) args[1]).getValue(),
                     ((StringValue) args[2]).getValue());
+            return null;
+        });
+
+        context.declareStaticMethod("freqbar", (args) -> {
+            FreqBar.frequencyBar(((TableValue) args[0]).getValue());
+            return null;
+        });
+
+        context.declareStaticMethod("boxplot", (args) -> {
+            BoxPlot.boxPlot(((TableValue) args[0]).getValue(), ((StringValue) args[1]).getValue());
+            return null;
+        });
+
+        context.declareStaticMethod("hist", (args) -> {
+            Histogram.createHistogram(
+                    ((TableValue) args[0]).getValue(),
+                    ((StringValue) args[1]).getValue(),
+                    (int) ((NumberValue) args[2]).getValue());
             return null;
         });
 

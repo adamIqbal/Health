@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -61,7 +60,7 @@ public final class VScriptPanel extends VidneyPanel {
      *
      * @return a String representation of the script
      */
-    protected final String getScriptAreaText() {
+    protected String getScriptAreaText() {
         return scriptArea.getText();
     }
 
@@ -106,7 +105,7 @@ public final class VScriptPanel extends VidneyPanel {
         }
 
         private String getScript() {
-            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("script");
+            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("Step 2: Script");
             String script = scriptPanel.getScriptAreaText();
 
             return script;
@@ -120,7 +119,7 @@ public final class VScriptPanel extends VidneyPanel {
                 String xmlFormat = files.get(i).getXmlFormat().getSelectedItem().toString();
                 String fileString = files.get(i).getFileString();
 
-                // TODO: Name the tables to something other than table0 ... tableN
+                //TODO: Name the tables to something other than table0 ... tableN
                 String name = "table" + i;
 
                 xmlFormat = GUImain.PATH_TO_CONFIG_XML + xmlFormat + ".xml";

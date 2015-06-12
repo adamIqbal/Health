@@ -2,11 +2,9 @@ package com.health.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -30,7 +28,6 @@ public class ScriptPanelSidebar extends JPanel {
         this.setBackground(GUImain.GUI_COLOR);
 
         JPanel cards = new JPanel();
-        cards.setPreferredSize(new Dimension(200, 450));
         cards.setOpaque(false);
         cards.setLayout(new CardLayout());
         cards.add(getTextChunking());

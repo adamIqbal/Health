@@ -1,21 +1,16 @@
 package com.health.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.FontMetrics;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 /**
@@ -44,14 +39,6 @@ public class GUImain extends JFrame {
     private JTabbedPane tabbedPane;
 
     /**
-     * Width of the GUI.
-     */
-    private final int width = 1000;
-    /**
-     * Height of the GUI.
-     */
-    private final int height = 618;
-    /**
      * Width of the tabs.
      */
     private final int tabWidth = 330;
@@ -69,7 +56,7 @@ public class GUImain extends JFrame {
         this.initializeFrame();
 
         this.createTabbedPane();
-        
+
         this.add(tabbedPane);
 
         try {
@@ -87,17 +74,17 @@ public class GUImain extends JFrame {
         this.pack();
         this.setVisible(true);
     }
-    
+
     private void createTabbedPane() {
         tabbedPane = new JTabbedPane();
         VidneyPanel inputPanel = new VInputPanel();
         VidneyPanel scriptPanel = new VScriptPanel();
         VidneyPanel outputPanel = new VOutputPanel();
-        
+
         addTab("Step 1: Input", inputPanel);
         addTab("Step 2: Script", scriptPanel);
         addTab("Step 3: Output", outputPanel);
-        
+
         tabbedPane.setBackground(GUImain.GUI_COLOR);
         sizeTabs(tabWidth, tabHeight);
     }
@@ -139,7 +126,7 @@ public class GUImain extends JFrame {
         tabbedPane.setUI(new BasicTabbedPaneUI() {
             @Override
             protected int calculateTabWidth(
-                    final int tabPlacement, int tabIndex, final FontMetrics metrics) {
+                    final int tabPlacement, final int tabIndex, final FontMetrics metrics) {
                 return width;
             }
             @Override
@@ -156,7 +143,7 @@ public class GUImain extends JFrame {
         /*int xPos = (dim.width / 2) - (this.getWidth() / 2);
         int yPos = (dim.height / 2) - (this.getHeight() / 2);
         this.setLocation(xPos, yPos);*/
-        
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Vidney");
     }

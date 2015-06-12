@@ -129,19 +129,7 @@ public final class Connect {
 
                 }
 
-                switch (column.getType()) {
-                case String:
-                    record.setValue(name, recList.get(i).getStringValue(newName));
-                    break;
-                case Number:
-                    record.setValue(name, recList.get(i).getNumberValue(newName));
-                    break;
-                case Date:
-                    record.setValue(name, recList.get(i).getDateValue(newName));
-                    break;
-                default:
-                    // error
-                }
+                record.setValue(name, recList.get(i).getValue(newName));
             }
         }
     }
