@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
+import com.health.ValueType;
 
 /**
  * A class for all chunking operations.
@@ -81,7 +83,9 @@ public final class Chunk {
 
             List<Record> chunk = findRecordsInPeriod(table, column, beginPer, endOfPer);
 
-            groups.put(beginPer, chunk);
+            if (chunk.size() > 0) {
+                groups.put(beginPer, chunk);
+            }
 
             beginPer = endOfPer;
         }
@@ -123,18 +127,49 @@ public final class Chunk {
         List<Column> columns = createChunkTableColumns(table, keyColumn, operations);
         Table chunkedTable = new Table(columns);
 
-        for (Entry<Object, List<Record>> entry : groups.entrySet()) {
+        for (Entry<Object, List<Record>> entry : asSortedList(groups.entrySet())) {
             List<Record> chunk = entry.getValue();
             Record chunkedRecord = new Record(chunkedTable);
 
-            for (ColumnAggregateTuple operation : operations) {
-                double value = aggregate(chunk, operation.getColumn(), operation.getFunction());
+            chunkedRecord.setValue(keyColumn, entry.getKey());
 
-                chunkedRecord.setValue(operation.getColumn(), value);
+            for (ColumnAggregateTuple operation : operations) {
+                String column = operation.getColumn();
+
+                if (operation.hasFunction()) {
+                    double value = aggregate(chunk, column, operation.getFunction());
+
+                    chunkedRecord.setValue(operation.getAggregateColumn(), value);
+                } else {
+                    chunkedRecord.setValue(operation.getColumn(), chunk.get(0).getValue(column));
+                }
             }
         }
 
         return chunkedTable;
+    }
+
+    private static Iterable<Entry<Object, List<Record>>> asSortedList(final Set<Entry<Object, List<Record>>> entrySet) {
+        List<Entry<Object, List<Record>>> list = new ArrayList<Entry<Object, List<Record>>>(entrySet);
+
+        if (list.isEmpty()) {
+            return list;
+        }
+
+        Class<?> type = list.get(0).getKey().getClass();
+
+        if (Double.class.isAssignableFrom(type)) {
+            list.sort((a, b) -> ((Double) a.getKey()).compareTo((Double) b.getKey()));
+        } else if (String.class.isAssignableFrom(type)) {
+            list.sort((a, b) -> ((String) a.getKey()).compareTo((String) b.getKey()));
+        } else if (LocalDate.class.isAssignableFrom(type)) {
+            list.sort((a, b) -> ((LocalDate) a.getKey()).compareTo((LocalDate) b.getKey()));
+        } else {
+            throw new IllegalStateException("Found illegal type in entrySet. "
+                    + "EntrySet can only contain keys of type Double, String or LocalDate.");
+        }
+
+        return list;
     }
 
     private static double aggregate(
@@ -158,16 +193,25 @@ public final class Chunk {
 
         chunkedTableColumns.add(new Column(keyColumn, 0, table.getColumn(keyColumn).getType()));
 
-        int i = 0;
+        int i = 1;
         for (ColumnAggregateTuple operation : operations) {
-            String name = operation.getColumn();
-            Column column = table.getColumn(name);
-            String newName = operation.getFunction().getName() + "_" + name;
-
-            chunkedTableColumns.add(new Column(newName, i, column.getType()));
+            chunkedTableColumns.add(createColumn(table, i++, operation));
         }
 
         return chunkedTableColumns;
+    }
+
+    private static Column createColumn(
+            final Table table,
+            final int index,
+            final ColumnAggregateTuple operation) {
+        Column column = table.getColumn(operation.getColumn());
+
+        if (operation.hasFunction()) {
+            return new Column(operation.getAggregateColumn(), index, ValueType.Number);
+        } else {
+            return new Column(operation.getColumn(), index, column.getType());
+        }
     }
 
     private static LocalDate getFirstDate(final Table table, final String column) {

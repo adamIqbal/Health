@@ -41,7 +41,7 @@ public final class FreqBar {
         Column freqColumn = null;
         Column dateColumn = null;
         for (Column c : table.getColumns()) {
-            if (c.getIsFrequencyColumn()) {
+            if (c.isFrequencyColumn()) {
                 freqColumn = c;
             } else if (c.getType() == ValueType.Date) {
                 dateColumn = c;
@@ -71,7 +71,7 @@ public final class FreqBar {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
-            if (c.getIsFrequencyColumn()) {
+            if (c.isFrequencyColumn()) {
                 freqColumn = c;
             }
         }
@@ -107,8 +107,8 @@ public final class FreqBar {
 
         for (Record r : table) {
             String value = r.getValue(column).toString();
-            int frequency = (int) r.getValue(freqColumn);
-            freqMap.put(value, frequency);
+            double frequency = (Double) r.getValue(freqColumn);
+            freqMap.put(value, (int) frequency);
         }
 
         return freqMap;

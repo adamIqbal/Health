@@ -1,5 +1,14 @@
 package com.health;
-
+/**
+ * File types supported in the program.
+ */
 public enum FileType {
-	TXT, XLS
+	/**
+	 * Represents the txt format.
+	 */
+    TXT,
+    /**
+     * Represents the xls (Excel) format.
+     */
+    XLS
 }

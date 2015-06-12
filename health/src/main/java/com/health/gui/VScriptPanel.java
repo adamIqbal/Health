@@ -61,7 +61,7 @@ public final class VScriptPanel extends VidneyPanel {
      *
      * @return a String representation of the script
      */
-    protected final String getScriptAreaText() {
+    protected String getScriptAreaText() {
         return scriptArea.getText();
     }
 
@@ -106,7 +106,7 @@ public final class VScriptPanel extends VidneyPanel {
         }
 
         private String getScript() {
-            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("script");
+            VScriptPanel scriptPanel = (VScriptPanel) GUImain.getPanel("Step 2: Script");
             String script = scriptPanel.getScriptAreaText();
 
             return script;

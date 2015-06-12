@@ -10,6 +10,7 @@ import com.health.operations.AggregateFunctions;
 import com.health.operations.Chunk;
 import com.health.operations.ColumnAggregateTuple;
 import com.health.script.MyScriptParser;
+import com.health.script.MyScriptParser.ChunkSelectionListContext;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.TableValue;
@@ -51,7 +52,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         verifyHasColumn(table, tableIdent, columnIdent);
 
         List<ColumnAggregateTuple> aggregateFunctions =
-                evaluateAggragateOperations(ctx.columnAggregateOperation());
+                evaluateChunkSelectionList(ctx.chunkSelectionList());
 
         if (ctx.periodSpecifier() != null) {
             Period period = evaluatePeriod(ctx.periodSpecifier().period());
@@ -60,6 +61,26 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         } else {
             return new TableValue(Chunk.chunkByColumn(table, columnIdent, aggregateFunctions));
         }
+    }
+
+    private List<ColumnAggregateTuple> evaluateChunkSelectionList(final ChunkSelectionListContext ctx) {
+        List<ColumnAggregateTuple> aggregateFunctions = new ArrayList<ColumnAggregateTuple>();
+
+        evaluateChunkSelectionList(ctx, aggregateFunctions);
+
+        return aggregateFunctions;
+    }
+
+    private void evaluateChunkSelectionList(
+            final ChunkSelectionListContext ctx,
+            final List<ColumnAggregateTuple> aggregateFunctions) {
+        if (ctx == null) {
+            return;
+        }
+
+        evaluateChunkSelectionList(ctx.chunkSelectionList(), aggregateFunctions);
+
+        aggregateFunctions.add(evaluateColumnOrAggragateOperation(ctx.columnOrAggregateOperation()));
     }
 
     private static Period evaluatePeriod(final MyScriptParser.PeriodContext ctx) {
@@ -104,21 +125,22 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static List<ColumnAggregateTuple> evaluateAggragateOperations(
-            final List<MyScriptParser.ColumnAggregateOperationContext> columnAggregateOperation) {
-        List<ColumnAggregateTuple> aggregateFunctions = new ArrayList<ColumnAggregateTuple>();
+    private static ColumnAggregateTuple evaluateColumnOrAggragateOperation(
+            final MyScriptParser.ColumnOrAggregateOperationContext ctx) {
 
-        for (MyScriptParser.ColumnAggregateOperationContext ctx : columnAggregateOperation) {
-            aggregateFunctions.add(new ColumnAggregateTuple(
+        if (ctx.aggregateOperation() == null) {
+            return new ColumnAggregateTuple(ctx.IDENTIFIER().getText());
+        } else {
+            return new ColumnAggregateTuple(
                     ctx.IDENTIFIER().getText(),
-                    evaluateAggragateOperation(ctx.aggregateOperation())));
+                    evaluateAggragateOperation(ctx.aggregateOperation()));
         }
-
-        return aggregateFunctions;
     }
 
     private static AggregateFunction evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
         switch (ctx.getText()) {
+        case "count":
+            return AggregateFunctions.count();
         case "average":
             return AggregateFunctions.average();
         case "sum":

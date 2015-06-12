@@ -55,6 +55,7 @@ nonAssignmentExpression
     | chunkExpression
     | constrainExpression
     | connectExpression
+    | codeExpression
     ;
 
 primaryExpression
@@ -66,7 +67,7 @@ primaryExpression
     ;
 
 chunkExpression
-    : 'chunk' table=IDENTIFIER 'by' 'column'? column=IDENTIFIER periodSpecifier? columnAggregateOperation*
+    : 'chunk' table=IDENTIFIER 'by' column=IDENTIFIER periodSpecifier? (','? 'select' chunkSelectionList)?
     ;
 
 periodSpecifier
@@ -90,6 +91,23 @@ pluralTimeUnit
     | 'weeks'
     | 'months'
     | 'years'
+    ;
+
+chunkSelectionList
+    : chunkSelectionList ',' columnOrAggregateOperation
+    | columnOrAggregateOperation
+    ;
+
+columnOrAggregateOperation
+    : (aggregateOperation 'of')? column=IDENTIFIER
+    ;
+
+aggregateOperation
+    : 'count'
+    | 'average'
+    | 'sum'
+    | 'min'
+    | 'max'
     ;
 
 constrainExpression
@@ -119,18 +137,6 @@ comparisonOperator
     | '>='
     ;
 
-columnAggregateOperation
-    : ',' aggregateOperation 'of' IDENTIFIER
-    ;
-
-aggregateOperation
-    : 'count'
-    | 'average'
-    | 'sum'
-    | 'min'
-    | 'max'
-    ;
-
 connectExpression
     : 'connect' table1=IDENTIFIER 'with' table2=IDENTIFIER 'where' columnConnectionList
     ;
@@ -142,6 +148,19 @@ columnConnectionList
 
 columnConnection
     : column1=IDENTIFIER '=' column2=IDENTIFIER ('as' newName=IDENTIFIER)?
+    ;
+
+codeExpression
+    : 'code' table=IDENTIFIER 'as' codeList
+    ;
+
+codeList
+    : codeList ',' code
+    | code
+    ;
+
+code
+    : IDENTIFIER ':' conditionalExpression
     ;
 
 argumentList
@@ -211,8 +230,12 @@ IDENTIFIER
     : [a-zA-Z0-9][a-zA-Z0-9_]*
     ;
 
-SPACES
-    : [ \t\r\n] -> skip
+COMMENT
+    : '//' ~[\r\n]* -> skip
+    ;
+
+WHITESPACE
+    : [ \r\t\u000C'\n]+ -> skip
     ;
 
 fragment EXPONENT: [eE][+-]DECIMAL_DIGITS ;

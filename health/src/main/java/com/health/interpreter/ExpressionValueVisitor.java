@@ -23,6 +23,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
     private final ChunkExpressionInterpreter chunkExpressionInterpreter;
     private final ConstrainExpressionInterpreter constrainExpressionInterpreter;
     private final ConnectExpressionInterpreter connectExpressionInterpreter;
+    private final CodeExpressionInterpreter codeExpressionInterpreter;
 
     /**
      * Creates a new {@link ExpressionValueVisitor} with the given context.
@@ -37,6 +38,7 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
         this.chunkExpressionInterpreter = new ChunkExpressionInterpreter(context, this);
         this.constrainExpressionInterpreter = new ConstrainExpressionInterpreter(context, this);
         this.connectExpressionInterpreter = new ConnectExpressionInterpreter(context, this);
+        this.codeExpressionInterpreter = new CodeExpressionInterpreter(context, this);
     }
 
     @Override
@@ -117,6 +119,11 @@ public final class ExpressionValueVisitor extends MyScriptBaseVisitor<Value> {
     @Override
     public Value visitConnectExpression(final MyScriptParser.ConnectExpressionContext ctx) {
         return this.connectExpressionInterpreter.interpret(ctx);
+    }
+
+    @Override
+    public Value visitCodeExpression(final MyScriptParser.CodeExpressionContext ctx) {
+        return this.codeExpressionInterpreter.interpret(ctx);
     }
 
     /**
