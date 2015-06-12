@@ -1,27 +1,24 @@
 package com.health;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 
 /**
  * Represents a collection of {@link Column}s and {@link Record}s.
  *
  * @author Martijn
  */
-public final class Table implements Iterable<Chunk> {
+public final class Table implements Iterable<Record> {
     private List<Column> columns;
     private Map<String, Column> columnMap;
-    private Chunk records;
+    private List<Record> records;
 
     /**
      * Constructs a table with the given columns. Each column must have a unique
@@ -42,7 +39,7 @@ public final class Table implements Iterable<Chunk> {
 
         this.columns = new ArrayList<Column>();
         this.columnMap = new HashMap<String, Column>();
-        this.records = new Chunk();
+        this.records = new ArrayList<Record>();
 
         for (Column column : columns) {
             this.columns.add(column);
@@ -50,7 +47,7 @@ public final class Table implements Iterable<Chunk> {
         }
 
         // Sort the columns by index and make the list read-only
-        this.columns.sort(new ColumnComparator());
+        this.columns.sort((a, b) -> Integer.compare(a.getIndex(), b.getIndex()));
         this.columns = Collections.unmodifiableList(this.columns);
     }
 
@@ -128,70 +125,13 @@ public final class Table implements Iterable<Chunk> {
         return Collections.unmodifiableList(this.records);
     }
 
-
-
     /**
-     * Groups the records of this table on the given key, and projects the
-     * groups onto a table identical to the current table using the given result
-     * selector.
+     * Returns the number of records in this table.
      *
-     * @param keyColumn
-     *            the key on which to group.
-     * @param resultSelector
-     *            a function that projects a group onto a record.
-     * @return the table containing the grouped records.
+     * @return the number of records in this table.
      */
-    public Table groupBy(
-            final String keyColumn,
-            final TriFunction<Object, Table, Record> resultSelector) {
-        return this.groupBy(keyColumn, new Table(this.columns), resultSelector);
-    }
-
-    /**
-     * Groups the records of this table on the given key, and projects the
-     * groups onto a given table using the given result selector.
-     *
-     * @param keyColumn
-     *            the key on which to group.
-     * @param resultTable
-     *            the table that will contain the grouped records.
-     * @param resultSelector
-     *            a function that projects a group onto a record.
-     * @return the table containing the grouped records.
-     */
-    public Table groupBy(
-            final String keyColumn,
-            final Table resultTable,
-            final TriFunction<Object, Table, Record> resultSelector) {
-        if (this.getColumn(keyColumn) == null) {
-            throw new IllegalArgumentException(String.format(
-                    "The table does not contain a column named '%s'.",
-                    keyColumn));
-        }
-
-        Map<Object, Table> groups = new HashMap<Object, Table>();
-
-        // Group all the records by their key
-        for (Record record : this.records) {
-            Object key = record.getValue(keyColumn);
-            Table group = groups.get(key);
-
-            if (group == null) {
-                group = new Table(this.columns);
-                groups.put(key, group);
-            }
-
-            record.copyTo(group);
-        }
-
-        // Convert each group to a single record
-        for (Entry<Object, Table> entry : groups.entrySet()) {
-            Record result = new Record(resultTable);
-
-            resultSelector.apply(entry.getKey(), entry.getValue(), result);
-        }
-
-        return resultTable;
+    public int size() {
+        return this.records.size();
     }
 
     /**
@@ -200,8 +140,8 @@ public final class Table implements Iterable<Chunk> {
      * @return a chunk iterator that can be used to iterate over this table.
      */
     @Override
-    public Iterator<Chunk> iterator() {
-        return Arrays.asList(this.records).iterator();
+    public Iterator<Record> iterator() {
+        return this.records.iterator();
     }
 
     private static void verifyColumnIndices(final Iterable<Column> columns) {
@@ -246,4 +186,14 @@ public final class Table implements Iterable<Chunk> {
                     "The indices of the columns must be in the range [0, n).");
         }
     }
+    
+    public Column getDateColumn(){
+        for(int i = 0; i < columns.size(); i++){
+            if(columns.get(i).getType() == ValueType.Date){
+                return columns.get(i);
+            }
+        }
+        return null;
+    }
+    
 }

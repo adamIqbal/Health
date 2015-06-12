@@ -2,7 +2,8 @@ package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -13,7 +14,9 @@ import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
@@ -23,7 +26,6 @@ import com.health.gui.GUImain;
 /**
  * Represents the panel where the user can either select a xml file to edit, or
  * create a new xml file.
- * 
  * @author Bjorn
  *
  */
@@ -42,41 +44,51 @@ class XmlFilePanel extends JPanel {
 
         // add list model
         DefaultListModel<Path> listModel = new DefaultListModel<Path>();
-        fileList = new FileList(Paths.get(GUImain.PATHTOXMLFORMATS), listModel);
+        fileList = new FileList(Paths.get(GUImain.PATH_TO_CONFIG_XML),
+                listModel);
         this.add(fileList, BorderLayout.CENTER);
 
-        // add buttons
         JPanel buttonPanel = new JPanel();
-        newFileButton = new JButton("Create a new file");
-        selectFileButton = new JButton("Edit selected file");
+        buttonPanel.setLayout(new GridLayout(1, 2));
+        newFileButton = new JButton("Create new..");
+        selectFileButton = new JButton("Edit selected");
+
+        newFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                XmlWizard.setXml(new XmlConfigObject());
+                XmlWizard.getEditPanel().setValues();
+                XmlWizard.nextPanel();
+            }
+        });
+
+        selectFileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                if (fileList.getSelectedValue() != null) {
+                    XmlConfigObject xml = new XmlConfigObject();
+
+                    xml.setPath(fileList.getSelectedValue());
+                    XmlWizard.setXml(xml);
+                    XmlWizard.getEditPanel().setValues();
+
+                    XmlWizard.nextPanel();
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "You have not selected a file yet.", "Warning!",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
         buttonPanel.add(newFileButton);
         buttonPanel.add(selectFileButton);
+        this.setOpaque(false);
         this.add(buttonPanel, BorderLayout.SOUTH);
-    }
-
-    public JButton getNewFileButton() {
-        return newFileButton;
-    }
-
-    public JButton getSelectFileButton() {
-        return selectFileButton;
-    }
-
-    public void addActionListenerToNewFileButton(final ActionListener al) {
-        newFileButton.addActionListener(al);
-    }
-
-    public void addActionListenerToSelectFileButton(final ActionListener al) {
-        selectFileButton.addActionListener(al);
-    }
-
-    public Path getSelectedFile() {
-        return this.fileList.getSelectedValue();
     }
 
     /**
      * Lists the XML files in the specified folder.
-     * 
      * @author Bjorn van der Laan
      *
      */

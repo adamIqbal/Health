@@ -1,11 +1,10 @@
 package com.health.gui.xmlwizard;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.nio.file.Path;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,7 +20,6 @@ import com.health.input.InputException;
 /**
  * Represents the wizard panel where one can specify the delimiters and columns
  * of the Config XML.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -30,7 +28,6 @@ public class XmlEditPanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 2790653737107250316L;
-    private Path xml;
     private XmlStartEditPanel startPanel;
     private XmlColumnEditPanel columnPanel;
 
@@ -38,44 +35,32 @@ public class XmlEditPanel extends JPanel {
     private JButton continueButton;
 
     /**
-     * Constructs a XmlEditPanel object
+     * Constructs a XmlEditPanel object.
      */
     public XmlEditPanel() {
         super();
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setLayout(new BorderLayout());
+        this.setOpaque(false);
 
         startPanel = new XmlStartEditPanel();
-        this.add(startPanel);
-
+        this.add(startPanel, BorderLayout.NORTH);
         columnPanel = new XmlColumnEditPanel();
-        this.add(columnPanel);
+        this.add(columnPanel, BorderLayout.CENTER);
 
         continueButton = new JButton("Continue");
-        this.add(continueButton);
-    }
-
-    /**
-     * gets the continueButton attribute.
-     * 
-     * @return JButton continueButton
-     */
-    public final JButton getContinueButton() {
-        return this.continueButton;
-    }
-
-    /**
-     * Adds an ActionListener to the continueButton.
-     * 
-     * @param al
-     *            ActionListener to be added
-     */
-    public final void addActionListenerToContinueButton(final ActionListener al) {
-        continueButton.addActionListener(al);
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                XmlWizard.setXml(getValues());
+                XmlWizard.getSavePanel().setValues();
+                XmlWizard.nextPanel();
+            }
+        });
+        this.add(continueButton, BorderLayout.SOUTH);
     }
 
     /**
      * Models the input values as a {@link XmlConfigObject} and returns it.
-     * 
      * @return XmlConfigObject containing the input values
      */
     public final XmlConfigObject getValues() {
@@ -85,10 +70,7 @@ public class XmlEditPanel extends JPanel {
         config.setValues(startPanel.getValues(config.getType()));
         config.setColumns(columnPanel.getColumns());
         config.setColumnTypes(columnPanel.getColumnTypes());
-
-        if (this.xml != null) {
-            config.setPath(this.xml);
-        }
+        config.setPath(XmlWizard.getXml().getPath());
 
         return config;
     }
@@ -96,30 +78,42 @@ public class XmlEditPanel extends JPanel {
     /**
      * Loads current values of the selected XML file en sets the fields of the
      * panel.
-     * 
-     * @param xml
-     *            Path of XML file to edit
      */
-    public final void setValues(final Path xml) {
-        try {
-            InputDescriptor id = new InputDescriptor(xml.toString());
+    public final void setValues() {
+        XmlConfigObject xml = XmlWizard.getXml();
+        if (xml.getPath() != null) {
+            try {
+                // I know. But using it to parse the xml
+                InputDescriptor id = new InputDescriptor(xml.getPath()
+                        .toString());
 
-            if (id.getFormat().equals("xlsx") || id.getFormat().equals("xls")) {
+                if (id.getFormat().equals("xlsx")
+                        || id.getFormat().equals("xls")) {
+                    String[] values = {
+                            Integer.toString(id.getStartCell().getStartRow()),
+                            Integer.toString(id.getStartCell().getStartColumn()) };
+                    startPanel.setValues(values, FileType.XLS);
+                    startPanel.setFileType(FileType.XLS);
+                } else {
+                    // default case: txt
+                    String[] values = {id.getStartDelimiter(),
+                            id.getEndDelimiter(), id.getDelimiter() };
+                    startPanel.setValues(values, FileType.TXT);
+                    startPanel.setFileType(FileType.TXT);
+                }
+
+                columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
+            } catch (ParserConfigurationException | SAXException | IOException
+                    | InputException e) {
+                XmlWizard.prevPanel();
                 JOptionPane.showMessageDialog(new JFrame(),
-                        "XLS support has not been implemented yet.", "Whoops!",
-                        JOptionPane.WARNING_MESSAGE);
-            } else {
-                String[] values = { id.getStartDelimiter(),
-                        id.getEndDelimiter(), id.getDelimiter() };
-                startPanel.setValues(values, FileType.TXT);
+                        "The file is not found. Error: " + e.getMessage(),
+                        "Error loading file", JOptionPane.ERROR_MESSAGE);
             }
-
-            // set the columns
-            columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
-            this.xml = xml;
-        } catch (ParserConfigurationException | SAXException | IOException
-                | InputException e) {
-            System.out.println("Error loading: " + xml.toString());
+        } else {
+            // case where new xml is created
+            startPanel.setValues(null, FileType.TXT);
+            columnPanel.clearColumns();
         }
     }
 }
