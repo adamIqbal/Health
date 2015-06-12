@@ -27,6 +27,7 @@ import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
+import com.health.gui.xmlwizard.XmlWizard;
 
 /**
  * Represents the panel where the script is typed.
@@ -102,6 +103,26 @@ public final class VScriptPanel extends VidneyPanel {
         });
         topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         topPanel.add(clearScriptButton);
+        VButton saveScriptButton = new VButton("Save Script");
+        saveScriptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                String name = JOptionPane.showInputDialog(new JFrame(),
+                        "Please specify a name for this script file", "Save as..");
+                String filename = "data/scripts/" + name + ".txt";
+                File file = new File(filename);
+
+                try {
+                    FileUtils.writeStringToFile(file, VScriptPanel.getScriptAreaText());
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(new JFrame(), "Error",
+                            "Error occured while selecting file. "+e.getCause(),
+                            JOptionPane.OK_OPTION);
+                }
+            }
+        });
+        topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        topPanel.add(saveScriptButton);
         topPanel.add(Box.createRigidArea(new Dimension(10, 0)));
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
