@@ -230,8 +230,12 @@ IDENTIFIER
     : [a-zA-Z0-9][a-zA-Z0-9_]*
     ;
 
-SPACES
-    : [ \t\r\n] -> skip
+COMMENT
+    : '//' ~[\r\n]* -> skip
+    ;
+
+WHITESPACE
+    : [ \r\t\u000C'\n]+ -> skip
     ;
 
 fragment EXPONENT: [eE][+-]DECIMAL_DIGITS ;
