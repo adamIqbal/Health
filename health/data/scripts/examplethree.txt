@@ -1,0 +1,4 @@
+// Selects measurements whose values are below 300
+var table = constrain table0 where value < 300;
+
+writeFormatted("out.txt", table, "{date}: {value}");

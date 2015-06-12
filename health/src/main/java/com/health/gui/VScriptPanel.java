@@ -140,6 +140,7 @@ public final class VScriptPanel extends VidneyPanel {
             public void actionPerformed(final ActionEvent arg0) {
                 JFileChooser loadFile = new JFileChooser();
                 loadFile.setApproveButtonText("Select File");
+                loadFile.setCurrentDirectory(new File("data/"));
                 loadFile.setAcceptAllFileFilterUsed(false);
                 FileNameExtensionFilter f1 = new FileNameExtensionFilter(
                         "Text Files", "txt", "text", "rtf");
