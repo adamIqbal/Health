@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.health.ValueType;
+import com.health.gui.VButton;
 
 /**
  * Represents the panel one can edit the columns.
@@ -147,7 +148,7 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
 
         columnName.setText(name);
 
-        JButton deleteButton = new JButton("Delete");
+        VButton deleteButton = new VButton("Delete");
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {

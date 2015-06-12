@@ -22,6 +22,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
 import com.health.gui.GUImain;
+import com.health.gui.VButton;
 
 /**
  * Represents the panel where the user can either select a xml file to edit, or
@@ -50,8 +51,8 @@ class XmlFilePanel extends JPanel {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 2));
-        newFileButton = new JButton("Create new..");
-        selectFileButton = new JButton("Edit selected");
+        newFileButton = new VButton("Create new..");
+        selectFileButton = new VButton("Edit selected");
 
         newFileButton.addActionListener(new ActionListener() {
             @Override
