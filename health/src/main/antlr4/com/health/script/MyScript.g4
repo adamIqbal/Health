@@ -55,6 +55,7 @@ nonAssignmentExpression
     | chunkExpression
     | constrainExpression
     | connectExpression
+    | codeExpression
     ;
 
 primaryExpression
@@ -147,6 +148,19 @@ columnConnectionList
 
 columnConnection
     : column1=IDENTIFIER '=' column2=IDENTIFIER ('as' newName=IDENTIFIER)?
+    ;
+
+codeExpression
+    : 'code' table=IDENTIFIER 'as' codeList
+    ;
+
+codeList
+    : codeList ',' code
+    | code
+    ;
+
+code
+    : IDENTIFIER ':' conditionalExpression
     ;
 
 argumentList
