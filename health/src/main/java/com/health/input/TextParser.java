@@ -102,7 +102,7 @@ public final class TextParser implements Parser {
   private Table deleteLastLines(final Table table, final InputDescriptor config) {
 
     int deletions = config.getIgnoreLast();
-    int size = table.size();
+    int size = table.size()-1;
     List<Record> tab = table.getRecords();
     while (deletions > 0) {
       table.removeRecord(tab.get(size));
