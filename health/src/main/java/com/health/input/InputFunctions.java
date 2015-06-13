@@ -22,7 +22,7 @@ public class InputFunctions {
      */
     public static Table deleteLastLines(final Table table, final InputDescriptor config) {
         int deletions = config.getIgnoreLast();
-        int size = table.size();
+        int size = table.size() - 1;
         List<Record> tab = table.getRecords();
 
         while (deletions > 0) {
