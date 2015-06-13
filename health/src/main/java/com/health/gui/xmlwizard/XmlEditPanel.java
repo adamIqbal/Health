@@ -14,6 +14,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.health.FileType;
+import com.health.gui.VButton;
 import com.health.input.InputDescriptor;
 import com.health.input.InputException;
 
@@ -47,7 +48,7 @@ public class XmlEditPanel extends JPanel {
         columnPanel = new XmlColumnEditPanel();
         this.add(columnPanel, BorderLayout.CENTER);
 
-        continueButton = new JButton("Continue");
+        continueButton = new VButton("Continue");
         continueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {

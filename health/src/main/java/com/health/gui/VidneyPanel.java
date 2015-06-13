@@ -28,14 +28,13 @@ abstract class VidneyPanel extends JSplitPane {
     public VidneyPanel() {
         super();
 
-        // Should be 618 for perfect GoldenRatio between panels
-        final int dividerLocation = 650;
+        final double dividerLocation = 0.7;
 
         this.setDefaultPanels();
 
         this.setContinuousLayout(true);
-        this.setDividerLocation(dividerLocation);
         this.setDividerSize(0);
+        this.setResizeWeight(dividerLocation);
         setEnabled(false);
     }
 
