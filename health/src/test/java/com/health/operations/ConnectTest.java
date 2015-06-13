@@ -103,7 +103,7 @@ public class ConnectTest {
         
         assertEquals("name", tableCols.get(2).getName());
         
-        assertTrue(tableCols.contains(new Column("meetwaarde1", 0, ValueType.Number)));
+        assertTrue(tableCols.contains(new Column("meetwaarde1", 1, ValueType.Number)));
     
     }
     
