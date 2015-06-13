@@ -170,7 +170,7 @@ public final class StateTransitionMatrix extends JFrame {
 	 * @return
 	 * 			matrix setup
 	 */
-	private static String[][] setUp(final EventList eList) {
+	private static String[][] setUp(final EventList eList){
 
 		ArrayList<String> eArr = new ArrayList<String>();
 
@@ -178,10 +178,6 @@ public final class StateTransitionMatrix extends JFrame {
 			if (!eArr.contains(e.getCode())) {
 				eArr.add(e.getCode());
 			}
-		}
-
-		for (String s: eArr) {
-			System.out.println(s);
 		}
 
 		String[][] matrix = new String[eArr.size() + 1][eArr.size() + 1];
@@ -192,13 +188,10 @@ public final class StateTransitionMatrix extends JFrame {
 			matrix[0][k] = eArr.get(k - 1);
 			matrix[k][0] = eArr.get(k - 1);
 		}
-
-		System.out.println(Arrays.deepToString(matrix));
-
+		
 		return matrix;
 	}
-
-
+	
 	/**
 	 * Fill matrix.
 	 * @param m
@@ -209,10 +202,6 @@ public final class StateTransitionMatrix extends JFrame {
 	 * 			matrix
 	 */
 	private static String[][] fillMatrix(final String[][] m, final List<EventSequence> seqList) {
-		//Example:
-		//B A A
-		//A B
-		//A B A
 		String[][] matrix = m;
 		for (EventSequence eSeq: seqList) {
 			String[] codePat = eSeq.getCodePattern();
@@ -223,14 +212,8 @@ public final class StateTransitionMatrix extends JFrame {
 
 				for (int a = 1; a < matrix[0].length; a++) {
 					boolean found1 = false;
-
-					System.out.println("matrix a0 : " + matrix[a][0]);
-					System.out.println("from : " + from);
-
 					if (matrix[a][0].equals(from)) {
 						for (int b = 1; b < matrix[1].length; b++) {
-							System.out.println("matrix 0b : " + matrix[0][b]);
-							System.out.println("to : " + to);
 							if (matrix[0][b].equals(to)) {
 								if (matrix[a][b] == null) {
 									matrix[a][b] = "1";
@@ -250,7 +233,6 @@ public final class StateTransitionMatrix extends JFrame {
 				}
 			}
 		}
-		System.out.println(Arrays.deepToString(matrix));
 		return matrix;
 	}
 }
