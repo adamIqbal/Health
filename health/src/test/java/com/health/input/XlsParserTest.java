@@ -21,12 +21,10 @@ private XlsParser xp;
 	
 	@Test
 	public void parse_columns_correct() {
-		//InputDescriptor id = mock(InputDescriptor.class);
-		
 		Table actual = null;
 		try {
-			InputDescriptor id = new InputDescriptor("data/configXmls/admireXlsConfig.xml");
-	        String xlsPath = "data/data_all/data_xls/ADMIRE_56_BPM.xls";
+			InputDescriptor id = new InputDescriptor("test_data_and_xmls/admireXlsConfig.xml");
+	        String xlsPath = "test_data_and_xmls/ADMIRE_56_BPM.xls";
 	        
 	        actual = xp.parse(xlsPath, id);
 		} catch (Exception e) {

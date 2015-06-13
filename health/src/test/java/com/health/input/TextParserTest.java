@@ -25,8 +25,8 @@ public class TextParserTest {
 		
 		Table actual = null;
 		try {
-			InputDescriptor id = new InputDescriptor("data/configXmls/admireTxtConfig.xml");
-	        String txtPath = "data/data_all/data_txt/ADMIRE 2.txt";
+			InputDescriptor id = new InputDescriptor("test_data_and_xmls/admireTxtConfig.xml");
+	        String txtPath = "test_data_and_xmls/ADMIRE 2.txt";
 	        
 	        actual = tp.parse(txtPath, id);
 		} catch (Exception e) {
