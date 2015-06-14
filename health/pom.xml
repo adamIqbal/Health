@@ -119,6 +119,11 @@
         </plugins>
     </reporting>
     <dependencies>
+	  <dependency>
+		 <groupId>com.itextpdf</groupId>
+		 <artifactId>itextpdf</artifactId>
+		 <version>5.0.6</version>
+	  </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4-runtime</artifactId>
