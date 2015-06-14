@@ -57,7 +57,6 @@ public class StateTransitionMatrixTest {
 
         tmp = new Record(table);
         tmp.setValue(0, LocalDate.of(2, 2, 2));
-
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
 
@@ -92,8 +91,8 @@ public class StateTransitionMatrixTest {
         eList.addEvent(e5);
         eList.addEvent(e6);
 
-        String[] codePat1 = {"B", "A", "A", "B"};
-        String[] codePat2 = {"A", "A", "B"};
+        String[] codePat1 = {"A", "B"};
+        String[] codePat2 = {"A", "B"};
         String[] codePat3 = {"A", "B", "A", "C"};
         String[] codePat4 = {"C", "B", "C"};
 

@@ -108,10 +108,13 @@ public final class StateTransitionMatrix extends JFrame {
         eList.addEvent(e5);
         eList.addEvent(e6);
 
-        String[] codePat1 = {"B", "A", "A", "B"};
-        String[] codePat2 = {"A", "A", "B"};
-        String[] codePat3 = {"A", "B", "A", "C"};
-        String[] codePat4 = {"C", "B", "C"};
+        String[] codePat1 = {"B", "A", "A", "A", "B"};
+        String[] codePat2 = {"B", "A", "A", "A", "B"};
+        String[] codePat3 = {"B", "A", "A", "A", "B"};
+        String[] codePat4 = {"B", "A", "A", "A", "B"};
+        //String[] codePat2 = {"A", "A", "B"};
+        //String[] codePat3 = {"A", "B", "A", "C"};
+        //String[] codePat4 = {"C", "B", "C"};
 
         EventSequence eSeq1 = new EventSequence(codePat1);
         EventSequence eSeq2 = new EventSequence(codePat2);
@@ -203,6 +206,7 @@ public final class StateTransitionMatrix extends JFrame {
 	 */
 	private static String[][] fillMatrix(final String[][] m, final List<EventSequence> seqList) {
 		String[][] matrix = m;
+		
 		for (EventSequence eSeq: seqList) {
 			String[] codePat = eSeq.getCodePattern();
 
