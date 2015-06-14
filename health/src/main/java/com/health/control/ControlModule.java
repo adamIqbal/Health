@@ -7,18 +7,22 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.health.EventList;
+import com.health.EventSequence;
 import com.health.Table;
 import com.health.input.Input;
 import com.health.input.InputException;
 import com.health.interpreter.Interpreter;
+import com.health.operations.Code;
 import com.health.output.Output;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.StringValue;
-import com.health.script.runtime.TableValue;
+import com.health.script.runtime.WrapperValue;
 import com.health.visuals.BoxPlot;
 import com.health.visuals.FreqBar;
 import com.health.visuals.Histogram;
+import com.health.visuals.StateTransitionMatrix;
 
 /**
  *
@@ -101,31 +105,57 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("write", (args) -> {
-            Output.writeTable(((StringValue) args[0]).getValue(), ((TableValue) args[1]).getValue());
+            Output.writeTable(((StringValue) args[0]).getValue(), ((WrapperValue<Table>) args[1]).getValue());
             return null;
         });
 
         context.declareStaticMethod("writeFormatted", (args) -> {
-            Output.writeTable(((StringValue) args[0]).getValue(), ((TableValue) args[1]).getValue(),
+            Output.writeTable(((StringValue) args[0]).getValue(), ((WrapperValue<Table>) args[1]).getValue(),
                     ((StringValue) args[2]).getValue());
             return null;
         });
 
         context.declareStaticMethod("freqbar", (args) -> {
-            FreqBar.frequencyBar(((TableValue) args[0]).getValue());
+            FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
             return null;
         });
 
         context.declareStaticMethod("boxplot", (args) -> {
-            BoxPlot.boxPlot(((TableValue) args[0]).getValue(), ((StringValue) args[1]).getValue());
+            BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue(), ((StringValue) args[1]).getValue());
             return null;
         });
 
         context.declareStaticMethod("hist", (args) -> {
             Histogram.createHistogram(
-                    ((TableValue) args[0]).getValue(),
+                    ((WrapperValue<Table>) args[0]).getValue(),
                     ((StringValue) args[1]).getValue(),
                     (int) ((NumberValue) args[2]).getValue());
+            return null;
+        });
+
+        context.declareStaticMethod("createSequence", (args) -> {
+            String[] sequence = new String[args.length];
+
+            for (int i = 0; i < args.length; i++) {
+                sequence[i] = ((StringValue) args[i]).getValue();
+            }
+
+            return new WrapperValue<EventSequence>(new EventSequence(sequence));
+        });
+
+        context.declareStaticMethod("findSequences", (args) -> {
+            EventList events = ((WrapperValue<EventList>) args[0]).getValue();
+            EventSequence sequence = ((WrapperValue<EventSequence>) args[1]).getValue();
+
+            Code.fillEventSequence(sequence, events);
+
+            return new WrapperValue<List<EventList>>(sequence.getSequences());
+        });
+
+        context.declareStaticMethod("transitionMatrix", (args) -> {
+            StateTransitionMatrix.createStateTrans(
+                    ((WrapperValue<EventList>) args[0]).getValue());
+
             return null;
         });
 
@@ -154,7 +184,7 @@ public final class ControlModule {
             return;
         }
 
-        TableValue value = new TableValue(table);
+        WrapperValue<Table> value = new WrapperValue<Table>(table);
 
         context.declareLocal(input.getName(), value.getType(), value);
     }

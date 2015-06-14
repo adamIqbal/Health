@@ -13,8 +13,8 @@ import com.health.script.MyScriptParser;
 import com.health.script.MyScriptParser.ChunkSelectionListContext;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.ScriptRuntimeException;
-import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents an interpreter for chunking expressions.
@@ -57,9 +57,9 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         if (ctx.periodSpecifier() != null) {
             Period period = evaluatePeriod(ctx.periodSpecifier().period());
 
-            return new TableValue(Chunk.chunkByPeriod(table, columnIdent, aggregateFunctions, period));
+            return new WrapperValue<Table>(Chunk.chunkByPeriod(table, columnIdent, aggregateFunctions, period));
         } else {
-            return new TableValue(Chunk.chunkByColumn(table, columnIdent, aggregateFunctions));
+            return new WrapperValue<Table>(Chunk.chunkByColumn(table, columnIdent, aggregateFunctions));
         }
     }
 
