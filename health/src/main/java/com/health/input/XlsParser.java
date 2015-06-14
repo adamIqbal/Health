@@ -50,7 +50,6 @@ public final class XlsParser implements Parser {
 
         String ext = getFileExtension(path);
         Workbook wb;
-        System.out.println(ext);
         if (ext.equals(".xls")) {
             wb = new HSSFWorkbook(io);
         } else if (ext.equals(".xlsx")) {
