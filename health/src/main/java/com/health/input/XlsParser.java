@@ -122,13 +122,4 @@ public final class XlsParser implements Parser {
 
   }
 
-  private String getFileExtension(String path) {
-    try {
-      return path.substring(path.lastIndexOf("."));
-
-    } catch (Exception e) {
-      return "";
-    }
-
-  }
 }
