@@ -79,8 +79,8 @@ public class ChunkTest {
 		tmp.setValue("meetwaarde2", 10.0);
 
 	}
-/*
-	@Test
+
+	/*@Test
 	public void testChunkOnDay() {
 		period = Period.ofDays(1);
 		column = "date";
