@@ -181,7 +181,9 @@ public final class Chunk {
         double[] values = new double[chunk.size()];
 
         for (int i = 0; i < chunk.size(); i++) {
-            values[i] = chunk.get(i).getNumberValue(column);
+            if (chunk.get(i).getNumberValue(column) != null) {
+                values[i] = chunk.get(i).getNumberValue(column);
+            }
         }
 
         return function.apply(values);

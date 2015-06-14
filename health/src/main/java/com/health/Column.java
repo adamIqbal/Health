@@ -86,8 +86,7 @@ public final class Column {
 
         Column that = (Column) other;
 
-        return this.index == that.index
-                && this.type == that.type
+        return this.type == that.type
                 && this.name.equals(that.name);
     }
 

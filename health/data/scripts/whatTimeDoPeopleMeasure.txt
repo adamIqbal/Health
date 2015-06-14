@@ -1,3 +1,5 @@
+// on all ADMIRE txt files
+
 var table = connect table0 with table1 where date = date;
 table =connect table with table2 where date = date;
 table =connect table with table3 where date = date;

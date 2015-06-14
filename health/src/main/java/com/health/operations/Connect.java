@@ -128,7 +128,7 @@ public final class Connect {
                     name = connections.get(indexInConnections).getNewName();
 
                 }
-
+                
                 record.setValue(name, recList.get(i).getValue(newName));
             }
         }

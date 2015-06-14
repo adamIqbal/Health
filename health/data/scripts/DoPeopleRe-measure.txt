@@ -1,9 +1,4 @@
-// werkt nog niet omdat er in chunk nog niet gecount can worden op String values.
-var measuremenByMoment = chunk table0 by Moment select count of Moment;
-
-freqbar(table0, "Moment");
-
-
+//on Q_ADMIRE_metingen_pagevisits_141214.xlsx
 
 var t = constrain table0 where KreatinineAlgorithmActionId <= 1;
 
@@ -17,5 +12,3 @@ t2 = chunk t2 by measurementvariable_141214Name
 
 t2 = connect t2 with t where count_Sequence = count_KreatinineAlgorithmActionId 
 	and KreatinineAlgorithmActionId = min_KreatinineAlgorithmActionId;
-
-write("out.txt", t2);
