@@ -23,7 +23,7 @@ public class FreqBarTest {
         		+ "/admireTxtConfigIgnoreLast.xml";
         try {
             table = Input.readTable(filePath, configPath);
-            BoxPlot.boxPlot(table);
+            FreqBar.frequencyBar(table, "value");
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.fail("Failed creating Table");

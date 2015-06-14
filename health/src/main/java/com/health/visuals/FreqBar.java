@@ -1,5 +1,7 @@
 package com.health.visuals;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,9 @@ import com.xeiam.xchart.ChartBuilder;
 import com.xeiam.xchart.StyleManager.ChartType;
 import com.xeiam.xchart.StyleManager.LegendPosition;
 import com.xeiam.xchart.SwingWrapper;
+
+import de.erichseifert.vectorgraphics2d.PDFGraphics2D;
+import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 
 /**
  * Generates a Frequency Bar Diagram based on a Table object.
@@ -35,8 +40,9 @@ public final class FreqBar {
      * It chooses the last date column and last frequency column in the Table object.
      * @param table
      *            Table to use
+     * @throws IOException 
      */
-    public static void frequencyBar(final Table table) {
+    public static void frequencyBar(final Table table) throws IOException {
         // Check if the Table contains a frequency and a date column
         Column freqColumn = null;
         Column dateColumn = null;
@@ -66,8 +72,9 @@ public final class FreqBar {
      *            Table to use
      * @param column
      *            Column to display frequency of
+     * @throws IOException 
      */
-    public static void frequencyBar(final Table table, final String column) {
+    public static void frequencyBar(final Table table, final String column) throws IOException {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
@@ -152,9 +159,10 @@ public final class FreqBar {
      *
      * @param freqMap
      *            frequency map
+     * @throws IOException 
      */
     private static void makeBarChart(final Map<String, Integer> freqMap,
-            final String seriesName) {
+            final String seriesName) throws IOException {
         final int frameWidth = 800;
         final int frameHeight = 600;
         // Convert input data for processing
@@ -172,7 +180,24 @@ public final class FreqBar {
         // Customize Chart
         chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
 
+        saveGraph(chart, "FreqBarTest");
+        
         new SwingWrapper(chart).displayChart();
     }
-
+    
+    public static void saveGraph(Chart chart, String fileName) throws IOException{
+    	VectorGraphics2D g = new PDFGraphics2D(0.0, 0.0, chart.getWidth(), chart.getHeight());
+	
+	    chart.paint(g, chart.getWidth(), chart.getHeight());
+	
+	    // Write the vector graphic output to a file
+	    FileOutputStream file = new FileOutputStream(fileName + ".pdf");
+	
+	    try {
+	      file.write(g.getBytes());
+	    } finally {
+	      file.close();
+	    }
+    }
+    
 }
