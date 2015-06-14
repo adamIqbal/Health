@@ -109,4 +109,10 @@ public final class XlsParser implements Parser {
   public String getType() {
     return type;
   }
+
+  public String setType(String xml) {
+    type = xml;
+    return type;
+
+  }
 }
