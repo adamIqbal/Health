@@ -122,5 +122,4 @@ public final class XlsParser implements Parser {
     return table;
 
   }
-
 }
