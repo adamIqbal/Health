@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.health.gui.VButton;
+
 /**
  * Class that makes the file selection panel.
  * @author daan
@@ -37,7 +39,7 @@ public class FileSelectionPanel extends JPanel {
         JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
         this.add(scrollForFileListing, BorderLayout.CENTER);
 
-        JButton addButton = new JButton("Add file");
+        VButton addButton = new VButton("Add file");
         ListenForAddFile lforAddFile = new ListenForAddFile();
         addButton.addActionListener(lforAddFile);
 

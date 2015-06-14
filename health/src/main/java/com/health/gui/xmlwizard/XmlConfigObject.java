@@ -102,7 +102,7 @@ public class XmlConfigObject {
         String startCol = this.values[1];
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
-        String dataStart = "<data format=\"xls\" startRow=\"" + startRow 
+        String dataStart = "<data format=\"xls\" startRow=\"" + startRow
                 + "\" startColumn=\"" + startCol + "\">" + "\n\r";
 
         String columnTags = "";

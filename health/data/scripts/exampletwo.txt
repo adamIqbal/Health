@@ -1,0 +1,4 @@
+// Connects two tables on the date column
+var table = connect table0 with table1 where date = date;
+
+write("out.txt", table);
