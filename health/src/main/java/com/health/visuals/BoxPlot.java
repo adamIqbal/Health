@@ -1,18 +1,12 @@
 package com.health.visuals;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.io.File;
+import java.awt.geom.Rectangle2D;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.text.Document;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -30,7 +24,7 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
-import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -115,10 +109,35 @@ public final class BoxPlot {
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
         
-        File file = new File("BoxTest");
-        PrintFrameToPDF(frame, file);
-        
     }
+    
+    public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
+        PdfWriter writer = null;
+     
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+     
+        try {
+            writer = PdfWriter.getInstance(document, new FileOutputStream(
+                    fileName));
+            document.open();
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template = contentByte.createTemplate(width, height);
+            Graphics2D graphics2d = template.createGraphics(width, height,
+                    new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width,
+                    height);
+     
+            chart.draw(graphics2d, rectangle2d);
+             
+            graphics2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
+     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        document.close();
+    }
+    
 
     /**
      * Creates a dataset object in the right format.
@@ -168,38 +187,10 @@ public final class BoxPlot {
                 "SansSerif", Font.BOLD, 14), plot, true);
         final ChartPanel chartPanel = new ChartPanel(chart);
         
+        int width = 640; 
+        int height = 480; 
+        writeChartToPDF( chart, width, height, "boxTest.pdf");
+        
         return chartPanel;
-    }
-    
-    public static void PrintFrameToPDF(JFrame frame, File file) {
-        try {
-            com.itextpdf.text.Document d = new com.itextpdf.text.Document();
-            PdfWriter writer = PdfWriter.getInstance( d, new FileOutputStream(file));
-            d.open();
-
-            PdfContentByte cb = writer.getDirectContent();
-            PdfTemplate template = cb.createTemplate(PageSize.A4.getWidth(),PageSize.A4.getHeight());
-            cb.addTemplate(template, 0, 0);
-
-            Graphics2D g2d = template.createGraphics(PageSize.A4.getWidth(),PageSize.A4.getHeight());
-            g2d.scale(0.4, 0.4);
-
-            for(int i=0; i< frame.getContentPane().getComponents().length; i++){
-                Component c = frame.getContentPane().getComponent(i);
-                if(c instanceof JLabel || c instanceof JScrollPane){
-                    g2d.translate(c.getBounds().x,c.getBounds().y);
-                    if(c instanceof JScrollPane){c.setBounds(0,0,(int)PageSize.A4.getWidth()*2,(int)PageSize.A4.getHeight()*2);}
-                    c.paintAll(g2d);
-                    c.addNotify();
-                }
-            }
-
-
-            g2d.dispose();
-
-            d.close();
-        } catch (Exception e) {
-            System.out.println("ERROR: " + e.toString());
-        }
     }
 }
