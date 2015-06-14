@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data format="xls" startRow="1" startColumn="1">
+<data format="xlsx" startRow="1" startColumn="1">
 	<column type="Number">custommeasurementitem_141214Id</column>
 	<column type="Number">Revision</column>
 	<column type="String">Moment</column>
