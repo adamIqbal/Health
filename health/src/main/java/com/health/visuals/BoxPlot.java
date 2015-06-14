@@ -24,6 +24,7 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
@@ -114,7 +115,7 @@ public final class BoxPlot {
     public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
         PdfWriter writer = null;
      
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
      
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(

@@ -13,8 +13,8 @@ import com.health.Table;
 import com.health.input.Input;
 import com.health.input.InputException;
 
-public class FreqBarTest {
-	private Table table;
+public class HistogramTest {
+    private Table table;
     
     @Before
     public void setUp() {
@@ -23,7 +23,7 @@ public class FreqBarTest {
         		+ "/admireTxtConfigIgnoreLast.xml";
         try {
             table = Input.readTable(filePath, configPath);
-            BoxPlot.boxPlot(table);
+            Histogram.createHistogram(table, "value", 10);
         } catch (IOException | ParserConfigurationException | SAXException
                 | InputException e) {
             Assert.fail("Failed creating Table");

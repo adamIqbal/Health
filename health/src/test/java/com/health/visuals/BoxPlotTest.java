@@ -13,8 +13,8 @@ import com.health.Table;
 import com.health.input.Input;
 import com.health.input.InputException;
 
-public class FreqBarTest {
-	private Table table;
+public class BoxPlotTest {
+    private Table table;
     
     @Before
     public void setUp() {

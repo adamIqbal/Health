@@ -2,6 +2,9 @@ package com.health.visuals;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.io.FileOutputStream;
 
 import javax.swing.JFrame;
 
@@ -21,6 +24,11 @@ import com.health.Chunk;
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Generates a Histogram based on a Table object.
@@ -112,10 +120,42 @@ public final class Histogram extends JFrame {
 
 	    final ChartPanel chartPanel = new ChartPanel(chart);
 
+	    int width = 640; 
+        int height = 480; 
+	    writeChartToPDF(chart, width, height, "HistTest.pdf");
+	    
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
 	}
 
+	
+	public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
+        PdfWriter writer = null;
+     
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
+     
+        try {
+            writer = PdfWriter.getInstance(document, new FileOutputStream(
+                    fileName));
+            document.open();
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template = contentByte.createTemplate(width, height);
+            Graphics2D graphics2d = template.createGraphics(width, height,
+                    new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width,
+                    height);
+     
+            chart.draw(graphics2d, rectangle2d);
+             
+            graphics2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
+     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        document.close();
+    }
+	
 	/**
 	 * Converts Table object into array which can be used as input for the histogram.
 	 *
