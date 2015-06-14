@@ -1,0 +1,1 @@
+var table = constrain table0 where KreatinineAlgorithmActionId == 1;

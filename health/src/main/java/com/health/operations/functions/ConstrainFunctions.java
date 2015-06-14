@@ -36,16 +36,19 @@ public final class ConstrainFunctions {
         }
 
         if (columns instanceof String && value instanceof StringValue) {
-            throw new IllegalArgumentException("Can not invoke greater on String.");
+            throw new IllegalArgumentException(
+                    "Can not invoke greater on String.");
         }
 
         if (columns instanceof LocalDate && value instanceof DateValue) {
 
-            return ((LocalDate) columns).isAfter(((DateValue) value).getValue());
+            return ((LocalDate) columns)
+                    .isAfter(((DateValue) value).getValue());
 
         }
-
-        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+        return false;
+        // throw new
+        // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
     }
 
     /**
@@ -68,7 +71,8 @@ public final class ConstrainFunctions {
         }
 
         if (columns instanceof String && value instanceof StringValue) {
-            throw new IllegalArgumentException("Can not invoke greatereq on String.");
+            throw new IllegalArgumentException(
+                    "Can not invoke greatereq on String.");
         }
 
         if (columns instanceof LocalDate && value instanceof DateValue) {
@@ -76,8 +80,9 @@ public final class ConstrainFunctions {
             return greater(columns, value) || equal(columns, value);
 
         }
-
-        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+        return false;
+        // throw new
+        // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
     }
 
     /**
@@ -100,7 +105,8 @@ public final class ConstrainFunctions {
         }
 
         if (columns instanceof String && value instanceof StringValue) {
-            throw new IllegalArgumentException("Can not invoke smallereq on String.");
+            throw new IllegalArgumentException(
+                    "Can not invoke smallereq on String.");
         }
 
         if (columns instanceof LocalDate && value instanceof DateValue) {
@@ -108,8 +114,9 @@ public final class ConstrainFunctions {
             return smaller(columns, value) || equal(columns, value);
 
         }
-
-        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+        return false;
+        // throw new
+        // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
     }
 
     /**
@@ -132,16 +139,19 @@ public final class ConstrainFunctions {
         }
 
         if (columns instanceof String && value instanceof StringValue) {
-            throw new IllegalArgumentException("Can not invoke smaller on String.");
+            throw new IllegalArgumentException(
+                    "Can not invoke smaller on String.");
         }
 
         if (columns instanceof LocalDate && value instanceof DateValue) {
 
-            return ((LocalDate) columns).isBefore(((DateValue) value).getValue());
+            return ((LocalDate) columns).isBefore(((DateValue) value)
+                    .getValue());
 
         }
-
-        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+        return false;
+        // throw new
+        // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
     }
 
     /**
@@ -171,10 +181,12 @@ public final class ConstrainFunctions {
 
         if (columns instanceof LocalDate && value instanceof DateValue) {
 
-            return ((LocalDate) columns).isEqual(((DateValue) value).getValue());
+            return ((LocalDate) columns)
+                    .isEqual(((DateValue) value).getValue());
 
         }
-
-        throw new IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+        return false;
+        // throw new
+        // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
     }
 }
