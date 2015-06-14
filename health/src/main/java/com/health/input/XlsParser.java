@@ -21,7 +21,6 @@ import com.health.Table;
  *
  */
 public final class XlsParser implements Parser {
-  public String type = "xls";
 
   /**
    * Given a path to a xls file and an input descriptor, parses the input file into a {@link Table}.
@@ -44,13 +43,19 @@ public final class XlsParser implements Parser {
     Objects.requireNonNull(config);
 
     Table table = config.buildTable();
-    Workbook wb;
 
     FileInputStream io = new FileInputStream(path);
-    if (type == "xls") {
+
+    // String ext = getFileExtension(path);
+    String ext = config.getFormat().toLowerCase();
+    Workbook wb;
+    if (ext.equals(".xls")) {
+      wb = new HSSFWorkbook(io);
+    } else if (ext.equals(".xlsx")) {
       wb = new XSSFWorkbook(io);
     } else {
-      wb = new HSSFWorkbook(io);
+      io.close();
+      throw new InputException("Not a xls or xlsx file, so cannot parse with XLSParser");
     }
 
     StartCell startCell = config.getStartCell();
@@ -66,12 +71,23 @@ public final class XlsParser implements Parser {
         int columnCountTableRow = 0;
         for (int i = startCell.getStartColumn() - 1; i < columnsCount + startCell.getStartColumn()
             - 1; i++) {
+          String value;
+          try {
+            value = row.getCell(i).toString();
+          } catch (NullPointerException e) {
+            value = "NULL";
+          }
+
           switch (table.getColumn(columnCountTableRow).getType()) {
           case String:
-            tableRow.setValue(columnCountTableRow, row.getCell(i).toString());
+            if (!value.equals("NULL")) {
+              tableRow.setValue(columnCountTableRow, value);
+            }
             break;
           case Number:
-            tableRow.setValue(columnCountTableRow, Double.parseDouble(row.getCell(i).toString()));
+            if (!value.equals("NULL")) {
+              tableRow.setValue(columnCountTableRow, Double.parseDouble(value));
+            }
             break;
           case Date:
             if (config.getDateFormat() != null) {
@@ -106,13 +122,13 @@ public final class XlsParser implements Parser {
 
   }
 
-  public String getType() {
-    return type;
-  }
+  private String getFileExtension(String path) {
+    try {
+      return path.substring(path.lastIndexOf("."));
 
-  public String setType(String xml) {
-    type = xml;
-    return type;
+    } catch (Exception e) {
+      return "";
+    }
 
   }
 }

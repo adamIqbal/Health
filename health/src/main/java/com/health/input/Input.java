@@ -54,7 +54,6 @@ public final class Input {
       return new XlsParser();
     case "xlsx":
       XlsParser xls = new XlsParser();
-      xls.setType("xlsx");
       return xls;
     case "text":
       return new TextParser();
