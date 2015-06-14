@@ -1,0 +1,9 @@
+var table = connect table0 with table1 where date = date;
+table =connect table with table2 where date = date;
+table =connect table with table3 where date = date;
+table =connect table with table4 where date = date;
+table =connect table with table5 where date = date;
+table =connect table with table6 where date = date;
+
+
+hist(table, "time", 24)

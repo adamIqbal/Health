@@ -90,4 +90,20 @@ public class TextParserTest {
         }
 
     }
+    
+    @Test
+    public void testDateValue() throws ParserConfigurationException, SAXException, IOException{
+        Table actual = null;
+        try {
+            InputDescriptor id = new InputDescriptor(
+                    "test_data_and_xmls/admireTxtConfig.xml");
+            String txtPath = "test_data_and_xmls/ADMIRE 2.txt";
+
+            actual = tp.parse(txtPath, id);
+        } catch (InputException e) {
+            assertTrue(false);
+        }
+        
+        System.out.println(actual.getRecords().get(0).getDateValue("date"));
+    }
 }
