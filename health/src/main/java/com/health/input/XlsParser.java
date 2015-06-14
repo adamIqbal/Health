@@ -49,9 +49,9 @@ public final class XlsParser implements Parser {
     // String ext = getFileExtension(path);
     String ext = config.getFormat().toLowerCase();
     Workbook wb;
-    if (ext.equals(".xls")) {
+    if (ext.equals("xls")) {
       wb = new HSSFWorkbook(io);
-    } else if (ext.equals(".xlsx")) {
+    } else if (ext.equals("xlsx")) {
       wb = new XSSFWorkbook(io);
     } else {
       io.close();
