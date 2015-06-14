@@ -105,4 +105,8 @@ public final class XlsParser implements Parser {
     return table;
 
   }
+
+  public String getType() {
+    return type;
+  }
 }
