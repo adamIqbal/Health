@@ -44,7 +44,7 @@ public final class XlsParser implements Parser {
 		Table table = config.buildTable();
 
 		FileInputStream io = new FileInputStream(path);
-		HSSFWorkbook wb = new HSSFWorkbook(io);
+		XSSFWorkbook wb = new XSSFWorkbook(io);
 
 		StartCell startCell = config.getStartCell();
 		int rowCount = 0;
