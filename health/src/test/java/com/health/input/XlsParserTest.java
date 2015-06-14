@@ -42,5 +42,20 @@ private XlsParser xp;
         	assertEquals(expectedTypes[i], col.getType());
         }
     }
+	
+	@Test
+	public void testXlsx(){
+	    Table actual = null;
+        try {
+            InputDescriptor id = new InputDescriptor("test_data_and_xmls/MetingenWebpageXlsConfig.xml");
+            String xlsxPath = "test_data_and_xmls/Q_ADMIRE_metingen_pagevisits_141214.xlsx";
+            
+            actual = xp.parse(xlsxPath, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+        assertNotNull(actual);
+	}
 
 }
