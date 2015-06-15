@@ -125,14 +125,10 @@ public final class StateTransitionMatrix extends JFrame {
      */
     public static JTable createStateTrans(final EventList eList, final List<EventList> seqList) {
         // Create frame
-        final int thousand = 1000;
+    	final Dimension frameDimension = new Dimension(700, 700);
 
-        JFrame vidney = new JFrame();
-        vidney.setVisible(true);
-
-        vidney.setTitle("State Transition");
-        vidney.setSize(thousand, thousand);
-        vidney.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ApplicationFrame frame = new ApplicationFrame("Vidney");
+        frame.setSize(frameDimension);
 
         String[][] matrix = setUp(eList);
         String[][] matrixUse = fillMatrix(matrix, seqList);
@@ -146,10 +142,13 @@ public final class StateTransitionMatrix extends JFrame {
 
         JTable table = new JTable(outputM, matrixUse[0]);
 
-        Container c = vidney.getContentPane();
+        Container c = frame.getContentPane();
         c.setLayout(new FlowLayout());
-        c.add(new JScrollPane(table), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(table);
+		c.add(scrollPane, BorderLayout.CENTER);
 
+        frame.setContentPane(c);
+        //frame.setVisible(true);
         return table;
     }
 
@@ -261,7 +260,7 @@ public final class StateTransitionMatrix extends JFrame {
             int width = table.getWidth(); 
             int height = table.getHeight();
 		    
-		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable.pdf"));
+		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable3.pdf"));
 		  	document.open();
 
 		    PdfContentByte cb = writer.getDirectContent();
