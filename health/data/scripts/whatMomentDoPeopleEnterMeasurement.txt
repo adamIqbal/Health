@@ -2,20 +2,3 @@
 var measuremenByMoment = chunk table0 by Moment select count of Moment;
 
 freqbar(table0, "Moment");
-
-
-
-var t = constrain table0 where KreatinineAlgorithmActionId <= 1;
-
-t = chunk t by KreatinineAlgorithmActionId 
-	select count of KreatinineAlgorithmActionId , measurementvariable_141214Name;
-
-var t2 = constrain table0 where measurementvariable_141214Name = "Kreatinine2 (stat)";
-
-t2 = chunk t2 by measurementvariable_141214Name 
-	select count of Sequence , min of KreatinineAlgorithmActionId;
-
-t2 = connect t2 with t where count_Sequence = count_KreatinineAlgorithmActionId 
-	and KreatinineAlgorithmActionId = min_KreatinineAlgorithmActionId;
-
-write("out.txt", t2);

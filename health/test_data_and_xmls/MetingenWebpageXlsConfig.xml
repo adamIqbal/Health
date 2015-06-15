@@ -16,7 +16,7 @@
 	<column type="String">CreatedBy</column>
 	<column type="Date" format="d[d]/MM/yy">CreatedDate</column>
 	<column type="String">ModifiedBy</column>
-	<column type="Date">ModifiedDate</column>
+	<column type="Date" format="d[d]/MM/yy">ModifiedDate</column>
 	<column type="Number">UserId</column>
 	<column type="Number">CustomMeasurementId</column>
 	<column type="String">Login</column>

@@ -35,9 +35,7 @@ public final class Connect {
      *            a list of Column Connections.
      * @return A Table object.
      */
-    public static Table connect(
-            final Table table1,
-            final Table table2,
+    public static Table connect(final Table table1, final Table table2,
             final List<ColumnConnection> connections) {
 
         List<Column> connectedTableCols = makeNewTableColumns(
@@ -49,7 +47,7 @@ public final class Connect {
         addRecords(connectedTable, table2, connections);
 
         for (Column column : connectedTableCols) {
-            if (column.getType() == ValueType.Date) {
+            if (column.getType() == ValueType.Date && isInConnections(column, connections) >= 0) {
                 connectedTable = sortTable(connectedTable, column.getName());
                 break;
             }
@@ -68,9 +66,11 @@ public final class Connect {
             int index = isInConnections(column, connections);
 
             if (index >= 0) {
-                result.add(new Column(connections.get(index).getNewName(), result.size(), column.getType()));
+                result.add(new Column(connections.get(index).getNewName(),
+                        result.size(), column.getType()));
             } else {
-                result.add(new Column(column.getName(), result.size(), column.getType()));
+                result.add(new Column(column.getName(), result.size(), column
+                        .getType()));
             }
         }
 
@@ -79,7 +79,8 @@ public final class Connect {
             int index = isInConnections(column, connections);
 
             if (!result.contains(column) && index == -1) {
-                result.add(new Column(column.getName(), result.size(), column.getType()));
+                result.add(new Column(column.getName(), result.size(), column
+                        .getType()));
             }
 
         }
@@ -101,7 +102,8 @@ public final class Connect {
         int index = 0;
 
         for (ColumnConnection connection : connections) {
-            if (connection.getColumn1().equals(col.getName()) || connection.getColumn2().equals(col.getName())) {
+            if (connection.getColumn1().equals(col.getName())
+                    || connection.getColumn2().equals(col.getName())) {
                 return index;
             }
 
@@ -126,11 +128,11 @@ public final class Connect {
                 int indexInConnections = isInConnections(column, connections);
 
                 if (indexInConnections >= 0) {
-                    name = connections.get(indexInConnections).getNewName();
+                    newName = connections.get(indexInConnections).getNewName();
 
                 }
 
-                record.setValue(name, recList.get(i).getValue(newName));
+                record.setValue(newName, recList.get(i).getValue(name));
             }
         }
     }

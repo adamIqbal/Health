@@ -1,2 +1,0 @@
-1.0, 428.0, Kreatinine (stat)
-0.0, 292.0, Kreatinine2 (stat)

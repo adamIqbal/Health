@@ -42,7 +42,7 @@ private XlsParser xp;
         	assertEquals(expectedTypes[i], col.getType());
         }
     }
-	
+	    
 	@Test
 	public void testXlsx(){
 	    Table actual = null;
@@ -56,6 +56,10 @@ private XlsParser xp;
             assertTrue(false);
         }
         assertNotNull(actual);
+        
+        System.out.println(actual.getColumn("ModifiedDate").getName());
+        
+        System.out.println(actual.getRecords().get(0).getDateValue("ModifiedDate"));
 	}
 
 }
