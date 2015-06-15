@@ -24,7 +24,7 @@ public final class DateValue extends Value {
    * Creates a new value with zero.
    */
   public DateValue() {
-    this(LocalDate.of(0, 0, 0));
+    this(LocalDate.of(1970, 1, 1));
   }
 
   /**
