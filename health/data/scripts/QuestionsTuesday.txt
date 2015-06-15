@@ -1,0 +1,48 @@
+List of example questions the tool should help to answer are:
+
+TO DO:
+
+- what time of the day and on what day do people measure themselves?
+
+- what time of the day and on what day do they enter measure measurement?
+
+- What is the difference in time between measurement device and entering data in 
+
+Mijnnierinzicht?
+
+- Is there a difference between StatSensor measurement and what patients enter into 
+
+Mijnnierinzicht
+
+- How often do patients measure themselves before they enter data into Mijnnierinzicht?
+
+- If a patient did measure multiple time, what measure do he/she eventually enter into 
+
+Mijnnierinzicht?
+
+- Do patient follow up advice given my Mijnnierinzicht?
+
+- What are the conditions under which people start deviating from their normal measurement 
+
+routine?
+
+- What are the conditions under which people overwrite their initial data entered in 
+
+Mijnnierinzicht?
+
+- Find cases where there is a difference between device measurement and what is entered in 
+
+Mijnnierinzicht 
+
+- find cases where Mijnnierinzicht advice to contact the hospital
+
+- How well do patients follow up advice of Mijnnierinzicht to re-measure again?
+
+- Do external factors, such as holidays, have an effect on the patient’s measurement routine?
+
+- Is the value of creatine, blood pressure, HR effecting the patient’s measurement routine?
+
+______________________________________________________________________________________________
+Finished:
+
+
