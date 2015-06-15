@@ -1,8 +1,14 @@
 package com.health.control;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
@@ -33,6 +39,8 @@ import com.health.visuals.StateTransitionMatrix;
 public final class ControlModule {
     private String script;
     private List<InputData> data;
+    private Map<String, Object> visuals = new HashMap<String, Object>();
+    int numBoxPlots, numFreqBars, numTransitionMatrices, numHistograms;
 
     /**
      * Start analysis based on the script.
@@ -54,6 +62,10 @@ public final class ControlModule {
         Interpreter.interpret(this.script, context);
 
         return context;
+    }
+
+    public Map<String, Object> getVisuals() {
+        return Collections.unmodifiableMap(this.visuals);
     }
 
     /**
@@ -120,30 +132,41 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("freqbar", (args) -> {
+            JFrame frame;
+
             if (args.length >= 2) {
-                FreqBar.frequencyBar(
+                frame = FreqBar.frequencyBar(
                         ((WrapperValue<Table>) args[0]).getValue(),
                         ((StringValue) args[1]).getValue());
             } else {
-                FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
+                frame = FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
             }
+
+            this.visuals.put("boxplot" + ++numFreqBars, frame);
             return null;
         });
 
         context.declareStaticMethod("boxplot", (args) -> {
+            JPanel panel;
+
             if (args.length >= 2) {
-                BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue(), ((StringValue) args[1]).getValue());
+                panel = BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue(),
+                        ((StringValue) args[1]).getValue());
             } else {
-                BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue());
+                panel = BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue());
             }
+
+            this.visuals.put("boxplot" + ++numBoxPlots, panel);
             return null;
         });
 
         context.declareStaticMethod("hist", (args) -> {
-            Histogram.createHistogram(
+            JPanel panel = Histogram.createHistogram(
                     ((WrapperValue<Table>) args[0]).getValue(),
                     ((StringValue) args[1]).getValue(),
                     (int) ((NumberValue) args[2]).getValue());
+
+            this.visuals.put("histogram" + ++numHistograms, panel);
             return null;
         });
 
@@ -176,6 +199,7 @@ public final class ControlModule {
                 "transitionMatrix",
                 (args) -> {
                     EventList codes = ((WrapperValue<EventList>) args[0]).getValue();
+                    JTable table;
 
                     if (args.length >= 2) {
                         ScriptType eventSequenceType = WrapperValue.getWrapperType(EventSequence.class);
@@ -183,14 +207,17 @@ public final class ControlModule {
                         if ((args[1]).getType() == eventSequenceType) {
                             EventSequence sequence = ((WrapperValue<EventSequence>) args[1]).getValue();
 
-                            StateTransitionMatrix.createStateTrans(codes, Code.fillEventSequence(sequence, codes));
+                            table = StateTransitionMatrix.createStateTrans(codes,
+                                    Code.fillEventSequence(sequence, codes));
                         } else {
-                            StateTransitionMatrix.createStateTrans(codes,
+                            table = StateTransitionMatrix.createStateTrans(codes,
                                     ((WrapperValue<List<EventList>>) args[1]).getValue());
                         }
                     } else {
-                        StateTransitionMatrix.createStateTrans(codes);
+                        table = StateTransitionMatrix.createStateTrans(codes);
                     }
+
+                    this.visuals.put("boxplot" + ++numBoxPlots, table);
                     return null;
                 });
 

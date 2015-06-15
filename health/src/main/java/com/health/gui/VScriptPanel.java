@@ -266,7 +266,7 @@ public final class VScriptPanel extends VidneyPanel {
             return parsedData;
         }
 
-        private Map<String, Object> getOutputData(final Context context) {
+        private Map<String, Object> getOutputData(final Context context, final Map<String, Object> visauls) {
             Map<String, Object> output = new HashMap<String, Object>();
 
             ScriptType tableType = WrapperValue.getWrapperType(Table.class);
@@ -279,6 +279,10 @@ public final class VScriptPanel extends VidneyPanel {
 
                     output.put(variable.getKey(), table);
                 }
+            }
+
+            for (Entry<String, Object> visual : visauls.entrySet()) {
+                output.put(visual.getKey(), visual.getValue());
             }
 
             return output;
