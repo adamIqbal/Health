@@ -37,25 +37,25 @@ public class VOutputPanel extends VidneyPanel {
         OutputPanelSidebar.list.addMouseListener(new MouseListener() {
 
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 String selected = OutputPanelSidebar.list.getSelectedValue();
                 mainPanel.setData(OutputPanelSidebar.getData(selected));
             }
 
             @Override
-            public void mouseEntered(MouseEvent e) {
+            public void mouseEntered(final MouseEvent e) {
             }
 
             @Override
-            public void mouseExited(MouseEvent e) {
+            public void mouseExited(final MouseEvent e) {
             }
 
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(final MouseEvent e) {
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(final MouseEvent e) {
             }
 
         });
@@ -84,7 +84,7 @@ public class VOutputPanel extends VidneyPanel {
     /**
      * Same as addAnalysis. Is added for compatibility. Can be removed later.
      */
-    public static void displayData(HashMap<String, Object> data) {
+    public static void displayData(final HashMap<String, Object> data) {
         addAnalysis(data);
     }
 
@@ -92,7 +92,7 @@ public class VOutputPanel extends VidneyPanel {
      * Adds an performed analysis to the output panel.
      * @param data
      */
-    public static void addAnalysis(HashMap<String, Object> data) {
+    public static void addAnalysis(final HashMap<String, Object> data) {
         OutputPanelSidebar.add(data);
     }
 }
