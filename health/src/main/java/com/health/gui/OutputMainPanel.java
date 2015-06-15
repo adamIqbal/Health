@@ -64,6 +64,7 @@ public class OutputMainPanel extends JPanel {
             else if (element instanceof JFrame) {
                 JFrame frame = (JFrame) element;
                 JPanel panel = new JPanel();
+                panel.setLayout(new BorderLayout());
                 JButton visualButton = new JButton("Show visual");
                 visualButton.addActionListener(new ActionListener() {
                     @Override
@@ -71,6 +72,8 @@ public class OutputMainPanel extends JPanel {
                         frame.setVisible(true);
                     }
                 });
+                panel.add(visualButton, BorderLayout.CENTER);
+                pane.add(panel);
             }
         }
         this.removeAll();
