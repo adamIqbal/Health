@@ -16,8 +16,10 @@ import com.health.interpreter.Interpreter;
 import com.health.operations.Code;
 import com.health.operations.TableWithDays;
 import com.health.output.Output;
+import com.health.script.runtime.BooleanValue;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.NumberValue;
+import com.health.script.runtime.ScriptType;
 import com.health.script.runtime.StringValue;
 import com.health.script.runtime.WrapperValue;
 import com.health.visuals.BoxPlot;
@@ -106,15 +108,14 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("write", (args) -> {
-            Output.writeTable(((StringValue) args[0]).getValue(), ((WrapperValue<Table>) args[1]).getValue());
-            return null;
-        });
-
-        context.declareStaticMethod("writeFormatted", (args) -> {
-            Output.writeTable(
-                    ((StringValue) args[0]).getValue(),
-                    ((WrapperValue<Table>) args[1]).getValue(),
-                    ((StringValue) args[2]).getValue());
+            if (args.length >= 3) {
+                Output.writeTable(
+                        ((StringValue) args[0]).getValue(),
+                        ((WrapperValue<Table>) args[1]).getValue(),
+                        ((StringValue) args[2]).getValue());
+            } else {
+                Output.writeTable(((StringValue) args[0]).getValue(), ((WrapperValue<Table>) args[1]).getValue());
+            }
             return null;
         });
 
@@ -130,7 +131,11 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("boxplot", (args) -> {
-            BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue(), ((StringValue) args[1]).getValue());
+            if (args.length >= 2) {
+                BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue(), ((StringValue) args[1]).getValue());
+            } else {
+                BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue());
+            }
             return null;
         });
 
@@ -143,13 +148,19 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("sequence", (args) -> {
+            boolean connected = true;
+
+            if (args.length > 0 && args[args.length - 1] instanceof BooleanValue) {
+                connected = ((BooleanValue) args[args.length - 1]).getValue();
+            }
+
             String[] sequence = new String[args.length];
 
             for (int i = 0; i < args.length; i++) {
                 sequence[i] = ((StringValue) args[i]).getValue();
             }
 
-            return new WrapperValue<EventSequence>(new EventSequence(sequence));
+            return new WrapperValue<EventSequence>(new EventSequence(sequence, connected));
         });
 
         context.declareStaticMethod("findSequences", (args) -> {
@@ -161,17 +172,27 @@ public final class ControlModule {
             return new WrapperValue<List<EventList>>(sequence.getSequences());
         });
 
-        context.declareStaticMethod("transitionMatrix", (args) -> {
-            if (args.length >= 2) {
-                StateTransitionMatrix.createStateTrans(
-                        ((WrapperValue<EventList>) args[0]).getValue(),
-                        ((WrapperValue<List<EventList>>) args[1]).getValue());
-            } else {
-                StateTransitionMatrix.createStateTrans(
-                        ((WrapperValue<EventList>) args[0]).getValue());
-            }
-            return null;
-        });
+        context.declareStaticMethod(
+                "transitionMatrix",
+                (args) -> {
+                    EventList codes = ((WrapperValue<EventList>) args[0]).getValue();
+
+                    if (args.length >= 2) {
+                        ScriptType eventSequenceType = WrapperValue.getWrapperType(EventSequence.class);
+
+                        if ((args[1]).getType() == eventSequenceType) {
+                            EventSequence sequence = ((WrapperValue<EventSequence>) args[1]).getValue();
+
+                            StateTransitionMatrix.createStateTrans(codes, Code.fillEventSequence(sequence, codes));
+                        } else {
+                            StateTransitionMatrix.createStateTrans(codes,
+                                    ((WrapperValue<List<EventList>>) args[1]).getValue());
+                        }
+                    } else {
+                        StateTransitionMatrix.createStateTrans(codes);
+                    }
+                    return null;
+                });
 
         context.declareStaticMethod("tableWithDays", (args) -> {
             return new WrapperValue<Table>(TableWithDays.TableDays(((WrapperValue<Table>) args[0]).getValue()));
