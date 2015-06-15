@@ -38,7 +38,7 @@ public final class ControlModule {
      * @throws IOException
      *             if any I/O errors occur.
      */
-    public String startAnalysis() throws IOException {
+    public Context startAnalysis() throws IOException {
         if (this.script == null) {
             throw new IllegalStateException(
                     "Script cannot be null. Set the script to a String isntance using setScript(String).");
@@ -50,7 +50,7 @@ public final class ControlModule {
 
         Interpreter.interpret(this.script, context);
 
-        return null;
+        return context;
     }
 
     /**
