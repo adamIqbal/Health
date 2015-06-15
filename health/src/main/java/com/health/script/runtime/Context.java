@@ -1,5 +1,6 @@
 package com.health.script.runtime;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -33,6 +34,10 @@ public final class Context {
         this.declareType(WrapperValue.getWrapperType(Table.class));
         this.declareType(WrapperValue.getWrapperType(EventList.class));
         this.declareType(WrapperValue.getWrapperType(EventSequence.class));
+    }
+
+    public Map<String, LValue> getVariables() {
+        return Collections.unmodifiableMap(this.variables);
     }
 
     /**
