@@ -3,6 +3,7 @@ package com.health.operations.functions;
 import static org.junit.Assert.*;
 import static com.health.operations.functions.ConstrainFunctions.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 import org.junit.Before;
@@ -53,6 +54,10 @@ public class ConstrainFunctionsTest {
     assertTrue(greaterEq((Object) date, (Value) valueDate));
     assertFalse(greaterEq((Object) date, null));
     assertFalse(greaterEq(null, (Value) value));
+
+    DayOfWeek date = ((LocalDate) valueDate.getValue()).getDayOfWeek();
+    String day = date.toString();
+    System.out.println(day);
 
   }
 

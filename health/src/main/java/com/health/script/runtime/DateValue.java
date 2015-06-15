@@ -1,5 +1,6 @@
 package com.health.script.runtime;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 /**
@@ -65,6 +66,11 @@ public final class DateValue extends Value {
    */
   public static ScriptType getStaticType() {
     return DateValue.type;
+  }
+
+  public String dayOfWeek() {
+    return value.getDayOfWeek().toString();
+
   }
 
   @Override
