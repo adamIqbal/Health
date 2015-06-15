@@ -18,6 +18,7 @@ public class XmlConfigObject {
     private List<String> columns = null;
     private List<ValueType> columnTypes = null;
     private Path path = null;
+    private String dateFormat = null;
 
     /**
      * Constructs a XmlConfigObject object.
@@ -142,6 +143,15 @@ public class XmlConfigObject {
      */
     protected final void setType(final FileType type) {
         this.type = type;
+    }
+    
+
+    protected String getDateFormat() {
+        return dateFormat;
+    }
+
+    protected void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     /**

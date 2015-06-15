@@ -150,7 +150,12 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
         columnValue.setPreferredSize(preferredDim);
         columnValue.setSelectedItem(type);
 
-        columnName.setText(name);
+        if(type == ValueType.Date) {
+            columnName.setText(name + "[" + XmlWizard.getXml().getDateFormat() + "]");
+        }
+        else {
+            columnName.setText(name);
+        }
 
         VButton deleteButton = new VButton("Delete");
         deleteButton.addActionListener(new ActionListener() {

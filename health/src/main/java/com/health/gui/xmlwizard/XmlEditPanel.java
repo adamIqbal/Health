@@ -87,6 +87,10 @@ public class XmlEditPanel extends JPanel {
                 // I know. But using it to parse the xml
                 InputDescriptor id = new InputDescriptor(xml.getPath()
                         .toString());
+                
+                XmlConfigObject xmlObj = XmlWizard.getXml();
+                xmlObj.setDateFormat(id.getDateFormat());
+                XmlWizard.setXml(xmlObj);
 
                 if (id.getFormat().equals("xlsx")
                         || id.getFormat().equals("xls")) {
