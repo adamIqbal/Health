@@ -17,8 +17,8 @@ public final class ConstrainFunctions {
     }
 
     /**
-     * Function to determine whether the value gained through input is greater
-     * than value in the table.
+     * Function to determine whether the value gained through table is greater
+     * than value from input.
      *
      * @param columns
      *            original value from the column
