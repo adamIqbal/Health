@@ -4,9 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -23,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.ui.ApplicationFrame;
@@ -192,23 +195,21 @@ public final class StateTransitionMatrix extends JFrame {
 		c.setLayout(new FlowLayout());
 		JScrollPane scrollPane = new JScrollPane(table);
 		c.add(scrollPane, BorderLayout.CENTER);
-		
+
         frame.setContentPane(c);
         frame.setVisible(true);
         
-        //try out
         saveFile(table);
 	}
 	
-
-	//DOESNT work, saves empty file
+	// Misses table header...
 	public static void saveFile(JTable table) {
 		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
 		try {
-            int width = table.getWidth();
+            int width = table.getWidth(); 
             int height = table.getHeight();
 		    
-		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable2.pdf"));
+		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable.pdf"));
 		  	document.open();
 
 		    PdfContentByte cb = writer.getDirectContent();
