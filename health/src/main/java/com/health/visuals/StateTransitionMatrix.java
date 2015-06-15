@@ -2,6 +2,7 @@ package com.health.visuals;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -14,8 +15,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.ui.ApplicationFrame;
 
 import com.health.Column;
 import com.health.Event;
@@ -24,11 +29,17 @@ import com.health.EventSequence;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -155,15 +166,10 @@ public final class StateTransitionMatrix extends JFrame {
 	 * @throws FileNotFoundException 
 	 */
 	public static void createStateTrans(final EventList eList, final List<EventSequence> seqList) {
-		// Create frame
-		final int thousand = 1000;
+		final Dimension frameDimension = new Dimension(700, 700);
 
-		JFrame vidney = new JFrame();
-		vidney.setVisible(true);
-
-		vidney.setTitle("State Transition");
-		vidney.setSize(thousand, thousand);
-		vidney.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ApplicationFrame frame = new ApplicationFrame("Vidney");
+        frame.setSize(frameDimension);
 
 		String[][] matrix = setUp(eList);
 		String[][] matrixUse = fillMatrix(matrix, seqList);
@@ -174,36 +180,44 @@ public final class StateTransitionMatrix extends JFrame {
 				outputM[i - 1][j] = matrixUse[i][j];
 			}
 		}
-
-		JTable table = new JTable(outputM, matrixUse[0]);
-
-		saveChart(table);
 		
-		Container c = vidney.getContentPane();
+		JTable table = new JTable(outputM, matrixUse[0]);
+		
+		saveChart(table);
+
+		Container c = frame.getContentPane();
 		c.setLayout(new FlowLayout());
 		c.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        frame.setContentPane(c);
+        frame.setVisible(true);
 	}
 
 	//DOESNT work, saves empty file
 	public static void saveChart(JTable table) {
-	    Document document = new Document();
-	    PdfWriter writer;
-	    try {
-		    writer = PdfWriter.getInstance(document, new FileOutputStream("test.pdf") );
-	
-		    document.open();
+		Document document = new Document(PageSize.A4);
+		try {
+		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable.pdf"));
+		  	document.open();
+
 		    PdfContentByte cb = writer.getDirectContent();
-		    PdfTemplate tp = cb.createTemplate(500, 500);
-		    Graphics2D g2;
-		    g2 = tp.createGraphicsShapes(500, 500);
-	
+
+		    cb.saveState();
+		    Graphics2D g2 = cb.createGraphicsShapes(1000, 1000);
+
+		    Shape oldClip = g2.getClip();
+		    g2.clipRect(0,0, 1000, 1000);
+
 		    table.print(g2);
+		    g2.setClip(oldClip);
+
 		    g2.dispose();
-		    cb.addTemplate(tp, 30, 300);
-	    } catch (Exception e) {
-            e.printStackTrace();
-        }
-	    document.close();
+		    cb.restoreState();
+		    //JOptionPane.showMessageDialog(null,"done","done",JOptionPane.INFORMATION_MESSAGE);
+		  } catch (Exception e) {
+			  System.err.println(e.getMessage());
+		  }
+		document.close();
 	}
 	
 	/**
