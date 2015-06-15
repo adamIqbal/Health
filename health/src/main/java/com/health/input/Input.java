@@ -47,6 +47,13 @@ public final class Input {
     return parser.parse(filePath, config);
   }
 
+  /**
+   * A method to get the parser which applies to this datafile.
+   * 
+   * @param format
+   *          the extension of the data file.
+   * @return the new parser or null if there is no matching parser.gi
+   */
   private static Parser getParser(final String format) {
     assert format != null;
 
