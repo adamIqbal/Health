@@ -9,8 +9,3 @@ table =connect table with table6 where date = date;
 
 
 hist(table, "time", 24)
-
-
-var table = connect table0 with table1 where ModifiedDate = date as date;
-
-write("out.txt" , table);

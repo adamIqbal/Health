@@ -9,4 +9,11 @@ table = connect table with table7 where date = date;
 
 table = connect table0 with table where ModifiedDate = date as date;
 
+var event = code table as measurement : value > 0 , entry : Value > 0;
+
+//find sequence with same user
+var seq = sequence("measurement", "entry");
+
+//filter for difference
+
 write("out.txt" , table);
