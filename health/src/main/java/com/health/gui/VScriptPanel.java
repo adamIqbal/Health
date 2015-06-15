@@ -225,6 +225,10 @@ public final class VScriptPanel extends VidneyPanel {
 
             try {
                 context = control.startAnalysis();
+                JOptionPane.showMessageDialog(
+                        new JFrame(),
+                        "Analysis is done.", "Done!",
+                        JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
                 e.printStackTrace();
 
