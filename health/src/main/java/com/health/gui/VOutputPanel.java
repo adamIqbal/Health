@@ -1,6 +1,7 @@
 package com.health.gui;
 
 import java.awt.BorderLayout;
+import java.util.Map;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,8 +32,10 @@ public class VOutputPanel extends VidneyPanel {
 
         JScrollPane scrollforOutputArea = new JScrollPane(outputArea);
         mainPanel.add(scrollforOutputArea, BorderLayout.CENTER);
-
         this.setLeft(mainPanel);
+        
+        OutputPanelSidebar sidebar = new OutputPanelSidebar();
+        this.setRight(sidebar);
     }
 
     /**
@@ -45,5 +48,9 @@ public class VOutputPanel extends VidneyPanel {
         outputArea.setText(result);
         outputArea.revalidate();
         outputArea.repaint();
+    }
+    
+    public static void addAnalysis(Map<String, Object> data) {
+        OutputPanelSidebar.add(data);
     }
 }
