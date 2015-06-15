@@ -2,6 +2,7 @@ package com.health.operations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.health.Column;
 import com.health.Record;
@@ -34,9 +35,7 @@ public final class Connect {
      *            a list of Column Connections.
      * @return A Table object.
      */
-    public static Table connect(
-            final Table table1,
-            final Table table2,
+    public static Table connect(final Table table1, final Table table2,
             final List<ColumnConnection> connections) {
 
         List<Column> connectedTableCols = makeNewTableColumns(
@@ -67,9 +66,11 @@ public final class Connect {
             int index = isInConnections(column, connections);
 
             if (index >= 0) {
-                result.add(new Column(connections.get(index).getNewName(), result.size(), column.getType()));
+                result.add(new Column(connections.get(index).getNewName(),
+                        result.size(), column.getType()));
             } else {
-                result.add(new Column(column.getName(), result.size(), column.getType()));
+                result.add(new Column(column.getName(), result.size(), column
+                        .getType()));
             }
         }
 
@@ -78,7 +79,8 @@ public final class Connect {
             int index = isInConnections(column, connections);
 
             if (!result.contains(column) && index == -1) {
-                result.add(new Column(column.getName(), result.size(), column.getType()));
+                result.add(new Column(column.getName(), result.size(), column
+                        .getType()));
             }
 
         }
@@ -100,7 +102,8 @@ public final class Connect {
         int index = 0;
 
         for (ColumnConnection connection : connections) {
-            if (connection.getColumn1().equals(col.getName()) || connection.getColumn2().equals(col.getName())) {
+            if (connection.getColumn1().equals(col.getName())
+                    || connection.getColumn2().equals(col.getName())) {
                 return index;
             }
 
@@ -125,11 +128,14 @@ public final class Connect {
                 int indexInConnections = isInConnections(column, connections);
 
                 if (indexInConnections >= 0) {
-                    name = connections.get(indexInConnections).getNewName();
+                    newName = connections.get(indexInConnections).getNewName();
 
                 }
                 
-                record.setValue(name, recList.get(i).getValue(newName));
+                if (recList.get(i).getValue(newName) != null) {
+                    record.setValue(name, recList.get(i).getValue(newName));
+                }
+                
             }
         }
     }
@@ -137,7 +143,12 @@ public final class Connect {
     private static Table sortTable(final Table table, final String colName) {
         List<Record> records = new ArrayList<Record>(table.getRecords());
 
-        records.sort((a, b) -> a.getDateValue(colName).compareTo(b.getDateValue(colName)));
+        records.sort((a, b) -> Objects.compare(a.getDateValue(colName), b.getDateValue(colName),
+                (date1, date2) -> {
+                    if (date1==null ||date2 ==null) {
+                        System.out.println("Test");
+                    }
+                    return  date1.compareTo(date2);}));
 
         Table sortedTable = new Table(table.getColumns());
 
