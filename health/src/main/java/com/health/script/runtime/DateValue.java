@@ -67,7 +67,7 @@ public final class DateValue extends Value {
     return DateValue.type;
   }
 
-  public String dayOfWeek() {
+  public static String dayOfWeek(LocalDate value) {
     return value.getDayOfWeek().toString();
 
   }
