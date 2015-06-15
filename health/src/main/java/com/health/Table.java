@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.swing.JTable;
+
 /**
  * Represents a collection of {@link Column}s and {@link Record}s.
  *
@@ -202,4 +204,25 @@ public final class Table implements Iterable<Record> {
 
         return null;
     }
+    
+    public JTable toJTable() {
+        int rows = this.getRecords().size();
+        int cols = this.getColumns().size();
+        
+        String[] names = new String[cols];
+        for(int i = 0; i < cols; i++) {
+            names[i] = this.getColumns().get(i).getName();
+        }
+        
+        Object[][] data = new Object[rows][cols];
+        for(int j = 0; j < rows; j++) {
+            for(int k = 0; k < cols; k++) {
+                data[j][k] = this.getRecords().get(j).getValue(this.getColumns().get(k).getName());
+            }
+        }
+        JTable table = new JTable(data, names);
+        return table;
+    }
+    
+    
 }

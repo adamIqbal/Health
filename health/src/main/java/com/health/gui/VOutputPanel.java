@@ -1,10 +1,17 @@
 package com.health.gui;
 
-import java.awt.BorderLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.util.HashMap;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
+import com.health.Table;
+import com.health.input.Input;
+import com.health.input.InputException;
 
 /**
  * Represents the panel where the script is typed.
@@ -16,7 +23,6 @@ public class VOutputPanel extends VidneyPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -5303011708825739028L;
-    private static JTextArea outputArea;
 
     /**
      * Constructor.
@@ -24,26 +30,69 @@ public class VOutputPanel extends VidneyPanel {
     public VOutputPanel() {
         super();
 
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-
-        outputArea = new JTextArea(2, 1);
-
-        JScrollPane scrollforOutputArea = new JScrollPane(outputArea);
-        mainPanel.add(scrollforOutputArea, BorderLayout.CENTER);
-
+        OutputMainPanel mainPanel = new OutputMainPanel();
         this.setLeft(mainPanel);
+
+        OutputPanelSidebar sidebar = new OutputPanelSidebar();
+        OutputPanelSidebar.list.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(final MouseEvent e) {
+                String selected = OutputPanelSidebar.list.getSelectedValue();
+                mainPanel.setData(OutputPanelSidebar.getData(selected));
+            }
+
+            @Override
+            public void mouseEntered(final MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(final MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(final MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(final MouseEvent e) {
+            }
+
+        });
+        this.setRight(sidebar);
+
+        // DUMMY DATA
+        String filePath = "data/data_all/data_txt/ADMIRE 2.txt";
+        String filePath2 = "data/data_all/data_txt/ADMIRE_13.txt";
+        String configPath = "data/configXmls/admireTxtConfig.xml";
+        Table table = null;
+        Table table2 = null;
+        try {
+            table = Input.readTable(filePath, configPath);
+            table2 = Input.readTable(filePath2, configPath);
+        } catch (IOException | ParserConfigurationException | SAXException
+                | InputException e) {
+            e.printStackTrace();
+        }
+        HashMap<String, Object> test = new HashMap<String, Object>();
+        test.put("test", table);
+        test.put("test2", table2);
+        addAnalysis(test);
+        //
     }
 
     /**
-     * set the text of the display area.
-     *
-     * @param result
-     *            the result of the analysis
+     * Same as addAnalysis. Is added for compatibility. Can be removed later.
      */
-    public static void displayData(final String result) {
-        outputArea.setText(result);
-        outputArea.revalidate();
-        outputArea.repaint();
+    public static void displayData(final HashMap<String, Object> data) {
+        addAnalysis(data);
+    }
+
+    /**
+     * Adds an performed analysis to the output panel.
+     * @param data
+     */
+    public static void addAnalysis(final HashMap<String, Object> data) {
+        OutputPanelSidebar.add(data);
     }
 }
