@@ -46,8 +46,9 @@ public final class Connect {
         addRecords(connectedTable, table1, connections);
         addRecords(connectedTable, table2, connections);
 
+
         for (Column column : connectedTableCols) {
-            if (column.getType() == ValueType.Date) {
+            if (column.getType() == ValueType.Date && isInConnections(column, connections) >= 0) {
                 connectedTable = sortTable(connectedTable, column.getName());
                 break;
             }
@@ -132,8 +133,8 @@ public final class Connect {
 
                 }
                 
-                if (recList.get(i).getValue(newName) != null) {
-                    record.setValue(name, recList.get(i).getValue(newName));
+                if (recList.get(i).getValue(name) != null) {
+                    record.setValue(newName, recList.get(i).getValue(name));
                 }
                 
             }
