@@ -125,7 +125,7 @@ public final class Histogram extends JFrame {
 	    writeChartToPDF(chart, width, height, "HistTest.pdf");
 	    
         frame.setContentPane(chartPanel);
-        frame.setVisible(true);
+        //frame.setVisible(true);
         
         return chartPanel;
 
