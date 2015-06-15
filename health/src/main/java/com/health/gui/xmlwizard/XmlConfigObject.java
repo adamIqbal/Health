@@ -74,19 +74,7 @@ public class XmlConfigObject {
                 + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
                 + "\">" + "\n\r";
 
-        String columnTags = "";
-        int n = columns.size();
-
-        // if columns List and columntype List are not of equal length, there is
-        // something wrong.
-        if (n != this.columnTypes.size()) {
-            return null;
-        }
-
-        for (int i = 0; i < n; i++) {
-            columnTags += "\t" + "<column type=\"" + this.columnTypes.get(i)
-                    + "\">" + this.columns.get(i) + "</column>" + "\n\r";
-        }
+        String columnTags = this.columnsToXML();
 
         String dataEnd = "</data>";
 
@@ -105,6 +93,14 @@ public class XmlConfigObject {
         String dataStart = "<data format=\"xls\" startRow=\"" + startRow
                 + "\" startColumn=\"" + startCol + "\">" + "\n\r";
 
+        String columnTags = this.columnsToXML();
+
+        String dataEnd = "</data>";
+
+        return header + dataStart + columnTags + dataEnd;
+    }
+    
+    private final String columnsToXML() {
         String columnTags = "";
         int n = columns.size();
 
@@ -115,13 +111,20 @@ public class XmlConfigObject {
         }
 
         for (int i = 0; i < n; i++) {
-            columnTags += "\t" + "<column type=\"" + this.columnTypes.get(i)
-                    + "\">" + this.columns.get(i) + "</column>" + "\n\r";
+            if (columnTypes.get(i) == ValueType.Date) {
+                String input = this.columns.get(i);
+                String[] parts = this.splitString(input, "[");
+                
+                columnTags += "\t" + "<column type=\""
+                        + this.columnTypes.get(i) + "\" format = \"" + parts[1] + "\">" + parts[0]
+                        + "</column>" + "\n\r";
+            } else {
+                columnTags += "\t" + "<column type=\""
+                        + this.columnTypes.get(i) + "\">" + this.columns.get(i)
+                        + "</column>" + "\n\r";
+            }
         }
-
-        String dataEnd = "</data>";
-
-        return header + dataStart + columnTags + dataEnd;
+        return columnTags;
     }
 
     /**
@@ -207,5 +210,28 @@ public class XmlConfigObject {
      */
     protected final void setPath(final Path path) {
         this.path = path;
+    }
+
+    private String[] splitString(String source, String splitter)
+    {
+      String[] rv = new String[2];
+      int last = 0;
+      int next = 0;
+
+      next = source.indexOf(splitter, last);
+      if (next != -1)
+      {
+        // isolate from last thru before next
+        rv[0] = source.substring(last, next);
+        last = next + splitter.length();
+      }
+
+      if (last < source.length())
+      {
+        rv[1] = source.substring(last, source.length()-1);
+      }
+
+      // convert to array
+      return rv;
     }
 }

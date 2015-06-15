@@ -112,8 +112,12 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
             if (((JComboBox<ValueType>) column.getComponents()[1])
                     .getSelectedItem().equals(ValueType.String)) {
                 columnTypes.add(ValueType.String);
-            } else {
+            } else if(((JComboBox<ValueType>) column.getComponents()[1])
+                    .getSelectedItem().equals(ValueType.Number)) {
                 columnTypes.add(ValueType.Number);
+            }
+            else {
+                columnTypes.add(ValueType.Date);
             }
         }
 
