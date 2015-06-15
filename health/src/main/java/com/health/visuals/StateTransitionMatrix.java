@@ -7,13 +7,18 @@ import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
+import java.awt.print.PrinterException;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -182,38 +187,78 @@ public final class StateTransitionMatrix extends JFrame {
 		}
 		
 		JTable table = new JTable(outputM, matrixUse[0]);
-		
-		saveChart(table);
 
 		Container c = frame.getContentPane();
 		c.setLayout(new FlowLayout());
-		c.add(new JScrollPane(table), BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(table);
+		c.add(scrollPane, BorderLayout.CENTER);
 
+		//try out
+		saveChart(table);
+		
         frame.setContentPane(c);
         frame.setVisible(true);
+        
+        //try out
+        saveFile(table);
 	}
 
+	//DOESNT work well.
+	public static void saveChart(JTable table){
+		try{
+            //the file path
+           File file = new File("StateTest2.txt");
+           //if the file not exist create one
+           if(!file.exists()){
+               file.createNewFile();
+           }
+           
+           FileWriter fw = new FileWriter(file.getAbsoluteFile());
+           BufferedWriter bw = new BufferedWriter(fw);
+           
+           //loop for jtable rows
+           for(int i = 0; i < table.getRowCount(); i++){
+               //loop for jtable column
+               for(int j = 0; j < table.getColumnCount(); j++){
+            	   String val = (String) table.getModel().getValueAt(i, j);
+            	   if(val != null){
+            		   bw.write(val + " ");
+            	   }
+               }
+               //break line at the begin 
+               //break line at the end 
+               bw.write("\n_________\n");
+           }
+           //close BufferedWriter
+           bw.close();
+           fw.close();
+           
+           }catch(Exception ex){
+               ex.printStackTrace();
+           }
+	}
+	
+
 	//DOESNT work, saves empty file
-	public static void saveChart(JTable table) {
-		Document document = new Document(PageSize.A4);
+	public static void saveFile(JTable table) {
+		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
 		try {
-		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable.pdf"));
+		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable2.pdf"));
 		  	document.open();
 
 		    PdfContentByte cb = writer.getDirectContent();
 
 		    cb.saveState();
-		    Graphics2D g2 = cb.createGraphicsShapes(1000, 1000);
+		    Graphics2D g2 = cb.createGraphicsShapes(700, 700);
 
 		    Shape oldClip = g2.getClip();
-		    g2.clipRect(0,0, 1000, 1000);
+		    g2.clipRect(0, 0, 700, 700);
 
 		    table.print(g2);
 		    g2.setClip(oldClip);
 
 		    g2.dispose();
 		    cb.restoreState();
-		    //JOptionPane.showMessageDialog(null,"done","done",JOptionPane.INFORMATION_MESSAGE);
 		  } catch (Exception e) {
 			  System.err.println(e.getMessage());
 		  }
