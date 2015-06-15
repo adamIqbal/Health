@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,11 +24,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FileUtils;
 
+import com.health.Table;
 import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
 import com.health.script.runtime.Context;
+import com.health.script.runtime.LValue;
+import com.health.script.runtime.ScriptType;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents the panel where the script is typed.
@@ -264,8 +269,19 @@ public final class VScriptPanel extends VidneyPanel {
         private Map<String, Object> getOutputData(final Context context) {
             Map<String, Object> output = new HashMap<String, Object>();
 
+            ScriptType tableType = WrapperValue.getWrapperType(Table.class);
+
+            for (Entry<String, LValue> variable : context.getVariables().entrySet()) {
+                // Add all table variables to output
+                if (variable.getValue().getType() == tableType) {
+                    WrapperValue<Table> tableWrapper = (WrapperValue<Table>) variable.getValue().get();
+                    Table table = tableWrapper.getValue();
+
+                    output.put(variable.getKey(), table);
+                }
+            }
+
             return output;
         }
     }
-
 }
