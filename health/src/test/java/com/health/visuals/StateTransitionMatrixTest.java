@@ -58,7 +58,6 @@ public class StateTransitionMatrixTest {
 
         tmp = new Record(table);
         tmp.setValue(0, LocalDate.of(2, 2, 2));
-
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
 
