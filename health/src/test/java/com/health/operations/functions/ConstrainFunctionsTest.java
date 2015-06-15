@@ -3,9 +3,13 @@ package com.health.operations.functions;
 import static org.junit.Assert.*;
 import static com.health.operations.functions.ConstrainFunctions.*;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.health.script.runtime.DateValue;
 import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.Value;
 
@@ -13,13 +17,90 @@ public class ConstrainFunctionsTest {
   double columns;
   NumberValue value;
 
+  LocalDate date;
+  DateValue valueDate = new DateValue();
+
   @Before
   public void setUp() {
 
     columns = 3;
     value = new NumberValue();
     value.setValue(2);
+
+    date = LocalDate.now();
+    valueDate = new DateValue();
+
   }
+
+  @Test
+  public void testGreaterDate() {
+    assertTrue(greater((Object) date, (Value) valueDate));
+
+    assertFalse(greater((Object) date, null));
+    assertFalse(greater(null, (Value) value));
+
+    valueDate.setValue(date);
+
+    assertFalse(greater((Object) date, (Value) valueDate));
+
+  }
+
+  @Test
+  public void testGreaterEqDate() {
+    assertTrue(greaterEq((Object) date, (Value) valueDate));
+
+    valueDate.setValue(date);
+
+    assertTrue(greaterEq((Object) date, (Value) valueDate));
+    assertFalse(greaterEq((Object) date, null));
+    assertFalse(greaterEq(null, (Value) value));
+
+    DayOfWeek date = ((LocalDate) valueDate.getValue()).getDayOfWeek();
+    String day = date.toString();
+    System.out.println(day);
+
+  }
+
+  //
+  // @Test
+  // public void testSmallerEqDate() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testSmallerDate() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testEqualDate() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testGreaterString() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testGreaterEqString() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testSmallerEqString() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testSmallerString() {
+  // fail("Not yet implemented");
+  // }
+  //
+  // @Test
+  // public void testEqualString() {
+  // fail("Not yet implemented");
+  // }
 
   @Test
   public void testGreaterNumber() {
@@ -129,55 +210,4 @@ public class ConstrainFunctionsTest {
 
     assertFalse(equal((Object) columns, (Value) value));
   }
-
-  // @Test
-  // public void testGreaterDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testGreaterEqDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testSmallerEqDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testSmallerDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testEqualDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testGreaterString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testGreaterEqString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testSmallerEqString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testSmallerString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testEqualString() {
-  // fail("Not yet implemented");
-  // }
-
 }
