@@ -48,7 +48,7 @@ public class WrapperValue<T> extends ComplexValue {
      *            the class of the value.
      * @return the {@link ScriptType} corresponding to {@link WrapperValue}.
      */
-    public static ScriptType getWrapperType(final Class<?> type) {
+    public static synchronized ScriptType getWrapperType(final Class<?> type) {
         if (!types.containsKey(type)) {
             ScriptTypeBuilder builder = new ScriptTypeBuilder();
             builder.setTypeName(type.getName());
