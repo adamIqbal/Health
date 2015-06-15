@@ -65,15 +65,14 @@ public class Code {
 
                 tmpEList.addEvent(eList.get(currentIndex));
                 int oldIndex = currentIndex;
-                currentIndex++;
-
+                int nextIndex = ++currentIndex;
                 for (int i = 1; i < codePattern.length; i++) {
-                    currentIndex = findEventInSeq(codePattern[i], eventList,
-                            currentIndex);
-                    if (currentIndex - oldIndex == 1) {
-                        tmpEList.addEvent(eList.get(currentIndex));
-                        oldIndex = currentIndex;
-                        currentIndex++;
+                    nextIndex = findEventInSeq(codePattern[i], eventList,
+                            nextIndex);
+                    if (nextIndex - oldIndex == 1) {
+                        tmpEList.addEvent(eList.get(nextIndex));
+                        oldIndex = nextIndex;
+                        currentIndex = ++nextIndex;
                     } else {
                         break makeEventList;
                     }

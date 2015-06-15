@@ -176,17 +176,11 @@ public final class Chunk {
         return list;
     }
 
-    private static double aggregate(final List<Record> chunk,
-            final String column, final AggregateFunction function) {
-        double[] values = new double[chunk.size()];
-
-        for (int i = 0; i < chunk.size(); i++) {
-            if (chunk.get(i).getNumberValue(column) != null) {
-                values[i] = chunk.get(i).getNumberValue(column);
-            }
-        }
-
-        return function.apply(values);
+    private static double aggregate(
+            final List<Record> records,
+            final String column,
+            final AggregateFunction<?> function) {
+        return function.apply(records, column);
     }
 
     private static List<Column> createChunkTableColumns(final Table table,
