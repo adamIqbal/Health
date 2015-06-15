@@ -142,7 +142,7 @@ public final class Connect {
 
         records.sort((a, b) -> {
             LocalDate dateA = a.getDateValue(colName);
-            LocalDate dateB = a.getDateValue(colName);
+            LocalDate dateB = b.getDateValue(colName);
 
             if (dateA == null && dateB == null) {
                 return 0;
