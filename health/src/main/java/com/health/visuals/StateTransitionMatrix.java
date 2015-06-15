@@ -148,7 +148,6 @@ public final class StateTransitionMatrix extends JFrame {
 		c.add(scrollPane, BorderLayout.CENTER);
 
         frame.setContentPane(c);
-        //frame.setVisible(true);
         return table;
     }
 
