@@ -2,8 +2,12 @@ package com.health.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -44,13 +48,29 @@ public class OutputMainPanel extends JPanel {
         this.map = data;
         JTabbedPane pane = new JTabbedPane();
         for (String key : data.keySet()) {
-            if (data.get(key) instanceof Table) {
-                Table table = (Table) data.get(key);
+            Object element = data.get(key);
+            if (element instanceof Table) {
+                Table table = (Table) element;
                 JTable jtable = table.toJTable();
                 jtable.setEnabled(false);
                 jtable.setAutoCreateRowSorter(true);
                 JScrollPane scroll = new JScrollPane(jtable);
                 pane.add("Tab", scroll);
+            }
+            else if (element instanceof JPanel) {
+                JPanel panel = (JPanel) element;
+                pane.add(panel);
+            }
+            else if (element instanceof JFrame) {
+                JFrame frame = (JFrame) element;
+                JPanel panel = new JPanel();
+                JButton visualButton = new JButton("Show visual");
+                visualButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent arg0) {
+                        frame.setVisible(true);
+                    }
+                });
             }
         }
         this.removeAll();
