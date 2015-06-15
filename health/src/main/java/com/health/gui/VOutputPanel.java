@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -84,7 +85,7 @@ public class VOutputPanel extends VidneyPanel {
     /**
      * Same as addAnalysis. Is added for compatibility. Can be removed later.
      */
-    public static void displayData(final HashMap<String, Object> data) {
+    public static void displayData(final Map<String, Object> data) {
         addAnalysis(data);
     }
 
@@ -92,7 +93,7 @@ public class VOutputPanel extends VidneyPanel {
      * Adds an performed analysis to the output panel.
      * @param data
      */
-    public static void addAnalysis(final HashMap<String, Object> data) {
+    public static void addAnalysis(final Map<String, Object> data) {
         OutputPanelSidebar.add(data);
     }
 }
