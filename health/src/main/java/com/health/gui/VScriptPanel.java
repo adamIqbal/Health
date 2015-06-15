@@ -238,7 +238,7 @@ public final class VScriptPanel extends VidneyPanel {
                 return;
             }
 
-            VOutputPanel.displayData(getOutputData(context, control.getVisuals()));
+            VOutputPanel.addAnalysis(getOutputData(context, control.getVisuals()));
         }
 
         private String getScript() {
