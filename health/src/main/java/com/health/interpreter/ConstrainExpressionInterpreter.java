@@ -11,8 +11,8 @@ import com.health.script.MyScriptParser.ConditionalExpressionContext;
 import com.health.script.MyScriptParser.ConstrainExpressionContext;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.ScriptRuntimeException;
-import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents an interpreter for constraining expressions.
@@ -51,7 +51,7 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
                 table,
                 tableIdent);
 
-        return new TableValue(Constraints.constrain(predicate, table));
+        return new WrapperValue<Table>(Constraints.constrain(predicate, table));
     }
 
     private Function<Record, Boolean> createPredicateFromConditionalExpression(

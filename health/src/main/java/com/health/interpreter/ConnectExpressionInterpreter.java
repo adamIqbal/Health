@@ -8,8 +8,8 @@ import com.health.operations.ColumnConnection;
 import com.health.operations.Connect;
 import com.health.script.MyScriptParser;
 import com.health.script.runtime.Context;
-import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents an interpreter for connecting expressions.
@@ -47,7 +47,7 @@ public final class ConnectExpressionInterpreter extends TableExpressionInterpret
 
         List<ColumnConnection> connections = evaluateColumnConnections(ctx.columnConnectionList());
 
-        return new TableValue(Connect.connect(table1, table2, connections));
+        return new WrapperValue<Table>(Connect.connect(table1, table2, connections));
     }
 
     private List<ColumnConnection> evaluateColumnConnections(final MyScriptParser.ColumnConnectionListContext ctx) {

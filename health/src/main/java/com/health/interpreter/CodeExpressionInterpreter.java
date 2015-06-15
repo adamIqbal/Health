@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.health.EventList;
 import com.health.Record;
 import com.health.Table;
 import com.health.operations.functions.ConstrainFunctions;
@@ -11,9 +12,9 @@ import com.health.script.MyScriptParser;
 import com.health.script.MyScriptParser.ConditionContext;
 import com.health.script.MyScriptParser.ConditionalExpressionContext;
 import com.health.script.runtime.Context;
-import com.health.script.runtime.EventListValue;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.Value;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents an interpreter for coding expressions.
@@ -48,7 +49,7 @@ public final class CodeExpressionInterpreter extends TableExpressionInterpreter 
 
         Map<String, Function<Record, Boolean>> codes = evaluateCodeList(ctx.codeList(), table, tableIdent);
 
-        return new EventListValue(com.health.operations.Code.makeEventList(table, codes));
+        return new WrapperValue<EventList>(com.health.operations.Code.makeEventList(table, codes));
     }
 
     private Map<String, Function<Record, Boolean>> evaluateCodeList(
