@@ -110,13 +110,21 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("writeFormatted", (args) -> {
-            Output.writeTable(((StringValue) args[0]).getValue(), ((WrapperValue<Table>) args[1]).getValue(),
+            Output.writeTable(
+                    ((StringValue) args[0]).getValue(),
+                    ((WrapperValue<Table>) args[1]).getValue(),
                     ((StringValue) args[2]).getValue());
             return null;
         });
 
         context.declareStaticMethod("freqbar", (args) -> {
-            FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
+            if (args.length >= 2) {
+                FreqBar.frequencyBar(
+                        ((WrapperValue<Table>) args[0]).getValue(),
+                        ((StringValue) args[1]).getValue());
+            } else {
+                FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
+            }
             return null;
         });
 
@@ -133,7 +141,7 @@ public final class ControlModule {
             return null;
         });
 
-        context.declareStaticMethod("createSequence", (args) -> {
+        context.declareStaticMethod("sequence", (args) -> {
             String[] sequence = new String[args.length];
 
             for (int i = 0; i < args.length; i++) {
@@ -153,9 +161,14 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("transitionMatrix", (args) -> {
-            StateTransitionMatrix.createStateTrans(
-                    ((WrapperValue<EventList>) args[0]).getValue());
-
+            if (args.length >= 2) {
+                StateTransitionMatrix.createStateTrans(
+                        ((WrapperValue<EventList>) args[0]).getValue(),
+                        ((WrapperValue<List<EventList>>) args[1]).getValue());
+            } else {
+                StateTransitionMatrix.createStateTrans(
+                        ((WrapperValue<EventList>) args[0]).getValue());
+            }
             return null;
         });
 
