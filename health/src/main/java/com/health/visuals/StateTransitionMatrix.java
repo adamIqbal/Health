@@ -192,50 +192,12 @@ public final class StateTransitionMatrix extends JFrame {
 		c.setLayout(new FlowLayout());
 		JScrollPane scrollPane = new JScrollPane(table);
 		c.add(scrollPane, BorderLayout.CENTER);
-
-		//try out
-		saveChart(table);
 		
         frame.setContentPane(c);
         frame.setVisible(true);
         
         //try out
         saveFile(table);
-	}
-
-	//DOESNT work well.
-	public static void saveChart(JTable table){
-		try{
-            //the file path
-           File file = new File("StateTest2.txt");
-           //if the file not exist create one
-           if(!file.exists()){
-               file.createNewFile();
-           }
-           
-           FileWriter fw = new FileWriter(file.getAbsoluteFile());
-           BufferedWriter bw = new BufferedWriter(fw);
-           
-           //loop for jtable rows
-           for(int i = 0; i < table.getRowCount(); i++){
-               //loop for jtable column
-               for(int j = 0; j < table.getColumnCount(); j++){
-            	   String val = (String) table.getModel().getValueAt(i, j);
-            	   if(val != null){
-            		   bw.write(val + " ");
-            	   }
-               }
-               //break line at the begin 
-               //break line at the end 
-               bw.write("\n_________\n");
-           }
-           //close BufferedWriter
-           bw.close();
-           fw.close();
-           
-           }catch(Exception ex){
-               ex.printStackTrace();
-           }
 	}
 	
 
