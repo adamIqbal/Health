@@ -105,7 +105,7 @@ public final class BoxPlot {
         final ChartPanel chartPanel = createChartPanel(plot);
 
         frame.setContentPane(chartPanel);
-        frame.setVisible(true);
+        //frame.setVisible(true);
         
         return chartPanel;
     }
