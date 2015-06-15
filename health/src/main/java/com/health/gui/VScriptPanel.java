@@ -8,13 +8,15 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -22,10 +24,15 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FileUtils;
 
+import com.health.Table;
 import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
+import com.health.script.runtime.Context;
+import com.health.script.runtime.LValue;
+import com.health.script.runtime.ScriptType;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents the panel where the script is typed.
@@ -100,7 +107,7 @@ public final class VScriptPanel extends VidneyPanel {
                     String name = JOptionPane.showInputDialog(new JFrame(),
                             "Please specify a name for this script file",
                             "Save as..");
-                    String filename = GUImain.PATH_TO_DATA+"scripts/" + name + ".txt";
+                    String filename = GUImain.PATH_TO_DATA + "scripts/" + name + ".txt";
                     File file = new File(filename);
 
                     try {
@@ -172,6 +179,7 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Sets the script area text.
+     * 
      * @param text
      *            the text to set
      */
@@ -181,9 +189,11 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Reads the txt file containing the script.
+     * 
      * @param file
      *            File containing the script
-     * @throws IOException thrown if there is an IO error
+     * @throws IOException
+     *             thrown if there is an IO error
      */
     protected static void setScript(final File file) throws IOException {
         String script = FileUtils.readFileToString(file);
@@ -208,29 +218,27 @@ public final class VScriptPanel extends VidneyPanel {
          * @param event
          */
         public void actionPerformed(final ActionEvent event) {
+            Context context;
             ControlModule control = new ControlModule();
             control.setScript(getScript());
             control.setData(getInputData());
 
-            String output = null;
-
             try {
-                output = control.startAnalysis();
+                context = control.startAnalysis();
             } catch (Exception e) {
                 e.printStackTrace();
 
-                output = e.getMessage();
+                JOptionPane.showMessageDialog(
+                        null,
+                        String.format(
+                                "An unhandled exception occured while executing the script: %s.",
+                                e.getMessage()), "Script runtime exception",
+                        JOptionPane.ERROR_MESSAGE);
 
-                JOptionPane
-                        .showMessageDialog(
-                                null,
-                                String.format(
-                                        "An unhandled exception occured while executing the script: %s.",
-                                        output), "Script runtime exception",
-                                JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            VOutputPanel.displayData(output);
+            VOutputPanel.displayData(getOutputData(context, control.getVisuals()));
         }
 
         private String getScript() {
@@ -257,6 +265,27 @@ public final class VScriptPanel extends VidneyPanel {
 
             return parsedData;
         }
-    }
 
+        private HashMap<String, Object> getOutputData(final Context context, final Map<String, Object> visuals) {
+            HashMap<String, Object> output = new HashMap<String, Object>();
+
+            ScriptType tableType = WrapperValue.getWrapperType(Table.class);
+
+            for (Entry<String, LValue> variable : context.getVariables().entrySet()) {
+                // Add all table variables to output
+                if (variable.getValue().getType() == tableType) {
+                    WrapperValue<Table> tableWrapper = (WrapperValue<Table>) variable.getValue().get();
+                    Table table = tableWrapper.getValue();
+
+                    output.put(variable.getKey(), table);
+                }
+            }
+
+            for (Entry<String, Object> visual : visuals.entrySet()) {
+                output.put(visual.getKey(), visual.getValue());
+            }
+
+            return output;
+        }
+    }
 }

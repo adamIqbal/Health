@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.JFrame;
+
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
@@ -37,12 +39,13 @@ public final class FreqBar {
      * Generates a Frequency bar diagram. This variant has no column specified.
      * It chooses the last date column and last frequency column in the Table
      * object.
-     * 
+     *
      * @param table
      *            Table to use
      * @throws IOException 
      */
-    public static void frequencyBar(final Table table) throws IOException {
+
+    public static JFrame frequencyBar(final Table table) {
         // Check if the Table contains a frequency and a date column
         Column freqColumn = null;
         Column dateColumn = null;
@@ -57,11 +60,10 @@ public final class FreqBar {
         if (freqColumn != null && dateColumn != null) {
             Map<String, Integer> freqMap = formatFrequencyMap(table,
                     freqColumn.getName(), dateColumn.getName());
-            makeBarChart(freqMap, dateColumn.getName());
+            return makeBarChart(freqMap, dateColumn.getName());
         } else {
             // Not good.
-            System.out
-                    .println("Table contains either no frequency column or no date column.");
+            throw new RuntimeException("Table contains either no frequency column or no date column.");
         }
     }
 
@@ -74,7 +76,7 @@ public final class FreqBar {
      *            Column to display frequency of
      * @throws IOException 
      */
-    public static void frequencyBar(final Table table, final String column) throws IOException {
+    public static JFrame frequencyBar(final Table table, final String column) {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
@@ -88,10 +90,10 @@ public final class FreqBar {
         // the specified column
         if (freqColumn != null) {
             Map<String, Integer> freqMap = formatFrequencyMap(table, freqColumn.getName(), column);
-            makeBarChart(freqMap, column);
+            return makeBarChart(freqMap, column);
         } else {
             Map<String, Integer> freqMap = createFrequencyMap(table, column);
-            makeBarChart(freqMap, column);
+            return makeBarChart(freqMap, column);
         }
     }
 
@@ -157,8 +159,8 @@ public final class FreqBar {
      *            frequency map
      * @throws IOException 
      */
-    private static void makeBarChart(final Map<String, Integer> freqMap,
-            final String seriesName) throws IOException {
+    private static JFrame makeBarChart(final Map<String, Integer> freqMap,
+            final String seriesName) {
         final int frameWidth = 800;
         final int frameHeight = 600;
         // Convert input data for processing
@@ -176,9 +178,7 @@ public final class FreqBar {
         // Customize Chart
         chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
 
-        saveGraph(chart, "FreqBarTest");
-        
-        new SwingWrapper(chart).displayChart();
+        return new SwingWrapper(chart).displayChart();
     }
     
     public static void saveGraph(Chart chart, String fileName) throws IOException{

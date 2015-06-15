@@ -13,35 +13,36 @@ import com.health.EventSequence;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.health.operations.Code;
 
 /**
  * Test for State Transition Matrix.
+ * 
  * @author Lizzy Scholten
  *
  */
 public class StateTransitionMatrixTest {
 
+    /**
+     * Dummy input for testing the State Transition Matrix.
+     */
+    @Test
+    public final void test() {
 
-	/**
-	 * Dummy input for testing the State Transition Matrix.
-	 */
-	@Test
-	public final void test() {
+        /*
+         * Input: List EventSequences, pattern, subset to check within entire
+         * event sequence set
+         */
 
-		/*
-		Input:
-		List EventSequences, pattern, subset to check within entire event sequence set
-		*/
+        // Create dummy input values
+        Table table;
 
-		//Create dummy input values
-		Table table;
-
-		final int two = 2;
-		final double two2 = 2.0;
-		final int three = 3;
-		final double three2 = 3.0;
-		final int four = 4;
-		final double four2 = 4.0;
+        final int two = 2;
+        final double two2 = 2.0;
+        final int three = 3;
+        final double three2 = 3.0;
+        final int four = 4;
+        final double four2 = 4.0;
 
         List<Column> columns = new ArrayList<Column>();
         columns.add(new Column("date", 0, ValueType.Date));
@@ -91,23 +92,30 @@ public class StateTransitionMatrixTest {
         eList.addEvent(e5);
         eList.addEvent(e6);
 
+<<<<<<< HEAD
         String[] codePat1 = {"A", "B"};
         String[] codePat2 = {"A", "B"};
         String[] codePat3 = {"A", "B", "A", "C"};
         String[] codePat4 = {"C", "B", "C"};
+=======
+        String[] codePat1 = { "B", "A", "A", "B" };
+        String[] codePat2 = { "A", "A", "B" };
+        String[] codePat3 = { "A", "B", "A", "C" };
+        String[] codePat4 = { "C", "B", "C" };
+>>>>>>> master
 
         EventSequence eSeq1 = new EventSequence(codePat1);
         EventSequence eSeq2 = new EventSequence(codePat2);
         EventSequence eSeq3 = new EventSequence(codePat3);
         EventSequence eSeq4 = new EventSequence(codePat4);
 
-        List<EventSequence> listOfSeq = new ArrayList<EventSequence>();
+        List<EventList> listOfSeq = new ArrayList<EventList>();
 
-        listOfSeq.add(eSeq1);
-        listOfSeq.add(eSeq2);
-        listOfSeq.add(eSeq3);
-        listOfSeq.add(eSeq4);
+        listOfSeq.addAll(Code.fillEventSequence(eSeq1, eList));
+        listOfSeq.addAll(Code.fillEventSequence(eSeq2, eList));
+        listOfSeq.addAll(Code.fillEventSequence(eSeq3, eList));
+        listOfSeq.addAll(Code.fillEventSequence(eSeq4, eList));
 
-		StateTransitionMatrix.createStateTrans(eList, listOfSeq);
-	}
+        StateTransitionMatrix.createStateTrans(eList, listOfSeq);
+    }
 }

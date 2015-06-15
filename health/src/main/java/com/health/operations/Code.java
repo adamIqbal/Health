@@ -42,7 +42,7 @@ public class Code {
      * @param eventList
      *            the EventList Object in which to look for the pattern.
      */
-    public static void fillEventSequence(final EventSequence eventSeq,
+    public static List<EventList> fillEventSequence(final EventSequence eventSeq,
             final EventList eventList) {
         eventList.orderListByDate();
         List<Event> eList = eventList.getList();
@@ -65,15 +65,14 @@ public class Code {
 
                 tmpEList.addEvent(eList.get(currentIndex));
                 int oldIndex = currentIndex;
-                currentIndex++;
-
+                int nextIndex = ++currentIndex;
                 for (int i = 1; i < codePattern.length; i++) {
-                    currentIndex = findEventInSeq(codePattern[i], eventList,
-                            currentIndex);
-                    if (currentIndex - oldIndex == 1) {
-                        tmpEList.addEvent(eList.get(currentIndex));
-                        oldIndex = currentIndex;
-                        currentIndex++;
+                    nextIndex = findEventInSeq(codePattern[i], eventList,
+                            nextIndex);
+                    if (nextIndex - oldIndex == 1) {
+                        tmpEList.addEvent(eList.get(nextIndex));
+                        oldIndex = nextIndex;
+                        currentIndex = ++nextIndex;
                     } else {
                         break makeEventList;
                     }
@@ -99,6 +98,8 @@ public class Code {
             }
 
         }
+
+        return eventSeq.getSequences();
     }
 
     /**

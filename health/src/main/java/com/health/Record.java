@@ -241,7 +241,7 @@ public final class Record {
             this.setValue(name, (String) value);
         } else if (value instanceof LocalDate) {
             this.setValue(name, (LocalDate) value);
-        } else {
+        } else if (value != null) {
             throw new IllegalArgumentException("Unsupported value type, must be either Double, String or LocalDate.");
         }
     }

@@ -70,7 +70,8 @@ public final class TextParser implements Parser {
               LocalDate dateValue = LocalDate.parse(value, formatter);
               record.setValue(j, dateValue);
             } catch (DateTimeParseException e) {
-              break;
+              throw new InputException("DateFormat did not match the format of the column"
+                  + table.getColumns().get(j).getName());
             }
           } else {
             break;
@@ -102,7 +103,7 @@ public final class TextParser implements Parser {
   private Table deleteLastLines(final Table table, final InputDescriptor config) {
 
     int deletions = config.getIgnoreLast();
-    int size = table.size()-1;
+    int size = table.size() - 1;
     List<Record> tab = table.getRecords();
     while (deletions > 0) {
       table.removeRecord(tab.get(size));

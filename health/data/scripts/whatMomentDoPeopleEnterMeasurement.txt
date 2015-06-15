@@ -1,0 +1,4 @@
+// werkt nog niet omdat er in chunk nog niet gecount can worden op String values.
+var measuremenByMoment = chunk table0 by Moment select count of Moment;
+
+freqbar(table0, "Moment");
