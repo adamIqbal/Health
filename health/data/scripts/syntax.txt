@@ -1,0 +1,55 @@
+// === Speciale table operaties ===
+chunk table by date per 2 days select average of value, unit;   // als je chunked op een periode moet de column Dates bevatten
+chunk table by value select min of value;
+
+code table as EVENT1 : value <= 200, EVENT2 value > 200 && value <= 300, EVENT3 value > 300;
+
+connect table0 with table1 where date = date;
+
+constrain table where value <= 300;
+
+// === Script functies ===
+println(String);
+
+write(String filename, Table);
+write(String filename, Table, String format);   // TODO
+
+freqbar(Table);
+freqbar(Table, String eventsColumn);
+
+boxplot(Table);                                 // TODO
+boxplot(Table, String column);
+
+hist(Table, String column, Double bins);
+
+EventSequence sequence(String[]...);                        // Creates a EventSequence
+EventSequence sequence(String[]..., Boolean isConnected);   // TODO
+
+List<EventList> findSequences(EventList, EventSequence);    // Finds instances of the given EventSequence in the EventList
+
+transitionMatrix(EventList);                                // Creates a state transition matrix with all the transitions
+transitionMatrix(EventList, EventSequence);                 // TODO: Creates a state transition matrix of the transitions in the given event sequence
+transitionMatrix(EventList, List<EventList>);               // Creates a state transition matrix of the transitions in the given list of event lists
+
+Table tableWithDays(Table);                                 // Creates a copy of the given table with an additional column containing the days corresponding to the dates in the first date column
+
+// === Random examples ===
+// Example 1
+var table = chunk table0 by date per day, select count of value, average of value, unit, min of value, max of value;
+var events = code table as
+	SINGLE : count_value = 1,
+	MULTIPLE : count_value > 1;
+transitionMatrix(events);
+
+// Example 2
+var table = tableWithDays(table0);
+var days = code table as
+    MONDAY: day_of_week = "MONDAY",
+    TUESDAY: day_of_week = "TUESDAY",
+    FRIDAY: day_of_week = "FRIDAY";
+transition(days);
+    
+// Random state transition matrix stuff
+transitionMatrix(events, sequence("SINGLE", "SINGLE", "MULTIPLE"));                         
+// ^ overload not implemented yet, atm it has to be written as:
+transitionMatrix(events, findSequences(events, sequence("SINGLE", "SINGLE", "MULTIPLE")));
