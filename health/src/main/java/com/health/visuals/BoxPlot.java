@@ -19,7 +19,6 @@ import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
 import org.jfree.data.statistics.DefaultBoxAndWhiskerCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 
-import com.health.Chunk;
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
@@ -41,16 +40,18 @@ public final class BoxPlot {
      * Private constructor to prevent instantiation.
      */
     private BoxPlot() {
-        //Nothing happens
+        // Nothing happens
     }
-    
+
     /**
-     * Creates a diagram with for each Chunk a BoxPlot.
-     * This variant does not need a column specified. It just picks a column of the right type.
-     * @param table Table to use
+     * Creates a diagram with for each Chunk a BoxPlot. This variant does not
+     * need a column specified. It just picks a column of the right type.
+     * 
+     * @param table
+     *            Table to use
      */
     public static void boxPlot(final Table table) {
-        //no column is given, so just pick a column with type ValueType.Number
+        // no column is given, so just pick a column with type ValueType.Number
         Column column = null;
         for (Column c : table.getColumns()) {
             if (c.getType() == ValueType.Number) {
@@ -58,7 +59,7 @@ public final class BoxPlot {
                 break;
             }
         }
-        
+
         boxPlot(table, column.getName());
     }
 
@@ -78,7 +79,7 @@ public final class BoxPlot {
             System.out.println("Column must be of type Number");
             return;
         }
-        
+
         final String xName = "Plotted column: " + column;
         final String yName = "";
         final Dimension frameDimension = new Dimension(500, 500);
@@ -102,7 +103,7 @@ public final class BoxPlot {
         yAxis.setAutoRangeIncludesZero(false);
 
         final BoxAndWhiskerRenderer renderer = createRenderer(false, true);
-        
+
         final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
                 renderer);
         final ChartPanel chartPanel = createChartPanel(plot);
@@ -146,27 +147,26 @@ public final class BoxPlot {
      * @param table
      *            Table to use
      * @param numberColumn
-     *            name of the column. 
-     *            Must be of type ValueType.Number            
+     *            name of the column. Must be of type ValueType.Number
      * @return
      */
     private static BoxAndWhiskerCategoryDataset formatDataset(
-            final Table table, final String numberColumn) {       
+            final Table table, final String numberColumn) {
         final DefaultBoxAndWhiskerCategoryDataset dataset = new DefaultBoxAndWhiskerCategoryDataset();
         final List<Double> list = new ArrayList<Double>();
 
-        for (Chunk chunk : table) {
-            for (Record record : chunk) {
-                list.add((Double) record.getValue(numberColumn));
-            }
+        for (Record record : table) {
+            list.add((Double) record.getValue(numberColumn));
         }
+
         String seriesName = numberColumn + " series";
         dataset.add(list, seriesName, "");
         return dataset;
     }
-    
+
     /**
      * Creates a Renderer object to that can draw the BoxPlot.
+     * 
      * @return a BoxAndWhiskerRenderer that can render the boxplot
      */
     private final static BoxAndWhiskerRenderer createRenderer(final boolean meanVisible, final boolean fillBox) {
@@ -174,12 +174,13 @@ public final class BoxPlot {
         renderer.setMeanVisible(meanVisible);
         renderer.setFillBox(fillBox);
         renderer.setBaseToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
-        
+
         return renderer;
     }
-    
+
     /**
      * Creates a ChartPanel to draw the plot on.
+     * 
      * @param plot
      * @return a ChartPanel containing the plot
      */
@@ -191,7 +192,7 @@ public final class BoxPlot {
         int width = 640; 
         int height = 480; 
         writeChartToPDF( chart, width, height, "boxTest.pdf");
-        
+
         return chartPanel;
     }
 }

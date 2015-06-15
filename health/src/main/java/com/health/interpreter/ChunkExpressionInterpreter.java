@@ -1,14 +1,16 @@
 package com.health.interpreter;
 
 import java.time.Period;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import com.health.AggregateFunctions;
 import com.health.Table;
+import com.health.operations.AggregateFunction;
+import com.health.operations.AggregateFunctions;
 import com.health.operations.Chunk;
+import com.health.operations.ColumnAggregateTuple;
 import com.health.script.MyScriptParser;
+import com.health.script.MyScriptParser.ChunkSelectionListContext;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.TableValue;
@@ -49,16 +51,36 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
 
         verifyHasColumn(table, tableIdent, columnIdent);
 
-        Map<String, AggregateFunctions> aggregateFunctions =
-                evaluateAggragateOperations(ctx.columnAggregateOperation());
+        List<ColumnAggregateTuple> aggregateFunctions =
+                evaluateChunkSelectionList(ctx.chunkSelectionList());
 
         if (ctx.periodSpecifier() != null) {
             Period period = evaluatePeriod(ctx.periodSpecifier().period());
 
-            return new TableValue(Chunk.chunkByTime(table, columnIdent, aggregateFunctions, period));
+            return new TableValue(Chunk.chunkByPeriod(table, columnIdent, aggregateFunctions, period));
         } else {
-            return new TableValue(Chunk.chunkByString(table, columnIdent, aggregateFunctions));
+            return new TableValue(Chunk.chunkByColumn(table, columnIdent, aggregateFunctions));
         }
+    }
+
+    private List<ColumnAggregateTuple> evaluateChunkSelectionList(final ChunkSelectionListContext ctx) {
+        List<ColumnAggregateTuple> aggregateFunctions = new ArrayList<ColumnAggregateTuple>();
+
+        evaluateChunkSelectionList(ctx, aggregateFunctions);
+
+        return aggregateFunctions;
+    }
+
+    private void evaluateChunkSelectionList(
+            final ChunkSelectionListContext ctx,
+            final List<ColumnAggregateTuple> aggregateFunctions) {
+        if (ctx == null) {
+            return;
+        }
+
+        evaluateChunkSelectionList(ctx.chunkSelectionList(), aggregateFunctions);
+
+        aggregateFunctions.add(evaluateColumnOrAggragateOperation(ctx.columnOrAggregateOperation()));
     }
 
     private static Period evaluatePeriod(final MyScriptParser.PeriodContext ctx) {
@@ -103,27 +125,30 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static Map<String, AggregateFunctions> evaluateAggragateOperations(
-            final List<MyScriptParser.ColumnAggregateOperationContext> columnAggregateOperation) {
-        Map<String, AggregateFunctions> aggregateFunctions = new HashMap<String, AggregateFunctions>();
+    private static ColumnAggregateTuple evaluateColumnOrAggragateOperation(
+            final MyScriptParser.ColumnOrAggregateOperationContext ctx) {
 
-        for (MyScriptParser.ColumnAggregateOperationContext ctx : columnAggregateOperation) {
-            aggregateFunctions.put(ctx.IDENTIFIER().getText(), evaluateAggragateOperation(ctx.aggregateOperation()));
+        if (ctx.aggregateOperation() == null) {
+            return new ColumnAggregateTuple(ctx.IDENTIFIER().getText());
+        } else {
+            return new ColumnAggregateTuple(
+                    ctx.IDENTIFIER().getText(),
+                    evaluateAggragateOperation(ctx.aggregateOperation()));
         }
-
-        return aggregateFunctions;
     }
 
-    private static AggregateFunctions evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
+    private static AggregateFunction evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
         switch (ctx.getText()) {
+        case "count":
+            return AggregateFunctions.count();
         case "average":
-            return AggregateFunctions.Average;
+            return AggregateFunctions.average();
         case "sum":
-            return AggregateFunctions.Sum;
+            return AggregateFunctions.sum();
         case "min":
-            return AggregateFunctions.Min;
+            return AggregateFunctions.min();
         case "max":
-            return AggregateFunctions.Max;
+            return AggregateFunctions.max();
         default:
             throw new ScriptRuntimeException("Undefined aggregate function '" + ctx.getText() + "'.");
         }

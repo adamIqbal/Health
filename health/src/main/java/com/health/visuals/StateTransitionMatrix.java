@@ -3,6 +3,11 @@ package com.health.visuals;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +24,13 @@ import com.health.EventSequence;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Creates a State Transition Matrix.
@@ -40,6 +52,8 @@ public final class StateTransitionMatrix extends JFrame {
 	 * Main method for testing class.
 	 * @param args
 	 * 				args
+	 * @throws DocumentException 
+	 * @throws FileNotFoundException 
 	 */
 	public static void main(final String[] args) {
 		/*
@@ -137,6 +151,8 @@ public final class StateTransitionMatrix extends JFrame {
 	 * 				list with possible events
 	 * @param seqList
 	 * 				list with sequences
+	 * @throws DocumentException 
+	 * @throws FileNotFoundException 
 	 */
 	public static void createStateTrans(final EventList eList, final List<EventSequence> seqList) {
 		// Create frame
@@ -161,11 +177,35 @@ public final class StateTransitionMatrix extends JFrame {
 
 		JTable table = new JTable(outputM, matrixUse[0]);
 
+		saveChart(table);
+		
 		Container c = vidney.getContentPane();
 		c.setLayout(new FlowLayout());
 		c.add(new JScrollPane(table), BorderLayout.CENTER);
 	}
 
+	//DOESNT work, saves empty file
+	public static void saveChart(JTable table) {
+	    Document document = new Document();
+	    PdfWriter writer;
+	    try {
+		    writer = PdfWriter.getInstance(document, new FileOutputStream("test.pdf") );
+	
+		    document.open();
+		    PdfContentByte cb = writer.getDirectContent();
+		    PdfTemplate tp = cb.createTemplate(500, 500);
+		    Graphics2D g2;
+		    g2 = tp.createGraphicsShapes(500, 500);
+	
+		    table.print(g2);
+		    g2.dispose();
+		    cb.addTemplate(tp, 30, 300);
+	    } catch (Exception e) {
+            e.printStackTrace();
+        }
+	    document.close();
+	}
+	
 	/**
 	 * Set up matrix.
 	 * @param eList

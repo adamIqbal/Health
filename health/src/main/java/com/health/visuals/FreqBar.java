@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.health.Chunk;
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
@@ -31,13 +30,14 @@ public final class FreqBar {
      * Private constructor to prevent instantiation.
      */
     private FreqBar() {
-    	//Nothing happens
+        // Nothing happens
     }
 
     /**
-     * Generates a Frequency bar diagram. 
-     * This variant has no column specified.
-     * It chooses the last date column and last frequency column in the Table object.
+     * Generates a Frequency bar diagram. This variant has no column specified.
+     * It chooses the last date column and last frequency column in the Table
+     * object.
+     * 
      * @param table
      *            Table to use
      * @throws IOException 
@@ -47,7 +47,7 @@ public final class FreqBar {
         Column freqColumn = null;
         Column dateColumn = null;
         for (Column c : table.getColumns()) {
-            if (c.getIsFrequencyColumn()) {
+            if (c.isFrequencyColumn()) {
                 freqColumn = c;
             } else if (c.getType() == ValueType.Date) {
                 dateColumn = c;
@@ -78,7 +78,7 @@ public final class FreqBar {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
-            if (c.getIsFrequencyColumn()) {
+            if (c.isFrequencyColumn()) {
                 freqColumn = c;
             }
         }
@@ -112,14 +112,12 @@ public final class FreqBar {
         // Create map to save frequencies
         Map<String, Integer> freqMap = new HashMap<String, Integer>();
 
-        for (Chunk c : table) {
-            for (Record r : c) {
-                String value = r.getValue(column).toString();
-                int frequency = (int) r.getValue(freqColumn);
-                freqMap.put(value, frequency);
-            }
+        for (Record r : table) {
+            String value = r.getValue(column).toString();
+            double frequency = (Double) r.getValue(freqColumn);
+            freqMap.put(value, (int) frequency);
         }
-        
+
         return freqMap;
     }
 
@@ -138,16 +136,14 @@ public final class FreqBar {
         // Create map to save frequencies
         Map<String, Integer> freqMap = new HashMap<String, Integer>();
 
-        for (Chunk c : table) {
-            for (Record r : c) {
-                // Get value of record
-                String value = r.getValue(column).toString();
-                if (!freqMap.containsKey(value)) {
-                    freqMap.put(value, 1);
-                } else {
-                    int currentFrequency = freqMap.get(value);
-                    freqMap.replace(value, ++currentFrequency);
-                }
+        for (Record r : table) {
+            // Get value of record
+            String value = r.getValue(column).toString();
+            if (!freqMap.containsKey(value)) {
+                freqMap.put(value, 1);
+            } else {
+                int currentFrequency = freqMap.get(value);
+                freqMap.replace(value, ++currentFrequency);
             }
         }
 

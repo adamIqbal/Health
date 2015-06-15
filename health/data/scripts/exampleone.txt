@@ -1,0 +1,18 @@
+// Groups measurements by week and selects the average measurement, unit and number of measurements
+var measurementByWeek = chunk table0 by date per week
+    select
+        average of value,
+        unit,
+        count of value;    
+
+// Creates a frequency bar of the number of measurements per week
+freqbar(measurementByWeek);
+
+// Creates a histogram of the average values with 10 bins
+hist(measurementByWeek, "average_value", 10);
+
+// Selects rows where the number of measurements was greater than or equal to five
+var table = constrain measurementByWeek where count_value >= 5;
+
+// Creates a boxplot of the average values
+boxplot(table, "average_value");

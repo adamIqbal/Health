@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 
-import com.health.Utils;
-
 /**
  * Represents the type of a script object.
  */
@@ -138,9 +136,13 @@ public final class ScriptType {
     public ScriptMember getMember(final String symbol) {
         Objects.requireNonNull(symbol);
 
-        return Utils.firstNonNull(
-                () -> getField(symbol),
-                () -> getMethod(symbol));
+        ScriptMember member = this.getField(symbol);
+
+        if (member == null) {
+            member = this.getMethod(symbol);
+        }
+
+        return member;
     }
 
     /**

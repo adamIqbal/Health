@@ -80,19 +80,4 @@ public class ColumnTest {
 
         assertEquals(expected, actual);
     }
-    
-    /**
-     * Tests whether {@link Column#Column(String, int, ValueType)} sets the
-     * column's isFrequencyColumn value when given valid arguments.
-     */
-    @Test
-    public void constructor_givenValidArguments_setsIsFrequencyColumn() {
-        Column column = new Column(name, index, type);
-        column.setIsFrequencyColumn(true);
-
-        boolean expected = true;
-        boolean actual = column.getIsFrequencyColumn();
-
-        assertEquals(expected, actual);
-    }
 }
