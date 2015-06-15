@@ -42,7 +42,7 @@ public class Code {
      * @param eventList
      *            the EventList Object in which to look for the pattern.
      */
-    public static void fillEventSequence(final EventSequence eventSeq,
+    public static List<EventList> fillEventSequence(final EventSequence eventSeq,
             final EventList eventList) {
         eventList.orderListByDate();
         List<Event> eList = eventList.getList();
@@ -98,6 +98,8 @@ public class Code {
             }
 
         }
+
+        return eventSeq.getSequences();
     }
 
     /**
