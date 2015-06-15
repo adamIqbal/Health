@@ -243,16 +243,19 @@ public final class StateTransitionMatrix extends JFrame {
 	public static void saveFile(JTable table) {
 		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
 		try {
+            int width = table.getWidth();
+            int height = table.getHeight();
+		    
 		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable2.pdf"));
 		  	document.open();
 
 		    PdfContentByte cb = writer.getDirectContent();
 
 		    cb.saveState();
-		    Graphics2D g2 = cb.createGraphicsShapes(700, 700);
+		    Graphics2D g2 = cb.createGraphicsShapes(width, height);
 
 		    Shape oldClip = g2.getClip();
-		    g2.clipRect(0, 0, 700, 700);
+		    g2.clipRect(0, 0, width, height);
 
 		    table.print(g2);
 		    g2.setClip(oldClip);
