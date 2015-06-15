@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JPanel;
+
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
@@ -42,7 +44,7 @@ public final class BoxPlot {
      * @param table
      *            Table to use
      */
-    public static void boxPlot(final Table table) {
+    public static JPanel boxPlot(final Table table) {
         // no column is given, so just pick a column with type ValueType.Number
         Column column = null;
         for (Column c : table.getColumns()) {
@@ -52,7 +54,7 @@ public final class BoxPlot {
             }
         }
 
-        boxPlot(table, column.getName());
+        return boxPlot(table, column.getName());
     }
 
     /**
@@ -66,10 +68,9 @@ public final class BoxPlot {
      * @param column
      *            column to use. Must be of type ValueType.Number
      */
-    public static void boxPlot(final Table table, final String column) {
+    public static JPanel boxPlot(final Table table, final String column) {
         if (!(table.getColumn(column).getType() == ValueType.Number)) {
-            System.out.println("Column must be of type Number");
-            return;
+            throw new IllegalArgumentException("Column must be of type Number");
         }
 
         final String xName = "Plotted column: " + column;
@@ -82,11 +83,6 @@ public final class BoxPlot {
 
         final BoxAndWhiskerCategoryDataset dataset = formatDataset(table,
                 column);
-        if (dataset == null) {
-            System.out
-                    .println("Dataset is empty");
-            return;
-        }
 
         final CategoryAxis xAxis = new CategoryAxis(xName);
         xAxis.setLowerMargin(margin);
@@ -102,6 +98,8 @@ public final class BoxPlot {
 
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
+
+        return chartPanel;
     }
 
     /**

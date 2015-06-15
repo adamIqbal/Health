@@ -35,10 +35,10 @@ public final class StateTransitionMatrix extends JFrame {
         // Does nothing
     }
 
-    public static void createStateTrans(final EventList eList) {
+    public static JTable createStateTrans(final EventList eList) {
         List<EventList> seqList = findEventSequences(eList);
 
-        createStateTrans(eList, seqList);
+        return createStateTrans(eList, seqList);
     }
 
     private static List<EventList> findEventSequences(final EventList eList) {
@@ -83,7 +83,7 @@ public final class StateTransitionMatrix extends JFrame {
      * @param seqList
      *            list with sequences
      */
-    public static void createStateTrans(final EventList eList, final List<EventList> seqList) {
+    public static JTable createStateTrans(final EventList eList, final List<EventList> seqList) {
         // Create frame
         final int thousand = 1000;
 
@@ -109,6 +109,8 @@ public final class StateTransitionMatrix extends JFrame {
         Container c = vidney.getContentPane();
         c.setLayout(new FlowLayout());
         c.add(new JScrollPane(table), BorderLayout.CENTER);
+
+        return table;
     }
 
     /**

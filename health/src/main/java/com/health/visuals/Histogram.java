@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -48,7 +49,7 @@ public final class Histogram extends JFrame {
      * @param bin
      *            amount of bins histogram should be divided into
      */
-    public static void createHistogram(final Table table, final String column, final int bin) {
+    public static JPanel createHistogram(final Table table, final String column, final int bin) {
         final Dimension frameDimension = new Dimension(500, 500);
         final String xName = "Plotted column: " + column;
         final String yName = "";
@@ -113,6 +114,8 @@ public final class Histogram extends JFrame {
 
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
+
+        return chartPanel;
     }
 
     /**
