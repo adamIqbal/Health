@@ -218,6 +218,13 @@ public final class VScriptPanel extends VidneyPanel {
          * @param event
          */
         public void actionPerformed(final ActionEvent event) {
+            if (getScript().equals("")) {
+                JOptionPane.showMessageDialog(
+                        new JFrame(),
+                        "The script is empty.", "Whoops!",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
             Context context;
             ControlModule control = new ControlModule();
             control.setScript(getScript());
