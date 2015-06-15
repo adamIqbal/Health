@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -65,7 +64,7 @@ public class OutputMainPanel extends JPanel {
                 JFrame frame = (JFrame) element;
                 JPanel panel = new JPanel();
                 panel.setLayout(new BorderLayout());
-                JButton visualButton = new JButton("Show visual");
+                VButton visualButton = new VButton("Show visual");
                 visualButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent arg0) {
