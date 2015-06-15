@@ -4,12 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.nio.file.Path;
 import java.util.Date;
-import java.util.Map;
+import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
@@ -18,12 +16,14 @@ public class OutputPanelSidebar extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 9050949741413643882L;
-    private static JList<String> list;
-    private static Map<String, Map<String, Object> > dataMap;
+    protected static JList<String> list;
+    private static HashMap<String, HashMap<String, Object> > dataMap;
     
     public OutputPanelSidebar() {
         super();
         this.setLayout(new BorderLayout());
+        
+        dataMap = new HashMap<String, HashMap<String, Object>>();
         
         DefaultListModel<String> listModel = new DefaultListModel<String>();
         list = new JList(listModel);
@@ -31,7 +31,6 @@ public class OutputPanelSidebar extends JPanel {
         list.addMouseListener(new ListListener());
         this.add(list, BorderLayout.CENTER);
         
-        this.addElement("efe");
         this.setVisible(true);
     }
     
@@ -42,8 +41,8 @@ public class OutputPanelSidebar extends JPanel {
         list.revalidate();
     }
     
-    private void setMainData() {
-        
+    protected static HashMap<String, Object> getData(String el) {
+        return dataMap.get(el);
     }
     
     private class ListListener implements MouseListener {
@@ -70,7 +69,7 @@ public class OutputPanelSidebar extends JPanel {
             }
     }
 
-    public static void add(Map<String, Object> data) {
+    public static void add(HashMap<String, Object> data) {
         Date date = new Date();
         String name = "Analysis" + date.toString();
         OutputPanelSidebar.addElement(name);
