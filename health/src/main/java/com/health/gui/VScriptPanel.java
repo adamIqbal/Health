@@ -238,7 +238,7 @@ public final class VScriptPanel extends VidneyPanel {
                 return;
             }
 
-            VOutputPanel.displayData(getOutputDate(context));
+            VOutputPanel.displayData(getOutputData(context, control.getVisuals()));
         }
 
         private String getScript() {
@@ -266,7 +266,7 @@ public final class VScriptPanel extends VidneyPanel {
             return parsedData;
         }
 
-        private HashMap<String, Object> getOutputData(final Context context, final Map<String, Object> visauls) {
+        private HashMap<String, Object> getOutputData(final Context context, final Map<String, Object> visuals) {
             HashMap<String, Object> output = new HashMap<String, Object>();
 
             ScriptType tableType = WrapperValue.getWrapperType(Table.class);
@@ -281,7 +281,7 @@ public final class VScriptPanel extends VidneyPanel {
                 }
             }
 
-            for (Entry<String, Object> visual : visauls.entrySet()) {
+            for (Entry<String, Object> visual : visuals.entrySet()) {
                 output.put(visual.getKey(), visual.getValue());
             }
 
