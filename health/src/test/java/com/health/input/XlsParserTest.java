@@ -21,12 +21,10 @@ private XlsParser xp;
 	
 	@Test
 	public void parse_columns_correct() {
-		//InputDescriptor id = mock(InputDescriptor.class);
-		
 		Table actual = null;
 		try {
-			InputDescriptor id = new InputDescriptor("data/configXmls/admireXlsConfig.xml");
-	        String xlsPath = "data/data_all/data_xls/ADMIRE_56_BPM.xls";
+			InputDescriptor id = new InputDescriptor("test_data_and_xmls/admireXlsConfig.xml");
+	        String xlsPath = "test_data_and_xmls/ADMIRE_56_BPM.xls";
 	        
 	        actual = xp.parse(xlsPath, id);
 		} catch (Exception e) {
@@ -44,5 +42,24 @@ private XlsParser xp;
         	assertEquals(expectedTypes[i], col.getType());
         }
     }
+	    
+	@Test
+	public void testXlsx(){
+	    Table actual = null;
+        try {
+            InputDescriptor id = new InputDescriptor("test_data_and_xmls/MetingenWebpageXlsConfig.xml");
+            String xlsxPath = "test_data_and_xmls/Q_ADMIRE_metingen_pagevisits_141214.xlsx";
+            
+            actual = xp.parse(xlsxPath, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+        assertNotNull(actual);
+        
+        System.out.println(actual.getColumn("ModifiedDate").getName());
+        
+        System.out.println(actual.getRecords().get(0).getDateValue("ModifiedDate"));
+	}
 
 }

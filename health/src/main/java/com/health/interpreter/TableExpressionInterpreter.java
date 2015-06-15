@@ -4,7 +4,7 @@ import com.health.Table;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.LValue;
 import com.health.script.runtime.ScriptRuntimeException;
-import com.health.script.runtime.TableValue;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * A base class with common functions for interpreter of table expressions.
@@ -40,11 +40,11 @@ public abstract class TableExpressionInterpreter {
     protected final Table lookupTable(final String tableName) {
         LValue var = this.context.lookup(tableName);
 
-        if (!TableValue.getStaticType().isAssignableFrom(var.getType())) {
+        if (!WrapperValue.getWrapperType(Table.class).isAssignableFrom(var.getType())) {
             throw new ScriptRuntimeException("Chunking can only be performed on a table instance.");
         }
 
-        return ((TableValue) var.get()).getValue();
+        return ((WrapperValue<Table>) var.get()).getValue();
     }
 
     /**

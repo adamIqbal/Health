@@ -31,35 +31,35 @@ public class EventList {
      * Orders an this list by date.
      */
     public void orderListByDate() {
-        List<Event> tmp = new ArrayList<Event>();
+        List<Event> sortedEvents = new ArrayList<Event>(eventList);
 
-        int[] found = new int[eventList.size()];
-
-        // fil found with zeros
-        for (int i = 0; i < found.length; i++) {
-            found[i] = 0;
+        if (sortedEvents.size() <= 0) {
+            return;
         }
 
-        while (tmp.size() != eventList.size()) {
-            LocalDate minDate = LocalDate.MAX;
-            int foundIndex = -1;
-            for (int j = 0; j < eventList.size(); j++) {
-                if (found[j] == 0) {
-                    Record tmpRec = eventList.get(j).getRecord();
-                    Column dateCol = tmpRec.getTable().getDateColumn();
-                    String dateColName = dateCol.getName();
-                    if (dateColName != null
-                            && tmpRec.getDateValue(dateColName).isBefore(
-                                    minDate)) {
-                        minDate = tmpRec.getDateValue(dateColName);
-                        foundIndex = j;
-                    }
-                }
+        Table table = sortedEvents.get(0).getRecord().getTable();
+        Column dateColumn = table.getDateColumn();
+        String dateColumnName = dateColumn.getName();
+
+        if (dateColumnName == null) {
+            return;
+        }
+
+        sortedEvents.sort((a, b) -> {
+            LocalDate dateA = a.getRecord().getDateValue(dateColumnName);
+            LocalDate dateB = b.getRecord().getDateValue(dateColumnName);
+
+            if (dateA == null && dateB == null) {
+                return 0;
+            } else if (dateA == null && dateB != null) {
+                return -1;
+            } else if (dateA != null && dateB == null) {
+                return 1;
+            } else {
+                return dateA.compareTo(dateA);
             }
+        });
 
-            found[foundIndex] = 1;
-            tmp.add(eventList.get(foundIndex));
-        }
-        eventList = tmp;
+        eventList = sortedEvents;
     }
 }

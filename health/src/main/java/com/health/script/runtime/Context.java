@@ -1,9 +1,14 @@
 package com.health.script.runtime;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+
+import com.health.EventList;
+import com.health.EventSequence;
+import com.health.Table;
 
 /**
  * Represents the runtime environment of the script.
@@ -26,7 +31,13 @@ public final class Context {
         this.declareType(BooleanValue.getStaticType());
         this.declareType(NumberValue.getStaticType());
         this.declareType(StringValue.getStaticType());
-        this.declareType(TableValue.getStaticType());
+        this.declareType(WrapperValue.getWrapperType(Table.class));
+        this.declareType(WrapperValue.getWrapperType(EventList.class));
+        this.declareType(WrapperValue.getWrapperType(EventSequence.class));
+    }
+
+    public Map<String, LValue> getVariables() {
+        return Collections.unmodifiableMap(this.variables);
     }
 
     /**

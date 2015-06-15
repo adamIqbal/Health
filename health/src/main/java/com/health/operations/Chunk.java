@@ -38,12 +38,11 @@ public final class Chunk {
      *            the period between chunk, could be days, months, years.
      * @return a chunked Table.
      */
-    public static Table chunkByPeriod(
-            final Table table,
+    public static Table chunkByPeriod(final Table table,
             final String dateColumn,
-            final List<ColumnAggregateTuple> operations,
-            final Period period) {
-        Map<Object, List<Record>> groups = groupByPeriod(table, dateColumn, period);
+            final List<ColumnAggregateTuple> operations, final Period period) {
+        Map<Object, List<Record>> groups = groupByPeriod(table, dateColumn,
+                period);
 
         return flattenGroups(table, dateColumn, operations, groups);
     }
@@ -59,19 +58,15 @@ public final class Chunk {
      *            a list of columns and their aggregate operation.
      * @return a chunked Table.
      */
-    public static Table chunkByColumn(
-            final Table table,
-            final String keyColumn,
-            final List<ColumnAggregateTuple> operations) {
+    public static Table chunkByColumn(final Table table,
+            final String keyColumn, final List<ColumnAggregateTuple> operations) {
         Map<Object, List<Record>> groups = groupByKey(table, keyColumn);
 
         return flattenGroups(table, keyColumn, operations, groups);
     }
 
-    private static Map<Object, List<Record>> groupByPeriod(
-            final Table table,
-            final String column,
-            final Period period) {
+    private static Map<Object, List<Record>> groupByPeriod(final Table table,
+            final String column, final Period period) {
         Map<Object, List<Record>> groups = new HashMap<Object, List<Record>>();
 
         LocalDate beginPer = getFirstDate(table, column);
@@ -81,7 +76,8 @@ public final class Chunk {
         while (!lastDate.isBefore(endOfPer)) {
             endOfPer = beginPer.plus(period);
 
-            List<Record> chunk = findRecordsInPeriod(table, column, beginPer, endOfPer);
+            List<Record> chunk = findRecordsInPeriod(table, column, beginPer,
+                    endOfPer);
 
             if (chunk.size() > 0) {
                 groups.put(beginPer, chunk);
@@ -93,7 +89,8 @@ public final class Chunk {
         return groups;
     }
 
-    private static Map<Object, List<Record>> groupByKey(final Table table, final String column) {
+    private static Map<Object, List<Record>> groupByKey(final Table table,
+            final String column) {
         Map<Object, List<Record>> groups = new HashMap<Object, List<Record>>();
 
         for (Record record : table) {
@@ -105,10 +102,8 @@ public final class Chunk {
         return groups;
     }
 
-    private static void insertInGroup(
-            final Map<Object, List<Record>> groups,
-            final Object key,
-            final Record record) {
+    private static void insertInGroup(final Map<Object, List<Record>> groups,
+            final Object key, final Record record) {
         List<Record> group = groups.get(key);
 
         if (group == null) {
@@ -119,12 +114,12 @@ public final class Chunk {
         group.add(record);
     }
 
-    private static Table flattenGroups(
-            final Table table,
+    private static Table flattenGroups(final Table table,
             final String keyColumn,
             final List<ColumnAggregateTuple> operations,
             final Map<Object, List<Record>> groups) {
-        List<Column> columns = createChunkTableColumns(table, keyColumn, operations);
+        List<Column> columns = createChunkTableColumns(table, keyColumn,
+                operations);
         Table chunkedTable = new Table(columns);
 
         for (Entry<Object, List<Record>> entry : asSortedList(groups.entrySet())) {
@@ -137,11 +132,14 @@ public final class Chunk {
                 String column = operation.getColumn();
 
                 if (operation.hasFunction()) {
-                    double value = aggregate(chunk, column, operation.getFunction());
+                    double value = aggregate(chunk, column,
+                            operation.getFunction());
 
-                    chunkedRecord.setValue(operation.getAggregateColumn(), value);
+                    chunkedRecord.setValue(operation.getAggregateColumn(),
+                            value);
                 } else {
-                    chunkedRecord.setValue(operation.getColumn(), chunk.get(0).getValue(column));
+                    chunkedRecord.setValue(operation.getColumn(), chunk.get(0)
+                            .getValue(column));
                 }
             }
         }
@@ -149,8 +147,10 @@ public final class Chunk {
         return chunkedTable;
     }
 
-    private static Iterable<Entry<Object, List<Record>>> asSortedList(final Set<Entry<Object, List<Record>>> entrySet) {
-        List<Entry<Object, List<Record>>> list = new ArrayList<Entry<Object, List<Record>>>(entrySet);
+    private static Iterable<Entry<Object, List<Record>>> asSortedList(
+            final Set<Entry<Object, List<Record>>> entrySet) {
+        List<Entry<Object, List<Record>>> list = new ArrayList<Entry<Object, List<Record>>>(
+                entrySet);
 
         if (list.isEmpty()) {
             return list;
@@ -159,39 +159,36 @@ public final class Chunk {
         Class<?> type = list.get(0).getKey().getClass();
 
         if (Double.class.isAssignableFrom(type)) {
-            list.sort((a, b) -> ((Double) a.getKey()).compareTo((Double) b.getKey()));
+            list.sort((a, b) -> ((Double) a.getKey()).compareTo((Double) b
+                    .getKey()));
         } else if (String.class.isAssignableFrom(type)) {
-            list.sort((a, b) -> ((String) a.getKey()).compareTo((String) b.getKey()));
+            list.sort((a, b) -> ((String) a.getKey()).compareTo((String) b
+                    .getKey()));
         } else if (LocalDate.class.isAssignableFrom(type)) {
-            list.sort((a, b) -> ((LocalDate) a.getKey()).compareTo((LocalDate) b.getKey()));
+            list.sort((a, b) -> ((LocalDate) a.getKey())
+                    .compareTo((LocalDate) b.getKey()));
         } else {
-            throw new IllegalStateException("Found illegal type in entrySet. "
-                    + "EntrySet can only contain keys of type Double, String or LocalDate.");
+            throw new IllegalStateException(
+                    "Found illegal type in entrySet. "
+                            + "EntrySet can only contain keys of type Double, String or LocalDate.");
         }
 
         return list;
     }
 
     private static double aggregate(
-            final List<Record> chunk,
+            final List<Record> records,
             final String column,
-            final AggregateFunction function) {
-        double[] values = new double[chunk.size()];
-
-        for (int i = 0; i < chunk.size(); i++) {
-            values[i] = chunk.get(i).getNumberValue(column);
-        }
-
-        return function.apply(values);
+            final AggregateFunction<?> function) {
+        return function.apply(records, column);
     }
 
-    private static List<Column> createChunkTableColumns(
-            final Table table,
-            final String keyColumn,
-            final List<ColumnAggregateTuple> operations) {
+    private static List<Column> createChunkTableColumns(final Table table,
+            final String keyColumn, final List<ColumnAggregateTuple> operations) {
         List<Column> chunkedTableColumns = new ArrayList<Column>();
 
-        chunkedTableColumns.add(new Column(keyColumn, 0, table.getColumn(keyColumn).getType()));
+        chunkedTableColumns.add(new Column(keyColumn, 0, table.getColumn(
+                keyColumn).getType()));
 
         int i = 1;
         for (ColumnAggregateTuple operation : operations) {
@@ -201,14 +198,13 @@ public final class Chunk {
         return chunkedTableColumns;
     }
 
-    private static Column createColumn(
-            final Table table,
-            final int index,
+    private static Column createColumn(final Table table, final int index,
             final ColumnAggregateTuple operation) {
         Column column = table.getColumn(operation.getColumn());
 
         if (operation.hasFunction()) {
-            return new Column(operation.getAggregateColumn(), index, ValueType.Number);
+            return new Column(operation.getAggregateColumn(), index,
+                    ValueType.Number);
         } else {
             return new Column(operation.getColumn(), index, column.getType());
         }
@@ -219,7 +215,6 @@ public final class Chunk {
 
         for (Record record : table) {
             LocalDate tmp = record.getDateValue(column);
-
             if (tmp.isBefore(res)) {
                 res = tmp;
             }
@@ -242,17 +237,16 @@ public final class Chunk {
         return res;
     }
 
-    private static List<Record> findRecordsInPeriod(
-            final Table table,
-            final String column,
-            final LocalDate beginOfPer,
+    private static List<Record> findRecordsInPeriod(final Table table,
+            final String column, final LocalDate beginOfPer,
             final LocalDate endOfPer) {
         List<Record> chunk = new ArrayList<Record>();
 
         for (Record record : table) {
             LocalDate date = record.getDateValue(column);
 
-            if ((date.isAfter(beginOfPer) || date.isEqual(beginOfPer)) && date.isBefore(endOfPer)) {
+            if ((date.isAfter(beginOfPer) || date.isEqual(beginOfPer))
+                    && date.isBefore(endOfPer)) {
                 chunk.add(record);
             }
         }
