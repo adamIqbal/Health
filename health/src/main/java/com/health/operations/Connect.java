@@ -1,5 +1,6 @@
 package com.health.operations;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +129,7 @@ public final class Connect {
                     name = connections.get(indexInConnections).getNewName();
 
                 }
-                
+
                 record.setValue(name, recList.get(i).getValue(newName));
             }
         }
@@ -137,7 +138,20 @@ public final class Connect {
     private static Table sortTable(final Table table, final String colName) {
         List<Record> records = new ArrayList<Record>(table.getRecords());
 
-        records.sort((a, b) -> a.getDateValue(colName).compareTo(b.getDateValue(colName)));
+        records.sort((a, b) -> {
+            LocalDate dateA = a.getDateValue(colName);
+            LocalDate dateB = a.getDateValue(colName);
+
+            if (dateA == null && dateB == null) {
+                return 0;
+            } else if (dateA == null && dateB != null) {
+                return -1;
+            } else if (dateA != null && dateB == null) {
+                return 1;
+            } else {
+                return dateA.compareTo(dateA);
+            }
+        });
 
         Table sortedTable = new Table(table.getColumns());
 
