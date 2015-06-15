@@ -42,7 +42,6 @@ public final class FreqBar {
      *
      * @param table
      *            Table to use
-     * @throws IOException 
      */
 
     public static JFrame frequencyBar(final Table table) {
@@ -74,7 +73,6 @@ public final class FreqBar {
      *            Table to use
      * @param column
      *            Column to display frequency of
-     * @throws IOException 
      */
     public static JFrame frequencyBar(final Table table, final String column) {
         // Check if the Table contains a frequency column
@@ -157,7 +155,6 @@ public final class FreqBar {
      *
      * @param freqMap
      *            frequency map
-     * @throws IOException 
      */
     private static JFrame makeBarChart(final Map<String, Integer> freqMap,
             final String seriesName) {
