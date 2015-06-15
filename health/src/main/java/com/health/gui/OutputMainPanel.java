@@ -74,6 +74,13 @@ public class OutputMainPanel extends JPanel {
                 panel.add(visualButton, BorderLayout.CENTER);
                 pane.add(panel);
             }
+            else if (element instanceof JTable) {
+                JTable jtable = (JTable) element;
+                jtable.setEnabled(false);
+                jtable.setAutoCreateRowSorter(true);
+                JScrollPane scroll = new JScrollPane(jtable);
+                pane.add("Matrix", scroll);
+            }
         }
         this.removeAll();
         this.add(pane);
