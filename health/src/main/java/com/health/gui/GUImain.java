@@ -13,6 +13,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
+import com.health.gui.help.VHelpPanel;
+
 /**
  * Represents the GUI.
  *

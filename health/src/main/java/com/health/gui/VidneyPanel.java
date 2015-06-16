@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
  * @author Bjorn van der Laan
  *
  */
-abstract class VidneyPanel extends JSplitPane {
+public abstract class VidneyPanel extends JSplitPane {
     /**
      * Constant serialized ID used for compatibility.
      */
