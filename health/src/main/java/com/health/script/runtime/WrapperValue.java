@@ -25,7 +25,11 @@ public class WrapperValue<T> extends ComplexValue {
      *            the value.
      */
     public WrapperValue(final T value) {
-        super(WrapperValue.getWrapperType(value.getClass()));
+        this(WrapperValue.getWrapperType(value.getClass()), value);
+    }
+
+    protected WrapperValue(ScriptType type, final T value) {
+        super(type);
 
         Objects.requireNonNull(value);
 
