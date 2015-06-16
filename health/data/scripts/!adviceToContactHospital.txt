@@ -6,9 +6,9 @@ var events = code table0 as concern : KreatinineAlgorithmDayRatingId == 4;
 
 var seq = sequence("concern" , "concern");
 
-var contactHosp = findSequences(events, seq);
+findSequences(events, seq);
 
-var contactHospTable = toTable(contactHosp);
+var contactHospTable = toTable(seq);
 
 table = connect table with contactHospTable 
 	where KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
