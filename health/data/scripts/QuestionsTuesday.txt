@@ -2,17 +2,13 @@ List of example questions the tool should help to answer are:
 
 TO DO:
 
-- what time of the day and on what day do people measure themselves?
-
-- what time of the day and on what day do they enter measure measurement?
-
 - What is the difference in time between measurement device and entering data in 
 
 Mijnnierinzicht?
 
 - Is there a difference between StatSensor measurement and what patients enter into 
 
-Mijnnierinzicht
+Mijnnierinzicht?
 
 - How often do patients measure themselves before they enter data into Mijnnierinzicht?
 
@@ -45,4 +41,7 @@ Mijnnierinzicht
 ______________________________________________________________________________________________
 Finished:
 
+- what time of the day and on what day do people measure themselves?
+
+- what time of the day and on what day do they enter measure measurement?
 
