@@ -106,6 +106,7 @@ public final class ConstrainExpressionInterpreter extends TableExpressionInterpr
 
         switch (ctx.comparisonOperator().getText()) {
         case "==":
+        case "=":
             return evaluate(context, expr, (record, value) -> ConstrainFunctions.equal(record.getValue(column), value));
         case "!=":
             return evaluate(context, expr, (record, value) -> !ConstrainFunctions.equal(record.getValue(column), value));

@@ -131,6 +131,7 @@ condition
 
 comparisonOperator
     : '=='
+    | '='
     | '!='
     | '<'
     | '<='
@@ -148,7 +149,7 @@ columnConnectionList
     ;
 
 columnConnection
-    : column1=IDENTIFIER '=' column2=IDENTIFIER ('as' newName=IDENTIFIER)?
+    : column1=IDENTIFIER ('=' | '==') column2=IDENTIFIER ('as' newName=IDENTIFIER)?
     ;
 
 codeExpression

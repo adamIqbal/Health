@@ -135,6 +135,7 @@ public final class CodeExpressionInterpreter extends TableExpressionInterpreter 
 
         switch (ctx.comparisonOperator().getText()) {
         case "==":
+        case "=":
             return evaluate(context, expr, (record, value) -> ConstrainFunctions.equal(record.getValue(column), value));
         case "!=":
             return evaluate(context, expr, (record, value) -> !ConstrainFunctions.equal(record.getValue(column), value));
