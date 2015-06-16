@@ -27,7 +27,8 @@ public class OutputMainPanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -5652640933659529127L;
-    private Map<String, Object> map;
+    private static Map<String, Object> map;
+    private static JTabbedPane pane;
 
     /**
      * Constructor.
@@ -36,7 +37,7 @@ public class OutputMainPanel extends JPanel {
         super();
         this.setLayout(new BorderLayout());
 
-        JTabbedPane pane = new JTabbedPane();
+        pane = new JTabbedPane();
         pane.setBackground(Color.WHITE);
         this.add(pane, BorderLayout.CENTER);
     }
@@ -45,9 +46,9 @@ public class OutputMainPanel extends JPanel {
      * Sets the data of the panel based on the input.
      * @param map2 Map containing the data
      */
-    public final void setData(final Map<String, Object> map2) {
-        this.map = map2;
-        JTabbedPane pane = new JTabbedPane();
+    public static final void setData(final Map<String, Object> map2) {
+        map = map2;
+        pane = new JTabbedPane();
         for (String key : map2.keySet()) {
             Object element = map2.get(key);
             if (element instanceof Table) {
@@ -70,10 +71,8 @@ public class OutputMainPanel extends JPanel {
                 pane.add("Matrix", scroll);
             }
         }
-        this.removeAll();
-        this.add(pane);
 
-        this.repaint();
-        this.revalidate();
+        pane.repaint();
+        pane.revalidate();
     }
 }
