@@ -19,6 +19,7 @@ import com.health.EventSequence;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.health.output.Output;
 
 public class CodeTest {
     Table table;
@@ -86,8 +87,7 @@ public class CodeTest {
         EventSequence eSeq = new EventSequence(codePattern, true);
         
         Code.fillEventSequence(eSeq, eList);
-        System.out.println("-----------------");
-        System.out.println(eSeq.getSequences().size());
+        
     }
 
 }

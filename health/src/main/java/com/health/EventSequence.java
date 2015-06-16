@@ -3,6 +3,8 @@ package com.health;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.health.operations.Connect;
+
 public class EventSequence {
     private List<EventList> sequences;
     private String[] codePattern;
@@ -78,5 +80,20 @@ public class EventSequence {
      */
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Table convertToTable(){
+        Table res = null;
+        
+        for(EventList eList : sequences){
+            if(res == null){
+                res = eList.toTable();
+            }else {
+                res = Connect.connect(res, eList.toTable(), null);
+            }
+            
+        }
+        
+        return res;
     }
 }

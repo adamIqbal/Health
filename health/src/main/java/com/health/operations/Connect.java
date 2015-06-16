@@ -100,7 +100,11 @@ public final class Connect {
     private static int isInConnections(final Column col,
             final List<ColumnConnection> connections) {
         int index = 0;
-
+        
+        if(connections == null){
+            return -1;
+        }
+        
         for (ColumnConnection connection : connections) {
             if (connection.getColumn1().equals(col.getName())
                     || connection.getColumn2().equals(col.getName())) {
