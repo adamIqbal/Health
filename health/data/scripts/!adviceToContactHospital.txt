@@ -2,7 +2,7 @@
 
 var table = constrain table0 where KreatinineAlgorithmDayRatingId >= 5;
 
-var events = code table0 as concern : KreatinineAlgorithmDayRatingId = 4;
+var events = code table0 as concern : KreatinineAlgorithmDayRatingId == 4;
 
 var seq = sequence("concern" , "concern");
 
@@ -11,6 +11,6 @@ var contactHosp = findSequences(events, seq);
 var contactHospTable = toTable(contactHosp);
 
 table = connect table with contactHospTable 
-	with KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
+	where KreatinineAlgorithmDayRatingId == KreatinineAlgorithmDayRatingId;
 
 write("out.txt", table);
