@@ -1,12 +1,13 @@
 package com.health.control;
 
+import java.awt.Container;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,7 +40,7 @@ import com.health.visuals.StateTransitionMatrix;
 public final class ControlModule {
     private String script;
     private List<InputData> data;
-    private Map<String, Object> visuals = new HashMap<String, Object>();
+    private Map<String, Object> output = new HashMap<String, Object>();
     int numBoxPlots, numFreqBars, numTransitionMatrices, numHistograms;
 
     /**
@@ -64,8 +65,8 @@ public final class ControlModule {
         return context;
     }
 
-    public Map<String, Object> getVisuals() {
-        return Collections.unmodifiableMap(this.visuals);
+    public Map<String, Object> getOutput() {
+        return Collections.unmodifiableMap(this.output);
     }
 
     /**
@@ -120,19 +121,24 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("write", (args) -> {
+            String filename = ((StringValue) args[0]).getValue();
+            Table table = ((WrapperValue<Table>) args[1]).getValue();
+
             if (args.length >= 3) {
                 Output.writeTable(
-                        ((StringValue) args[0]).getValue(),
-                        ((WrapperValue<Table>) args[1]).getValue(),
+                        filename,
+                        table,
                         ((StringValue) args[2]).getValue());
             } else {
-                Output.writeTable(((StringValue) args[0]).getValue(), ((WrapperValue<Table>) args[1]).getValue());
+                Output.writeTable(filename, table);
             }
+
+            this.output.put(new File(filename).getName(), table);
             return null;
         });
 
         context.declareStaticMethod("freqbar", (args) -> {
-            JFrame frame;
+            Container frame;
 
             if (args.length >= 2) {
                 frame = FreqBar.frequencyBar(
@@ -142,7 +148,7 @@ public final class ControlModule {
                 frame = FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
             }
 
-            this.visuals.put("boxplot" + ++numFreqBars, frame);
+            this.output.put("boxplot" + ++numFreqBars, frame);
             return null;
         });
 
@@ -156,7 +162,7 @@ public final class ControlModule {
                 panel = BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue());
             }
 
-            this.visuals.put("boxplot" + ++numBoxPlots, panel);
+            this.output.put("boxplot" + ++numBoxPlots, panel);
             return null;
         });
 
@@ -166,7 +172,7 @@ public final class ControlModule {
                     ((StringValue) args[1]).getValue(),
                     (int) ((NumberValue) args[2]).getValue());
 
-            this.visuals.put("histogram" + ++numHistograms, panel);
+            this.output.put("histogram" + ++numHistograms, panel);
             return null;
         });
 
@@ -217,7 +223,7 @@ public final class ControlModule {
                         table = StateTransitionMatrix.createStateTrans(codes);
                     }
 
-                    this.visuals.put("boxplot" + ++numBoxPlots, table);
+                    this.output.put("boxplot" + ++numBoxPlots, table);
                     return null;
                 });
 

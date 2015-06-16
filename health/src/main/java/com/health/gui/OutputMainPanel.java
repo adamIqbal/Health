@@ -2,9 +2,11 @@ package com.health.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,7 +28,7 @@ public class OutputMainPanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -5652640933659529127L;
-    private HashMap<String, Object> map;
+    private Map<String, Object> map;
 
     /**
      * Constructor.
@@ -42,13 +44,13 @@ public class OutputMainPanel extends JPanel {
 
     /**
      * Sets the data of the panel based on the input.
-     * @param data Map containing the data
+     * @param map2 Map containing the data
      */
-    public final void setData(final HashMap<String, Object> data) {
-        this.map = data;
+    public final void setData(final Map<String, Object> map2) {
+        this.map = map2;
         JTabbedPane pane = new JTabbedPane();
-        for (String key : data.keySet()) {
-            Object element = data.get(key);
+        for (String key : map2.keySet()) {
+            Object element = map2.get(key);
             if (element instanceof Table) {
                 Table table = (Table) element;
                 JTable jtable = table.toJTable();
@@ -57,23 +59,9 @@ public class OutputMainPanel extends JPanel {
                 JScrollPane scroll = new JScrollPane(jtable);
                 pane.add("Tab", scroll);
             }
-            else if (element instanceof JPanel) {
-                JPanel panel = (JPanel) element;
-                pane.add(panel);
-            }
-            else if (element instanceof JFrame) {
-                JFrame frame = (JFrame) element;
-                JPanel panel = new JPanel();
-                panel.setLayout(new BorderLayout());
-                JButton visualButton = new JButton("Show visual");
-                visualButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent arg0) {
-                        frame.setVisible(true);
-                    }
-                });
-                panel.add(visualButton, BorderLayout.CENTER);
-                pane.add(panel);
+            else if (element instanceof Component) {
+                Component component = (Component) element;
+                pane.add(component);
             }
         }
         this.removeAll();
