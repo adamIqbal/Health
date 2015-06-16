@@ -8,10 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -24,11 +21,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FileUtils;
 
-import com.health.Table;
 import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
+
 import com.health.gui.xmlwizard.XmlWizard;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.LValue;
@@ -227,17 +224,20 @@ public final class VScriptPanel extends VidneyPanel {
                 return;
             }
             Context context;
+
             ControlModule control = new ControlModule();
             control.setScript(getScript());
             control.setData(getInputData());
 
             try {
+
                 context = control.startAnalysis();
                 GUImain.goToTab("Step 3: Output");
                 JOptionPane.showMessageDialog(
                         new JFrame(),
                         "Analysis is done.", "Done!",
                         JOptionPane.INFORMATION_MESSAGE);
+
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -251,7 +251,7 @@ public final class VScriptPanel extends VidneyPanel {
                 return;
             }
 
-            VOutputPanel.addAnalysis(getOutputData(context, control.getVisuals()));
+            VOutputPanel.addAnalysis(control.getOutput());
         }
 
         private String getScript() {
@@ -277,28 +277,6 @@ public final class VScriptPanel extends VidneyPanel {
             }
 
             return parsedData;
-        }
-
-        private HashMap<String, Object> getOutputData(final Context context, final Map<String, Object> visuals) {
-            HashMap<String, Object> output = new HashMap<String, Object>();
-
-            ScriptType tableType = WrapperValue.getWrapperType(Table.class);
-
-            for (Entry<String, LValue> variable : context.getVariables().entrySet()) {
-                // Add all table variables to output
-                if (variable.getValue().getType() == tableType) {
-                    WrapperValue<Table> tableWrapper = (WrapperValue<Table>) variable.getValue().get();
-                    Table table = tableWrapper.getValue();
-
-                    output.put(variable.getKey(), table);
-                }
-            }
-
-            for (Entry<String, Object> visual : visuals.entrySet()) {
-                output.put(visual.getKey(), visual.getValue());
-            }
-
-            return output;
         }
     }
 }

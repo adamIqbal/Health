@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -23,7 +24,7 @@ public class OutputPanelSidebar extends JPanel {
      * Contains all completed visualizations.
      */
     protected static JList<String> list;
-    private static HashMap<String, HashMap<String, Object>> dataMap;
+    private static Map<String, Map<String, Object>> dataMap;
 
     /**
      * Constructor.
@@ -32,7 +33,7 @@ public class OutputPanelSidebar extends JPanel {
         super();
         this.setLayout(new BorderLayout());
 
-        dataMap = new HashMap<String, HashMap<String, Object>>();
+        dataMap = new HashMap<String, Map<String, Object>>();
 
         DefaultListModel<String> listModel = new DefaultListModel<String>();
         list = new JList<String>(listModel);
@@ -55,7 +56,7 @@ public class OutputPanelSidebar extends JPanel {
      * @param el the stringname of this analysis
      * @return a Map containing the data
      */
-    protected static HashMap<String, Object> getData(final String el) {
+    protected static Map<String, Object> getData(final String el) {
         return dataMap.get(el);
     }
 
@@ -63,7 +64,7 @@ public class OutputPanelSidebar extends JPanel {
      * Adds a new analysis to the Output section.
      * @param data data of this analysis
      */
-    public static void add(final HashMap<String, Object> data) {
+    public static void add(final Map<String, Object> data) {
         Date date = new Date();
         String name = "Analysis " + date.toString();
         OutputPanelSidebar.addElement(name);
