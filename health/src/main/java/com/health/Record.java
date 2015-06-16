@@ -75,7 +75,13 @@ public final class Record {
      */
     public Double getNumberValue(final String name) {
         // Retrieve the value for a number and cast it to Double
-        return (Double) this.getValue(name, EnumSet.of(ValueType.Number));
+        Object value = this.getValue(name, EnumSet.of(ValueType.Number));
+
+        if (value == null) {
+            value = (double) 0;
+        }
+
+        return (Double) value;
     }
 
     /**
