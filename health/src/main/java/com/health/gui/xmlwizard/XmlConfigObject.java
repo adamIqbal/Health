@@ -69,11 +69,17 @@ public class XmlConfigObject {
         String startDelimiter = this.values[0];
         String endDelimiter = this.values[1];
         String delimiter = this.values[2];
+        String ignoreLast = this.values[3];
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"text\" start=\"" + startDelimiter
-                + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
-                + "\">" + "\n\r";
+                + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter + "\"";
+       
+        if(this.values.length > 3) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
+        }
+        
+        dataStart += ">" + "\n\r";
 
         String columnTags = this.columnsToXML();
 
@@ -89,11 +95,20 @@ public class XmlConfigObject {
     public final String toXMLStringXLS() {
         String startRow = this.values[0];
         String startCol = this.values[1];
+        String ignoreLast = this.values[2];
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"xls\" startRow=\"" + startRow
-                + "\" startColumn=\"" + startCol + "\">" + "\n\r";
+                + "\" startColumn=\"" + startCol + "\"";
 
+        if(this.values.length > 2) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
+        }
+        
+        dataStart += ">" + "\n\r";
+        
+        dataStart += ">" + "\n\r";
+        
         String columnTags = this.columnsToXML();
 
         String dataEnd = "</data>";
@@ -231,7 +246,6 @@ public class XmlConfigObject {
       next = source.indexOf(splitter, last);
       if (next != -1)
       {
-        // isolate from last thru before next
         rv[0] = source.substring(last, next);
         last = next + splitter.length();
         

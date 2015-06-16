@@ -96,13 +96,13 @@ public class XmlEditPanel extends JPanel {
                         || id.getFormat().equals("xls")) {
                     String[] values = {
                             Integer.toString(id.getStartCell().getStartRow()),
-                            Integer.toString(id.getStartCell().getStartColumn()) };
+                            Integer.toString(id.getStartCell().getStartColumn()), Integer.toString(id.getIgnoreLast()) };
                     startPanel.setValues(values, FileType.XLS);
                     startPanel.setFileType(FileType.XLS);
                 } else {
                     // default case: txt
                     String[] values = {id.getStartDelimiter(),
-                            id.getEndDelimiter(), id.getDelimiter() };
+                            id.getEndDelimiter(), id.getDelimiter(), Integer.toString(id.getIgnoreLast()) };
                     startPanel.setValues(values, FileType.TXT);
                     startPanel.setFileType(FileType.TXT);
                 }
