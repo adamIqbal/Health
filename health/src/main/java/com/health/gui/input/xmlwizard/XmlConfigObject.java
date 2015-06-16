@@ -1,4 +1,4 @@
-package com.health.gui.xmlwizard;
+package com.health.gui.input.xmlwizard;
 
 import java.nio.file.Path;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.health.gui.xmlwizard;
+package com.health.gui.input.xmlwizard;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
