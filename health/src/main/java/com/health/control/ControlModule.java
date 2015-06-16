@@ -25,6 +25,8 @@ import com.health.operations.TableWithDays;
 import com.health.output.Output;
 import com.health.script.runtime.BooleanValue;
 import com.health.script.runtime.Context;
+import com.health.script.runtime.EventListValue;
+import com.health.script.runtime.EventSequenceValue;
 import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.ScriptType;
 import com.health.script.runtime.StringValue;
@@ -196,35 +198,35 @@ public final class ControlModule {
                 }
             }
 
-            return new WrapperValue<EventSequence>(new EventSequence(sequence, connected));
+            return new EventSequenceValue(new EventSequence(sequence, connected));
         });
 
         context.declareStaticMethod("findSequences", (args) -> {
-            EventList events = ((WrapperValue<EventList>) args[0]).getValue();
-            EventSequence sequence = ((WrapperValue<EventSequence>) args[1]).getValue();
+            EventList events = ((EventListValue) args[0]).getValue();
+            EventSequence sequence = ((EventSequenceValue) args[1]).getValue();
 
             Code.fillEventSequence(sequence, events);
 
-            return new WrapperValue<EventSequence>(sequence);
+            return new EventSequenceValue(sequence);
         });
 
         context.declareStaticMethod(
                 "transitionMatrix",
                 (args) -> {
-                    EventList codes = ((WrapperValue<EventList>) args[0]).getValue();
+                    EventList codes = ((EventListValue) args[0]).getValue();
                     JTable table;
 
                     if (args.length >= 2) {
                         ScriptType eventSequenceType = WrapperValue.getWrapperType(EventSequence.class);
 
                         if ((args[1]).getType() == eventSequenceType) {
-                            EventSequence sequence = ((WrapperValue<EventSequence>) args[1]).getValue();
+                            EventSequence sequence = ((EventSequenceValue) args[1]).getValue();
 
                             table = StateTransitionMatrix.createStateTrans(codes,
                                     Code.fillEventSequence(sequence, codes));
                         } else {
                             table = StateTransitionMatrix.createStateTrans(codes,
-                                    ((WrapperValue<EventSequence>) args[1]).getValue().getSequences());
+                                    ((EventSequenceValue) args[1]).getValue().getSequences());
                         }
                     } else {
                         table = StateTransitionMatrix.createStateTrans(codes);
