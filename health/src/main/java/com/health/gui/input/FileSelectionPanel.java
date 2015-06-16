@@ -1,4 +1,4 @@
-package com.health.gui.fileSelection;
+package com.health.gui.input;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

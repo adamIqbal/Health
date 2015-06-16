@@ -1,4 +1,4 @@
-package com.health.gui;
+package com.health.gui.output;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

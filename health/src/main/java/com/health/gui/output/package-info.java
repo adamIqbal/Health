@@ -5,4 +5,4 @@
  * @author Bjorn van der Laan
  *
  */
-package com.health.gui.fileSelection;
+package com.health.gui.output;

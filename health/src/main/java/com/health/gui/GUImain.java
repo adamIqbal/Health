@@ -14,6 +14,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 import com.health.gui.help.VHelpPanel;
+import com.health.gui.input.VInputPanel;
+import com.health.gui.output.VOutputPanel;
+import com.health.gui.script.VScriptPanel;
 
 /**
  * Represents the GUI.

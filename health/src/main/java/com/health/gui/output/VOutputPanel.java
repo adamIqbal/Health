@@ -1,4 +1,4 @@
-package com.health.gui;
+package com.health.gui.output;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,6 +11,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.health.Table;
+import com.health.gui.VidneyPanel;
 import com.health.input.Input;
 import com.health.input.InputException;
 

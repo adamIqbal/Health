@@ -1,4 +1,4 @@
-package com.health.gui;
+package com.health.gui.script;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -23,9 +23,12 @@ import org.apache.commons.io.FileUtils;
 
 import com.health.control.ControlModule;
 import com.health.control.InputData;
-import com.health.gui.fileSelection.FileListing;
-import com.health.gui.fileSelection.FileListingRow;
-
+import com.health.gui.GUImain;
+import com.health.gui.VButton;
+import com.health.gui.VidneyPanel;
+import com.health.gui.input.FileListing;
+import com.health.gui.input.FileListingRow;
+import com.health.gui.output.VOutputPanel;
 import com.health.gui.xmlwizard.XmlWizard;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.LValue;
