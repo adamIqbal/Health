@@ -1,5 +1,6 @@
 package com.health.control;
 
+import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -7,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.xml.parsers.ParserConfigurationException;
@@ -138,7 +138,7 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("freqbar", (args) -> {
-            JFrame frame;
+            Container frame;
 
             if (args.length >= 2) {
                 frame = FreqBar.frequencyBar(
