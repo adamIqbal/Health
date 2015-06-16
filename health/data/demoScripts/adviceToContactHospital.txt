@@ -8,7 +8,7 @@ var seq = sequence("concern" , "concern");
 
 findSequences(events, seq);
 
-var contactHospTable = toTable(seq);
+var contactHospTable = seq.toTable();
 
 table = connect table with contactHospTable 
 	where KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
