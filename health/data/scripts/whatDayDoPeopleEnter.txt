@@ -1,5 +1,0 @@
-// with mijnNierInzicht data
-
-var table = tableWithDays(table0);
-
-freqbar(table, "day_of_week");
