@@ -83,10 +83,12 @@ public class GUImain extends JFrame {
         VidneyPanel inputPanel = new VInputPanel();
         VidneyPanel scriptPanel = new VScriptPanel();
         VidneyPanel outputPanel = new VOutputPanel();
+        VidneyPanel helperPanel = new VHelpPanel();
 
         addTab("Step 1: Input", inputPanel);
         addTab("Step 2: Script", scriptPanel);
         addTab("Step 3: Output", outputPanel);
+        addTab("Documentation", helperPanel);
 
         tabbedPane.setBackground(GUImain.GUI_COLOR);
         sizeTabs(tabWidth, tabHeight);
