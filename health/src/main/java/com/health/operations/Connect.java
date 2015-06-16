@@ -155,7 +155,7 @@ public final class Connect {
             } else if (dateA != null && dateB == null) {
                 return 1;
             } else {
-                return dateA.compareTo(dateA);
+                return dateA.compareTo(dateB);
             }
         });
 
