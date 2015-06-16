@@ -4,7 +4,6 @@ var table = constrain table0 where KreatinineAlgorithmDayRatingId >= 5;
 
 var events = code table0 as concern : KreatinineAlgorithmDayRatingId = 4;
 
-
 var seq = sequence("concern" , "concern");
 
 var seqs = findSequences(events, seq);

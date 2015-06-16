@@ -98,7 +98,6 @@ public class FileListing extends JPanel {
                             && fileListingRows.get(i - 1).hasEqualFormat(
                                     fileListingRows.get(i))) {
                         makeRow(FileListing.BOTTOM, i);
-                        System.out.println("for last");
                         // else make single
                     } else {
                         makeRow(FileListing.SINGLE, i);
