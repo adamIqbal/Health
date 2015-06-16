@@ -151,8 +151,7 @@ public final class StateTransitionMatrix extends JFrame {
         frame.setContentPane(c);
         frame.setVisible(true);
         frame.setVisible(false);
-        
-        saveFile(table);
+
         return table;
     }
 
@@ -185,8 +184,6 @@ public final class StateTransitionMatrix extends JFrame {
             matrix[0][k] = eArr.get(k - 1);
             matrix[k][0] = eArr.get(k - 1);
         }
-
-        System.out.println(Arrays.deepToString(matrix));
 
         return matrix;
     }

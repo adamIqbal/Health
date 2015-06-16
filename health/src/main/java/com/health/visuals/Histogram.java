@@ -119,13 +119,8 @@ public final class Histogram extends JFrame {
         xyplot.setRangeGridlinePaint(new Color(gridIn, gridIn, gridIn));
 
         final ChartPanel chartPanel = new ChartPanel(chart);
-
-	    int width = 640; 
-        int height = 480; 
-	    writeChartToPDF(chart, width, height, "HistTest.pdf");
 	    
         frame.setContentPane(chartPanel);
-        //frame.setVisible(true);
         
         return chartPanel;
 
