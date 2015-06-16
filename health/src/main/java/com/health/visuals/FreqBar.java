@@ -48,7 +48,7 @@ public final class FreqBar {
      * @throws RuntimeException
      */
 
-    public static Container frequencyBar(final Table table) {
+    public static Chart frequencyBar(final Table table) {
         // Check if the Table contains a frequency and a date column
         Column freqColumn = null;
         Column dateColumn = null;
@@ -78,7 +78,7 @@ public final class FreqBar {
      * @param column
      *            Column to display frequency of
      */
-    public static Container frequencyBar(final Table table, final String column) {
+    public static Chart frequencyBar(final Table table, final String column) {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
@@ -160,7 +160,7 @@ public final class FreqBar {
      * @param freqMap
      *            frequency map
      */
-    private static Container makeBarChart(final Map<String, Integer> freqMap,
+    private static Chart makeBarChart(final Map<String, Integer> freqMap,
             final String seriesName) {
         final int frameWidth = 800;
         final int frameHeight = 600;
@@ -179,6 +179,10 @@ public final class FreqBar {
         // Customize Chart
         chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
 
+        return chart;
+    }
+
+    public static Container getContainer(Chart chart) {
         // Wrap the chart in a JFrame and hide the frame
         JFrame frame = new SwingWrapper(chart).displayChart();
         frame.addWindowListener(new HideWindowAdapter());

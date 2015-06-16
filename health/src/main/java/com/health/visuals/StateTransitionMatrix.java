@@ -117,7 +117,7 @@ public final class StateTransitionMatrix extends JFrame {
 
     /**
      * Create State Transition Matrix.
-     * 
+     *
      * @param eList
      *            list with possible events
      * @param seqList
@@ -157,7 +157,7 @@ public final class StateTransitionMatrix extends JFrame {
 
     /**
      * Set up matrix.
-     * 
+     *
      * @param eList
      *            event list
      * @return matrix setup
@@ -213,13 +213,8 @@ public final class StateTransitionMatrix extends JFrame {
                 for (int a = 1; a < matrix[0].length; a++) {
                     boolean found1 = false;
 
-                    System.out.println("matrix a0 : " + matrix[a][0]);
-                    System.out.println("from : " + from);
-
                     if (matrix[a][0].equals(from)) {
                         for (int b = 1; b < matrix[1].length; b++) {
-                            System.out.println("matrix 0b : " + matrix[0][b]);
-                            System.out.println("to : " + to);
                             if (matrix[0][b].equals(to)) {
                                 if (matrix[a][b] == null) {
                                     matrix[a][b] = "1";
@@ -239,7 +234,7 @@ public final class StateTransitionMatrix extends JFrame {
                 }
             }
         }
-        System.out.println(Arrays.deepToString(matrix));
+
         return matrix;
     }
 
@@ -253,15 +248,15 @@ public final class StateTransitionMatrix extends JFrame {
 
         return codes;
     }
-    
+
 	// Misses table header...
-	public static void saveFile(JTable table) {
+	public static void saveFile(String name, JTable table) {
 		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
 		try {
-            int width = table.getWidth(); 
+            int width = table.getWidth();
             int height = table.getHeight();
-		    
-		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("jTable3.pdf"));
+
+		  	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(name + ".pdf"));
 		  	document.open();
 
 		    PdfContentByte cb = writer.getDirectContent();

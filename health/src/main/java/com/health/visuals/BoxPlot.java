@@ -111,7 +111,7 @@ public final class BoxPlot {
     
     public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
         PdfWriter writer = null;
-     
+        
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
      
         try {

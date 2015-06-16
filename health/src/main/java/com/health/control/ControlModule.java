@@ -1,6 +1,5 @@
 package com.health.control;
 
-import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -25,14 +24,16 @@ import com.health.operations.TableWithDays;
 import com.health.output.Output;
 import com.health.script.runtime.BooleanValue;
 import com.health.script.runtime.Context;
+import com.health.script.runtime.EventListValue;
+import com.health.script.runtime.EventSequenceValue;
 import com.health.script.runtime.NumberValue;
-import com.health.script.runtime.ScriptType;
 import com.health.script.runtime.StringValue;
 import com.health.script.runtime.WrapperValue;
 import com.health.visuals.BoxPlot;
 import com.health.visuals.FreqBar;
 import com.health.visuals.Histogram;
 import com.health.visuals.StateTransitionMatrix;
+import com.xeiam.xchart.Chart;
 
 /**
  *
@@ -138,17 +139,29 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("freqbar", (args) -> {
-            Container frame;
+            Chart chart;
 
-            if (args.length >= 2) {
-                frame = FreqBar.frequencyBar(
-                        ((WrapperValue<Table>) args[0]).getValue(),
-                        ((StringValue) args[1]).getValue());
-            } else {
-                frame = FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
+            String filename = null;
+            int baseIndex = 0;
+
+            if (args[0] instanceof StringValue) {
+                filename = ((StringValue) args[0]).getValue();
+                baseIndex++;
             }
 
-            this.output.put("freqbar" + ++numFreqBars, frame);
+            if (args.length >= baseIndex + 2) {
+                chart = FreqBar.frequencyBar(
+                        ((WrapperValue<Table>) args[baseIndex + 0]).getValue(),
+                        ((StringValue) args[baseIndex + 1]).getValue());
+            } else {
+                chart = FreqBar.frequencyBar(((WrapperValue<Table>) args[baseIndex + 0]).getValue());
+            }
+
+            if (filename != null) {
+                FreqBar.saveGraph(chart, filename);
+            }
+
+            this.output.put("freqbar" + ++numFreqBars, FreqBar.getContainer(chart));
             return null;
         });
 
@@ -177,50 +190,63 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("sequence", (args) -> {
+            String[] sequence;
             boolean connected = true;
 
             if (args.length > 0 && args[args.length - 1] instanceof BooleanValue) {
                 connected = ((BooleanValue) args[args.length - 1]).getValue();
+
+                sequence = new String[args.length - 1];
+
+                for (int i = 0; i < args.length - 1; i++) {
+                    sequence[i] = ((StringValue) args[i]).getValue();
+                }
+            } else {
+                sequence = new String[args.length];
+
+                for (int i = 0; i < args.length; i++) {
+                    sequence[i] = ((StringValue) args[i]).getValue();
+                }
             }
 
-            String[] sequence = new String[args.length];
-
-            for (int i = 0; i < args.length; i++) {
-                sequence[i] = ((StringValue) args[i]).getValue();
-            }
-
-            return new WrapperValue<EventSequence>(new EventSequence(sequence, connected));
+            return new EventSequenceValue(new EventSequence(sequence, connected));
         });
 
         context.declareStaticMethod("findSequences", (args) -> {
-            EventList events = ((WrapperValue<EventList>) args[0]).getValue();
-            EventSequence sequence = ((WrapperValue<EventSequence>) args[1]).getValue();
+            EventList events = ((EventListValue) args[0]).getValue();
+            EventSequence sequence = ((EventSequenceValue) args[1]).getValue();
 
             Code.fillEventSequence(sequence, events);
 
-            return new WrapperValue<List<EventList>>(sequence.getSequences());
+            return new EventSequenceValue(sequence);
         });
 
         context.declareStaticMethod(
                 "transitionMatrix",
                 (args) -> {
-                    EventList codes = ((WrapperValue<EventList>) args[0]).getValue();
+
+                    String filename = null;
+                    int baseIndex = 0;
+
+                    if (args[0] instanceof StringValue) {
+                        filename = ((StringValue) args[0]).getValue();
+                        baseIndex++;
+                    }
+
+                    EventList codes = ((EventListValue) args[baseIndex + 0]).getValue();
                     JTable table;
 
-                    if (args.length >= 2) {
-                        ScriptType eventSequenceType = WrapperValue.getWrapperType(EventSequence.class);
+                    if (args.length >= baseIndex + 2) {
+                        EventSequence sequence = ((EventSequenceValue) args[baseIndex + 1]).getValue();
 
-                        if ((args[1]).getType() == eventSequenceType) {
-                            EventSequence sequence = ((WrapperValue<EventSequence>) args[1]).getValue();
-
-                            table = StateTransitionMatrix.createStateTrans(codes,
-                                    Code.fillEventSequence(sequence, codes));
-                        } else {
-                            table = StateTransitionMatrix.createStateTrans(codes,
-                                    ((WrapperValue<List<EventList>>) args[1]).getValue());
-                        }
+                        table = StateTransitionMatrix.createStateTrans(codes,
+                                Code.fillEventSequence(sequence, codes));
                     } else {
                         table = StateTransitionMatrix.createStateTrans(codes);
+                    }
+
+                    if (filename != null) {
+                        StateTransitionMatrix.saveFile(filename, table);
                     }
 
                     this.output.put("transitionMatrix" + ++numBoxPlots, table);
