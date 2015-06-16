@@ -205,7 +205,7 @@ public final class ControlModule {
 
             Code.fillEventSequence(sequence, events);
 
-            return new WrapperValue<List<EventList>>(sequence.getSequences());
+            return new WrapperValue<EventSequence>(sequence);
         });
 
         context.declareStaticMethod(
@@ -224,7 +224,7 @@ public final class ControlModule {
                                     Code.fillEventSequence(sequence, codes));
                         } else {
                             table = StateTransitionMatrix.createStateTrans(codes,
-                                    ((WrapperValue<List<EventList>>) args[1]).getValue());
+                                    ((WrapperValue<EventSequence>) args[1]).getValue().getSequences());
                         }
                     } else {
                         table = StateTransitionMatrix.createStateTrans(codes);
