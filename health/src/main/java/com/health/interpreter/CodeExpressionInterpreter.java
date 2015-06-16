@@ -127,8 +127,10 @@ public final class CodeExpressionInterpreter extends TableExpressionInterpreter 
         Value value = this.getExpressionVisitor().visit(ctx.expression());
 
         switch (ctx.comparisonOperator().getText()) {
-        case "=":
+        case "==":
             return (record) -> ConstrainFunctions.equal(record.getValue(column), value);
+        case "!=":
+            return (record) -> !ConstrainFunctions.equal(record.getValue(column), value);
         case "<":
             return (record) -> ConstrainFunctions.smaller(record.getValue(column), value);
         case "<=":

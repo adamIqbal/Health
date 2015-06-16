@@ -130,7 +130,8 @@ condition
     ;
 
 comparisonOperator
-    : '='
+    : '=='
+    | '!='
     | '<'
     | '<='
     | '>'
