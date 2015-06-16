@@ -73,12 +73,13 @@ public class XmlConfigObject {
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"text\" start=\"" + startDelimiter
-                + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter + "\"";
-       
-        if(this.values.length > 3) {
+                + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
+                + "\"";
+
+        if (this.values.length > 3) {
             dataStart += " ignoreLast=\"" + ignoreLast + "\"";
         }
-        
+
         dataStart += ">" + "\n\r";
 
         String columnTags = this.columnsToXML();
@@ -101,21 +102,20 @@ public class XmlConfigObject {
         String dataStart = "<data format=\"xls\" startRow=\"" + startRow
                 + "\" startColumn=\"" + startCol + "\"";
 
-        if(this.values.length > 2) {
+        if (this.values.length > 2) {
             dataStart += " ignoreLast=\"" + ignoreLast + "\"";
         }
-        
+
         dataStart += ">" + "\n\r";
-        
         dataStart += ">" + "\n\r";
-        
+
         String columnTags = this.columnsToXML();
 
         String dataEnd = "</data>";
 
         return header + dataStart + columnTags + dataEnd;
     }
-    
+
     private final String columnsToXML() {
         String columnTags = "";
         int n = columns.size();
@@ -130,10 +130,10 @@ public class XmlConfigObject {
             if (columnTypes.get(i) == ValueType.Date) {
                 String input = this.columns.get(i);
                 String[] parts = this.splitString(input, "[");
-                
+
                 columnTags += "\t" + "<column type=\""
-                        + this.columnTypes.get(i) + "\" format=\"" + parts[1] + "\">" + parts[0]
-                        + "</column>" + "\n\r";
+                        + this.columnTypes.get(i) + "\" format=\"" + parts[1]
+                        + "\">" + parts[0] + "</column>" + "\n\r";
             } else {
                 columnTags += "\t" + "<column type=\""
                         + this.columnTypes.get(i) + "\">" + this.columns.get(i)
@@ -159,12 +159,20 @@ public class XmlConfigObject {
     protected final void setType(final FileType type) {
         this.type = type;
     }
-    
 
+    /**
+     * Gets the date format
+     * @return date format
+     */
     protected String getDateFormat() {
         return dateFormat;
     }
 
+    /**
+     * sets the date format
+     * @param dateFormat
+     *            date format
+     */
     protected void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
     }
@@ -237,28 +245,24 @@ public class XmlConfigObject {
         this.path = path;
     }
 
-    private String[] splitString(String source, String splitter)
-    {
-      String[] rv = new String[2];
-      int last = 0;
-      int next = 0;
+    private String[] splitString(final String source, final String splitter) {
+        String[] rv = new String[2];
+        int last = 0;
+        int next = 0;
 
-      next = source.indexOf(splitter, last);
-      if (next != -1)
-      {
-        rv[0] = source.substring(last, next);
-        last = next + splitter.length();
-        
-        if (last < source.length())
-        {
-          rv[1] = source.substring(last, source.length()-1);
+        next = source.indexOf(splitter, last);
+        if (next != -1) {
+            rv[0] = source.substring(last, next);
+            last = next + splitter.length();
+
+            if (last < source.length()) {
+                rv[1] = source.substring(last, source.length() - 1);
+            }
+        } else {
+            rv[0] = source;
+            rv[1] = "";
         }
-      }
-      else {
-          rv[0] = source;
-          rv[1] = "";
-      }
-      
-      return rv;
+
+        return rv;
     }
 }

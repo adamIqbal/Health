@@ -87,7 +87,7 @@ public class XmlEditPanel extends JPanel {
                 // I know. But using it to parse the xml
                 InputDescriptor id = new InputDescriptor(xml.getPath()
                         .toString());
-                
+
                 XmlConfigObject xmlObj = XmlWizard.getXml();
                 xmlObj.setDateFormat(id.getDateFormat());
                 XmlWizard.setXml(xmlObj);
@@ -96,13 +96,15 @@ public class XmlEditPanel extends JPanel {
                         || id.getFormat().equals("xls")) {
                     String[] values = {
                             Integer.toString(id.getStartCell().getStartRow()),
-                            Integer.toString(id.getStartCell().getStartColumn()), Integer.toString(id.getIgnoreLast()) };
+                            Integer.toString(id.getStartCell().getStartColumn()),
+                            Integer.toString(id.getIgnoreLast()) };
                     startPanel.setValues(values, FileType.XLS);
                     startPanel.setFileType(FileType.XLS);
                 } else {
                     // default case: txt
                     String[] values = {id.getStartDelimiter(),
-                            id.getEndDelimiter(), id.getDelimiter(), Integer.toString(id.getIgnoreLast()) };
+                            id.getEndDelimiter(), id.getDelimiter(),
+                            Integer.toString(id.getIgnoreLast()) };
                     startPanel.setValues(values, FileType.TXT);
                     startPanel.setFileType(FileType.TXT);
                 }

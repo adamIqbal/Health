@@ -10,7 +10,6 @@ import com.health.FileType;
 
 /**
  * Represents the panel one can edit the delimiters.
- * 
  * @author Bjorn van der Laan
  *
  */
@@ -39,22 +38,22 @@ public class XmlTxtEditPanel extends XmlStartEditSubPanel {
         endDelimLabel = new JLabel("End Delimiter");
         delimiterLabel = new JLabel("Delimiter");
         ignoreLastLabel = new JLabel("Ignore last lines");
-        
+
         startDelimField = new JTextField();
         startDelimField.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         endDelimField = new JTextField();
         endDelimField.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         delimiterField = new JTextField();
         delimiterField.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         delimiterField = new JTextField();
         delimiterField.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         ignoreLastField = new JTextField();
         ignoreLastField.setHorizontalAlignment(SwingConstants.CENTER);
-        
+
         // Add to delimiter panel
         this.add(startDelimLabel);
         this.add(startDelimField);
@@ -64,7 +63,6 @@ public class XmlTxtEditPanel extends XmlStartEditSubPanel {
         this.add(endDelimField);
         this.add(ignoreLastLabel);
         this.add(ignoreLastField);
-        
     }
 
     @Override

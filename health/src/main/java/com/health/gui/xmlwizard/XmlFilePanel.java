@@ -87,7 +87,7 @@ class XmlFilePanel extends JPanel {
         this.setOpaque(false);
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
-    
+
     /**
      * Gets the filelist.
      * @return the filelist
@@ -113,15 +113,15 @@ class XmlFilePanel extends JPanel {
             super(listModel);
             this.listModel = listModel;
             this.path = path;
-            
+
             this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             this.setBackground(Color.WHITE);
-            
+
             this.
-            
+
             buildList();
         }
-        
+
         public void buildList() {
             try {
                 DirectoryStream<Path> stream;
