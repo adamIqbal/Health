@@ -5,54 +5,27 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.print.PrinterException;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.time.LocalDate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.JTableHeader;
 
-import org.jfree.chart.ChartPanel;
 import org.jfree.ui.ApplicationFrame;
 
 import com.health.Event;
 import com.health.EventList;
 import com.health.EventSequence;
 
-import com.health.Record;
-import com.health.Table;
-import com.health.ValueType;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import com.health.operations.Code;
@@ -60,7 +33,7 @@ import com.health.operations.Code;
 
 /**
  * Creates a State Transition Matrix.
- * 
+ *
  * @author Lizzy Scholten
  *
  */
@@ -75,6 +48,13 @@ public final class StateTransitionMatrix extends JFrame {
         // Does nothing
     }
 
+    /**
+     * Create a state transition matrix.
+     * @param eList
+     * 			EventList
+     * @return
+     * 			JTable
+     */
     public static JTable createStateTrans(final EventList eList) {
         List<EventList> seqList = findEventSequences(eList);
 
@@ -102,6 +82,13 @@ public final class StateTransitionMatrix extends JFrame {
         return seqList;
     }
 
+    /**
+     * Get event codes.
+     * @param eList
+     * 			EventList
+     * @return
+     * 		string array
+     */
     private static String[] getCodes(final EventList eList) {
         Set<String> codeSet = new HashSet<String>();
 
@@ -122,6 +109,8 @@ public final class StateTransitionMatrix extends JFrame {
      *            list with possible events
      * @param seqList
      *            list with sequences
+     * @return
+     * 			JTable
      */
     public static JTable createStateTrans(final EventList eList, final List<EventList> seqList) {
         // Create frame
@@ -190,7 +179,7 @@ public final class StateTransitionMatrix extends JFrame {
 
     /**
      * Fill matrix.
-     * 
+     *
      * @param m
      *            matrix
      * @param seqList
@@ -198,10 +187,6 @@ public final class StateTransitionMatrix extends JFrame {
      * @return matrix
      */
     private static String[][] fillMatrix(final String[][] m, final List<EventList> seqList) {
-        // Example:
-        // B A A
-        // A B
-        // A B A
         String[][] matrix = m;
         for (EventList eSeq : seqList) {
             String[] codePat = getCodePattern(eSeq);
@@ -250,7 +235,14 @@ public final class StateTransitionMatrix extends JFrame {
     }
 
 	// Misses table header...
-	public static void saveFile(String name, JTable table) {
+    /**
+     * Saves matrix to file.
+     * @param name
+     * 			name under which the file should be saved
+     * @param table
+     * 			table you want to save
+     */
+	public static void saveFile(final String name, final JTable table) {
 		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
 		try {
             int width = table.getWidth();
