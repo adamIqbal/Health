@@ -54,6 +54,7 @@ public class XmlSavePanel extends JPanel {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 XmlWizard.setXml(new XmlConfigObject());
+                XmlWizard.getFilePanel().getFileList().buildList();
                 XmlWizard.nextPanel();
             }
         });
