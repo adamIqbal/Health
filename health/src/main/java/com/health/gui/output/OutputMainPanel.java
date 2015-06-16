@@ -28,7 +28,7 @@ public class OutputMainPanel extends JPanel {
      */
     private static final long serialVersionUID = -5652640933659529127L;
     private static Map<String, Object> map;
-    private static JTabbedPane pane;
+    public static JTabbedPane pane;
 
     /**
      * Constructor.
@@ -36,6 +36,8 @@ public class OutputMainPanel extends JPanel {
     public OutputMainPanel() {
         super();
         this.setLayout(new BorderLayout());
+        
+        map = new HashMap<String, Object>();
 
         pane = new JTabbedPane();
         pane.setBackground(Color.WHITE);
@@ -48,7 +50,7 @@ public class OutputMainPanel extends JPanel {
      */
     public static final void setData(final Map<String, Object> map2) {
         map = map2;
-        pane = new JTabbedPane();
+        pane.removeAll();
         for (String key : map2.keySet()) {
             Object element = map2.get(key);
             if (element instanceof Table) {
@@ -61,7 +63,7 @@ public class OutputMainPanel extends JPanel {
             }
             else if (element instanceof Component) {
                 Component component = (Component) element;
-                pane.add(component);
+                pane.add("Visual", component);
             }
             else if (element instanceof JTable) {
                 JTable jtable = (JTable) element;

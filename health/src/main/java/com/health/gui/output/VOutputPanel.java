@@ -41,7 +41,7 @@ public class VOutputPanel extends VidneyPanel {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 String selected = OutputPanelSidebar.list.getSelectedValue();
-                mainPanel.setData(OutputPanelSidebar.getData(selected));
+                OutputMainPanel.setData(OutputPanelSidebar.getData(selected));
             }
 
             @Override

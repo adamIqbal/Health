@@ -70,4 +70,8 @@ public class OutputPanelSidebar extends JPanel {
         OutputPanelSidebar.addElement(name);
         dataMap.put(name, data);
     }
+    
+    public static Map<String, Object> getAnalysisData(String name) {
+        return dataMap.get(name);
+    }
 }
