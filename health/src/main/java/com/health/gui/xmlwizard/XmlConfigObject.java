@@ -117,7 +117,7 @@ public class XmlConfigObject {
                 String[] parts = this.splitString(input, "[");
                 
                 columnTags += "\t" + "<column type=\""
-                        + this.columnTypes.get(i) + "\" format = \"" + parts[1] + "\">" + parts[0]
+                        + this.columnTypes.get(i) + "\" format=\"" + parts[1] + "\">" + parts[0]
                         + "</column>" + "\n\r";
             } else {
                 columnTags += "\t" + "<column type=\""
@@ -234,14 +234,17 @@ public class XmlConfigObject {
         // isolate from last thru before next
         rv[0] = source.substring(last, next);
         last = next + splitter.length();
+        
+        if (last < source.length())
+        {
+          rv[1] = source.substring(last, source.length()-1);
+        }
       }
-
-      if (last < source.length())
-      {
-        rv[1] = source.substring(last, source.length()-1);
+      else {
+          rv[0] = source;
+          rv[1] = "";
       }
-
-      // convert to array
+      
       return rv;
     }
 }
