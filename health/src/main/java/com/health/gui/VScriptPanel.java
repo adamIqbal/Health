@@ -29,6 +29,7 @@ import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
+import com.health.gui.xmlwizard.XmlWizard;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.LValue;
 import com.health.script.runtime.ScriptType;
@@ -232,6 +233,7 @@ public final class VScriptPanel extends VidneyPanel {
 
             try {
                 context = control.startAnalysis();
+                GUImain.goToTab("Step 3: Output");
                 JOptionPane.showMessageDialog(
                         new JFrame(),
                         "Analysis is done.", "Done!",
