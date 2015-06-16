@@ -177,16 +177,23 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("sequence", (args) -> {
+            String[] sequence;
             boolean connected = true;
 
             if (args.length > 0 && args[args.length - 1] instanceof BooleanValue) {
                 connected = ((BooleanValue) args[args.length - 1]).getValue();
-            }
 
-            String[] sequence = new String[args.length];
+                sequence = new String[args.length - 1];
 
-            for (int i = 0; i < args.length; i++) {
-                sequence[i] = ((StringValue) args[i]).getValue();
+                for (int i = 0; i < args.length - 1; i++) {
+                    sequence[i] = ((StringValue) args[i]).getValue();
+                }
+            } else {
+                sequence = new String[args.length];
+
+                for (int i = 0; i < args.length; i++) {
+                    sequence[i] = ((StringValue) args[i]).getValue();
+                }
             }
 
             return new WrapperValue<EventSequence>(new EventSequence(sequence, connected));
