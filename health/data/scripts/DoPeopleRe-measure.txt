@@ -13,4 +13,4 @@ t2 = chunk t2 by measurementvariable_141214Name
 t2 = connect t2 with t where count_Sequence = count_KreatinineAlgorithmActionId as count_col
 	and KreatinineAlgorithmActionId = min_KreatinineAlgorithmActionId;
 	
-hist(t2, "measurementvariable_141214Name");
+freqbar(t2, "measurementvariable_141214Name");

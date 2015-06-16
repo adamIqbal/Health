@@ -11,6 +11,6 @@ var contactHosp = findSequences(events, seq);
 var contactHospTable = toTable(contactHosp);
 
 table = connect table with contactHospTable 
-	where KreatinineAlgorithmDayRatingId == KreatinineAlgorithmDayRatingId;
+	where KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
 
 write("out.txt", table);
