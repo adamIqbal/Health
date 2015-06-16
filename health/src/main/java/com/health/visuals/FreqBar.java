@@ -45,6 +45,7 @@ public final class FreqBar {
      *
      * @param table
      *            Table to use
+     * @throws RuntimeException
      */
 
     public static Container frequencyBar(final Table table) {

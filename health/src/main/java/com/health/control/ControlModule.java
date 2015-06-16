@@ -148,7 +148,7 @@ public final class ControlModule {
                 frame = FreqBar.frequencyBar(((WrapperValue<Table>) args[0]).getValue());
             }
 
-            this.output.put("boxplot" + ++numFreqBars, frame);
+            this.output.put("freqbar" + ++numFreqBars, frame);
             return null;
         });
 
@@ -223,7 +223,7 @@ public final class ControlModule {
                         table = StateTransitionMatrix.createStateTrans(codes);
                     }
 
-                    this.output.put("boxplot" + ++numBoxPlots, table);
+                    this.output.put("transitionMatrix" + ++numBoxPlots, table);
                     return null;
                 });
 

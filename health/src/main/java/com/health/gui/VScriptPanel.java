@@ -25,7 +25,6 @@ import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
-import com.health.script.runtime.Context;
 
 /**
  * Represents the panel where the script is typed.
@@ -211,13 +210,12 @@ public final class VScriptPanel extends VidneyPanel {
          * @param event
          */
         public void actionPerformed(final ActionEvent event) {
-            Context context;
             ControlModule control = new ControlModule();
             control.setScript(getScript());
             control.setData(getInputData());
 
             try {
-                context = control.startAnalysis();
+                control.startAnalysis();
             } catch (Exception e) {
                 e.printStackTrace();
 
