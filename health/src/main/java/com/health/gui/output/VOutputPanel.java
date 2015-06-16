@@ -97,5 +97,6 @@ public class VOutputPanel extends VidneyPanel {
      */
     public static void addAnalysis(final Map<String, Object> data) {
         OutputPanelSidebar.add(data);
+        OutputMainPanel.setData(data);
     }
 }
