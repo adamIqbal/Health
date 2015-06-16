@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTable;
+
 import org.junit.Test;
 
 import com.health.Column;

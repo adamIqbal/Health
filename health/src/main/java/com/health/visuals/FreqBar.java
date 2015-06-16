@@ -1,5 +1,8 @@
 package com.health.visuals;
 
+import java.awt.Container;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +48,7 @@ public final class FreqBar {
      * @throws RuntimeException
      */
 
-    public static JFrame frequencyBar(final Table table) {
+    public static Container frequencyBar(final Table table) {
         // Check if the Table contains a frequency and a date column
         Column freqColumn = null;
         Column dateColumn = null;
@@ -75,7 +78,7 @@ public final class FreqBar {
      * @param column
      *            Column to display frequency of
      */
-    public static JFrame frequencyBar(final Table table, final String column) {
+    public static Container frequencyBar(final Table table, final String column) {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
@@ -156,9 +159,8 @@ public final class FreqBar {
      *
      * @param freqMap
      *            frequency map
-     * @throws IOException 
      */
-    private static JFrame makeBarChart(final Map<String, Integer> freqMap,
+    private static Container makeBarChart(final Map<String, Integer> freqMap,
             final String seriesName) {
         final int frameWidth = 800;
         final int frameHeight = 600;
@@ -177,22 +179,33 @@ public final class FreqBar {
         // Customize Chart
         chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
 
-        return new SwingWrapper(chart).displayChart();
+        // Wrap the chart in a JFrame and hide the frame
+        JFrame frame = new SwingWrapper(chart).displayChart();
+        frame.addWindowListener(new HideWindowAdapter());
+
+        return frame.getContentPane();
     }
-    
-    public static void saveGraph(Chart chart, String fileName) throws IOException{
-    	VectorGraphics2D g = new PDFGraphics2D(0.0, 0.0, chart.getWidth(), chart.getHeight());
-	
-	    chart.paint(g, chart.getWidth(), chart.getHeight());
-	
-	    // Write the vector graphic output to a file
-	    FileOutputStream file = new FileOutputStream(fileName + ".pdf");
-	
-	    try {
-	      file.write(g.getBytes());
-	    } finally {
-	      file.close();
-	    }
+
+    public static void saveGraph(Chart chart, String fileName) throws IOException {
+        VectorGraphics2D g = new PDFGraphics2D(0.0, 0.0, chart.getWidth(), chart.getHeight());
+
+        chart.paint(g, chart.getWidth(), chart.getHeight());
+
+        // Write the vector graphic output to a file
+        FileOutputStream file = new FileOutputStream(fileName + ".pdf");
+
+        try {
+            file.write(g.getBytes());
+        } finally {
+            file.close();
+        }
     }
-    
+
+    private static class HideWindowAdapter extends WindowAdapter {
+        @Override
+        public void windowActivated(WindowEvent e) {
+            e.getWindow().setVisible(false);
+
+        }
+    }
 }

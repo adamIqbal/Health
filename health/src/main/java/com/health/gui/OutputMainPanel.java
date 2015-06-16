@@ -2,6 +2,7 @@ package com.health.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -58,23 +59,9 @@ public class OutputMainPanel extends JPanel {
                 JScrollPane scroll = new JScrollPane(jtable);
                 pane.add("Tab", scroll);
             }
-            else if (element instanceof JPanel) {
-                JPanel panel = (JPanel) element;
-                pane.add(panel);
-            }
-            else if (element instanceof JFrame) {
-                JFrame frame = (JFrame) element;
-                JPanel panel = new JPanel();
-                panel.setLayout(new BorderLayout());
-                JButton visualButton = new JButton("Show visual");
-                visualButton.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent arg0) {
-                        frame.setVisible(true);
-                    }
-                });
-                panel.add(visualButton, BorderLayout.CENTER);
-                pane.add(panel);
+            else if (element instanceof Component) {
+                Component component = (Component) element;
+                pane.add(component);
             }
         }
         this.removeAll();
