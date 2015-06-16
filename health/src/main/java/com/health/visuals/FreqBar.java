@@ -1,8 +1,12 @@
 package com.health.visuals;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.JFrame;
 
 import com.health.Column;
 import com.health.Record;
@@ -13,6 +17,9 @@ import com.xeiam.xchart.ChartBuilder;
 import com.xeiam.xchart.StyleManager.ChartType;
 import com.xeiam.xchart.StyleManager.LegendPosition;
 import com.xeiam.xchart.SwingWrapper;
+
+import de.erichseifert.vectorgraphics2d.PDFGraphics2D;
+import de.erichseifert.vectorgraphics2d.VectorGraphics2D;
 
 /**
  * Generates a Frequency Bar Diagram based on a Table object.
@@ -32,11 +39,13 @@ public final class FreqBar {
      * Generates a Frequency bar diagram. This variant has no column specified.
      * It chooses the last date column and last frequency column in the Table
      * object.
-     * 
+     *
      * @param table
      *            Table to use
+     * @throws IOException 
      */
-    public static void frequencyBar(final Table table) {
+
+    public static JFrame frequencyBar(final Table table) {
         // Check if the Table contains a frequency and a date column
         Column freqColumn = null;
         Column dateColumn = null;
@@ -51,11 +60,10 @@ public final class FreqBar {
         if (freqColumn != null && dateColumn != null) {
             Map<String, Integer> freqMap = formatFrequencyMap(table,
                     freqColumn.getName(), dateColumn.getName());
-            makeBarChart(freqMap, dateColumn.getName());
+            return makeBarChart(freqMap, dateColumn.getName());
         } else {
             // Not good.
-            System.out
-                    .println("Table contains either no frequency column or no date column.");
+            throw new RuntimeException("Table contains either no frequency column or no date column.");
         }
     }
 
@@ -66,8 +74,9 @@ public final class FreqBar {
      *            Table to use
      * @param column
      *            Column to display frequency of
+     * @throws IOException 
      */
-    public static void frequencyBar(final Table table, final String column) {
+    public static JFrame frequencyBar(final Table table, final String column) {
         // Check if the Table contains a frequency column
         Column freqColumn = null;
         for (Column c : table.getColumns()) {
@@ -81,10 +90,10 @@ public final class FreqBar {
         // the specified column
         if (freqColumn != null) {
             Map<String, Integer> freqMap = formatFrequencyMap(table, freqColumn.getName(), column);
-            makeBarChart(freqMap, column);
+            return makeBarChart(freqMap, column);
         } else {
             Map<String, Integer> freqMap = createFrequencyMap(table, column);
-            makeBarChart(freqMap, column);
+            return makeBarChart(freqMap, column);
         }
     }
 
@@ -148,8 +157,9 @@ public final class FreqBar {
      *
      * @param freqMap
      *            frequency map
+     * @throws IOException 
      */
-    private static void makeBarChart(final Map<String, Integer> freqMap,
+    private static JFrame makeBarChart(final Map<String, Integer> freqMap,
             final String seriesName) {
         final int frameWidth = 800;
         final int frameHeight = 600;
@@ -168,7 +178,22 @@ public final class FreqBar {
         // Customize Chart
         chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
 
-        new SwingWrapper(chart).displayChart();
+        return new SwingWrapper(chart).displayChart();
     }
-
+    
+    public static void saveGraph(Chart chart, String fileName) throws IOException{
+    	VectorGraphics2D g = new PDFGraphics2D(0.0, 0.0, chart.getWidth(), chart.getHeight());
+	
+	    chart.paint(g, chart.getWidth(), chart.getHeight());
+	
+	    // Write the vector graphic output to a file
+	    FileOutputStream file = new FileOutputStream(fileName + ".pdf");
+	
+	    try {
+	      file.write(g.getBytes());
+	    } finally {
+	      file.close();
+	    }
+    }
+    
 }

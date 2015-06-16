@@ -2,8 +2,13 @@ package com.health.visuals;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JPanel;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -20,6 +25,11 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Generates a Box and Whisker plot based on a Table object.
@@ -42,7 +52,7 @@ public final class BoxPlot {
      * @param table
      *            Table to use
      */
-    public static void boxPlot(final Table table) {
+    public static JPanel boxPlot(final Table table) {
         // no column is given, so just pick a column with type ValueType.Number
         Column column = null;
         for (Column c : table.getColumns()) {
@@ -52,7 +62,7 @@ public final class BoxPlot {
             }
         }
 
-        boxPlot(table, column.getName());
+        return boxPlot(table, column.getName());
     }
 
     /**
@@ -66,10 +76,9 @@ public final class BoxPlot {
      * @param column
      *            column to use. Must be of type ValueType.Number
      */
-    public static void boxPlot(final Table table, final String column) {
+    public static JPanel boxPlot(final Table table, final String column) {
         if (!(table.getColumn(column).getType() == ValueType.Number)) {
-            System.out.println("Column must be of type Number");
-            return;
+            throw new IllegalArgumentException("Column must be of type Number");
         }
 
         final String xName = "Plotted column: " + column;
@@ -82,11 +91,6 @@ public final class BoxPlot {
 
         final BoxAndWhiskerCategoryDataset dataset = formatDataset(table,
                 column);
-        if (dataset == null) {
-            System.out
-                    .println("Dataset is empty");
-            return;
-        }
 
         final CategoryAxis xAxis = new CategoryAxis(xName);
         xAxis.setLowerMargin(margin);
@@ -102,7 +106,37 @@ public final class BoxPlot {
 
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
+        
+        return chartPanel;
     }
+    
+    public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
+        PdfWriter writer = null;
+     
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
+     
+        try {
+            writer = PdfWriter.getInstance(document, new FileOutputStream(
+                    fileName));
+            document.open();
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template = contentByte.createTemplate(width, height);
+            Graphics2D graphics2d = template.createGraphics(width, height,
+                    new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width,
+                    height);
+     
+            chart.draw(graphics2d, rectangle2d);
+             
+            graphics2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
+     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        document.close();
+    }
+    
 
     /**
      * Creates a dataset object in the right format.
@@ -151,6 +185,10 @@ public final class BoxPlot {
         final JFreeChart chart = new JFreeChart("Boxplot", new Font(
                 "SansSerif", Font.BOLD, 14), plot, true);
         final ChartPanel chartPanel = new ChartPanel(chart);
+        
+        int width = 640; 
+        int height = 480; 
+        writeChartToPDF( chart, width, height, "boxTest.pdf");
 
         return chartPanel;
     }

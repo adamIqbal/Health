@@ -16,6 +16,6 @@ var seqOneMeasurement = sequence("measurement" , "entry");
 var seqTwoMeasurement = sequence("measurement","measurement"  , "entry");
 var seqThreeMeasurement = sequence("measurement" ,"measurement" ,"measurement" , "entry");
 
-transitionMatrix(transitionMatrix, seqOneMeasurement);
-transitionMatrix(transitionMatrix, seqTwoMeasurement);
-transitionMatrix(transitionMatrix, seqThreeMeasurement);
+transitionMatrix(events, seqOneMeasurement);
+transitionMatrix(events, seqTwoMeasurement);
+transitionMatrix(events, seqThreeMeasurement);

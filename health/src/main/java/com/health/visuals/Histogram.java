@@ -2,8 +2,12 @@ package com.health.visuals;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.io.FileOutputStream;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -20,6 +24,11 @@ import org.jfree.ui.ApplicationFrame;
 import com.health.Column;
 import com.health.Record;
 import com.health.Table;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Generates a Histogram based on a Table object.
@@ -48,7 +57,7 @@ public final class Histogram extends JFrame {
      * @param bin
      *            amount of bins histogram should be divided into
      */
-    public static void createHistogram(final Table table, final String column, final int bin) {
+    public static JPanel createHistogram(final Table table, final String column, final int bin) {
         final Dimension frameDimension = new Dimension(500, 500);
         final String xName = "Plotted column: " + column;
         final String yName = "";
@@ -111,21 +120,57 @@ public final class Histogram extends JFrame {
 
         final ChartPanel chartPanel = new ChartPanel(chart);
 
+	    int width = 640; 
+        int height = 480; 
+	    writeChartToPDF(chart, width, height, "HistTest.pdf");
+	    
         frame.setContentPane(chartPanel);
         frame.setVisible(true);
-    }
+        
+        return chartPanel;
 
-    /**
-     * Converts Table object into array which can be used as input for the
-     * histogram.
-     *
-     * @param table
-     *            table to use
-     * @param column
-     *            column to use
-     * @return array with values that should be visualized in histogram
-     */
-    private static double[] hist(final Table table, final String column) {
+	}
+
+	
+	public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
+        PdfWriter writer = null;
+     
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
+     
+        try {
+            writer = PdfWriter.getInstance(document, new FileOutputStream(
+                    fileName));
+            document.open();
+            PdfContentByte contentByte = writer.getDirectContent();
+            PdfTemplate template = contentByte.createTemplate(width, height);
+            Graphics2D graphics2d = template.createGraphics(width, height,
+                    new DefaultFontMapper());
+            Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width,
+                    height);
+     
+            chart.draw(graphics2d, rectangle2d);
+             
+            graphics2d.dispose();
+            contentByte.addTemplate(template, 0, 0);
+     
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        document.close();
+    }
+	
+	/**
+	 * Converts Table object into array which can be used as input for the histogram.
+	 *
+	 * @param table
+	 * 			table to use
+	 * @param column
+	 * 			column to use
+	 * @return
+	 * 			array with values that should be visualized in histogram
+	 */
+	private static double[] hist(final Table table, final String column) {
+
         // Get the Column to calculate frequency of
         Column selectedColumn = table.getColumn(column);
         String columnName = selectedColumn.getName();

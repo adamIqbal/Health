@@ -238,7 +238,7 @@ public final class VScriptPanel extends VidneyPanel {
                 return;
             }
 
-            // VOutputPanel.displayData(getOutputDate(context));
+            VOutputPanel.addAnalysis(getOutputData(context, control.getVisuals()));
         }
 
         private String getScript() {
@@ -266,8 +266,8 @@ public final class VScriptPanel extends VidneyPanel {
             return parsedData;
         }
 
-        private Map<String, Object> getOutputData(final Context context) {
-            Map<String, Object> output = new HashMap<String, Object>();
+        private HashMap<String, Object> getOutputData(final Context context, final Map<String, Object> visuals) {
+            HashMap<String, Object> output = new HashMap<String, Object>();
 
             ScriptType tableType = WrapperValue.getWrapperType(Table.class);
 
@@ -279,6 +279,10 @@ public final class VScriptPanel extends VidneyPanel {
 
                     output.put(variable.getKey(), table);
                 }
+            }
+
+            for (Entry<String, Object> visual : visuals.entrySet()) {
+                output.put(visual.getKey(), visual.getValue());
             }
 
             return output;

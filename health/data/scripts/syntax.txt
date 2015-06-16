@@ -12,23 +12,23 @@ constrain table where value <= 300;
 println(String);
 
 write(String filename, Table);
-write(String filename, Table, String format);   // TODO
+write(String filename, Table, String format);
 
 freqbar(Table);
 freqbar(Table, String eventsColumn);
 
-boxplot(Table);                                 // TODO
+boxplot(Table);
 boxplot(Table, String column);
 
 hist(Table, String column, Double bins);
 
 EventSequence sequence(String[]...);                        // Creates a EventSequence
-EventSequence sequence(String[]..., Boolean isConnected);   // TODO
+EventSequence sequence(String[]..., Boolean isConnected);
 
 List<EventList> findSequences(EventList, EventSequence);    // Finds instances of the given EventSequence in the EventList
 
 transitionMatrix(EventList);                                // Creates a state transition matrix with all the transitions
-transitionMatrix(EventList, EventSequence);                 // TODO: Creates a state transition matrix of the transitions in the given event sequence
+transitionMatrix(EventList, EventSequence);                 // Creates a state transition matrix of the transitions in the given event sequence
 transitionMatrix(EventList, List<EventList>);               // Creates a state transition matrix of the transitions in the given list of event lists
 
 Table tableWithDays(Table);                                 // Creates a copy of the given table with an additional column containing the days corresponding to the dates in the first date column
