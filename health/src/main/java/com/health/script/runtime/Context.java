@@ -80,6 +80,17 @@ public final class Context {
         this.variables.put(symbol, new LValue(type, value));
     }
 
+    public void removeLocal(final String symbol) {
+        Objects.requireNonNull(symbol);
+
+        if (!this.variables.containsKey(symbol)) {
+            throw new ScriptRuntimeException(String.format(
+                    "No local variable named '%s' is defined in this scope.", symbol));
+        }
+
+        this.variables.remove(symbol);
+    }
+
     /**
      * Declares a given static method in the context.
      *

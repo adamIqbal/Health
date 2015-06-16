@@ -46,7 +46,7 @@ public final class Record {
      *
      * @return an iterable containing the values in this record.
      */
-    public Iterable<Object> getValues() {
+    public List<Object> getValues() {
         return Arrays.asList(this.values);
     }
 
