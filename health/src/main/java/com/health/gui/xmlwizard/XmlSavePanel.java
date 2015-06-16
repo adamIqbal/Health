@@ -54,6 +54,7 @@ public class XmlSavePanel extends JPanel {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 XmlWizard.setXml(new XmlConfigObject());
+                XmlFilePanel.getFileList().buildList();
                 XmlWizard.nextPanel();
             }
         });
@@ -98,8 +99,8 @@ public class XmlSavePanel extends JPanel {
         FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
 
         JOptionPane.showMessageDialog(new JFrame(),
-                "Your file has been saved.",
-                "Success!", JOptionPane.INFORMATION_MESSAGE);
+                "Your file has been saved.", "Success!",
+                JOptionPane.INFORMATION_MESSAGE);
 
         XmlWizard.setXml(new XmlConfigObject());
         XmlWizard.nextPanel();

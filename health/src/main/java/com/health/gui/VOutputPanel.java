@@ -63,6 +63,7 @@ public class VOutputPanel extends VidneyPanel {
         this.setRight(sidebar);
 
         // DUMMY DATA
+        /*
         String filePath = "data/data_all/data_txt/ADMIRE 2.txt";
         String filePath2 = "data/data_all/data_txt/ADMIRE_13.txt";
         String configPath = "data/configXmls/admireTxtConfig.xml";
@@ -78,7 +79,7 @@ public class VOutputPanel extends VidneyPanel {
         HashMap<String, Object> test = new HashMap<String, Object>();
         test.put("test", table);
         test.put("test2", table2);
-        addAnalysis(test);
+        addAnalysis(test);*/
         //
     }
 

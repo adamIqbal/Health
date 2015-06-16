@@ -108,12 +108,15 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
         ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
         for (Component comp : this.columnPanel.getComponents()) {
             JPanel column = (JPanel) comp;
+            ValueType type = (ValueType) ((JComboBox<ValueType>) column
+                    .getComponents()[1]).getSelectedItem();
 
-            if (((JComboBox<ValueType>) column.getComponents()[1])
-                    .getSelectedItem().equals(ValueType.String)) {
+            if (type.equals(ValueType.String)) {
                 columnTypes.add(ValueType.String);
-            } else {
+            } else if (type.equals(ValueType.Number)) {
                 columnTypes.add(ValueType.Number);
+            } else {
+                columnTypes.add(ValueType.Date);
             }
         }
 
@@ -146,7 +149,12 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
         columnValue.setPreferredSize(preferredDim);
         columnValue.setSelectedItem(type);
 
-        columnName.setText(name);
+        if (type == ValueType.Date) {
+            columnName.setText(name + "[" + XmlWizard.getXml().getDateFormat()
+                    + "]");
+        } else {
+            columnName.setText(name);
+        }
 
         VButton deleteButton = new VButton("Delete");
         deleteButton.addActionListener(new ActionListener() {

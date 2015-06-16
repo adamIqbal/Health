@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -62,6 +61,13 @@ public class OutputMainPanel extends JPanel {
             else if (element instanceof Component) {
                 Component component = (Component) element;
                 pane.add(component);
+            }
+            else if (element instanceof JTable) {
+                JTable jtable = (JTable) element;
+                jtable.setEnabled(false);
+                jtable.setAutoCreateRowSorter(true);
+                JScrollPane scroll = new JScrollPane(jtable);
+                pane.add("Matrix", scroll);
             }
         }
         this.removeAll();

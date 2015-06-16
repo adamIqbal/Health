@@ -39,7 +39,7 @@ public class GUImain extends JFrame {
     public static final Color GUI_COLOR = new Color(137, 207, 240);
 
     private static Map<String, VidneyPanel> panelMap;
-    private JTabbedPane tabbedPane;
+    private static JTabbedPane tabbedPane;
 
     /**
      * Width of the tabs.
@@ -61,7 +61,7 @@ public class GUImain extends JFrame {
         this.createTabbedPane();
 
         this.add(tabbedPane);
-
+        
         try {
             setLookAndFeel("Metal");
         } catch (ClassNotFoundException | InstantiationException
@@ -163,6 +163,10 @@ public class GUImain extends JFrame {
      */
     public static VidneyPanel getPanel(final String name) {
         return panelMap.get(name);
+    }
+    
+    public static void goToTab(String name) {
+        tabbedPane.setSelectedComponent(getPanel(name));
     }
 
 }

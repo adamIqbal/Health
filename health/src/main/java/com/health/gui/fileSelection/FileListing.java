@@ -221,7 +221,7 @@ public class FileListing extends JPanel {
         tableHeader2.setEnabled(false);
         tableHeader2.setDisabledTextColor(Color.black);
         tableHeader2.setBackground(Color.gray);
-        tableHeader2.setPreferredSize(new Dimension(200, 20));
+        tableHeader2.setPreferredSize(new Dimension(250, 20));
         listing.add(tableHeader2);
 
         headerCons.gridx = 2;

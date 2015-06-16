@@ -26,6 +26,12 @@ import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
 
+import com.health.gui.xmlwizard.XmlWizard;
+import com.health.script.runtime.Context;
+import com.health.script.runtime.LValue;
+import com.health.script.runtime.ScriptType;
+import com.health.script.runtime.WrapperValue;
+
 /**
  * Represents the panel where the script is typed.
  *
@@ -210,12 +216,28 @@ public final class VScriptPanel extends VidneyPanel {
          * @param event
          */
         public void actionPerformed(final ActionEvent event) {
+            if (getScript().equals("")) {
+                JOptionPane.showMessageDialog(
+                        new JFrame(),
+                        "The script is empty.", "Whoops!",
+                        JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            Context context;
+
             ControlModule control = new ControlModule();
             control.setScript(getScript());
             control.setData(getInputData());
 
             try {
-                control.startAnalysis();
+
+                context = control.startAnalysis();
+                GUImain.goToTab("Step 3: Output");
+                JOptionPane.showMessageDialog(
+                        new JFrame(),
+                        "Analysis is done.", "Done!",
+                        JOptionPane.INFORMATION_MESSAGE);
+
             } catch (Exception e) {
                 e.printStackTrace();
 

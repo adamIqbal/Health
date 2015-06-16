@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<data format="text" start="[" end="]" delimeter=",">
-	<column type="String">type</column>
-	<column type="Number">value</column>
-	<column type="String">unit</column>
-	<column type="Number">misc</column>
-	<column type="Number">date</column>
-	<column type="Number">time</column>
+<data format="xls" startRow="4" startColumn="1">
+	<column type="Date" format = "d[d]/M[M]/yyyy">date</column>
+	<column type="String">time</column>
+	<column type="Number">sys</column>
+	<column type="Number">dia</column>
+	<column type="Number">puls</column>
 </data>

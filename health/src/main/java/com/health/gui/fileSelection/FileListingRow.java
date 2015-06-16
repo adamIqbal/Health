@@ -100,7 +100,8 @@ public final class FileListingRow {
         fileField.setDisabledTextColor(Color.black);
         fileField.setOpaque(false);
 
-        deleteButton = new VButton("X");
+        deleteButton = new JButton("X");
+        deleteButton.setBackground(new Color(200, 200, 200));
         lforDelete = new ListenForDeleteFile(fileString);
         deleteButton.addActionListener(lforDelete);
         // filedrop for fileField

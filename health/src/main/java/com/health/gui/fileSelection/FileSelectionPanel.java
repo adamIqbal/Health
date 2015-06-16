@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.health.gui.GUImain;
 import com.health.gui.VButton;
 
 /**
@@ -64,8 +65,7 @@ public class FileSelectionPanel extends JPanel {
         @Override
         public void actionPerformed(final ActionEvent e) {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System
-                    .getProperty("user.home")));
+            fileChooser.setCurrentDirectory(new File(GUImain.PATH_TO_DATA));
             int result = fileChooser.showOpenDialog(null);
 
             if (result == JFileChooser.APPROVE_OPTION) {

@@ -37,7 +37,7 @@ class XmlFilePanel extends JPanel {
     private static final long serialVersionUID = 9063959421496759474L;
     private JButton newFileButton;
     private JButton selectFileButton;
-    private FileList fileList;
+    private static FileList fileList;
 
     public XmlFilePanel() {
         super();
@@ -89,21 +89,40 @@ class XmlFilePanel extends JPanel {
     }
 
     /**
+     * Gets the filelist.
+     * @return the filelist
+     */
+    protected static FileList getFileList() {
+        return fileList;
+    }
+
+    /**
      * Lists the XML files in the specified folder.
      * @author Bjorn van der Laan
      *
      */
-    private class FileList extends JList<Path> {
+    class FileList extends JList<Path> {
         /**
          * Constant serialized ID used for compatibility.
          */
         private static final long serialVersionUID = 7122730191428505542L;
+        private final Path path;
+        private final DefaultListModel<Path> listModel;
 
         public FileList(final Path path, final DefaultListModel<Path> listModel) {
             super(listModel);
+            this.listModel = listModel;
+            this.path = path;
+
             this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             this.setBackground(Color.WHITE);
 
+            this.
+
+            buildList();
+        }
+
+        public void buildList() {
             try {
                 DirectoryStream<Path> stream;
                 stream = Files.newDirectoryStream(path);

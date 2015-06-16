@@ -18,6 +18,7 @@ public class XmlConfigObject {
     private List<String> columns = null;
     private List<ValueType> columnTypes = null;
     private Path path = null;
+    private String dateFormat = null;
 
     /**
      * Constructs a XmlConfigObject object.
@@ -68,25 +69,20 @@ public class XmlConfigObject {
         String startDelimiter = this.values[0];
         String endDelimiter = this.values[1];
         String delimiter = this.values[2];
+        String ignoreLast = this.values[3];
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"text\" start=\"" + startDelimiter
                 + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
-                + "\">" + "\n\r";
+                + "\"";
 
-        String columnTags = "";
-        int n = columns.size();
-
-        // if columns List and columntype List are not of equal length, there is
-        // something wrong.
-        if (n != this.columnTypes.size()) {
-            return null;
+        if (this.values.length > 3) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
         }
 
-        for (int i = 0; i < n; i++) {
-            columnTags += "\t" + "<column type=\"" + this.columnTypes.get(i)
-                    + "\">" + this.columns.get(i) + "</column>" + "\n\r";
-        }
+        dataStart += ">" + "\n\r";
+
+        String columnTags = this.columnsToXML();
 
         String dataEnd = "</data>";
 
@@ -100,11 +96,27 @@ public class XmlConfigObject {
     public final String toXMLStringXLS() {
         String startRow = this.values[0];
         String startCol = this.values[1];
+        String ignoreLast = this.values[2];
 
         String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"xls\" startRow=\"" + startRow
-                + "\" startColumn=\"" + startCol + "\">" + "\n\r";
+                + "\" startColumn=\"" + startCol + "\"";
 
+        if (this.values.length > 2) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
+        }
+
+        dataStart += ">" + "\n\r";
+        dataStart += ">" + "\n\r";
+
+        String columnTags = this.columnsToXML();
+
+        String dataEnd = "</data>";
+
+        return header + dataStart + columnTags + dataEnd;
+    }
+
+    private final String columnsToXML() {
         String columnTags = "";
         int n = columns.size();
 
@@ -115,13 +127,20 @@ public class XmlConfigObject {
         }
 
         for (int i = 0; i < n; i++) {
-            columnTags += "\t" + "<column type=\"" + this.columnTypes.get(i)
-                    + "\">" + this.columns.get(i) + "</column>" + "\n\r";
+            if (columnTypes.get(i) == ValueType.Date) {
+                String input = this.columns.get(i);
+                String[] parts = this.splitString(input, "[");
+
+                columnTags += "\t" + "<column type=\""
+                        + this.columnTypes.get(i) + "\" format=\"" + parts[1]
+                        + "\">" + parts[0] + "</column>" + "\n\r";
+            } else {
+                columnTags += "\t" + "<column type=\""
+                        + this.columnTypes.get(i) + "\">" + this.columns.get(i)
+                        + "</column>" + "\n\r";
+            }
         }
-
-        String dataEnd = "</data>";
-
-        return header + dataStart + columnTags + dataEnd;
+        return columnTags;
     }
 
     /**
@@ -139,6 +158,23 @@ public class XmlConfigObject {
      */
     protected final void setType(final FileType type) {
         this.type = type;
+    }
+
+    /**
+     * Gets the date format
+     * @return date format
+     */
+    protected String getDateFormat() {
+        return dateFormat;
+    }
+
+    /**
+     * sets the date format
+     * @param dateFormat
+     *            date format
+     */
+    protected void setDateFormat(String dateFormat) {
+        this.dateFormat = dateFormat;
     }
 
     /**
@@ -207,5 +243,26 @@ public class XmlConfigObject {
      */
     protected final void setPath(final Path path) {
         this.path = path;
+    }
+
+    private String[] splitString(final String source, final String splitter) {
+        String[] rv = new String[2];
+        int last = 0;
+        int next = 0;
+
+        next = source.indexOf(splitter, last);
+        if (next != -1) {
+            rv[0] = source.substring(last, next);
+            last = next + splitter.length();
+
+            if (last < source.length()) {
+                rv[1] = source.substring(last, source.length() - 1);
+            }
+        } else {
+            rv[0] = source;
+            rv[1] = "";
+        }
+
+        return rv;
     }
 }
