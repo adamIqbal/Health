@@ -28,10 +28,10 @@ public class VHelpPanel extends VidneyPanel {
      */
     public VHelpPanel() {
         super();
-        
+
         sideBar = new HelpPanelSidebar();
         mainPanel = new HelpMainPanel();
-        
+
         sideBar.getTopicList().addMouseListener(new MouseListener() {
 
             @Override
@@ -73,7 +73,7 @@ public class VHelpPanel extends VidneyPanel {
      * @param name
      * @param text
      */
-    private void addCard(String name, String text) {
+    private void addCard(final String name, final String text) {
         sideBar.addElement(name);
 
         JLabel textLabel = new JLabel(text);

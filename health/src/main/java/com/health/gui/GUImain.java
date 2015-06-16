@@ -2,6 +2,7 @@ package com.health.gui;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
+import java.awt.Frame;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,8 @@ public class GUImain extends JFrame {
     /**
      * PATH_TO_CONFIG_XML is the path to all config xmls.
      */
-    public static final String PATH_TO_CONFIG_XML = PATH_TO_DATA + "configXmls/";
+    public static final String PATH_TO_CONFIG_XML = PATH_TO_DATA
+            + "configXmls/";
     /**
      * Main color of the GUI.
      */
@@ -47,9 +49,28 @@ public class GUImain extends JFrame {
     private static JTabbedPane tabbedPane;
 
     /**
+     * Gets a panel by name.
+     * @param name
+     *            name of the panel
+     * @return the panel, or null if it does not exist
+     */
+    public static VidneyPanel getPanel(final String name) {
+        return panelMap.get(name);
+    }
+
+    /**
+     * Transitions the application to the specified tab.
+     * @param name the name of the tab
+     */
+    public static void goToTab(final String name) {
+        tabbedPane.setSelectedComponent(getPanel(name));
+    }
+
+    /**
      * Width of the tabs.
      */
     private final int tabWidth = 330;
+
     /**
      * Height of the tabs.
      */
@@ -66,7 +87,7 @@ public class GUImain extends JFrame {
         this.createTabbedPane();
 
         this.add(tabbedPane);
-        
+
         try {
             setLookAndFeel("Metal");
         } catch (ClassNotFoundException | InstantiationException
@@ -78,9 +99,17 @@ public class GUImain extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
         this.pack();
         this.setVisible(true);
+    }
+
+    /**
+     * Adds a tab to the GUI.
+     */
+    private void addTab(final String name, final VidneyPanel panel) {
+        tabbedPane.addTab(name, panel);
+        panelMap.put(name, panel);
     }
 
     private void createTabbedPane() {
@@ -100,11 +129,17 @@ public class GUImain extends JFrame {
     }
 
     /**
-     * Adds a tab to the GUI.
+     * sets the frame variables.
      */
-    private void addTab(final String name, final VidneyPanel panel) {
-        tabbedPane.addTab(name, panel);
-        panelMap.put(name, panel);
+    private void initializeFrame() {
+        /*
+         * int xPos = (dim.width / 2) - (this.getWidth() / 2); int yPos =
+         * (dim.height / 2) - (this.getHeight() / 2); this.setLocation(xPos,
+         * yPos);
+         */
+
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("Vidney");
     }
 
     /**
@@ -135,45 +170,17 @@ public class GUImain extends JFrame {
     private void sizeTabs(final int width, final int height) {
         tabbedPane.setUI(new BasicTabbedPaneUI() {
             @Override
-            protected int calculateTabWidth(final int tabPlacement,
-                    final int tabIndex, final FontMetrics metrics) {
-                return width;
-            }
-
-            @Override
             protected int calculateTabHeight(final int tabPlacement,
                     final int tabIndex, final int fontHeight) {
                 return height;
             }
+
+            @Override
+            protected int calculateTabWidth(final int tabPlacement,
+                    final int tabIndex, final FontMetrics metrics) {
+                return width;
+            }
         });
-    }
-
-    /**
-     * sets the frame variables.
-     */
-    private void initializeFrame() {
-        /*
-         * int xPos = (dim.width / 2) - (this.getWidth() / 2); int yPos =
-         * (dim.height / 2) - (this.getHeight() / 2); this.setLocation(xPos,
-         * yPos);
-         */
-
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("Vidney");
-    }
-
-    /**
-     * Gets a panel by name.
-     * @param name
-     *            name of the panel
-     * @return the panel, or null if it does not exist
-     */
-    public static VidneyPanel getPanel(final String name) {
-        return panelMap.get(name);
-    }
-    
-    public static void goToTab(String name) {
-        tabbedPane.setSelectedComponent(getPanel(name));
     }
 
 }
