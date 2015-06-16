@@ -76,10 +76,6 @@ public final class Histogram extends JFrame {
         final NumberAxis yAxis = new NumberAxis(yName);
         yAxis.setAutoRangeIncludesZero(false);
 
-        final XYBarRenderer xybarrenderer = new XYBarRenderer(); // (XYBarRenderer)xyplot.getRenderer();
-        xybarrenderer.setShadowVisible(false);
-        xybarrenderer.setBarPainter(new StandardXYBarPainter());
-
         // Create Chart
         JFreeChart chart = ChartFactory.createHistogram(
                 column + " Frequency",
@@ -93,21 +89,24 @@ public final class Histogram extends JFrame {
                 );
 
         final int backSet = 230;
-        final float alpha = 0.7F;
         final int gridIn = 150;
 
         chart.setBackgroundPaint(new Color(backSet, backSet, backSet));
+
         XYPlot xyplot = (XYPlot) chart.getPlot();
-        xyplot.setForegroundAlpha(alpha);
         xyplot.setBackgroundPaint(Color.WHITE);
         xyplot.setDomainGridlinePaint(new Color(gridIn, gridIn, gridIn));
         xyplot.setRangeGridlinePaint(new Color(gridIn, gridIn, gridIn));
 
+        XYBarRenderer renderer = (XYBarRenderer) xyplot.getRenderer();
+        renderer.setDrawBarOutline(true);
+        renderer.setShadowVisible(false);
+        renderer.setBarPainter(new StandardXYBarPainter());
+        renderer.setShadowVisible(false);
+
         final ChartPanel chartPanel = new ChartPanel(chart);
 
         frame.setContentPane(chartPanel);
-        final int dim = 500;
-        writeChartToPDF(chart, dim, dim, "TestHist.pdf");
 
         return chartPanel;
 	}
