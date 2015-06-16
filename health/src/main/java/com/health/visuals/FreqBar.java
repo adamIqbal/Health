@@ -174,7 +174,7 @@ public final class FreqBar {
 
         // Customize Chart
         chart.getStyleManager().setLegendPosition(LegendPosition.InsideNW);
-
+        
         return new SwingWrapper(chart).displayChart();
     }
     
@@ -187,9 +187,9 @@ public final class FreqBar {
 	    FileOutputStream file = new FileOutputStream(fileName + ".pdf");
 	
 	    try {
-	      file.write(g.getBytes());
+	    	file.write(g.getBytes());
 	    } finally {
-	      file.close();
+	    	file.close();
 	    }
     }
     
