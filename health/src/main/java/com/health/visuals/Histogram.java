@@ -56,6 +56,8 @@ public final class Histogram extends JFrame {
      *            column to use
      * @param bin
      *            amount of bins histogram should be divided into
+     * @return
+     * 			JPanel
      */
     public static JPanel createHistogram(final Table table, final String column, final int bin) {
         final Dimension frameDimension = new Dimension(500, 500);
@@ -66,30 +68,13 @@ public final class Histogram extends JFrame {
         ApplicationFrame frame = new ApplicationFrame("Vidney");
         frame.setSize(frameDimension);
 
-        HistogramDataset dataSet = new HistogramDataset();
-        // Convert table to usable form of data
-        double[] data = hist(table, column);
-
-        // Calculate maximum value that appears in data
-        // Calculate minimum value that appears in data
-        double max = data[0];
-        double min = data[0];
-        for (int i = 0; i < data.length; i++) {
-            if (data[i] > max) {
-                max = data[i];
-            }
-            if (data[i] < min) {
-                min = data[i];
-            }
-        }
+        HistogramDataset dataSet = createDataset(table, column, bin); //new HistogramDataset();
 
         final CategoryAxis xAxis = new CategoryAxis(xName);
         xAxis.setLowerMargin(margin);
         xAxis.setUpperMargin(margin);
         final NumberAxis yAxis = new NumberAxis(yName);
         yAxis.setAutoRangeIncludesZero(false);
-
-        dataSet.addSeries("Hist", data, bin, 0, max);
 
         final XYBarRenderer xybarrenderer = new XYBarRenderer(); // (XYBarRenderer)xyplot.getRenderer();
         xybarrenderer.setShadowVisible(false);
@@ -119,19 +104,65 @@ public final class Histogram extends JFrame {
         xyplot.setRangeGridlinePaint(new Color(gridIn, gridIn, gridIn));
 
         final ChartPanel chartPanel = new ChartPanel(chart);
-	    
-        frame.setContentPane(chartPanel);
-        
-        return chartPanel;
 
+        frame.setContentPane(chartPanel);
+        final int dim = 500;
+        writeChartToPDF(chart, dim, dim, "TestHist.pdf");
+
+        return chartPanel;
 	}
 
-	
-	public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
+    /**
+     * Creates dataset for histogram.
+     * @param table
+     * 			table with data
+     * @param column
+     * 			column of which you want the data
+     * @param bin
+     * 			for dividing the output in certain amount of parts
+     * @return
+     * 			dataset
+     */
+    public static HistogramDataset createDataset(final Table table, final String column, final int bin) {
+    	HistogramDataset dataSet = new HistogramDataset();
+        // Convert table to usable form of data
+        double[] data = hist(table, column);
+
+        // Calculate maximum value that appears in data
+        // Calculate minimum value that appears in data
+        double max = data[0];
+        double min = data[0];
+        for (int i = 0; i < data.length; i++) {
+            if (data[i] > max) {
+                max = data[i];
+            }
+            if (data[i] < min) {
+                min = data[i];
+            }
+        }
+
+        dataSet.addSeries("Hist", data, bin, 0, max);
+
+        return dataSet;
+    }
+
+    /**
+     * Save the chart as pdf.
+     * @param chart
+     * 			chart that should be saved
+     * @param width
+     * 			width of chart
+     * @param height
+     * 			height of chart
+     * @param fileName
+     * 			file name under which chart should be saved
+     */
+	public static void writeChartToPDF(final JFreeChart chart, final int width,
+			final int height, final String fileName) {
         PdfWriter writer = null;
-     
+
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
-     
+
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(
                     fileName));
@@ -142,18 +173,18 @@ public final class Histogram extends JFrame {
                     new DefaultFontMapper());
             Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width,
                     height);
-     
+
             chart.draw(graphics2d, rectangle2d);
-             
+
             graphics2d.dispose();
             contentByte.addTemplate(template, 0, 0);
-     
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         document.close();
     }
-	
+
 	/**
 	 * Converts Table object into array which can be used as input for the histogram.
 	 *
