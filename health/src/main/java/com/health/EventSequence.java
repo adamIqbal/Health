@@ -82,7 +82,7 @@ public class EventSequence {
         this.code = code;
     }
 
-    public Table convertToTable(){
+    public Table toTable(){
         Table res = null;
         
         for(EventList eList : sequences){

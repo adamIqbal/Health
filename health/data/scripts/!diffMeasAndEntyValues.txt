@@ -9,13 +9,12 @@ table = connect table with table7 where date = date;
 
 table = connect table0 with table where ModifiedDate = date as date;
 
-var events = code table as measurement : value > 0 , entry : Value > 0;
+var event = code table as measurement : value > 0 , entry : Value > 0;
 
-//find with same userid
-var seqOneMeasurement = sequence("measurement" , "entry");
-var seqTwoMeasurement = sequence("measurement","measurement"  , "entry");
-var seqThreeMeasurement = sequence("measurement" ,"measurement" ,"measurement" , "entry");
+//find sequence with same user
+var seq = sequence("measurement", "entry", true);
+var seqs = findSequences(seq);
 
-transitionMatrix(events, seqOneMeasurement);
-transitionMatrix(events, seqTwoMeasurement);
-transitionMatrix(events, seqThreeMeasurement);
+table = toTable(seq);
+
+write("out.txt" , table);

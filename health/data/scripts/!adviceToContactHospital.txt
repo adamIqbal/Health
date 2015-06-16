@@ -6,9 +6,11 @@ var events = code table0 as concern : KreatinineAlgorithmDayRatingId = 4;
 
 var seq = sequence("concern" , "concern");
 
-var seqs = findSequences(events, seq);
+var contactHosp = findSequences(events, seq);
 
-//make table of seqs
-//connect with table and write
+var contactHospTable = toTable(contactHosp);
+
+table = connect table with contactHospTable 
+	with KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
 
 write("out.txt", table);

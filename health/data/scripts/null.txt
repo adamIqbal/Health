@@ -1,1 +1,4 @@
-var table = constrain table0 where KreatinineAlgorithmActionId == 1;
+// with MijnnierInzicht Data
+
+
+freqbar(table0, "Moment");
