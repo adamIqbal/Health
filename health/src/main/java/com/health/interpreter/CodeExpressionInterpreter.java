@@ -179,7 +179,11 @@ public final class CodeExpressionInterpreter extends TableExpressionInterpreter 
             Column column = table.getColumn(i);
             Value value = wrapValue(values.get(i));
 
-            context.declareLocal(column.getName(), value.getType(), value);
+            if (value != null) {
+                context.declareLocal(column.getName(), value.getType(), value);
+            } else {
+                context.declareLocal(column.getName(), Value.getStaticType(), null);
+            }
         }
     }
 
@@ -200,8 +204,10 @@ public final class CodeExpressionInterpreter extends TableExpressionInterpreter 
             return new StringValue((String) value);
         } else if (value instanceof LocalDate) {
             return new DateValue((LocalDate) value);
-        } else {
+        } else if (value != null) {
             throw new IllegalArgumentException("Invalid value type, must be Double, String or LocalDate.");
+        } else {
+            return null;
         }
     }
 }
