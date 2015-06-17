@@ -1,8 +1,6 @@
 package com.health.operations;
 
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,19 @@ import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
 
+/**
+ * A class to compare EventSequences.
+ * 
+ * @author daan
+ *
+ */
 public class Comparison {
+
+    /**
+     * a unused constructor.
+     */
+    protected Comparison() {
+    }
 
     /**
      * A function to make a table with the time between events in DAYS.
@@ -59,12 +69,12 @@ public class Comparison {
 
         for (int i = 0; i < codeSeq.length; i++) {
             if (i + 1 < codeSeq.length) {
-                Column newCol = new Column(codeSeq[i] + "->"
-                        + codeSeq[i + 1], result.size(), ValueType.Number);
+                Column newCol = new Column(codeSeq[i] + "->" + codeSeq[i + 1],
+                        result.size(), ValueType.Number);
                 result.add(newCol);
             } else if (i > 1) {
-                Column newCol = new Column(codeSeq[0] + "->"
-                        + codeSeq[i], result.size(), ValueType.Number);
+                Column newCol = new Column(codeSeq[0] + "->" + codeSeq[i],
+                        result.size(), ValueType.Number);
                 result.add(newCol);
             }
         }
@@ -92,9 +102,10 @@ public class Comparison {
         }
     }
 
-    private static int getTimeBetweenEvents(final Event event1, final Event event2) {
+    private static int getTimeBetweenEvents(final Event event1,
+            final Event event2) {
         long days = event1.getDate().until(event2.getDate(), ChronoUnit.DAYS);
-        
+
         return (int) days;
 
     }

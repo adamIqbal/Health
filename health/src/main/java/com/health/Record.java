@@ -156,7 +156,8 @@ public final class Record {
      * @throws IllegalArgumentException
      *             if a column with the given name was not found.
      * @throws IllegalStateException
-     *             if the specified column does not contain LocalDateTime values.
+     *             if the specified column does not contain LocalDateTime
+     *             values.
      */
     public void setValue(final int index, final LocalDateTime value) {
         this.setValue(this.table.getColumn(index).getName(), value);
@@ -248,7 +249,8 @@ public final class Record {
         } else if (value instanceof LocalDateTime) {
             this.setValue(name, (LocalDateTime) value);
         } else if (value != null) {
-            throw new IllegalArgumentException("Unsupported value type, must be either Double, String or LocalDateTime.");
+            throw new IllegalArgumentException(
+                    "Unsupported value type, must be either Double, String or LocalDateTime.");
         }
     }
 

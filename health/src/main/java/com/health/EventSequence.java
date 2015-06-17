@@ -11,14 +11,29 @@ public class EventSequence {
     private String code;
     private boolean connected;
 
+    /**
+     * Makes an eventSequence with given Pattern.
+     * @param codePattern the pattern one would like to look for.
+     */
     public EventSequence(final String[] codePattern) {
         construct(codePattern, null, false);
     }
 
+    /**
+     * Makes an eventSequence with given Pattern.
+     * @param codePattern the pattern one would like to look for.
+     * @param connected true if the Sequence has to be connected to each other.
+     */
     public EventSequence(final String[] codePattern, final boolean connected) {
         construct(codePattern, null, connected);
     }
 
+    /**
+     * Makes an eventSequence with given Pattern.
+     * @param codePattern the pattern one would like to look for.
+     * @param code the code for the sequence.
+     * @param connected true if the Sequence has to be connected to each other.
+     */
     public EventSequence(final String[] codePattern, final String code,
             final boolean connected) {
         construct(codePattern, code, connected);
@@ -36,6 +51,10 @@ public class EventSequence {
         }
     }
 
+    /**
+     * Get the code Pattern of the sequence.
+     * @return an String array with the codes of the pattern.
+     */
     public String[] getCodePattern() {
         return codePattern;
     }
@@ -49,26 +68,38 @@ public class EventSequence {
     }
 
     /**
-     * @return the connected
+     * @return connected.
      */
     public boolean isConnected() {
         return connected;
     }
 
+    /**
+     * Add a sequence to all found sequences in the list.
+     * @param sequence an EvenList with record of a sequence.
+     */
     public void addSequence(final EventList sequence) {
         sequences.add(sequence);
     }
 
+    /**
+     * Delete a sequence.
+     * @param sequence the sequence to delete.
+     */
     public void deleteSequence(final EventList sequence) {
         sequences.remove(sequence);
     }
 
+    /**
+     * Get all sequences in the object.
+     * @return a list of evenlists with sequences.
+     */
     public List<EventList> getSequences() {
         return sequences;
     }
 
     /**
-     * @return the code
+     * @return the code of the sequence.
      */
     public String getCode() {
         return code;
@@ -76,24 +107,28 @@ public class EventSequence {
 
     /**
      * @param code
-     *            the code to set
+     *            the code to set.
      */
     public void setCode(String code) {
         this.code = code;
     }
 
-    public Table toTable(){
+    /**
+     * Makes a Table of all events in all eventlists in the current object.
+     * @return a table with all events found.
+     */
+    public Table toTable() {
         Table res = null;
-        
-        for(EventList eList : sequences){
-            if(res == null){
+
+        for (EventList eList : sequences) {
+            if (res == null) {
                 res = eList.toTable();
-            }else {
+            } else {
                 res = Connect.connect(res, eList.toTable(), null);
             }
-            
+
         }
-        
+
         return res;
     }
 }

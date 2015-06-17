@@ -2,7 +2,6 @@ package com.health.input;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -102,8 +101,8 @@ public final class XlsParser implements Parser {
                                 }
                                 DateTimeFormatter formatter = DateTimeFormatter
                                         .ofPattern(format);
-                                LocalDateTime dateValue = LocalDateTime.parse(row
-                                        .getCell(i).toString(), formatter);
+                                LocalDateTime dateValue = LocalDateTime.parse(
+                                        row.getCell(i).toString(), formatter);
                                 tableRow.setValue(columnCountTableRow,
                                         dateValue);
                             } catch (DateTimeParseException e) {
