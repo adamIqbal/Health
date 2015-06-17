@@ -49,7 +49,17 @@ public final class Histogram extends JFrame {
     
     
     public static JFreeChart createHist(final Table table, final String column, final int bin) {
-    	HistogramDataset dataSet = createDataset(table, column, bin); //new HistogramDataset();
+        final String xName = "Plotted column: " + column;
+        final String yName = "";
+        final double margin = 0.20;
+
+        HistogramDataset dataSet = createDataset(table, column, bin); //new HistogramDataset();
+
+        final CategoryAxis xAxis = new CategoryAxis(xName);
+        xAxis.setLowerMargin(margin);
+        xAxis.setUpperMargin(margin);
+        final NumberAxis yAxis = new NumberAxis(yName);
+        yAxis.setAutoRangeIncludesZero(false);
 
         // Create Chart
         JFreeChart chart = ChartFactory.createHistogram(
@@ -62,24 +72,6 @@ public final class Histogram extends JFrame {
                 false,
                 false
                 );
-        
-        return chart;
-    }
-    
-    public static JPanel visualHist(final JFreeChart chart, final String column) {
-    	final Dimension frameDimension = new Dimension(500, 500);
-        final String xName = "Plotted column: " + column;
-        final String yName = "";
-        final double margin = 0.20;
-
-        ApplicationFrame frame = new ApplicationFrame("Vidney");
-        frame.setSize(frameDimension);
-
-        final CategoryAxis xAxis = new CategoryAxis(xName);
-        xAxis.setLowerMargin(margin);
-        xAxis.setUpperMargin(margin);
-        final NumberAxis yAxis = new NumberAxis(yName);
-        yAxis.setAutoRangeIncludesZero(false);
 
         final int backSet = 230;
         final int gridIn = 150;
@@ -96,6 +88,17 @@ public final class Histogram extends JFrame {
         renderer.setShadowVisible(false);
         renderer.setBarPainter(new StandardXYBarPainter());
         renderer.setShadowVisible(false);
+
+        return chart;
+    }
+    
+    public static JPanel visualHist(final JFreeChart chart, final String column) {
+    	final Dimension frameDimension = new Dimension(500, 500);
+
+
+        ApplicationFrame frame = new ApplicationFrame("Vidney");
+        frame.setSize(frameDimension);
+
 
         final ChartPanel chartPanel = new ChartPanel(chart);
 
