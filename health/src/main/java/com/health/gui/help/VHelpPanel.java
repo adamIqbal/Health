@@ -76,8 +76,7 @@ public class VHelpPanel extends VidneyPanel {
     private void addCard(final String name, final String text) {
         sideBar.addElement(name);
 
-        JLabel textLabel = new JLabel(text);
-        textLabel.setVerticalAlignment(JLabel.TOP);
-        mainPanel.getCardPanel().add(textLabel, name);
+        DocumentationPanel doc = new DocumentationPanel(name);
+        mainPanel.getCardPanel().add(doc, name);
     }
 }
