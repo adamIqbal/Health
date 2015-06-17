@@ -81,6 +81,7 @@ public class ConstraintsTest {
     assertFalse(table0.getRecords().size() < 3);
 
     assertTrue(table0.getRecords().get(2).getNumberValue("meetwaarde2") == 10.0);
+    assertFalse(table0.getRecords().contains(null));
   }
 
   @Test
@@ -96,6 +97,7 @@ public class ConstraintsTest {
     // assertTrue(table0.getRecords().contains("Piet"));
     // FIXME: contains not working??
     assertTrue(table0.getRecords().get(0).getStringValue("name").equals("Piet"));
+    assertFalse(table.getRecords().contains(null));
   }
 
   @Test
@@ -105,10 +107,14 @@ public class ConstraintsTest {
         table -> table.getDateValue("date").equals(LocalDate.parse("2013-12-31")), table);
 
     assertTrue(table0.getRecords().size() == 0);
+    assertFalse(table0.getRecords().size() > 0);
+    assertFalse(table0.getRecords().size() < 0);
+
     table1 = constrain(table -> table.getDateValue("date").equals(LocalDate.parse("2013-11-12")),
         table);
     assertTrue(table1.getRecords().size() == 1);
     assertFalse(table1.getRecords().contains(LocalDate.parse("2013-12-30")));
     assertFalse(table1.getRecords().contains(LocalDate.parse("2013-11-12")));
+    assertFalse(table1.getRecords().contains(null));
   }
 }
