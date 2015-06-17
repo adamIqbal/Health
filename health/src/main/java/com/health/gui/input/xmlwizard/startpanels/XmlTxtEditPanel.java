@@ -1,4 +1,4 @@
-package com.health.gui.xmlwizard.starteditsubpanels;
+package com.health.gui.input.xmlwizard.startpanels;
 
 import java.awt.GridLayout;
 
@@ -18,8 +18,10 @@ public class XmlTxtEditPanel extends XmlStartEditSubPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -4583356958318824201L;
-    private JTextField startDelimField, endDelimField, delimiterField, ignoreLastField;
-    private JLabel startDelimLabel, endDelimLabel, delimiterLabel, ignoreLastLabel;
+    private JTextField startDelimField, endDelimField, delimiterField,
+            ignoreLastField;
+    private JLabel startDelimLabel, endDelimLabel, delimiterLabel,
+            ignoreLastLabel;
 
     /**
      * Constructs a XmlTxtEditPanel object.

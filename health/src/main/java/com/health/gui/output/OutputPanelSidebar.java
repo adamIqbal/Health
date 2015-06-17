@@ -1,4 +1,4 @@
-package com.health.gui;
+package com.health.gui.output;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,8 +23,8 @@ public class OutputPanelSidebar extends JPanel {
     /**
      * Contains all completed visualizations.
      */
-    protected static JList<String> list;
-    private static Map<String, Map<String, Object>> dataMap;
+    private static JList<String> list = new JList<String>(new DefaultListModel<String>());
+    private static Map<String, Map<String, Object>> dataMap = new HashMap<String, Map<String, Object>>();
 
     /**
      * Constructor.
@@ -32,11 +32,7 @@ public class OutputPanelSidebar extends JPanel {
     public OutputPanelSidebar() {
         super();
         this.setLayout(new BorderLayout());
-
-        dataMap = new HashMap<String, Map<String, Object>>();
-
-        DefaultListModel<String> listModel = new DefaultListModel<String>();
-        list = new JList<String>(listModel);
+        
         list.setBackground(Color.white);
         this.add(list, BorderLayout.CENTER);
 
@@ -53,7 +49,8 @@ public class OutputPanelSidebar extends JPanel {
 
     /**
      * Get data of a past analysis.
-     * @param el the stringname of this analysis
+     * @param el
+     *            the stringname of this analysis
      * @return a Map containing the data
      */
     protected static Map<String, Object> getData(final String el) {
@@ -62,7 +59,8 @@ public class OutputPanelSidebar extends JPanel {
 
     /**
      * Adds a new analysis to the Output section.
-     * @param data data of this analysis
+     * @param data
+     *            data of this analysis
      */
     public static void add(final Map<String, Object> data) {
         Date date = new Date();
@@ -70,4 +68,17 @@ public class OutputPanelSidebar extends JPanel {
         OutputPanelSidebar.addElement(name);
         dataMap.put(name, data);
     }
+
+    public static Map<String, Object> getAnalysisData(String name) {
+        return dataMap.get(name);
+    }
+
+    protected static JList<String> getList() {
+        return list;
+    }
+
+    protected static void setList(JList<String> list) {
+        OutputPanelSidebar.list = list;
+    }
+    
 }

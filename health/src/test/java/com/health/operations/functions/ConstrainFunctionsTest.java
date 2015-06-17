@@ -3,7 +3,6 @@ package com.health.operations.functions;
 import static org.junit.Assert.*;
 import static com.health.operations.functions.ConstrainFunctions.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -12,14 +11,19 @@ import org.junit.Test;
 
 import com.health.script.runtime.DateValue;
 import com.health.script.runtime.NumberValue;
+import com.health.script.runtime.StringValue;
 import com.health.script.runtime.Value;
 
 public class ConstrainFunctionsTest {
+
   double columns;
   NumberValue value;
 
   LocalDateTime date;
   DateValue valueDate = new DateValue();
+
+  String crea;
+  StringValue valueString;
 
   @Before
   public void setUp() {
@@ -30,6 +34,9 @@ public class ConstrainFunctionsTest {
 
     date = LocalDateTime.now();
     valueDate = new DateValue();
+
+    crea = "crea";
+    valueString = new StringValue();
 
   }
 
@@ -56,52 +63,100 @@ public class ConstrainFunctionsTest {
     assertFalse(greaterEq((Object) date, null));
     assertFalse(greaterEq(null, (Value) value));
 
-    DayOfWeek date = ((LocalDateTime) valueDate.getValue()).getDayOfWeek();
-    String day = date.toString();
-    System.out.println(day);
+
+    valueDate.setValue(date.minusDays(1));
+
+    assertTrue(greaterEq((Object) date, (Value) valueDate));
+    valueDate.setValue(date.plusDays(1));
+    valueDate.setValue(date.minusYears(2));
+
+    assertTrue(greaterEq((Object) date, (Value) valueDate));
 
   }
 
-  //
-  // @Test
-  // public void testSmallerEqDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testSmallerDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testEqualDate() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testGreaterString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testGreaterEqString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testSmallerEqString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testSmallerString() {
-  // fail("Not yet implemented");
-  // }
-  //
-  // @Test
-  // public void testEqualString() {
-  // fail("Not yet implemented");
-  // }
+  @Test
+  public void testSmallerEqDate() {
+    assertFalse(smallerEq((Object) date, (Value) valueDate));
+
+    valueDate.setValue(date);
+
+    assertTrue(smallerEq((Object) date, (Value) valueDate));
+    assertFalse(smallerEq((Object) date, null));
+    assertFalse(smallerEq(null, (Value) value));
+
+    valueDate.setValue(date.plusDays(1));
+
+    assertTrue(smallerEq((Object) date, (Value) valueDate));
+
+  }
+
+  @Test
+  public void testSmallerDate() {
+    assertFalse(smaller((Object) date, (Value) valueDate));
+
+    valueDate.setValue(date);
+
+    assertFalse(smaller((Object) date, (Value) valueDate));
+
+    assertFalse(smaller((Object) date, null));
+    assertFalse(smaller(null, (Value) value));
+
+    valueDate.setValue(date.plusDays(1));
+
+    assertTrue(smaller((Object) date, (Value) valueDate));
+  }
+
+  @Test
+  public void testEqualDate() {
+    assertFalse(equal((Object) date, (Value) valueDate));
+
+    valueDate.setValue(date);
+
+    assertTrue(equal((Object) date, (Value) valueDate));
+
+    assertFalse(equal((Object) date, null));
+    assertFalse(equal(null, (Value) value));
+
+    valueDate.setValue(date.plusDays(1));
+
+    assertFalse(equal((Object) date, (Value) valueDate));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGreaterString() {
+    greater(crea, valueString);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGreaterEqString() {
+    greaterEq(crea, valueString);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSmallerEqString() {
+    smallerEq(crea, valueString);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testSmallerString() {
+    smaller(crea, valueString);
+  }
+
+  @Test
+  public void testEqualString() {
+    assertFalse(equal(crea, valueString));
+    crea = valueString.getValue();
+    System.out.println(crea);
+    System.out.println(crea instanceof String);
+    System.out.println(valueString);
+    assertTrue(equal(crea, valueString));
+    valueString.setValue("crea");
+    crea = "crea";
+    assertTrue(equal(crea, valueString));
+    System.out.println(crea);
+    System.out.println(valueString);
+  }
+
 
   @Test
   public void testGreaterNumber() {

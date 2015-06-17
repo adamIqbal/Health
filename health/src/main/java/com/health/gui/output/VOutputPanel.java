@@ -1,18 +1,10 @@
-package com.health.gui;
+package com.health.gui.output;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import com.health.Table;
-import com.health.input.Input;
-import com.health.input.InputException;
+import com.health.gui.VidneyPanel;
 
 /**
  * Represents the panel where the script is typed.
@@ -35,12 +27,12 @@ public class VOutputPanel extends VidneyPanel {
         this.setLeft(mainPanel);
 
         OutputPanelSidebar sidebar = new OutputPanelSidebar();
-        OutputPanelSidebar.list.addMouseListener(new MouseListener() {
+        OutputPanelSidebar.getList().addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(final MouseEvent e) {
-                String selected = OutputPanelSidebar.list.getSelectedValue();
-                mainPanel.setData(OutputPanelSidebar.getData(selected));
+                String selected = OutputPanelSidebar.getList().getSelectedValue();
+                OutputMainPanel.setData(OutputPanelSidebar.getData(selected));
             }
 
             @Override
@@ -64,22 +56,16 @@ public class VOutputPanel extends VidneyPanel {
 
         // DUMMY DATA
         /*
-        String filePath = "data/data_all/data_txt/ADMIRE 2.txt";
-        String filePath2 = "data/data_all/data_txt/ADMIRE_13.txt";
-        String configPath = "data/configXmls/admireTxtConfig.xml";
-        Table table = null;
-        Table table2 = null;
-        try {
-            table = Input.readTable(filePath, configPath);
-            table2 = Input.readTable(filePath2, configPath);
-        } catch (IOException | ParserConfigurationException | SAXException
-                | InputException e) {
-            e.printStackTrace();
-        }
-        HashMap<String, Object> test = new HashMap<String, Object>();
-        test.put("test", table);
-        test.put("test2", table2);
-        addAnalysis(test);*/
+         * String filePath = "data/data_all/data_txt/ADMIRE 2.txt"; String
+         * filePath2 = "data/data_all/data_txt/ADMIRE_13.txt"; String configPath
+         * = "data/configXmls/admireTxtConfig.xml"; Table table = null; Table
+         * table2 = null; try { table = Input.readTable(filePath, configPath);
+         * table2 = Input.readTable(filePath2, configPath); } catch (IOException
+         * | ParserConfigurationException | SAXException | InputException e) {
+         * e.printStackTrace(); } HashMap<String, Object> test = new
+         * HashMap<String, Object>(); test.put("test", table); test.put("test2",
+         * table2); addAnalysis(test);
+         */
         //
     }
 
@@ -96,5 +82,6 @@ public class VOutputPanel extends VidneyPanel {
      */
     public static void addAnalysis(final Map<String, Object> data) {
         OutputPanelSidebar.add(data);
+        OutputMainPanel.setData(data);
     }
 }

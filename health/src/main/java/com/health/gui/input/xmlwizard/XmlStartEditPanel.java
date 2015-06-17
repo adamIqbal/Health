@@ -1,4 +1,4 @@
-package com.health.gui.xmlwizard;
+package com.health.gui.input.xmlwizard;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -10,9 +10,9 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import com.health.FileType;
-import com.health.gui.xmlwizard.starteditsubpanels.XmlStartEditSubPanel;
-import com.health.gui.xmlwizard.starteditsubpanels.XmlTxtEditPanel;
-import com.health.gui.xmlwizard.starteditsubpanels.XmlXlsEditPanel;
+import com.health.gui.input.xmlwizard.startpanels.XmlStartEditSubPanel;
+import com.health.gui.input.xmlwizard.startpanels.XmlTxtEditPanel;
+import com.health.gui.input.xmlwizard.startpanels.XmlXlsEditPanel;
 
 /**
  * Displays options to modify elements of the config xml that are not about the
@@ -110,6 +110,7 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
      * @param evt
      *            ItemEvent object containing information
      */
+    @Override
     public final void itemStateChanged(final ItemEvent evt) {
         CardLayout cl = (CardLayout) (editPanel.getLayout());
         cl.show(editPanel, evt.getItem().toString());

@@ -1,4 +1,4 @@
-package com.health.gui.fileSelection;
+package com.health.gui.input;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -15,7 +15,6 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import com.health.gui.GUImain;
-import com.health.gui.VButton;
 
 import externalClasses.FileDrop;
 
@@ -26,7 +25,7 @@ import externalClasses.FileDrop;
 public final class FileListingRow {
 
     private JTextField fileField;
-    private String fileString;
+    private String fileString = "";
     private JComboBox<String> xmlFormat;
     private JButton deleteButton;
     private ListenForDeleteFile lforDelete;

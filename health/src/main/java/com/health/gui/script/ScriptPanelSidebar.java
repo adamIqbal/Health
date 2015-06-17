@@ -1,4 +1,4 @@
-package com.health.gui;
+package com.health.gui.script;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.health.gui.GUImain;
+import com.health.gui.VButton;
 
 /**
  * Sidebar displaying several hints about the script.

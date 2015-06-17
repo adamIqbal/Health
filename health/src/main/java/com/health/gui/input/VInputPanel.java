@@ -1,9 +1,9 @@
-package com.health.gui;
+package com.health.gui.input;
 
 import javax.swing.JPanel;
 
-import com.health.gui.fileSelection.FileSelectionPanel;
-import com.health.gui.xmlwizard.XmlWizard;
+import com.health.gui.VidneyPanel;
+import com.health.gui.input.xmlwizard.XmlWizard;
 
 /**
  * Represents the panel where all files are loaded into the program.

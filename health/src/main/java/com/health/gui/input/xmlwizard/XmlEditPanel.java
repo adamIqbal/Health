@@ -1,4 +1,4 @@
-package com.health.gui.xmlwizard;
+package com.health.gui.input.xmlwizard;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -102,7 +102,7 @@ public class XmlEditPanel extends JPanel {
                     startPanel.setFileType(FileType.XLS);
                 } else {
                     // default case: txt
-                    String[] values = {id.getStartDelimiter(),
+                    String[] values = { id.getStartDelimiter(),
                             id.getEndDelimiter(), id.getDelimiter(),
                             Integer.toString(id.getIgnoreLast()) };
                     startPanel.setValues(values, FileType.TXT);
