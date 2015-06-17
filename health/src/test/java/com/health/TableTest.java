@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * Unit test for Table.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ Column.class, Record.class })
+@PrepareForTest({ Record.class })
 public class TableTest {
     private Column[] columns;
     private Table table;
@@ -34,29 +34,11 @@ public class TableTest {
      */
     @Before
     public void setUp() {
-        // Create mock columns
-        Column column1 = mock(Column.class);
-        Column column2 = mock(Column.class);
-        Column column3 = mock(Column.class);
-        Column column4 = mock(Column.class);
-
-        // Mock column names
-        when(column1.getName()).thenReturn("abc");
-        when(column2.getName()).thenReturn("column2");
-        when(column3.getName()).thenReturn("cda");
-        when(column4.getName()).thenReturn("column4");
-
-        // Mock column indices
-        when(column1.getIndex()).thenReturn(0);
-        when(column2.getIndex()).thenReturn(1);
-        when(column3.getIndex()).thenReturn(2);
-        when(column4.getIndex()).thenReturn(3);
-
         columns = new Column[] {
-                column1,
-                column2,
-                column3,
-                column4
+                new Column("abc", 0, ValueType.Number),
+                new Column("column2", 1, ValueType.Number),
+                new Column("cda", 2, ValueType.String),
+                new Column("column4", 3, ValueType.Date),
         };
 
         table = new Table(Arrays.asList(columns));
@@ -100,11 +82,7 @@ public class TableTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void constructor_givenColumnsWithIndicesStartingAboveZero_throwsIllegalArgumentException() {
-        Column column = mock(Column.class);
-        when(column.getName()).thenReturn("column1");
-        when(column.getIndex()).thenReturn(1);
-
-        new Table(Arrays.asList(column));
+        new Table(Arrays.asList(new Column("column1", 1, ValueType.Number)));
     }
 
     /**
@@ -114,14 +92,9 @@ public class TableTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void constructor_givenColumnsWithMissingIndices_throwsIllegalArgumentException() {
-        Column column1 = mock(Column.class);
-        Column column2 = mock(Column.class);
-        when(column1.getName()).thenReturn("column1");
-        when(column2.getName()).thenReturn("column2");
-        when(column1.getIndex()).thenReturn(0);
-        when(column1.getIndex()).thenReturn(2);
-
-        new Table(Arrays.asList(column1, column2));
+        new Table(Arrays.asList(
+                new Column("column1", 0, ValueType.Number),
+                new Column("column2", 2, ValueType.Number)));
     }
 
     /**
@@ -131,14 +104,9 @@ public class TableTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void constructor_givenColumnsWitDuplicateIndices_throwsIllegalArgumentException() {
-        Column column1 = mock(Column.class);
-        Column column2 = mock(Column.class);
-        when(column1.getName()).thenReturn("column1");
-        when(column2.getName()).thenReturn("column2");
-        when(column1.getIndex()).thenReturn(0);
-        when(column1.getIndex()).thenReturn(0);
-
-        new Table(Arrays.asList(column1, column2));
+        new Table(Arrays.asList(
+                new Column("column1", 0, ValueType.Number),
+                new Column("column2", 0, ValueType.Number)));
     }
 
     /**
@@ -302,5 +270,17 @@ public class TableTest {
         table.addRecord(record);
 
         assertThat(table, contains(record));
+    }
+
+    @Test
+    public void getDateColumn_givenTableContainsDateColumn_returnsDateColumn() {
+        assertEquals(columns[3], table.getDateColumn());
+    }
+
+    @Test
+    public void getDateColumn_givenTableWithoutDateColumn_returnsNull() {
+        Table table = new Table(Arrays.asList(new Column("abc", 0, ValueType.Number)));
+
+        assertNull(table.getDateColumn());
     }
 }
