@@ -2,6 +2,7 @@ package com.health;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -11,6 +12,12 @@ public class ColumnTest {
     private static final String name = "column1";
     private static final int index = 0;
     private static final ValueType type = ValueType.String;
+    private Column column;
+
+    @Before
+    public void setUp() {
+        this.column = new Column(name, index, type);
+    }
 
     /**
      * Tests whether {@link Column#Column(String, int, ValueType)} throws a
@@ -77,6 +84,68 @@ public class ColumnTest {
 
         ValueType expected = type;
         ValueType actual = column.getType();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void isFrequencyColumn_givenRegularName_returnsFalse() {
+        assertEquals(false, column.isFrequencyColumn());
+    }
+
+    @Test
+    public void isFrequencyColumn_givenNameStartingWithCount_returnsTrue() {
+        Column column = new Column("count_" + name, index, type);
+
+        assertEquals(true, column.isFrequencyColumn());
+    }
+
+    public void equals_givenNull_returnsFalse() {
+        assertEquals(false, column.equals(null));
+    }
+
+    @Test
+    public void equals_givenObjectThatIsNotColumn_returnsFalse() {
+        assertEquals(false, column.equals(new Object()));
+    }
+
+    @Test
+    public void equals_givenSameColumn_returnsTrue() {
+        assertEquals(false, column.equals(column));
+    }
+
+    @Test
+    public void equals_givenEqualColumn_returnsTrue() {
+        Column equalColumn = new Column(name, index, type);
+
+        assertEquals(true, column.equals(equalColumn));
+    }
+
+    @Test
+    public void equals_givenColumnWithDifferentName_returnsFalse() {
+        Column inequalColumn = new Column("column2", index, type);
+
+        assertEquals(false, column.equals(inequalColumn));
+    }
+
+    @Test
+    public void equals_givenColumnWithDifferentIndex_returnsFalse() {
+        Column inequalColumn = new Column(name, 1, type);
+
+        assertEquals(false, column.equals(inequalColumn));
+    }
+
+    @Test
+    public void equals_givenColumnWithDifferentType_returnsFalse() {
+        Column inequalColumn = new Column(name, index, ValueType.Number);
+
+        assertEquals(false, column.equals(inequalColumn));
+    }
+
+    @Test
+    public void hashCode_forEqualColumns_returnsSameHash() {
+        int expected = column.hashCode();
+        int actual = new Column(name, index, type).hashCode();
 
         assertEquals(expected, actual);
     }
