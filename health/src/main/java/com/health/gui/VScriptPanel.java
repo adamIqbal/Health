@@ -1,6 +1,7 @@
 package com.health.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -25,7 +27,6 @@ import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.fileSelection.FileListing;
 import com.health.gui.fileSelection.FileListingRow;
-
 import com.health.gui.xmlwizard.XmlWizard;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.LValue;
@@ -60,7 +61,7 @@ public final class VScriptPanel extends VidneyPanel {
         VButton startAnalysisButton = new VButton("Start Analysis");
         startAnalysisButton.addActionListener(new AnalysisListener());
         mainPanel.add(startAnalysisButton, BorderLayout.SOUTH);
-
+        
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(rigidArea());

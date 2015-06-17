@@ -1,4 +1,18 @@
-// with MijnnierInzicht Data
+// with metingen xlsx as table0
 
+var table = constrain table0 where KreatinineAlgorithmDayRatingId >= 5;
 
-freqbar(table0, "Moment");
+var events = code table0 as concern : KreatinineAlgorithmDayRatingId == 4;
+
+var seq = sequence("concern" , "concern");
+
+findSequences(events, seq);
+
+var contactHospTable = seq.toTable();
+
+table = connect table with contactHospTable 
+	where KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
+
+write("out.txt", table);
+
+transitionMatrix(events , seq);

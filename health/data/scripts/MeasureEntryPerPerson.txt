@@ -1,0 +1,9 @@
+// with mijnNierInzicht data
+
+var table = tableWithDays(table0);
+
+// fix later that values are correct
+table = constrain table where userid == Admire;
+
+
+freqbar(table, "day_of_week");
