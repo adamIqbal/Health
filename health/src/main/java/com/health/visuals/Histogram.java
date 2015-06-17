@@ -46,8 +46,18 @@ public final class Histogram extends JFrame {
     private Histogram() {
         // Nothing happens
     }
-    
-    
+
+    /**
+     * Create Histogram chart.
+     * @param table
+     * 			table to use for chart
+     * @param column
+     * 			column from table that should be used
+     * @param bin
+     * 			the amount of bins to use
+     * @return
+     * 			chart
+     */
     public static JFreeChart createHist(final Table table, final String column, final int bin) {
         final String xName = "Plotted column: " + column;
         final String yName = "";
@@ -91,8 +101,15 @@ public final class Histogram extends JFrame {
 
         return chart;
     }
-    
-    public static JPanel visualHist(final JFreeChart chart, final String column) {
+
+    /**
+     * Visualizes the Histogram.
+     * @param chart
+     * 			chart that should be visualized
+     * @return
+     * 			JPanel
+     */
+    public static JPanel visualHist(final JFreeChart chart) {
     	final Dimension frameDimension = new Dimension(500, 500);
 
         ApplicationFrame frame = new ApplicationFrame("Vidney");
@@ -104,70 +121,6 @@ public final class Histogram extends JFrame {
 
         return chartPanel;
     }
-
-    /**
-     * Creates a histogram.
-     *
-     * @param table
-     *            table to use
-     * @param column
-     *            column to use
-     * @param bin
-     *            amount of bins histogram should be divided into
-     * @return
-     * 			JPanel
-     */
-    public static JPanel createHistogram(final Table table, final String column, final int bin) {
-        final Dimension frameDimension = new Dimension(500, 500);
-        final String xName = "Plotted column: " + column;
-        final String yName = "";
-        final double margin = 0.20;
-
-        ApplicationFrame frame = new ApplicationFrame("Vidney");
-        frame.setSize(frameDimension);
-
-        HistogramDataset dataSet = createDataset(table, column, bin); //new HistogramDataset();
-
-        final CategoryAxis xAxis = new CategoryAxis(xName);
-        xAxis.setLowerMargin(margin);
-        xAxis.setUpperMargin(margin);
-        final NumberAxis yAxis = new NumberAxis(yName);
-        yAxis.setAutoRangeIncludesZero(false);
-
-        // Create Chart
-        JFreeChart chart = ChartFactory.createHistogram(
-                column + " Frequency",
-                "Event",
-                "Frequency",
-                dataSet,
-                PlotOrientation.VERTICAL,
-                true,
-                false,
-                false
-                );
-
-        final int backSet = 230;
-        final int gridIn = 150;
-
-        chart.setBackgroundPaint(new Color(backSet, backSet, backSet));
-
-        XYPlot xyplot = (XYPlot) chart.getPlot();
-        xyplot.setBackgroundPaint(Color.WHITE);
-        xyplot.setDomainGridlinePaint(new Color(gridIn, gridIn, gridIn));
-        xyplot.setRangeGridlinePaint(new Color(gridIn, gridIn, gridIn));
-
-        XYBarRenderer renderer = (XYBarRenderer) xyplot.getRenderer();
-        renderer.setDrawBarOutline(true);
-        renderer.setShadowVisible(false);
-        renderer.setBarPainter(new StandardXYBarPainter());
-        renderer.setShadowVisible(false);
-
-        final ChartPanel chartPanel = new ChartPanel(chart);
-
-        frame.setContentPane(chartPanel);
-
-        return chartPanel;
-	}
 
     /**
      * Creates dataset for histogram.
@@ -207,10 +160,6 @@ public final class Histogram extends JFrame {
      * Save the chart as pdf.
      * @param chart
      * 			chart that should be saved
-     * @param width
-     * 			width of chart
-     * @param height
-     * 			height of chart
      * @param fileName
      * 			file name under which chart should be saved
      */
@@ -218,8 +167,8 @@ public final class Histogram extends JFrame {
         PdfWriter writer = null;
 
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);
-        final int width = (int)PageSize.A4.getWidth();
-        final int height = (int)PageSize.A4.getHeight();
+        final int width = (int) PageSize.A4.getWidth();
+        final int height = (int) PageSize.A4.getHeight();
 
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(

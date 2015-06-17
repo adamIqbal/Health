@@ -109,7 +109,7 @@ public final class StateTransitionMatrix extends JFrame {
      */
     public static JTable createStateTrans(final EventList eList, final List<EventList> seqList) {
         // Create frame
-    	final Dimension frameDimension = new Dimension((int)(PageSize.A4.getWidth()), (int)(PageSize.A4.getHeight()));
+    	final Dimension frameDimension = new Dimension((int) (PageSize.A4.getWidth()), (int) (PageSize.A4.getHeight()));
 
         ApplicationFrame frame = new ApplicationFrame("Vidney");
         frame.setSize(frameDimension);
@@ -125,15 +125,14 @@ public final class StateTransitionMatrix extends JFrame {
         }
 
         JTable table = new JTable(outputM, matrixUse[0]);
-        
+
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setColumnHeaderView(table.getTableHeader());
         scrollPane.setPreferredSize(table.getPreferredSize());
-        
-        
+
         JPanel p = new JPanel(new BorderLayout());
         p.add(scrollPane, BorderLayout.CENTER);
-        
+
 		// Not a very clean way
         frame.setContentPane(p);
         frame.setVisible(true);
@@ -236,9 +235,9 @@ public final class StateTransitionMatrix extends JFrame {
      * 			name under which the file should be saved
      * @param table
      * 			table you want to save
-     * 
+     *
      */
-	public static void saveFile(final String name, final JPanel table) { //JTable table) {
+	public static void saveFile(final String name, final JPanel table) {
 		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4
 				);
 		try {

@@ -52,7 +52,7 @@ public final class BoxPlot {
      * @param table
      *            Table to use
      * @return
-     * 			JPanel
+     * 			chart
      */
     public static JFreeChart createBoxPlot(final Table table) {
         // no column is given, so just pick a column with type ValueType.Number
@@ -67,50 +67,7 @@ public final class BoxPlot {
         return createBoxPlot(table, column.getName());
     }
 
-    public static JFreeChart createBoxPlot(final Table table, final String column) {
-    	if (!(table.getColumn(column).getType() == ValueType.Number)) {
-            throw new IllegalArgumentException("Column must be of type Number");
-        }
-    	
-    	final String xName = "Plotted column: " + column;
-        final String yName = "";
-    	final double margin = 0.20;
-    	
-    	final BoxAndWhiskerCategoryDataset dataset = formatDataset(table,
-                column);
-    	
-    	final CategoryAxis xAxis = new CategoryAxis(xName);
-        xAxis.setLowerMargin(margin);
-        xAxis.setUpperMargin(margin);
-        final NumberAxis yAxis = new NumberAxis(yName);
-        yAxis.setAutoRangeIncludesZero(false);
-        
-        
-        final BoxAndWhiskerRenderer renderer = createRenderer(false, true);
-    	
-    	final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
-                renderer);
-    	
-    	final JFreeChart chart = new JFreeChart("Boxplot", new Font(
-                "SansSerif", Font.BOLD, 14), plot, true);
-    	
-    	return chart;
-    }
-    
-    
-    public static JPanel visualBoxPlot(final JFreeChart chart) { 
-        final Dimension frameDimension = new Dimension(500, 500);
 
-        ApplicationFrame frame = new ApplicationFrame("Vidney");
-        frame.setSize(frameDimension);
-        
-        final ChartPanel chartPanel = new ChartPanel(chart);
-
-        frame.setContentPane(chartPanel);
-        
-        return chartPanel;	
-    }
-    
     /**
      * Creates a diagram with for each Chunk a BoxPlot. The selected column must
      * have type ValueType.Number
@@ -122,25 +79,21 @@ public final class BoxPlot {
      * @param column
      *            column to use. Must be of type ValueType.Number
      * @return
-     * 			JPanel
+     * 			chart
      */
-    public static JPanel boxPlot(final Table table, final String column) {
-        if (!(table.getColumn(column).getType() == ValueType.Number)) {
+    public static JFreeChart createBoxPlot(final Table table, final String column) {
+    	if (!(table.getColumn(column).getType() == ValueType.Number)) {
             throw new IllegalArgumentException("Column must be of type Number");
         }
 
-        final String xName = "Plotted column: " + column;
+    	final String xName = "Plotted column: " + column;
         final String yName = "";
-        final Dimension frameDimension = new Dimension(500, 500);
-        final double margin = 0.20;
+    	final double margin = 0.20;
 
-        ApplicationFrame frame = new ApplicationFrame("Vidney");
-        frame.setSize(frameDimension);
-
-        final BoxAndWhiskerCategoryDataset dataset = formatDataset(table,
+    	final BoxAndWhiskerCategoryDataset dataset = formatDataset(table,
                 column);
 
-        final CategoryAxis xAxis = new CategoryAxis(xName);
+    	final CategoryAxis xAxis = new CategoryAxis(xName);
         xAxis.setLowerMargin(margin);
         xAxis.setUpperMargin(margin);
         final NumberAxis yAxis = new NumberAxis(yName);
@@ -148,26 +101,40 @@ public final class BoxPlot {
 
         final BoxAndWhiskerRenderer renderer = createRenderer(false, true);
 
-        final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
+    	final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
                 renderer);
-        final ChartPanel chartPanel = createChartPanel(plot);
+
+    	final JFreeChart chart = new JFreeChart("Boxplot", new Font(
+                "SansSerif", Font.BOLD, 14), plot, true);
+
+    	return chart;
+    }
+
+    /**
+     * Create visualization for chart.
+     * @param chart
+     * 			chart
+     * @return
+     * 			JPanel
+     */
+    public static JPanel visualBoxPlot(final JFreeChart chart) {
+        final Dimension frameDimension = new Dimension(500, 500);
+
+        ApplicationFrame frame = new ApplicationFrame("Vidney");
+        frame.setSize(frameDimension);
+
+        final ChartPanel chartPanel = new ChartPanel(chart);
 
         frame.setContentPane(chartPanel);
 
         return chartPanel;
     }
 
-
-
     /**
      * Save chart as a pdf file.
      *
      * @param chart
      * 			chart that should be saved
-     * @param width
-     * 			width of chart
-     * @param height
-     * 			height of chart
      * @param fileName
      * 			file name under which the file should be saved
      */
@@ -175,12 +142,12 @@ public final class BoxPlot {
         PdfWriter writer = null;
 
         com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);
-        final int width = (int)PageSize.A4.getWidth();
-        final int height = (int)PageSize.A4.getHeight();
-        
+        final int width = (int) PageSize.A4.getWidth();
+        final int height = (int) PageSize.A4.getHeight();
+
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(
-                    fileName));
+                    fileName + ".pdf"));
             document.open();
             PdfContentByte contentByte = writer.getDirectContent();
             PdfTemplate template = contentByte.createTemplate(width, height);
@@ -236,21 +203,5 @@ public final class BoxPlot {
         renderer.setBaseToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
 
         return renderer;
-    }
-
-    /**
-     * Creates a ChartPanel to draw the plot on.
-     *
-     * @param plot
-     * @return a ChartPanel containing the plot
-     */
-    private static ChartPanel createChartPanel(final CategoryPlot plot) {
-        final JFreeChart chart = new JFreeChart("Boxplot", new Font(
-                "SansSerif", Font.BOLD, 14), plot, true);
-        final ChartPanel chartPanel = new ChartPanel(chart);
-
-        //writeChartToPDF(chart, "boxTest.pdf");
-
-        return chartPanel;
     }
 }
