@@ -1,28 +1,19 @@
 package com.health.visuals;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.LayoutManager;
 import java.awt.Shape;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.JTableHeader;
 
 import org.jfree.ui.ApplicationFrame;
 
@@ -134,9 +125,6 @@ public final class StateTransitionMatrix extends JFrame {
         }
 
         JTable table = new JTable(outputM, matrixUse[0]);
-
-        //Container c = frame.getContentPane();
-        //c.setLayout(new FlowLayout());
         
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setColumnHeaderView(table.getTableHeader());
@@ -150,8 +138,6 @@ public final class StateTransitionMatrix extends JFrame {
         frame.setContentPane(p);
         frame.setVisible(true);
         frame.setVisible(false);
-        
-        saveFile("StateTest6.pdf", p);
 
         return table;
     }

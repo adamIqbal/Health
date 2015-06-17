@@ -46,6 +46,63 @@ public final class Histogram extends JFrame {
     private Histogram() {
         // Nothing happens
     }
+    
+    
+    public static JFreeChart createHist(final Table table, final String column, final int bin) {
+    	HistogramDataset dataSet = createDataset(table, column, bin); //new HistogramDataset();
+
+        // Create Chart
+        JFreeChart chart = ChartFactory.createHistogram(
+                column + " Frequency",
+                "Event",
+                "Frequency",
+                dataSet,
+                PlotOrientation.VERTICAL,
+                true,
+                false,
+                false
+                );
+        
+        return chart;
+    }
+    
+    public static JPanel visualHist(final JFreeChart chart, final String column) {
+    	final Dimension frameDimension = new Dimension(500, 500);
+        final String xName = "Plotted column: " + column;
+        final String yName = "";
+        final double margin = 0.20;
+
+        ApplicationFrame frame = new ApplicationFrame("Vidney");
+        frame.setSize(frameDimension);
+
+        final CategoryAxis xAxis = new CategoryAxis(xName);
+        xAxis.setLowerMargin(margin);
+        xAxis.setUpperMargin(margin);
+        final NumberAxis yAxis = new NumberAxis(yName);
+        yAxis.setAutoRangeIncludesZero(false);
+
+        final int backSet = 230;
+        final int gridIn = 150;
+
+        chart.setBackgroundPaint(new Color(backSet, backSet, backSet));
+
+        XYPlot xyplot = (XYPlot) chart.getPlot();
+        xyplot.setBackgroundPaint(Color.WHITE);
+        xyplot.setDomainGridlinePaint(new Color(gridIn, gridIn, gridIn));
+        xyplot.setRangeGridlinePaint(new Color(gridIn, gridIn, gridIn));
+
+        XYBarRenderer renderer = (XYBarRenderer) xyplot.getRenderer();
+        renderer.setDrawBarOutline(true);
+        renderer.setShadowVisible(false);
+        renderer.setBarPainter(new StandardXYBarPainter());
+        renderer.setShadowVisible(false);
+
+        final ChartPanel chartPanel = new ChartPanel(chart);
+
+        frame.setContentPane(chartPanel);
+
+        return chartPanel;
+    }
 
     /**
      * Creates a histogram.
@@ -156,15 +213,16 @@ public final class Histogram extends JFrame {
      * @param fileName
      * 			file name under which chart should be saved
      */
-	public static void writeChartToPDF(final JFreeChart chart, final int width,
-			final int height, final String fileName) {
+	public static void writeChartToPDF(final JFreeChart chart, final String fileName) {
         PdfWriter writer = null;
 
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);
+        final int width = (int)PageSize.A4.getWidth();
+        final int height = (int)PageSize.A4.getHeight();
 
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(
-                    fileName));
+                    fileName + ".pdf"));
             document.open();
             PdfContentByte contentByte = writer.getDirectContent();
             PdfTemplate template = contentByte.createTemplate(width, height);
