@@ -16,7 +16,9 @@ public class EventList {
 
     /**
      * Add an event to the EventList.
-     * @param Event e.
+     *
+     * @param e
+     *            an event to add Event.
      */
     public final void addEvent(final Event e) {
         eventList.add(e);
@@ -24,7 +26,9 @@ public class EventList {
 
     /**
      * Get an event at a given index.
-     * @param index of the event you want to get.
+     *
+     * @param index
+     *            of the event you want to get.
      * @return an event at index.
      */
     public final Event getEvent(final int index) {
@@ -33,6 +37,7 @@ public class EventList {
 
     /**
      * Get an arrayList with all event in the eventList.
+     *
      * @return an arrayList with all event in the eventList.
      */
     public final List<Event> getList() {
@@ -41,7 +46,9 @@ public class EventList {
 
     /**
      * Concatenates one evenList that to this one.
-     * @param that an other EventList.
+     *
+     * @param that
+     *            an other EventList.
      */
     public final void concatList(final EventList that) {
         eventList.addAll(that.getList());
@@ -85,7 +92,7 @@ public class EventList {
 
     /**
      * Turns this eventList into a table.
-     * 
+     *
      * @return a Table format with all element in the eventSequence
      */
     public final Table toTable() {
