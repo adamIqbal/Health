@@ -5,6 +5,7 @@ import static com.health.operations.functions.ConstrainFunctions.*;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +18,7 @@ public class ConstrainFunctionsTest {
   double columns;
   NumberValue value;
 
-  LocalDate date;
+  LocalDateTime date;
   DateValue valueDate = new DateValue();
 
   @Before
@@ -27,7 +28,7 @@ public class ConstrainFunctionsTest {
     value = new NumberValue();
     value.setValue(2);
 
-    date = LocalDate.now();
+    date = LocalDateTime.now();
     valueDate = new DateValue();
 
   }
@@ -55,7 +56,7 @@ public class ConstrainFunctionsTest {
     assertFalse(greaterEq((Object) date, null));
     assertFalse(greaterEq(null, (Value) value));
 
-    DayOfWeek date = ((LocalDate) valueDate.getValue()).getDayOfWeek();
+    DayOfWeek date = ((LocalDateTime) valueDate.getValue()).getDayOfWeek();
     String day = date.toString();
     System.out.println(day);
 

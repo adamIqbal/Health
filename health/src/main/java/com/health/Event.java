@@ -1,6 +1,7 @@
 package com.health;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Event {
     private String codeName;
@@ -62,7 +63,7 @@ public class Event {
      * 
      * @return return the date of an event.
      */
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return rec.getDateValue(rec.getTable().getDateColumn().getName());
     }
 

@@ -101,6 +101,7 @@ public class TextParserTest {
 
             actual = tp.parse(txtPath, id);
         } catch (InputException e) {
+            e.printStackTrace();
             assertTrue(false);
         }
         

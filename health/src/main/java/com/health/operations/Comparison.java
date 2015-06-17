@@ -1,6 +1,8 @@
 package com.health.operations;
 
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,9 +93,9 @@ public class Comparison {
     }
 
     private static int getTimeBetweenEvents(final Event event1, final Event event2) {
-        Period per = event1.getDate().until(event2.getDate());
-
-        return per.getDays();
+        long days = event1.getDate().until(event2.getDate(), ChronoUnit.DAYS);
+        
+        return (int) days;
 
     }
 }

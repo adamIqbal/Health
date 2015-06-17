@@ -1,6 +1,7 @@
 package com.health.operations;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,9 +70,9 @@ public final class Chunk {
             final String column, final Period period) {
         Map<Object, List<Record>> groups = new HashMap<Object, List<Record>>();
 
-        LocalDate beginPer = getFirstDate(table, column);
-        LocalDate lastDate = getLastDate(table, column);
-        LocalDate endOfPer = LocalDate.MIN;
+        LocalDateTime beginPer = getFirstDate(table, column);
+        LocalDateTime lastDate = getLastDate(table, column);
+        LocalDateTime endOfPer = LocalDateTime.MIN;
 
         while (!lastDate.isBefore(endOfPer)) {
             endOfPer = beginPer.plus(period);
@@ -164,7 +165,7 @@ public final class Chunk {
         } else if (String.class.isAssignableFrom(type)) {
             list.sort((a, b) -> ((String) a.getKey()).compareTo((String) b
                     .getKey()));
-        } else if (LocalDate.class.isAssignableFrom(type)) {
+        } else if (LocalDateTime.class.isAssignableFrom(type)) {
             list.sort((a, b) -> ((LocalDate) a.getKey())
                     .compareTo((LocalDate) b.getKey()));
         } else {
@@ -210,11 +211,11 @@ public final class Chunk {
         }
     }
 
-    private static LocalDate getFirstDate(final Table table, final String column) {
-        LocalDate res = LocalDate.MAX;
+    private static LocalDateTime getFirstDate(final Table table, final String column) {
+        LocalDateTime res = LocalDateTime.MAX;
 
         for (Record record : table) {
-            LocalDate tmp = record.getDateValue(column);
+            LocalDateTime tmp = record.getDateValue(column);
             if (tmp.isBefore(res)) {
                 res = tmp;
             }
@@ -223,11 +224,11 @@ public final class Chunk {
         return res;
     }
 
-    private static LocalDate getLastDate(final Table table, final String column) {
-        LocalDate res = LocalDate.MIN;
+    private static LocalDateTime getLastDate(final Table table, final String column) {
+        LocalDateTime res = LocalDateTime.MIN;
 
         for (Record record : table) {
-            LocalDate tmp = record.getDateValue(column);
+            LocalDateTime tmp = record.getDateValue(column);
 
             if (tmp.isAfter(res)) {
                 res = tmp;
@@ -238,12 +239,12 @@ public final class Chunk {
     }
 
     private static List<Record> findRecordsInPeriod(final Table table,
-            final String column, final LocalDate beginOfPer,
-            final LocalDate endOfPer) {
+            final String column, final LocalDateTime beginOfPer,
+            final LocalDateTime endOfPer) {
         List<Record> chunk = new ArrayList<Record>();
 
         for (Record record : table) {
-            LocalDate date = record.getDateValue(column);
+            LocalDateTime date = record.getDateValue(column);
 
             if ((date.isAfter(beginOfPer) || date.isEqual(beginOfPer))
                     && date.isBefore(endOfPer)) {

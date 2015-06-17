@@ -1,6 +1,7 @@
 package com.health;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,8 +47,8 @@ public class EventList {
         }
 
         sortedEvents.sort((a, b) -> {
-            LocalDate dateA = a.getRecord().getDateValue(dateColumnName);
-            LocalDate dateB = b.getRecord().getDateValue(dateColumnName);
+            LocalDateTime dateA = a.getRecord().getDateValue(dateColumnName);
+            LocalDateTime dateB = b.getRecord().getDateValue(dateColumnName);
 
             if (dateA == null && dateB == null) {
                 return 0;

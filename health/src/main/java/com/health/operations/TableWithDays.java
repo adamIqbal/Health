@@ -1,6 +1,7 @@
 package com.health.operations;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class TableWithDays {
     return result;
   }
 
-  public static String dayOfWeek(LocalDate value) {
+  public static String dayOfWeek(LocalDateTime value) {
     return value.getDayOfWeek().toString();
   }
 }

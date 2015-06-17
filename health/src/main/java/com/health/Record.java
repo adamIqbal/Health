@@ -1,6 +1,6 @@
 package com.health;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
@@ -100,7 +100,7 @@ public final class Record {
     }
 
     /**
-     * Gets the {@link LocalDate} value of the column with the given name.
+     * Gets the {@link LocalDateTime} value of the column with the given name.
      *
      * @param name
      *            the name of the column whose value to get.
@@ -109,9 +109,9 @@ public final class Record {
      * @throws IllegalStateException
      *             if the specified column does not contain String values.
      */
-    public LocalDate getDateValue(final String name) {
+    public LocalDateTime getDateValue(final String name) {
         // Retrieve the value for a number and cast it to String
-        return (LocalDate) this.getValue(name, EnumSet.of(ValueType.Date));
+        return (LocalDateTime) this.getValue(name, EnumSet.of(ValueType.Date));
     }
 
     /**
@@ -147,7 +147,7 @@ public final class Record {
     }
 
     /**
-     * Sets the {@link LocalDate} value of the column with the given index.
+     * Sets the {@link LocalDateTime} value of the column with the given index.
      *
      * @param index
      *            the index of the column whose value to set.
@@ -156,9 +156,9 @@ public final class Record {
      * @throws IllegalArgumentException
      *             if a column with the given name was not found.
      * @throws IllegalStateException
-     *             if the specified column does not contain LocalDate values.
+     *             if the specified column does not contain LocalDateTime values.
      */
-    public void setValue(final int index, final LocalDate value) {
+    public void setValue(final int index, final LocalDateTime value) {
         this.setValue(this.table.getColumn(index).getName(), value);
     }
 
@@ -212,7 +212,7 @@ public final class Record {
     }
 
     /**
-     * Sets the {@link LocalDate} value of the column with the given name.
+     * Sets the {@link LocalDateTime} value of the column with the given name.
      *
      * @param name
      *            the name of the column whose value to set.
@@ -223,7 +223,7 @@ public final class Record {
      * @throws IllegalStateException
      *             if the specified column does not contain Date values.
      */
-    public void setValue(final String name, final LocalDate value) {
+    public void setValue(final String name, final LocalDateTime value) {
         this.setValue(name, value, ValueType.Date);
     }
 
@@ -245,10 +245,10 @@ public final class Record {
             this.setValue(name, (Double) value);
         } else if (value instanceof String) {
             this.setValue(name, (String) value);
-        } else if (value instanceof LocalDate) {
-            this.setValue(name, (LocalDate) value);
+        } else if (value instanceof LocalDateTime) {
+            this.setValue(name, (LocalDateTime) value);
         } else if (value != null) {
-            throw new IllegalArgumentException("Unsupported value type, must be either Double, String or LocalDate.");
+            throw new IllegalArgumentException("Unsupported value type, must be either Double, String or LocalDateTime.");
         }
     }
 

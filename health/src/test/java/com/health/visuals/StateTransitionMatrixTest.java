@@ -1,6 +1,7 @@
 package com.health.visuals;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,27 +55,27 @@ public class StateTransitionMatrixTest {
         table = new Table(columns);
 
         Record tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(1, 1, 1));
+        tmp.setValue(0, LocalDateTime.of(1, 1, 1, 0, 0));
         tmp.setValue(1, 1.0);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(2, 2, 2));
+        tmp.setValue(0, LocalDateTime.of(2, 2, 2, 0, 0));
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(three, two, three));
+        tmp.setValue(0, LocalDateTime.of(three, two, three, 0, 0));
         tmp.setValue(1, three2);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(four, two, two));
+        tmp.setValue(0, LocalDateTime.of(four, two, two, 0, 0));
         tmp.setValue(1, four2);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(four, two, three));
+        tmp.setValue(0, LocalDateTime.of(four, two, three, 0, 0));
         tmp.setValue(1, two2);
         tmp.setValue(2, "Jan");
 

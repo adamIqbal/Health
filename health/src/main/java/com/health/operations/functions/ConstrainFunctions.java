@@ -1,6 +1,7 @@
 package com.health.operations.functions;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.health.script.runtime.DateValue;
 import com.health.script.runtime.NumberValue;
@@ -38,9 +39,9 @@ public final class ConstrainFunctions {
       throw new IllegalArgumentException("Can not invoke greater on String.");
     }
 
-    if (columns instanceof LocalDate && value instanceof DateValue) {
+    if (columns instanceof LocalDateTime && value instanceof DateValue) {
 
-      return ((LocalDate) columns).isAfter(((DateValue) value).getValue());
+      return ((LocalDateTime) columns).isAfter(((DateValue) value).getValue());
 
     }
     return false;
@@ -71,7 +72,7 @@ public final class ConstrainFunctions {
       throw new IllegalArgumentException("Can not invoke greatereq on String.");
     }
 
-    if (columns instanceof LocalDate && value instanceof DateValue) {
+    if (columns instanceof LocalDateTime && value instanceof DateValue) {
 
       return greater(columns, value) || equal(columns, value);
 
@@ -104,7 +105,7 @@ public final class ConstrainFunctions {
       throw new IllegalArgumentException("Can not invoke smallereq on String.");
     }
 
-    if (columns instanceof LocalDate && value instanceof DateValue) {
+    if (columns instanceof LocalDateTime && value instanceof DateValue) {
 
       return smaller(columns, value) || equal(columns, value);
 
@@ -137,9 +138,9 @@ public final class ConstrainFunctions {
       throw new IllegalArgumentException("Can not invoke smaller on String.");
     }
 
-    if (columns instanceof LocalDate && value instanceof DateValue) {
+    if (columns instanceof LocalDateTime && value instanceof DateValue) {
 
-      return ((LocalDate) columns).isBefore(((DateValue) value).getValue());
+      return ((LocalDateTime) columns).isBefore(((DateValue) value).getValue());
 
     }
     return false;
@@ -167,13 +168,15 @@ public final class ConstrainFunctions {
 
     if (columns instanceof String && value instanceof StringValue) {
       StringValue str = (StringValue) value;
-
+      if(columns.toString().contains(str.getValue()) && !columns.toString().equals(str.getValue())){
+          System.out.println();
+      }
       return columns.toString().equals(str.getValue());
     }
 
-    if (columns instanceof LocalDate && value instanceof DateValue) {
+    if (columns instanceof LocalDateTime && value instanceof DateValue) {
 
-      return ((LocalDate) columns).isEqual(((DateValue) value).getValue());
+      return ((LocalDateTime) columns).isEqual(((DateValue) value).getValue());
 
     }
     return false;

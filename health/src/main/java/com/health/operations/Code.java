@@ -1,6 +1,7 @@
 package com.health.operations;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +147,7 @@ public class Code {
             Event lastEvent = eventList.getList().get(
                     eventList.getList().size() - 1);
 
-            LocalDate endOfPer = firstEvent.getDate().plus(per);
+            LocalDateTime endOfPer = firstEvent.getDate().plus(per);
             if (lastEvent.getDate().isAfter(endOfPer)) {
                 eventSeq.deleteSequence(eventList);
             }

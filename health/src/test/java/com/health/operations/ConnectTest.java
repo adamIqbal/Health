@@ -3,6 +3,7 @@ package com.health.operations;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,37 +34,37 @@ public class ConnectTest {
 
         Record tmp = new Record(table);
 
-        tmp.setValue("date", LocalDate.parse("2013-12-20"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
         tmp.setValue("meetwaarde1", 8.0);
         tmp.setValue("name", "Piet");
         tmp.setValue("meetwaarde2", 20.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-12-12"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 12, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Hein");
         tmp.setValue("meetwaarde2", 10.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-12-13"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 13, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Dolf");
         tmp.setValue("meetwaarde2", -1.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-12-10"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 10, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Piet");
         tmp.setValue("meetwaarde2", 10.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-11-15"));
+        tmp.setValue("date", LocalDateTime.of(2013, 11, 15, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Piet");
         tmp.setValue("meetwaarde2", 3.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-12-16"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Dolf");
         tmp.setValue("meetwaarde2", 10.0);
@@ -77,13 +78,13 @@ public class ConnectTest {
         Table table2 = new Table(Arrays.asList(tableColumns2));
 
         tmp = new Record(table2);
-        tmp.setValue("datum", LocalDate.parse("2013-11-15"));
+        tmp.setValue("datum", LocalDateTime.of(2013, 11, 15, 0, 0));
         tmp.setValue("meetwaarde3", 10.0);
         tmp.setValue("name", "Piet");
         tmp.setValue("meetwaarde4", 3.0);
 
         tmp = new Record(table2);
-        tmp.setValue("datum", LocalDate.parse("2013-12-16"));
+        tmp.setValue("datum", LocalDateTime.of(2013, 12, 16, 0, 0));
         tmp.setValue("meetwaarde3", 10.0);
         tmp.setValue("name", "Dolf");
         tmp.setValue("meetwaarde4", 10.0);
@@ -98,21 +99,21 @@ public class ConnectTest {
     @Test
     public void testCols() {
         List<Column> tableCols = connectedTable.getColumns();
-        
+
         assertEquals("date", tableCols.get(0).getName());
-        
+
         assertEquals("name", tableCols.get(2).getName());
-        
-        assertTrue(tableCols.contains(new Column("meetwaarde1", 1, ValueType.Number)));
-    
+
+        assertTrue(tableCols.contains(new Column("meetwaarde1", 1,
+                ValueType.Number)));
+
     }
-    
+
     @Test
-    public void testEmptyCells(){
-        
+    public void testEmptyCells() {
+
         List<Record> tableRecs = connectedTable.getRecords();
         
-        assertEquals(null, tableRecs.get(1).getNumberValue("meetwaarde1"));
         double value = tableRecs.get(1).getNumberValue("meetwaarde3");
         double expected = 10;
         assertTrue(expected == value);
