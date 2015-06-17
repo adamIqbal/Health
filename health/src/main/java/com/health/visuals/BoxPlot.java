@@ -54,7 +54,7 @@ public final class BoxPlot {
      * @return
      * 			JPanel
      */
-    public static JPanel boxPlot(final Table table) {
+    public static JFreeChart createBoxPlot(final Table table) {
         // no column is given, so just pick a column with type ValueType.Number
         Column column = null;
         for (Column c : table.getColumns()) {
@@ -64,10 +64,10 @@ public final class BoxPlot {
             }
         }
 
-        return boxPlot(table, column.getName());
+        return createBoxPlot(table, column.getName());
     }
 
-    public static CategoryPlot createBoxPlot(final Table table, final String column) {
+    public static JFreeChart createBoxPlot(final Table table, final String column) {
     	if (!(table.getColumn(column).getType() == ValueType.Number)) {
             throw new IllegalArgumentException("Column must be of type Number");
         }
@@ -84,28 +84,31 @@ public final class BoxPlot {
         xAxis.setUpperMargin(margin);
         final NumberAxis yAxis = new NumberAxis(yName);
         yAxis.setAutoRangeIncludesZero(false);
-
+        
+        
         final BoxAndWhiskerRenderer renderer = createRenderer(false, true);
     	
     	final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
                 renderer);
     	
-    	return plot;
+    	final JFreeChart chart = new JFreeChart("Boxplot", new Font(
+                "SansSerif", Font.BOLD, 14), plot, true);
+    	
+    	return chart;
     }
     
     
-    public static JPanel visualBoxPlot(final CategoryPlot plot) { 
+    public static JPanel visualBoxPlot(final JFreeChart chart) { 
         final Dimension frameDimension = new Dimension(500, 500);
 
         ApplicationFrame frame = new ApplicationFrame("Vidney");
         frame.setSize(frameDimension);
         
-        final ChartPanel chartPanel = createChartPanel(plot);
+        final ChartPanel chartPanel = new ChartPanel(chart);
 
         frame.setContentPane(chartPanel);
-
-        return chartPanel;
-    	
+        
+        return chartPanel;	
     }
     
     /**
@@ -168,12 +171,13 @@ public final class BoxPlot {
      * @param fileName
      * 			file name under which the file should be saved
      */
-    public static void writeChartToPDF(final JFreeChart chart, final int width,
-    		final int height, final String fileName) {
+    public static void writeChartToPDF(final JFreeChart chart, final String fileName) {
         PdfWriter writer = null;
 
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
-
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);
+        final int width = (int)PageSize.A4.getWidth();
+        final int height = (int)PageSize.A4.getHeight();
+        
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(
                     fileName));
@@ -245,9 +249,7 @@ public final class BoxPlot {
                 "SansSerif", Font.BOLD, 14), plot, true);
         final ChartPanel chartPanel = new ChartPanel(chart);
 
-        final int width = 640;
-        final int height = 480;
-        writeChartToPDF(chart, width, height, "boxTest.pdf");
+        //writeChartToPDF(chart, "boxTest.pdf");
 
         return chartPanel;
     }

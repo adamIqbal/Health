@@ -95,10 +95,8 @@ public final class Histogram extends JFrame {
     public static JPanel visualHist(final JFreeChart chart, final String column) {
     	final Dimension frameDimension = new Dimension(500, 500);
 
-
         ApplicationFrame frame = new ApplicationFrame("Vidney");
         frame.setSize(frameDimension);
-
 
         final ChartPanel chartPanel = new ChartPanel(chart);
 
