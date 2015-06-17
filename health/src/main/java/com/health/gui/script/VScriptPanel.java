@@ -28,12 +28,8 @@ import com.health.gui.VButton;
 import com.health.gui.VidneyPanel;
 import com.health.gui.input.FileListing;
 import com.health.gui.input.FileListingRow;
-import com.health.gui.input.xmlwizard.XmlWizard;
 import com.health.gui.output.VOutputPanel;
 import com.health.script.runtime.Context;
-import com.health.script.runtime.LValue;
-import com.health.script.runtime.ScriptType;
-import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents the panel where the script is typed.
@@ -46,7 +42,7 @@ public final class VScriptPanel extends VidneyPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 4322421568728565558L;
-    private static JTextArea scriptArea;
+    private static JTextArea scriptArea= new JTextArea(2, 1);
 
     /**
      * Constructor.
@@ -56,7 +52,6 @@ public final class VScriptPanel extends VidneyPanel {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        scriptArea = new JTextArea(2, 1);
         scriptArea.setText("");
         mainPanel.add(scriptArea, BorderLayout.CENTER);
 
@@ -108,7 +103,8 @@ public final class VScriptPanel extends VidneyPanel {
                     String name = JOptionPane.showInputDialog(new JFrame(),
                             "Please specify a name for this script file",
                             "Save as..");
-                    String filename = GUImain.PATH_TO_DATA + "scripts/" + name + ".txt";
+                    String filename = GUImain.PATH_TO_DATA + "scripts/" + name
+                            + ".txt";
                     File file = new File(filename);
 
                     try {
@@ -180,7 +176,6 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Sets the script area text.
-     * 
      * @param text
      *            the text to set
      */
@@ -190,7 +185,6 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Reads the txt file containing the script.
-     * 
      * @param file
      *            File containing the script
      * @throws IOException
@@ -218,10 +212,10 @@ public final class VScriptPanel extends VidneyPanel {
          *
          * @param event
          */
+        @Override
         public void actionPerformed(final ActionEvent event) {
             if (getScript().equals("")) {
-                JOptionPane.showMessageDialog(
-                        new JFrame(),
+                JOptionPane.showMessageDialog(new JFrame(),
                         "The script is empty.", "Whoops!",
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
@@ -236,20 +230,21 @@ public final class VScriptPanel extends VidneyPanel {
 
                 context = control.startAnalysis();
                 GUImain.goToTab("Step 3: Output");
-                JOptionPane.showMessageDialog(
-                        new JFrame(),
+                JOptionPane.showMessageDialog(new JFrame(),
                         "Analysis is done.", "Done!",
                         JOptionPane.INFORMATION_MESSAGE);
 
             } catch (Exception e) {
                 e.printStackTrace();
 
-                JOptionPane.showMessageDialog(
-                        null,
-                        String.format(
-                                "An unhandled exception occured while executing the script: %s.",
-                                e.getMessage()), "Script runtime exception",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane
+                        .showMessageDialog(
+                                null,
+                                String.format(
+                                        "An unhandled exception occured while executing the script: %s.",
+                                        e.getMessage()),
+                                "Script runtime exception",
+                                JOptionPane.ERROR_MESSAGE);
 
                 return;
             }

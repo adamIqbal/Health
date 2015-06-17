@@ -4,10 +4,6 @@ import java.awt.CardLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-
 import com.health.gui.VidneyPanel;
 
 /**
@@ -37,7 +33,8 @@ public class VHelpPanel extends VidneyPanel {
             @Override
             public void mouseClicked(final MouseEvent e) {
                 String selected = sideBar.getTopicList().getSelectedValue();
-                CardLayout cl = (CardLayout) mainPanel.getCardPanel().getLayout();
+                CardLayout cl = (CardLayout) mainPanel.getCardPanel()
+                        .getLayout();
                 cl.show(mainPanel.getCardPanel(), selected);
             }
 

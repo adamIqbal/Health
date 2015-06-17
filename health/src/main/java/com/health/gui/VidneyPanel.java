@@ -53,7 +53,8 @@ public abstract class VidneyPanel extends JSplitPane {
 
     /**
      * Sets the left (side) panel of this panel.
-     * @param panel the panel to set
+     * @param panel
+     *            the panel to set
      */
     protected void setLeft(final JPanel panel) {
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -63,7 +64,8 @@ public abstract class VidneyPanel extends JSplitPane {
 
     /**
      * Sets the right (main) panel of this panel.
-     * @param panel the panel to set
+     * @param panel
+     *            the panel to set
      */
     protected void setRight(final JPanel panel) {
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));

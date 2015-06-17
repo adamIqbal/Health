@@ -33,7 +33,7 @@ public class XmlXlsEditPanel extends XmlStartEditSubPanel {
         rowLabel = new JLabel("Start row");
         colLabel = new JLabel("Start column");
         ignoreLastLabel = new JLabel("Ignore last lines");
-        
+
         rowField = new JTextField();
         rowField.setHorizontalAlignment(SwingConstants.CENTER);
         colField = new JTextField();

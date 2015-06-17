@@ -45,7 +45,7 @@ public class GUImain extends JFrame {
      */
     public static final Color GUI_COLOR = new Color(137, 207, 240);
 
-    private static Map<String, VidneyPanel> panelMap;
+    private static Map<String, VidneyPanel> panelMap = new HashMap<String, VidneyPanel>();
     private static JTabbedPane tabbedPane;
 
     /**
@@ -60,7 +60,8 @@ public class GUImain extends JFrame {
 
     /**
      * Transitions the application to the specified tab.
-     * @param name the name of the tab
+     * @param name
+     *            the name of the tab
      */
     public static void goToTab(final String name) {
         tabbedPane.setSelectedComponent(getPanel(name));
@@ -80,8 +81,6 @@ public class GUImain extends JFrame {
      * Makes the frame and and fills tabs.
      */
     public GUImain() {
-        panelMap = new HashMap<String, VidneyPanel>();
-
         this.initializeFrame();
 
         this.createTabbedPane();

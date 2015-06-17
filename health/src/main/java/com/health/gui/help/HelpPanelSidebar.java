@@ -8,6 +8,11 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
+/**
+ * Represents the sidebar of the help section.
+ * @author Bjorn van der Laan
+ *
+ */
 public class HelpPanelSidebar extends JPanel {
     /**
      * Constant serialized ID used for compatibility.
@@ -35,7 +40,8 @@ public class HelpPanelSidebar extends JPanel {
 
     /**
      * Adds an element to the list.
-     * @param name name of element
+     * @param name
+     *            name of element
      */
     protected void addElement(String name) {
         listModel.addElement(name);
@@ -45,15 +51,16 @@ public class HelpPanelSidebar extends JPanel {
      * Gets the list.
      * @return topicList attribute
      */
-    protected JList<String> getTopicList() {
+    protected final JList<String> getTopicList() {
         return topicList;
     }
 
     /**
      * Sets the list.
-     * @param topicList the list
+     * @param topicList
+     *            the list
      */
-    protected void setTopicList(JList<String> topicList) {
+    protected final void setTopicList(final JList<String> topicList) {
         this.topicList = topicList;
     }
 
@@ -61,17 +68,17 @@ public class HelpPanelSidebar extends JPanel {
      * Gets the listModel.
      * @return listModel attribute
      */
-    protected DefaultListModel<String> getListModel() {
+    protected final DefaultListModel<String> getListModel() {
         return listModel;
     }
 
     /**
      * Sets the listModel.
-     * @param listModel ListModel to set
+     * @param listModel
+     *            ListModel to set
      */
-    protected void setListModel(DefaultListModel<String> listModel) {
+    protected final void setListModel(final DefaultListModel<String> listModel) {
         this.listModel = listModel;
     }
-    
-    
+
 }

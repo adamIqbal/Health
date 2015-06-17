@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  * Abstract class for the documentation panels.
@@ -20,9 +21,10 @@ public abstract class Documentation extends JPanel {
 
     /**
      * Constructor.
-     * @param name name of the document
+     * @param name
+     *            name of the document
      */
-    public Documentation(String name) {
+    public Documentation(final String name) {
         super(new BorderLayout());
         this.name = name;
     }
@@ -30,6 +32,7 @@ public abstract class Documentation extends JPanel {
     /**
      * Gets the name of the documentation.
      */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -38,16 +41,17 @@ public abstract class Documentation extends JPanel {
      * Sets the name of the documentation.
      * @param text
      */
-    public void setText(String text) {
+    public void setText(final String text) {
         JLabel textLabel = new JLabel(text);
-        textLabel.setVerticalAlignment(JLabel.TOP);
+        textLabel.setVerticalAlignment(SwingConstants.TOP);
 
         this.add(textLabel, BorderLayout.CENTER);
     }
 
     /**
      * Loads the documentation.
-     * @throws IOException if the I/O operation fails
+     * @throws IOException
+     *             if the I/O operation fails
      */
     public abstract void loadDocumentation() throws IOException;
 }

@@ -26,7 +26,7 @@ public class FileListing extends JPanel {
      */
     private static final long serialVersionUID = 4121356230287669594L;
     private static GridBagConstraints fileListingCons;
-    private static JPanel listing;
+    private static JPanel listing = new JPanel();
     private static ArrayList<FileListingRow> fileListingRows = new ArrayList<FileListingRow>();
     private static int fileCount = 0;
     private static Color borderColor = Color.BLACK;
@@ -54,7 +54,6 @@ public class FileListing extends JPanel {
         this.setLayout(new BorderLayout());
 
         // Set layout and constraints
-        listing = new JPanel();
         listing.setLayout(new GridBagLayout());
 
         fileListingCons = new GridBagConstraints();

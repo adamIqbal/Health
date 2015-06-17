@@ -26,7 +26,8 @@ public class HelpMainPanel extends JPanel {
         super(new BorderLayout());
 
         cardPanel = new JPanel(new CardLayout());
-        cardPanel.setBorder(BorderFactory.createEmptyBorder(padding, padding, padding, padding));
+        cardPanel.setBorder(BorderFactory.createEmptyBorder(padding, padding,
+                padding, padding));
         this.add(cardPanel, BorderLayout.CENTER);
     }
 
@@ -34,15 +35,16 @@ public class HelpMainPanel extends JPanel {
      * Gets the cardPanel.
      * @return cardPanel
      */
-    protected JPanel getCardPanel() {
+    protected final JPanel getCardPanel() {
         return cardPanel;
     }
 
     /**
      * Sets the cardPanel.
-     * @param cardPanel the panel to set
+     * @param cardPanel
+     *            the panel to set
      */
-    protected void setCardPanel(JPanel cardPanel) {
+    protected final void setCardPanel(JPanel cardPanel) {
         this.cardPanel = cardPanel;
     }
 }

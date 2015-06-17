@@ -164,7 +164,7 @@ public class XmlConfigObject {
      * Gets the date format
      * @return date format
      */
-    protected String getDateFormat() {
+    protected final String getDateFormat() {
         return dateFormat;
     }
 
@@ -173,7 +173,7 @@ public class XmlConfigObject {
      * @param dateFormat
      *            date format
      */
-    protected void setDateFormat(String dateFormat) {
+    protected final void setDateFormat(final String dateFormat) {
         this.dateFormat = dateFormat;
     }
 

@@ -6,8 +6,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 
 /**
- * Represents a panel in the documentation.
- * This is a default DocumentationPanel.
+ * Represents a panel in the documentation. This is a default
+ * DocumentationPanel.
  * @author Bjorn van der Laan
  *
  */
@@ -20,9 +20,10 @@ public class DocumentationPanel extends Documentation {
 
     /**
      * Constructor.
-     * @param name name of the panel
+     * @param name
+     *            name of the panel
      */
-    public DocumentationPanel(String name) {
+    public DocumentationPanel(final String name) {
         super(name);
 
         try {
@@ -33,9 +34,10 @@ public class DocumentationPanel extends Documentation {
     }
 
     /**
-     * Loads the documentation text from a textfile.
-     * Filename should be equal to the documents name.
-     * @throws IOException if the I/O operation fails
+     * Loads the documentation text from a textfile. Filename should be equal to
+     * the documents name.
+     * @throws IOException
+     *             if the I/O operation fails
      */
     @Override
     public final void loadDocumentation() throws IOException {
