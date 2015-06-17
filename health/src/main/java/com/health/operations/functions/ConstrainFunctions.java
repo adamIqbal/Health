@@ -1,6 +1,7 @@
 package com.health.operations.functions;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import com.health.script.runtime.DateValue;
 import com.health.script.runtime.NumberValue;
@@ -44,8 +45,6 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
 
   /**
@@ -77,8 +76,7 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+
   }
 
   /**
@@ -110,8 +108,6 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
 
   /**
@@ -143,8 +139,7 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+
   }
 
   /**
@@ -159,25 +154,21 @@ public final class ConstrainFunctions {
    *           thrown if there are no valid arguments
    */
   public static boolean equal(final Object columns, final Value value) {
-    if (value instanceof NumberValue && columns instanceof Double) {
+    if (value instanceof NumberValue) {
       NumberValue d = (NumberValue) value;
 
-      return (double) columns == d.getValue();
-    }
+      return Objects.equals(d.getValue(), columns);
+    } else if (value instanceof StringValue) {
 
-    if (columns instanceof String && value instanceof StringValue) {
       StringValue str = (StringValue) value;
 
-      return columns.toString().equals(str.getValue());
-    }
+      return Objects.equals(str.getValue(), columns);
+    } else if (value instanceof DateValue) {
 
-    if (columns instanceof LocalDate && value instanceof DateValue) {
-
-      return ((LocalDate) columns).isEqual(((DateValue) value).getValue());
+      return Objects.equals(((DateValue) value).getValue(), columns);
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+
   }
 }
