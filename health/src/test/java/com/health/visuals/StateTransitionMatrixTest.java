@@ -94,10 +94,10 @@ public class StateTransitionMatrixTest {
         eList.addEvent(e5);
         eList.addEvent(e6);
 
-        String[] codePat1 = { "B", "A", "A", "B" };
-        String[] codePat2 = { "A", "A", "B" };
-        String[] codePat3 = { "A", "B", "A", "C" };
-        String[] codePat4 = { "C", "B", "C" };
+        String[] codePat1 = {"B", "A", "A", "B"};
+        String[] codePat2 = {"A", "A", "B"};
+        String[] codePat3 = {"A", "B", "A", "C"};
+        String[] codePat4 = {"C", "B", "C"};
 
         EventSequence eSeq1 = new EventSequence(codePat1);
         EventSequence eSeq2 = new EventSequence(codePat2);

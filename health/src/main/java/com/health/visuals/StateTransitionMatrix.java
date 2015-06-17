@@ -4,30 +4,34 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.LayoutManager;
 import java.awt.Shape;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileOutputStream;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
 
 import org.jfree.ui.ApplicationFrame;
 
 import com.health.Event;
 import com.health.EventList;
 import com.health.EventSequence;
-
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
-
 import com.health.operations.Code;
 
 
@@ -114,7 +118,7 @@ public final class StateTransitionMatrix extends JFrame {
      */
     public static JTable createStateTrans(final EventList eList, final List<EventList> seqList) {
         // Create frame
-    	final Dimension frameDimension = new Dimension(700, 700);
+    	final Dimension frameDimension = new Dimension((int)(PageSize.A4.getWidth()), (int)(PageSize.A4.getHeight()));
 
         ApplicationFrame frame = new ApplicationFrame("Vidney");
         frame.setSize(frameDimension);
@@ -131,18 +135,27 @@ public final class StateTransitionMatrix extends JFrame {
 
         JTable table = new JTable(outputM, matrixUse[0]);
 
-        Container c = frame.getContentPane();
-        c.setLayout(new FlowLayout());
+        //Container c = frame.getContentPane();
+        //c.setLayout(new FlowLayout());
+        
         JScrollPane scrollPane = new JScrollPane(table);
-		c.add(scrollPane, BorderLayout.CENTER);
-
+        scrollPane.setColumnHeaderView(table.getTableHeader());
+        scrollPane.setPreferredSize(table.getPreferredSize());
+        
+        
+        JPanel p = new JPanel(new BorderLayout());
+        p.add(scrollPane, BorderLayout.CENTER);
+        
 		// Not a very clean way
-        frame.setContentPane(c);
+        frame.setContentPane(p);
         frame.setVisible(true);
         frame.setVisible(false);
+        
+        saveFile("StateTest6.pdf", p);
 
         return table;
     }
+
 
     /**
      * Set up matrix.
@@ -159,10 +172,6 @@ public final class StateTransitionMatrix extends JFrame {
             if (!eArr.contains(e.getCode())) {
                 eArr.add(e.getCode());
             }
-        }
-
-        for (String s : eArr) {
-            System.out.println(s);
         }
 
         String[][] matrix = new String[eArr.size() + 1][eArr.size() + 1];
@@ -234,16 +243,18 @@ public final class StateTransitionMatrix extends JFrame {
         return codes;
     }
 
-	// Misses table header...
+
     /**
      * Saves matrix to file.
      * @param name
      * 			name under which the file should be saved
      * @param table
      * 			table you want to save
+     * 
      */
-	public static void saveFile(final String name, final JTable table) {
-		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
+	public static void saveFile(final String name, final JPanel table) { //JTable table) {
+		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4
+				);
 		try {
             int width = table.getWidth();
             int height = table.getHeight();
