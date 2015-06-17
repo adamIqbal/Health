@@ -57,7 +57,7 @@ private XlsParser xp;
         }
         assertNotNull(actual);
         
-//        System.out.println(actual.getColumn("ModifiedDate").getName());
+        System.out.println(actual.getRecords().get(0).getDateValue(actual.getDateColumn().getName()).getHour());
         
  //       System.out.println(actual.getRecords().get(0).getDateValue("ModifiedDate"));
 	}
@@ -79,7 +79,7 @@ private XlsParser xp;
         //System.out.println(actual.getColumn("ModifiedDate").getName());
         
         //System.out.println(actual.getRecords().get(0).getDateValue("ModifiedDate"));
-    }
+	}
 
 
 }
