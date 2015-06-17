@@ -67,6 +67,47 @@ public final class BoxPlot {
         return boxPlot(table, column.getName());
     }
 
+    public static CategoryPlot createBoxPlot(final Table table, final String column) {
+    	if (!(table.getColumn(column).getType() == ValueType.Number)) {
+            throw new IllegalArgumentException("Column must be of type Number");
+        }
+    	
+    	final String xName = "Plotted column: " + column;
+        final String yName = "";
+    	final double margin = 0.20;
+    	
+    	final BoxAndWhiskerCategoryDataset dataset = formatDataset(table,
+                column);
+    	
+    	final CategoryAxis xAxis = new CategoryAxis(xName);
+        xAxis.setLowerMargin(margin);
+        xAxis.setUpperMargin(margin);
+        final NumberAxis yAxis = new NumberAxis(yName);
+        yAxis.setAutoRangeIncludesZero(false);
+
+        final BoxAndWhiskerRenderer renderer = createRenderer(false, true);
+    	
+    	final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis,
+                renderer);
+    	
+    	return plot;
+    }
+    
+    
+    public static JPanel visualBoxPlot(final CategoryPlot plot) { 
+        final Dimension frameDimension = new Dimension(500, 500);
+
+        ApplicationFrame frame = new ApplicationFrame("Vidney");
+        frame.setSize(frameDimension);
+        
+        final ChartPanel chartPanel = createChartPanel(plot);
+
+        frame.setContentPane(chartPanel);
+
+        return chartPanel;
+    	
+    }
+    
     /**
      * Creates a diagram with for each Chunk a BoxPlot. The selected column must
      * have type ValueType.Number
