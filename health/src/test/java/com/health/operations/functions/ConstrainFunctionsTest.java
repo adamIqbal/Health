@@ -36,7 +36,7 @@ public class ConstrainFunctionsTest {
     valueDate = new DateValue();
 
     crea = "crea";
-    valueString = new StringValue();
+    valueString = new StringValue("");
 
   }
 
