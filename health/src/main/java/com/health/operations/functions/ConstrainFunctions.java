@@ -45,8 +45,6 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
 
   /**
@@ -78,8 +76,7 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+
   }
 
   /**
@@ -111,8 +108,6 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
   }
 
   /**
@@ -144,8 +139,7 @@ public final class ConstrainFunctions {
 
     }
     return false;
-    // throw new
-    // IllegalArgumentException("Expected valuetype && constraintype to be valid.");
+
   }
 
   /**
