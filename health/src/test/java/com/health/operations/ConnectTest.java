@@ -123,6 +123,20 @@ public class ConnectTest {
   }
 
   @Test
+  public void testAllThree() {
+    List<Column> tableCols = connectedTable.getColumns();
+    assertEquals("name", tableCols.get(2).getName());
+    assertNotEquals("name", tableCols.get(0).getName());
+
+    assertTrue(tableCols.contains(new Column("meetwaarde3", 1, ValueType.Number)));
+    assertFalse(tableCols.contains(new Column("meetwaarde0", 0, ValueType.Number)));
+
+    assertEquals("date", tableCols.get(0).getName());
+    assertNotEquals("date", tableCols.get(2).getName());
+
+  }
+
+  @Test
   public void testNoEmptyCells() {
 
     List<Record> tableRecs = connectedTable.getRecords();
