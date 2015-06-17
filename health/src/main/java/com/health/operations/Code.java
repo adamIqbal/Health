@@ -46,6 +46,8 @@ public class Code {
                 }
             }
         }
+        
+        list.orderListByDate();
         return list;
     }
 
@@ -88,7 +90,7 @@ public class Code {
                     if (nextIndex - oldIndex == 1) {
                         tmpEList.addEvent(eList.get(nextIndex));
                         oldIndex = nextIndex;
-                        currentIndex = ++nextIndex;
+                        nextIndex++;
                     } else {
                         break makeEventList;
                     }

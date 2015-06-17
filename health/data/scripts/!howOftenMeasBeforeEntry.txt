@@ -1,25 +1,67 @@
 //with metingen as table0 and after that all admire txt measurement
 
-var table = connect table1 with table2 where date = date;
-table = connect table with table3 where date = date;
-table = connect table with table4 where date = date;
-table = connect table with table5 where date = date;
-table = connect table with table6 where date = date;
-table = connect table with table7 where date = date;
+var table = constrain table0 where Login = "admire2";
 
-table = connect table0 with table where ModifiedDate = date as date;
+table = connect table1 with table where ModifiedDate = date as date;
 
-var events = code table as measurement : value > 0 , entry : Value > 0;
+var event = code table as measurement : value > 0 , entry : Value > 0;
 
-//find with same userid
-var seqOneMeasurement = sequence("measurement" , "entry", false);
-var seqTwoMeasurement = sequence("measurement","measurement"  , "entry", false);
-var seqThreeMeasurement = sequence("measurement" ,"measurement" ,"measurement" , "entry", false);
 
-var seqsOneMeasurement = findSequences(events, seqOneMeasurement);
-var seqsTwoMeasurement = findSequences(events, seqTwoMeasurement);
-var seqsThreeMeasurement = findSequences(events, seqThreeMeasurement);
+var seq = sequence("measurement", "entry", true);
+findSequences(event , seq);
+table = seq.toTable();
+table = constrain table where Value > 0;
+table = chunk table by Login select count of Login;
 
-transitionMatrix(events, seqsOneMeasurement);
-transitionMatrix(events, seqsTwoMeasurement);
-transitionMatrix(events, seqsThreeMeasurement);
+seq = sequence("measurement", "measurement",  "entry", true);
+findSequences(event , seq);
+var tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+tmp = chunk tmp by Login select count of Login;
+table = connect table with tmp where date = date;
+
+seq = sequence("measurement", "measurement", "measurement", "entry", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+tmp = chunk tmp by Login select count of Login;
+table = connect table with tmp where date = date;
+
+seq = sequence("measurement", "measurement", "measurement", "measurement", "entry", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+tmp = chunk tmp by Login select count of Login;
+table = connect table with tmp where date = date;
+
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "entry", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+tmp = chunk tmp by Login select count of Login;
+table = connect table with tmp where date = date;
+
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "entry", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+tmp = chunk tmp by Login select count of Login;
+table = connect table with tmp where date = date;
+
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "entry", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+tmp = chunk tmp by Login select count of Login;
+table = connect table with tmp where date = date;
+
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "entry", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+tmp = chunk tmp by Login select count of Login;
+table = connect table with tmp where date = date;
+
+write("out.txt" , table);
+
+freqbar(table, "count_Login");
