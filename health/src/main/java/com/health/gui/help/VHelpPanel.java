@@ -60,8 +60,7 @@ public class VHelpPanel extends VidneyPanel {
         });
 
         // should be loaded from textfile or database
-        addCard("Help1", "some help text blabla");
-        addCard("Help2", "also some help text blablablablabla");
+        addCard("Chunking");
 
         this.setLeft(mainPanel);
         this.setRight(sideBar);
@@ -73,7 +72,7 @@ public class VHelpPanel extends VidneyPanel {
      * @param name
      * @param text
      */
-    private void addCard(final String name, final String text) {
+    private void addCard(final String name) {
         sideBar.addElement(name);
 
         DocumentationPanel doc = new DocumentationPanel(name);
