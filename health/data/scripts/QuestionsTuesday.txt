@@ -10,8 +10,6 @@ Mijnnierinzicht?
 
 Mijnnierinzicht?
 
-- How often do patients measure themselves before they enter data into Mijnnierinzicht?
-
 - If a patient did measure multiple time, what measure do he/she eventually enter into 
 
 Mijnnierinzicht?
@@ -22,26 +20,10 @@ Mijnnierinzicht?
 
 routine?
 
-- What are the conditions under which people overwrite their initial data entered in 
-
-Mijnnierinzicht?
-
 - Find cases where there is a difference between device measurement and what is entered in 
 
 Mijnnierinzicht 
 
-- find cases where Mijnnierinzicht advice to contact the hospital
+- Do external factors, such as holidays, have an effect on the patientï¿½s measurement routine?
 
-- How well do patients follow up advice of Mijnnierinzicht to re-measure again?
-
-- Do external factors, such as holidays, have an effect on the patient’s measurement routine?
-
-- Is the value of creatine, blood pressure, HR effecting the patient’s measurement routine?
-
-______________________________________________________________________________________________
-Finished:
-
-- what time of the day and on what day do people measure themselves?
-
-- what time of the day and on what day do they enter measure measurement?
-
+- Is the value of creatine, blood pressure, HR effecting the patientï¿½s measurement routine?

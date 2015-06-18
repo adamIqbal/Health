@@ -102,6 +102,9 @@ public final class XlsParser implements Parser {
                                 if (ext.equals("xlsx")) {
                                     Date date = row.getCell(i)
                                             .getDateCellValue();
+                                    if(date == null){
+                                        dateValue = null;
+                                    }
                                     dateValue = date.toInstant()
                                             .atZone(ZoneId.systemDefault())
                                             .toLocalDateTime();
