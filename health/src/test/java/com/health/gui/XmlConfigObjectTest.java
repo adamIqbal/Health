@@ -2,6 +2,7 @@ package com.health.gui;
 
 import static org.junit.Assert.*;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -60,27 +61,42 @@ public class XmlConfigObjectTest {
 
     @Test
     public void testGetColumnTypes() throws Exception {
-        fail("not yet implemented");
+        ArrayList<ValueType> expected = new ArrayList<ValueType>();
+        expected.add(ValueType.Date);
+        expected.add(ValueType.Number);
+        expected.add(ValueType.String);
+        
+        ArrayList<ValueType> actual = (ArrayList<ValueType>) xml.getColumnTypes();
+        
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testGetDateFormat() throws Exception {
-        fail("not yet implemented");
+        String expected = "yyMMdd";
+        String actual = xml.getDateFormat();
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testGetPath() throws Exception {
-        fail("not yet implemented");
+        Path expected = Paths.get("path/to/file.xml");
+        Path actual = xml.getPath();
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testGetType() throws Exception {
-        fail("not yet implemented");
+        FileType expected = FileType.TXT;
+        FileType actual = xml.getType();
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testGetValues() throws Exception {
-        fail("not yet implemented");
+        String[] expected = {"startdelim", "enddelim", "delim", "ignorelast"};
+        String[] actual = xml.getValues();
+        assertArrayEquals(expected, actual);
     }
 
     @Test

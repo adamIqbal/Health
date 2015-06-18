@@ -147,7 +147,7 @@ public class XmlConfigObject {
      * Gets the value of the type attribute.
      * @return the type attribute
      */
-    protected final FileType getType() {
+    public final FileType getType() {
         return type;
     }
 
