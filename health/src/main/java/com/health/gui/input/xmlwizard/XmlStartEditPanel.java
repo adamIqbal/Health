@@ -39,12 +39,25 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     }
 
     /**
-     * Sets the fileType.
-     * @param type
-     *            type of the config xml
+     * Gets the FileType that is currently selected in fileTypeSelector.
+     * @return FileType that is currently selected.
      */
-    public final void setFileType(final FileType type) {
-        fileTypeSelector.setSelectedItem(type);
+    public final FileType getSelectedType() {
+        return (FileType) fileTypeSelector.getSelectedItem();
+    }
+
+    /**
+     * Calls the getValues method of the panel associated with the specified
+     * FileType.
+     * @param type
+     *            FileType specifying the panel you want to call.
+     * @return returns the values entered in the startpanel of this filetype
+     */
+    public final String[] getValues(final FileType type) {
+        if (panels.containsKey(type)) {
+            return panels.get(type).getValues();
+        }
+        return null;
     }
 
     private void init() {
@@ -72,25 +85,23 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     }
 
     /**
-     * Calls the getValues method of the panel associated with the specified
-     * FileType.
-     * @param type
-     *            FileType specifying the panel you want to call.
-     * @return returns the values entered in the startpanel of this filetype
+     * Shows a panel depending on the FileType selected in fileTypeSelector.
+     * @param evt
+     *            ItemEvent object containing information
      */
-    public final String[] getValues(final FileType type) {
-        if (panels.containsKey(type)) {
-            return panels.get(type).getValues();
-        }
-        return null;
+    @Override
+    public final void itemStateChanged(final ItemEvent evt) {
+        CardLayout cl = (CardLayout) (editPanel.getLayout());
+        cl.show(editPanel, evt.getItem().toString());
     }
 
     /**
-     * Gets the FileType that is currently selected in fileTypeSelector.
-     * @return FileType that is currently selected.
+     * Sets the fileType.
+     * @param type
+     *            type of the config xml
      */
-    public final FileType getSelectedType() {
-        return (FileType) fileTypeSelector.getSelectedItem();
+    public final void setFileType(final FileType type) {
+        fileTypeSelector.setSelectedItem(type);
     }
 
     /**
@@ -106,16 +117,5 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
             panels.get(type).setValues(values);
             setFileType(type);
         }
-    }
-
-    /**
-     * Shows a panel depending on the FileType selected in fileTypeSelector.
-     * @param evt
-     *            ItemEvent object containing information
-     */
-    @Override
-    public final void itemStateChanged(final ItemEvent evt) {
-        CardLayout cl = (CardLayout) (editPanel.getLayout());
-        cl.show(editPanel, evt.getItem().toString());
     }
 }
