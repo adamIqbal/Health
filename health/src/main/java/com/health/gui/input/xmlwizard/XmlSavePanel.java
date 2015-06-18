@@ -94,6 +94,11 @@ public class XmlSavePanel extends JPanel {
     }
 
     private void saveFile() throws IOException {
+        int reply = JOptionPane.showConfirmDialog(null, "Do you want to overwrite your file?", "Save", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.NO_OPTION) {
+          return;
+        }
+        
         String filename = XmlWizard.getXml().getPath().toString();
         File file = new File(filename);
         FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
