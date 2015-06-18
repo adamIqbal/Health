@@ -92,15 +92,23 @@ public class XmlEditPanel extends JPanel {
                 xmlObj.setDateFormat(id.getDateFormat());
                 XmlWizard.setXml(xmlObj);
 
-                if (id.getFormat().equals("xlsx")
-                        || id.getFormat().equals("xls")) {
+                if (id.getFormat().equals("xls")) {
                     String[] values = {
                             Integer.toString(id.getStartCell().getStartRow()),
                             Integer.toString(id.getStartCell().getStartColumn()),
                             Integer.toString(id.getIgnoreLast()) };
                     startPanel.setValues(values, FileType.XLS);
                     startPanel.setFileType(FileType.XLS);
-                } else {
+                } 
+                else if (id.getFormat().equals("xlsx")) {
+                    String[] values = {
+                            Integer.toString(id.getStartCell().getStartRow()),
+                            Integer.toString(id.getStartCell().getStartColumn()),
+                            Integer.toString(id.getIgnoreLast()) };
+                    startPanel.setValues(values, FileType.XLSX);
+                    startPanel.setFileType(FileType.XLSX);
+                }
+                else {
                     // default case: txt
                     String[] values = { id.getStartDelimiter(),
                             id.getEndDelimiter(), id.getDelimiter(),
