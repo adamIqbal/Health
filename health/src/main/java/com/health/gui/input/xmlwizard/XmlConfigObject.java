@@ -54,6 +54,8 @@ public class XmlConfigObject {
         case XLS:
             xml = this.toXMLStringXLS();
             break;
+        case XLSX:
+            xml = this.toXMLStringXLSX();
         default:
             break;
         }
@@ -107,6 +109,32 @@ public class XmlConfigObject {
         }
 
         dataStart += ">" + "\n\r";
+        dataStart += ">" + "\n\r";
+
+        String columnTags = this.columnsToXML();
+
+        String dataEnd = "</data>";
+
+        return header + dataStart + columnTags + dataEnd;
+    }
+    
+    /**
+     * Generates XML string of a config XML describing a XLSX data set.
+     * @return XML string of the config XML
+     */
+    public final String toXMLStringXLSX() {
+        String startRow = this.values[0];
+        String startCol = this.values[1];
+        String ignoreLast = this.values[2];
+
+        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
+        String dataStart = "<data format=\"xlsx\" startRow=\"" + startRow
+                + "\" startColumn=\"" + startCol + "\"";
+
+        if (this.values.length > 2) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
+        }
+
         dataStart += ">" + "\n\r";
 
         String columnTags = this.columnsToXML();

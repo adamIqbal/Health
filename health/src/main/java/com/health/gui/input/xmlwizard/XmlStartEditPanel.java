@@ -59,13 +59,16 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
         editPanel.setLayout(new CardLayout());
         XmlTxtEditPanel txtPanel = new XmlTxtEditPanel();
         XmlXlsEditPanel xlsPanel = new XmlXlsEditPanel();
+        XmlXlsEditPanel xlsxPanel = new XmlXlsEditPanel();
         editPanel.add(txtPanel, "TXT");
         editPanel.add(xlsPanel, "XLS");
+        editPanel.add(xlsxPanel, "XLSX");
         this.add(editPanel);
 
         // add panels to the map
         panels.put(FileType.TXT, txtPanel);
         panels.put(FileType.XLS, xlsPanel);
+        panels.put(FileType.XLSX, xlsxPanel);
     }
 
     /**
