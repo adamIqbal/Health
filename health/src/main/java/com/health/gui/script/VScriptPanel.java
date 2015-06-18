@@ -54,11 +54,10 @@ public final class VScriptPanel extends VidneyPanel {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(new ScriptMainPanel(), BorderLayout.CENTER);
-        //mainPanel.add(scriptArea, BorderLayout.CENTER);
-
-        VButton startAnalysisButton = new VButton("Start Analysis");
+        
+        VButton startAnalysisButton = new VButton("Run Analysis");
         startAnalysisButton.addActionListener(new AnalysisListener());
-        mainPanel.add(startAnalysisButton, BorderLayout.SOUTH);
+        startAnalysisButton.setBackground(Color.GREEN);
         
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
@@ -72,6 +71,8 @@ public final class VScriptPanel extends VidneyPanel {
         VButton saveScriptButton = createSaveButton();
         topPanel.add(saveScriptButton);
         topPanel.add(rigidArea());
+        topPanel.add(rigidArea());
+        topPanel.add(startAnalysisButton);
 
         mainPanel.add(topPanel, BorderLayout.NORTH);
 
@@ -114,7 +115,7 @@ public final class VScriptPanel extends VidneyPanel {
     }
 
     private Component rigidArea() {
-        return Box.createRigidArea(new Dimension(50, 0));
+        return Box.createRigidArea(new Dimension(10, 0));
     }
 
     private VButton createClearButton() {
@@ -219,7 +220,6 @@ public final class VScriptPanel extends VidneyPanel {
             control.setData(getInputData());
 
             try {
-
                 context = control.startAnalysis();
                 GUImain.goToTab("Step 3: Output");
                 JOptionPane.showMessageDialog(new JFrame(),
