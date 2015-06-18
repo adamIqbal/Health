@@ -70,7 +70,7 @@ public class GUImain extends JFrame {
     /**
      * Width of the tabs.
      */
-    private final int tabWidth = 330;
+    private final int tabWidth = 200;
 
     /**
      * Height of the tabs.
