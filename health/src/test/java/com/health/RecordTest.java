@@ -123,6 +123,19 @@ public class RecordTest {
         verify(table).addRecord(record);
     }
 
+    @Test
+    public void getValue_givenIndexOfNonexistentColumn_returnsNull() {
+        assertNull(record.getValue(-1));
+    }
+
+    @Test
+    public void getValue_givenIndexOfColumn_returnsValueOfColumn() {
+        Object expected = value1;
+        Object actual = record.getValue(column1.getIndex());
+
+        assertEquals(expected, actual);
+    }
+
     /**
      * Tests whether {@link Record#getValue(String)} returns null when given a
      * null reference.
