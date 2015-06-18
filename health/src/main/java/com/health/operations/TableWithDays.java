@@ -68,7 +68,7 @@ public class TableWithDays {
         List<Record> recList = origTable.getRecords();
         List<Column> colList = new ArrayList<Column>(origTable.getColumns());
 
-        colList.add(new Column("hour_of_week", colList.size(), ValueType.Number));
+        colList.add(new Column("hour_of_day", colList.size(), ValueType.Number));
         String dateColumn = table.getDateColumn().getName();
 
         Table result = new Table(colList);
