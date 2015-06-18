@@ -1,8 +1,7 @@
 package com.health.operations;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ public final class Chunk {
      */
     public static Table chunkByPeriod(final Table table,
             final String dateColumn,
-            final List<ColumnAggregateTuple> operations, final Period period) {
+            final List<ColumnAggregateTuple> operations, final TemporalAmount period) {
         Map<Object, List<Record>> groups = groupByPeriod(table, dateColumn,
                 period);
 
@@ -67,7 +66,7 @@ public final class Chunk {
     }
 
     private static Map<Object, List<Record>> groupByPeriod(final Table table,
-            final String column, final Period period) {
+            final String column, final TemporalAmount period) {
         Map<Object, List<Record>> groups = new HashMap<Object, List<Record>>();
 
         LocalDateTime beginPer = getFirstDate(table, column);
@@ -166,8 +165,8 @@ public final class Chunk {
             list.sort((a, b) -> ((String) a.getKey()).compareTo((String) b
                     .getKey()));
         } else if (LocalDateTime.class.isAssignableFrom(type)) {
-            list.sort((a, b) -> ((LocalDate) a.getKey())
-                    .compareTo((LocalDate) b.getKey()));
+            list.sort((a, b) -> ((LocalDateTime) a.getKey())
+                    .compareTo((LocalDateTime) b.getKey()));
         } else {
             throw new IllegalStateException(
                     "Found illegal type in entrySet. "

@@ -1,6 +1,8 @@
 package com.health.interpreter;
 
+import java.time.Duration;
 import java.time.Period;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
                 evaluateChunkSelectionList(ctx.chunkSelectionList());
 
         if (ctx.periodSpecifier() != null) {
-            Period period = evaluatePeriod(ctx.periodSpecifier().period());
+            TemporalAmount period = evaluatePeriod(ctx.periodSpecifier().period());
 
             return new WrapperValue<Table>(Chunk.chunkByPeriod(table, columnIdent, aggregateFunctions, period));
         } else {
@@ -83,7 +85,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         aggregateFunctions.add(evaluateColumnOrAggragateOperation(ctx.columnOrAggregateOperation()));
     }
 
-    private static Period evaluatePeriod(final MyScriptParser.PeriodContext ctx) {
+    private static TemporalAmount evaluatePeriod(final MyScriptParser.PeriodContext ctx) {
         if (ctx.singularTimeUnit() != null) {
             return evaluateSingularPeriod(ctx);
         } else if (ctx.pluralTimeUnit() != null) {
@@ -93,8 +95,10 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static Period evaluateSingularPeriod(final MyScriptParser.PeriodContext ctx) {
+    private static TemporalAmount evaluateSingularPeriod(final MyScriptParser.PeriodContext ctx) {
         switch (ctx.singularTimeUnit().getText()) {
+        case "hour":
+            return Duration.ofHours(1);
         case "day":
             return Period.ofDays(1);
         case "week":
@@ -108,10 +112,12 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static Period evaluatePluralPeriod(final MyScriptParser.PeriodContext ctx) {
+    private static TemporalAmount evaluatePluralPeriod(final MyScriptParser.PeriodContext ctx) {
         int number = (int) Double.parseDouble(ctx.NUMBER().getText());
 
         switch (ctx.pluralTimeUnit().getText()) {
+        case "hours":
+            return Duration.ofHours(number);
         case "days":
             return Period.ofDays(number);
         case "weeks":
