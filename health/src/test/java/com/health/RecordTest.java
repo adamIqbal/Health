@@ -284,7 +284,7 @@ public class RecordTest {
     }
 
     /**
-     * Tests whether {@link Record#setValue(int, Double)} updates the value of
+     * Tests whether {@link Record#setValue(int, Object)} updates the value of
      * the correct column when given a {@link Double} value and the name of a
      * column that contains {@link Double}s.
      */
@@ -410,7 +410,7 @@ public class RecordTest {
     }
 
     /**
-     * Tests whether {@link Record#setValue(String, Double)} updates the value
+     * Tests whether {@link Record#setValue(String, Object)} updates the value
      * of the correct column when given a {@link Double} value and the name of a
      * column that contains {@link Double}s.
      */
