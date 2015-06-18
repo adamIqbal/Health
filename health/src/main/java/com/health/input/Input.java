@@ -13,60 +13,66 @@ import com.health.Table;
  */
 public final class Input {
 
-  protected Input() {
-  }
-
-  /**
-   * Given an input file and input descriptor file, parses the input file into a {@link Table}.
-   *
-   * @param filePath
-   *          the path of the input file.
-   * @param configPath
-   *          the path of the input descriptor file.
-   * @return a table representing the parsed input file.
-   * @throws ParserConfigurationException
-   *           if a DocumentBuilder cannot be created which satisfies the configuration requested.
-   * @throws SAXException
-   *           if any parse error occur.
-   * @throws IOException
-   *           if any IO errors occur.
-   * @throws InputException
-   *           if the input descriptor file is not formatted correctly.
-   */
-  public static Table readTable(final String filePath, final String configPath) throws IOException,
-      ParserConfigurationException, SAXException, InputException {
-    InputDescriptor config = new InputDescriptor(configPath);
-    Parser parser = getParser(config.getFormat());
-
-    if (parser == null) {
-      throw new InputException(
-          String.format("Unknown format '%s' specified in input descriptor '%s'.",
-              config.getFormat(), configPath));
+    /**
+     * a never used constructor.
+     */
+    protected Input() {
     }
 
-    return parser.parse(filePath, config);
-  }
+    /**
+     * Given an input file and input descriptor file, parses the input file into
+     * a {@link Table}.
+     *
+     * @param filePath
+     *            the path of the input file.
+     * @param configPath
+     *            the path of the input descriptor file.
+     * @return a table representing the parsed input file.
+     * @throws ParserConfigurationException
+     *             if a DocumentBuilder cannot be created which satisfies the
+     *             configuration requested.
+     * @throws SAXException
+     *             if any parse error occur.
+     * @throws IOException
+     *             if any IO errors occur.
+     * @throws InputException
+     *             if the input descriptor file is not formatted correctly.
+     */
+    public static Table readTable(final String filePath, final String configPath)
+            throws IOException, ParserConfigurationException, SAXException,
+            InputException {
+        InputDescriptor config = new InputDescriptor(configPath);
+        Parser parser = getParser(config.getFormat());
 
-  /**
-   * A method to get the parser which applies to this datafile.
-   * 
-   * @param format
-   *          the extension of the data file.
-   * @return the new parser or null if there is no matching parser.gi
-   */
-  private static Parser getParser(final String format) {
-    assert format != null;
+        if (parser == null) {
+            throw new InputException(String.format(
+                    "Unknown format '%s' specified in input descriptor '%s'.",
+                    config.getFormat(), configPath));
+        }
 
-    switch (format.toLowerCase()) {
-    case "xls":
-      return new XlsParser();
-    case "xlsx":
-      XlsParser xls = new XlsParser();
-      return xls;
-    case "text":
-      return new TextParser();
-    default:
-      return null;
+        return parser.parse(filePath, config);
     }
-  }
+
+    /**
+     * A method to get the parser which applies to this datafile.
+     * 
+     * @param format
+     *            the extension of the data file.
+     * @return the new parser or null if there is no matching parser.gi
+     */
+    private static Parser getParser(final String format) {
+        assert format != null;
+
+        switch (format.toLowerCase()) {
+        case "xls":
+            return new XlsParser();
+        case "xlsx":
+            XlsParser xls = new XlsParser();
+            return xls;
+        case "text":
+            return new TextParser();
+        default:
+            return null;
+        }
+    }
 }

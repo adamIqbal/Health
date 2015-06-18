@@ -14,3 +14,5 @@ table = connect table with contactHospTable
 	where KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
 
 write("out.txt", table);
+
+transitionMatrix(events , seq);

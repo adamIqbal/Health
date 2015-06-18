@@ -80,14 +80,16 @@ period
     ;
 
 singularTimeUnit
-    : 'day'
+    : 'hour'
+    | 'day'
     | 'week'
     | 'month'
     | 'year'
     ;
 
 pluralTimeUnit
-    : 'days'
+    : 'hours'
+    | 'days'
     | 'weeks'
     | 'months'
     | 'years'

@@ -101,9 +101,38 @@ public class TextParserTest {
 
             actual = tp.parse(txtPath, id);
         } catch (InputException e) {
+            e.printStackTrace();
             assertTrue(false);
         }
         
         System.out.println(actual.getRecords().get(0).getDateValue("date"));
+    }
+    
+    @Test
+    public void testWrongDateFormat() throws ParserConfigurationException, SAXException, IOException{
+        Table actual = null;
+        try {
+            InputDescriptor id = new InputDescriptor(
+                    "test_data_and_xmls/admireTxtConfigWrongDateFormat.xml");
+            String txtPath = "test_data_and_xmls/ADMIRE 2.txt";
+
+            actual = tp.parse(txtPath, id);
+        } catch (InputException e) {
+            assertTrue(true);
+        }
+    }
+    
+    @Test
+    public void testUnknown() throws ParserConfigurationException, SAXException, IOException{
+        Table actual = null;
+        try {
+            InputDescriptor id = new InputDescriptor(
+                    "test_data_and_xmls/admireTxtConfigNoValueType.xml");
+            String txtPath = "test_data_and_xmls/ADMIRE 2.txt";
+
+            actual = tp.parse(txtPath, id);
+        } catch (InputException e) {
+            assertTrue(true);
+        }
     }
 }

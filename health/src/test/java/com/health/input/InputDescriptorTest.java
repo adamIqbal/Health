@@ -53,7 +53,7 @@ public class InputDescriptorTest {
          */
 
         InputDescriptor actual = new InputDescriptor(
-                "data/configXmls/admireTxtConfig.xml");
+                "test_data_and_xmls/admireTxtConfig.xml");
 
         assertEquals(startDelimeter, actual.getStartDelimiter());
         assertEquals(endDelimeter, actual.getEndDelimiter());
@@ -71,7 +71,7 @@ public class InputDescriptorTest {
     public void buildTable_Test() throws ParserConfigurationException,
             InputException, SAXException, IOException {
         InputDescriptor id = new InputDescriptor(
-                "data/configXmls/admireTxtConfig.xml");
+                "test_data_and_xmls/admireTxtConfig.xml");
         Table table = id.buildTable();
     }
 

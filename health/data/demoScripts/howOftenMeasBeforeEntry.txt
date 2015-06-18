@@ -1,0 +1,64 @@
+//with metingen as table0 and after that all admire txt measurement
+
+var tableOriginal = constrain table0 where Login = "admire2";
+
+tableOriginal = connect table1 with tableOriginal where ModifiedDate = date as date;
+
+var event = code tableOriginal as measurement : value > 0 , 1meas : Value > 0;
+var seq = sequence("measurement", "1meas", true);
+findSequences(event , seq);
+var table = seq.toTable();
+table = constrain table where Value > 0;
+
+event = code tableOriginal as measurement : value > 0 , 2meas : Value > 0;
+seq = sequence("measurement", "measurement",  "2meas", true);
+findSequences(event , seq);
+var tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+table = connect table with tmp where date = date;
+
+event = code tableOriginal as measurement : value > 0 , 3meas : Value > 0;
+seq = sequence("measurement", "measurement", "measurement", "3meas", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+table = connect table with tmp where date = date;
+
+event = code tableOriginal as measurement : value > 0 , 4meas : Value > 0;
+seq = sequence("measurement", "measurement", "measurement", "measurement", "4meas", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+table = connect table with tmp where date = date;
+
+event = code tableOriginal as measurement : value > 0 , 5meas : Value > 0;
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "5meas", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+table = connect table with tmp where date = date;
+
+event = code tableOriginal as measurement : value > 0 , 6meas : Value > 0;
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "6meas", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+table = connect table with tmp where date = date;
+
+event = code tableOriginal as measurement : value > 0 , 7meas : Value > 0;
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "7meas", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+table = connect table with tmp where date = date;
+
+event = code tableOriginal as measurement : value > 0 , 8meas : Value > 0;
+seq = sequence("measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "measurement", "8meas", true);
+findSequences(event , seq);
+tmp = seq.toTable();
+tmp = constrain tmp where Value > 0;
+table = connect table with tmp where date = date;
+
+write("out.txt" , table);
+
+freqbar(table, "code_name");

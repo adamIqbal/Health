@@ -3,6 +3,7 @@ package com.health;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,22 +24,22 @@ public class EventListTest {
         table = new Table(columns);
 
         Record tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(10, 1, 1));
+        tmp.setValue(0, LocalDateTime.of(10, 1, 1, 0, 0));
         tmp.setValue(1, 1.0);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(2, 2, 2));
+        tmp.setValue(0, LocalDateTime.of(2, 2, 2, 0, 0));
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(3, 2, 2));
+        tmp.setValue(0, LocalDateTime.of(3, 2, 2, 0, 0));
         tmp.setValue(1, 3.0);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(4, 2, 2));
+        tmp.setValue(0, LocalDateTime.of(4, 2, 2, 0, 0));
         tmp.setValue(1, 4.0);
         tmp.setValue(2, "piet");
     }

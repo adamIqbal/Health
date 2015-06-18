@@ -4,6 +4,7 @@ import com.health.Table;
 
 /**
  * Class containing conversion operations.
+ * 
  * @author Bjorn van der Laan
  *
  */
@@ -14,13 +15,15 @@ public final class Conversion {
     private Conversion() {
         super();
     }
-    
+
     /**
      * Applies an conversion operation on Table.
-     * @param table Table to apply operation on
+     * 
+     * @param table
+     *            Table to apply operation on
      * @return modified Table after operation
      */
-    public static Table conversion(Table table) {
+    public static Table conversion(final Table table) {
         return null;
     }
 }

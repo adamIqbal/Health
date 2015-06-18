@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -56,6 +57,7 @@ public class OutputMainPanel extends JPanel {
                 jtable.setAutoCreateRowSorter(true);
                 JScrollPane scroll = new JScrollPane(jtable);
                 pane.add("Table: "+key, scroll);
+
             } else if (element instanceof Component) {
                 Component component = (Component) element;
                 pane.add("Visual: "+key, component);

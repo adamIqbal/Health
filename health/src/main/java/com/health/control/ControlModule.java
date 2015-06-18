@@ -1,5 +1,6 @@
 package com.health.control;
 
+import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -7,12 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jfree.chart.JFreeChart;
 import org.xml.sax.SAXException;
 
+import com.health.Column;
 import com.health.EventList;
 import com.health.EventSequence;
 import com.health.Table;
@@ -20,6 +21,7 @@ import com.health.input.Input;
 import com.health.input.InputException;
 import com.health.interpreter.Interpreter;
 import com.health.operations.Code;
+import com.health.operations.ReadTime;
 import com.health.operations.TableWithDays;
 import com.health.output.Output;
 import com.health.script.runtime.BooleanValue;
@@ -166,26 +168,26 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("boxplot", (args) -> {
-            JPanel panel;
+            JFreeChart panel;
 
             if (args.length >= 2) {
-                panel = BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue(),
+                panel = BoxPlot.createBoxPlot(((WrapperValue<Table>) args[0]).getValue(),
                         ((StringValue) args[1]).getValue());
             } else {
-                panel = BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue());
+                panel = BoxPlot.createBoxPlot(((WrapperValue<Table>) args[0]).getValue());
             }
 
-            this.output.put("boxplot" + ++numBoxPlots, panel);
+            this.output.put("boxplot" + ++numBoxPlots, BoxPlot.visualBoxPlot(panel));
             return null;
         });
 
         context.declareStaticMethod("hist", (args) -> {
-            JPanel panel = Histogram.createHistogram(
+            JFreeChart panel = Histogram.createHist(
                     ((WrapperValue<Table>) args[0]).getValue(),
                     ((StringValue) args[1]).getValue(),
                     (int) ((NumberValue) args[2]).getValue());
 
-            this.output.put("histogram" + ++numHistograms, panel);
+            this.output.put("histogram" + ++numHistograms, Histogram.visualHist(panel));
             return null;
         });
 
@@ -234,7 +236,7 @@ public final class ControlModule {
                     }
 
                     EventList codes = ((EventListValue) args[baseIndex + 0]).getValue();
-                    JTable table;
+                    Container table;
 
                     if (args.length >= baseIndex + 2) {
                         EventSequence sequence = ((EventSequenceValue) args[baseIndex + 1]).getValue();
@@ -257,6 +259,18 @@ public final class ControlModule {
             return new WrapperValue<Table>(TableWithDays.TableDays(((WrapperValue<Table>) args[0]).getValue()));
         });
 
+        context.declareStaticMethod("tableWithHoursOfDay", (args) -> {
+            return new WrapperValue<Table>(TableWithDays.TableHours(((WrapperValue<Table>) args[0]).getValue()));
+        });
+        
+        context.declareStaticMethod("addTimeToDate", (args) -> {
+            Table table = ((WrapperValue<Table>) args[0]).getValue();
+            Column dateCol = table.getColumn(((StringValue) args[1]).getValue());
+            Column timeCol = table.getColumn(((StringValue) args[2]).getValue());
+            
+            ReadTime.addTimeToDate(table, dateCol, timeCol);
+            return null;
+        });
         return context;
     }
 

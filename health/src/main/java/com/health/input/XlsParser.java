@@ -1,11 +1,12 @@
 package com.health.input;
 
 import java.io.FileInputStream;
-
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 import java.util.Objects;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -97,17 +98,24 @@ public final class XlsParser implements Parser {
                         if (config.getDateFormat() != null) {
                             try {
                                 String format = config.getDateFormat();
+                                LocalDateTime dateValue;
                                 if (ext.equals("xlsx")) {
-                                    format = "dd-MMM-yyyy";
+                                    Date date = row.getCell(i)
+                                            .getDateCellValue();
+                                    dateValue = date.toInstant()
+                                            .atZone(ZoneId.systemDefault())
+                                            .toLocalDateTime();
+                                } else {
+                                    DateTimeFormatter formatter = DateTimeFormatter
+                                            .ofPattern(format);
+                                    dateValue = LocalDateTime
+                                            .parse(row.getCell(i).toString(),
+                                                    formatter);
                                 }
-                                DateTimeFormatter formatter = DateTimeFormatter
-                                        .ofPattern(format);
-                                LocalDate dateValue = LocalDate.parse(row
-                                        .getCell(i).toString(), formatter);
                                 tableRow.setValue(columnCountTableRow,
                                         dateValue);
-//                              LocalDateTime time =      dateValue.at;
-//                              time.toString();
+                                // LocalDateTime time = dateValue.at;
+                                // time.toString();
                             } catch (DateTimeParseException e) {
                                 break;
                             }

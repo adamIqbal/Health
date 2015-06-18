@@ -48,25 +48,93 @@ public final class Histogram extends JFrame {
     }
 
     /**
-     * Creates a histogram.
-     *
+     * Create Histogram chart.
      * @param table
-     *            table to use
+     * 			table to use for chart
      * @param column
-     *            column to use
+     * 			column from table that should be used
      * @param bin
-     *            amount of bins histogram should be divided into
+     * 			the amount of bins to use
+     * @return
+     * 			chart
      */
-    public static JPanel createHistogram(final Table table, final String column, final int bin) {
-        final Dimension frameDimension = new Dimension(500, 500);
+    public static JFreeChart createHist(final Table table, final String column, final int bin) {
         final String xName = "Plotted column: " + column;
         final String yName = "";
         final double margin = 0.20;
 
+        HistogramDataset dataSet = createDataset(table, column, bin); //new HistogramDataset();
+
+        final CategoryAxis xAxis = new CategoryAxis(xName);
+        xAxis.setLowerMargin(margin);
+        xAxis.setUpperMargin(margin);
+        final NumberAxis yAxis = new NumberAxis(yName);
+        yAxis.setAutoRangeIncludesZero(false);
+
+        // Create Chart
+        JFreeChart chart = ChartFactory.createHistogram(
+                column + " Frequency",
+                "Event",
+                "Frequency",
+                dataSet,
+                PlotOrientation.VERTICAL,
+                true,
+                false,
+                false
+                );
+
+        final int backSet = 230;
+        final int gridIn = 150;
+
+        chart.setBackgroundPaint(new Color(backSet, backSet, backSet));
+
+        XYPlot xyplot = (XYPlot) chart.getPlot();
+        xyplot.setBackgroundPaint(Color.WHITE);
+        xyplot.setDomainGridlinePaint(new Color(gridIn, gridIn, gridIn));
+        xyplot.setRangeGridlinePaint(new Color(gridIn, gridIn, gridIn));
+
+        XYBarRenderer renderer = (XYBarRenderer) xyplot.getRenderer();
+        renderer.setDrawBarOutline(true);
+        renderer.setShadowVisible(false);
+        renderer.setBarPainter(new StandardXYBarPainter());
+        renderer.setShadowVisible(false);
+
+        return chart;
+    }
+
+    /**
+     * Visualizes the Histogram.
+     * @param chart
+     * 			chart that should be visualized
+     * @return
+     * 			JPanel
+     */
+    public static JPanel visualHist(final JFreeChart chart) {
+    	final Dimension frameDimension = new Dimension(500, 500);
+
         ApplicationFrame frame = new ApplicationFrame("Vidney");
         frame.setSize(frameDimension);
 
-        HistogramDataset dataSet = new HistogramDataset();
+        final ChartPanel chartPanel = new ChartPanel(chart);
+
+        frame.setContentPane(chartPanel);
+
+        return chartPanel;
+    }
+
+    /**
+     * Creates dataset for histogram.
+     * @param table
+     * 			table with data
+     * @param column
+     * 			column of which you want the data
+     * @param bin
+     * 			for dividing the output in certain amount of parts
+     * @return
+     * 			dataset
+     */
+    public static HistogramDataset createDataset(final Table table, final String column, final int bin) {
+    	HistogramDataset dataSet = new HistogramDataset();
         // Convert table to usable form of data
         double[] data = hist(table, column);
 
@@ -83,58 +151,28 @@ public final class Histogram extends JFrame {
             }
         }
 
-        final CategoryAxis xAxis = new CategoryAxis(xName);
-        xAxis.setLowerMargin(margin);
-        xAxis.setUpperMargin(margin);
-        final NumberAxis yAxis = new NumberAxis(yName);
-        yAxis.setAutoRangeIncludesZero(false);
-
         dataSet.addSeries("Hist", data, bin, 0, max);
 
-        final XYBarRenderer xybarrenderer = new XYBarRenderer(); // (XYBarRenderer)xyplot.getRenderer();
-        xybarrenderer.setShadowVisible(false);
-        xybarrenderer.setBarPainter(new StandardXYBarPainter());
+        return dataSet;
+    }
 
-        // Create Chart
-        JFreeChart chart = ChartFactory.createHistogram(
-                column + " Frequency",
-                "Event",
-                "Frequency",
-                dataSet,
-                PlotOrientation.VERTICAL,
-                true,
-                false,
-                false
-                );
-
-        final int backSet = 230;
-        final float alpha = 0.7F;
-        final int gridIn = 150;
-
-        chart.setBackgroundPaint(new Color(backSet, backSet, backSet));
-        XYPlot xyplot = (XYPlot) chart.getPlot();
-        xyplot.setForegroundAlpha(alpha);
-        xyplot.setBackgroundPaint(Color.WHITE);
-        xyplot.setDomainGridlinePaint(new Color(gridIn, gridIn, gridIn));
-        xyplot.setRangeGridlinePaint(new Color(gridIn, gridIn, gridIn));
-
-        final ChartPanel chartPanel = new ChartPanel(chart);
-	    
-        frame.setContentPane(chartPanel);
-        
-        return chartPanel;
-
-	}
-
-	
-	public static void writeChartToPDF(JFreeChart chart, int width, int height, String fileName) {
+    /**
+     * Save the chart as pdf.
+     * @param chart
+     * 			chart that should be saved
+     * @param fileName
+     * 			file name under which chart should be saved
+     */
+	public static void writeChartToPDF(final JFreeChart chart, final String fileName) {
         PdfWriter writer = null;
-     
-        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4.rotate());
-     
+
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4);
+        final int width = (int) PageSize.A4.getWidth();
+        final int height = (int) PageSize.A4.getHeight();
+
         try {
             writer = PdfWriter.getInstance(document, new FileOutputStream(
-                    fileName));
+                    fileName + ".pdf"));
             document.open();
             PdfContentByte contentByte = writer.getDirectContent();
             PdfTemplate template = contentByte.createTemplate(width, height);
@@ -142,18 +180,18 @@ public final class Histogram extends JFrame {
                     new DefaultFontMapper());
             Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, width,
                     height);
-     
+
             chart.draw(graphics2d, rectangle2d);
-             
+
             graphics2d.dispose();
             contentByte.addTemplate(template, 0, 0);
-     
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         document.close();
     }
-	
+
 	/**
 	 * Converts Table object into array which can be used as input for the histogram.
 	 *
