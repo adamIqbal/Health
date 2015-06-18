@@ -1,4 +1,1 @@
-// with MijnnierInzicht Data
-
-
-freqbar(table0, "Moment");
+d

@@ -44,7 +44,7 @@ public final class AggregateFunction<T> {
      *            the column to apply the aggregate function on.
      * @return the result of the aggregate function on the given data.
      */
-    public double apply(final List<Record> records, String column) {
+    public double apply(final List<Record> records, final String column) {
         return function.apply(records, column);
     }
 }

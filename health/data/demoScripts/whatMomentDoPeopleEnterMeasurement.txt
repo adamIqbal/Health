@@ -1,4 +1,5 @@
 // with MijnnierInzicht Data
 
+var table = tableWithHoursOfDay(table0);
 
-freqbar(table0, "Moment");
+hist(table, "hour_of_day", 24);

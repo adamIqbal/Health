@@ -57,9 +57,29 @@ private XlsParser xp;
         }
         assertNotNull(actual);
         
-        System.out.println(actual.getColumn("ModifiedDate").getName());
+        System.out.println(actual.getRecords().get(0).getDateValue(actual.getDateColumn().getName()).getHour());
         
-        System.out.println(actual.getRecords().get(0).getDateValue("ModifiedDate"));
+ //       System.out.println(actual.getRecords().get(0).getDateValue("ModifiedDate"));
 	}
+	
+	@Test
+    public void testXls(){
+        Table actual = null;
+        try {
+            InputDescriptor id = new InputDescriptor("test_data_and_xmls/admireXlsConfig.xml");
+            String xlsxPath = "test_data_and_xmls/ADMIRE_56_BPM.xls";
+            
+            actual = xp.parse(xlsxPath, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            assertTrue(false);
+        }
+        assertNotNull(actual);
+        
+        //System.out.println(actual.getColumn("ModifiedDate").getName());
+        
+        //System.out.println(actual.getRecords().get(0).getDateValue("ModifiedDate"));
+	}
+
 
 }

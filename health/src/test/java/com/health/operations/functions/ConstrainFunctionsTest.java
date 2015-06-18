@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static com.health.operations.functions.ConstrainFunctions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +19,8 @@ public class ConstrainFunctionsTest {
   double columns;
   NumberValue value;
 
-  LocalDate date;
-  DateValue valueDate;
+  LocalDateTime date;
+  DateValue valueDate = new DateValue();
 
   String crea;
   StringValue valueString;
@@ -31,11 +32,11 @@ public class ConstrainFunctionsTest {
     value = new NumberValue();
     value.setValue(2);
 
-    date = LocalDate.now();
+    date = LocalDateTime.now();
     valueDate = new DateValue();
 
     crea = "crea";
-    valueString = new StringValue();
+    valueString = new StringValue("");
 
   }
 
@@ -61,6 +62,7 @@ public class ConstrainFunctionsTest {
     assertTrue(greaterEq((Object) date, (Value) valueDate));
     assertFalse(greaterEq((Object) date, null));
     assertFalse(greaterEq(null, (Value) value));
+
 
     valueDate.setValue(date.minusDays(1));
 
@@ -154,6 +156,7 @@ public class ConstrainFunctionsTest {
     System.out.println(crea);
     System.out.println(valueString);
   }
+
 
   @Test
   public void testGreaterNumber() {
