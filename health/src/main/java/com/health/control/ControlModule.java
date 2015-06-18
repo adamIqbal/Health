@@ -257,6 +257,9 @@ public final class ControlModule {
             return new WrapperValue<Table>(TableWithDays.TableDays(((WrapperValue<Table>) args[0]).getValue()));
         });
 
+        context.declareStaticMethod("tableWithHoursOfDay", (args) -> {
+            return new WrapperValue<Table>(TableWithDays.TableHours(((WrapperValue<Table>) args[0]).getValue()));
+        });
         return context;
     }
 
