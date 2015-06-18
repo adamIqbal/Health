@@ -95,7 +95,7 @@ public class XmlSavePanel extends JPanel {
 
     private void saveFile() throws IOException {
         int reply = JOptionPane.showConfirmDialog(null, "Do you want to overwrite your file?", "Save", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.NO_OPTION) {
+        if (reply == JOptionPane.NO_OPTION || reply == JOptionPane.CANCEL_OPTION) {
           return;
         }
         
