@@ -89,7 +89,14 @@ public class TableWithDays {
         return result;
     }
 
-    private static String dayOfWeek(LocalDateTime value) {
+    public static String dayOfWeek(LocalDateTime value) {
         return value.getDayOfWeek().toString();
     }
 }
+/*// with Admire statsensor data
+
+var table = chunk table0 by date per 12 weeks select count of date;
+
+write("out.txt", table);
+hist(table, "date", 5)
+*/

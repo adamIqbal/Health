@@ -1,6 +1,5 @@
 // with MijnnierInzicht Data
 
-//var table = chunk table0 by ModifiedDate per hour select count of ModifiedDate;
-//freqBar(table, "ModifiedDate")
+var table = tableWithHoursOfDay(table0);
 
-freqbar(table0, "Moment");
+hist(table, "hour_of_day", 24);
