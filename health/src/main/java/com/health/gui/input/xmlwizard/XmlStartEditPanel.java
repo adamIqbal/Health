@@ -39,33 +39,11 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
     }
 
     /**
-     * Sets the fileType.
-     * @param type
-     *            type of the config xml
+     * Gets the FileType that is currently selected in fileTypeSelector.
+     * @return FileType that is currently selected.
      */
-    public final void setFileType(final FileType type) {
-        fileTypeSelector.setSelectedItem(type);
-    }
-
-    private void init() {
-        panels = new HashMap<FileType, XmlStartEditSubPanel>();
-        this.setLayout(new BorderLayout());
-
-        fileTypeSelector = new JComboBox<FileType>(FileType.values());
-        fileTypeSelector.addItemListener(this);
-        this.add(fileTypeSelector, BorderLayout.NORTH);
-
-        editPanel = new JPanel();
-        editPanel.setLayout(new CardLayout());
-        XmlTxtEditPanel txtPanel = new XmlTxtEditPanel();
-        XmlXlsEditPanel xlsPanel = new XmlXlsEditPanel();
-        editPanel.add(txtPanel, "TXT");
-        editPanel.add(xlsPanel, "XLS");
-        this.add(editPanel);
-
-        // add panels to the map
-        panels.put(FileType.TXT, txtPanel);
-        panels.put(FileType.XLS, xlsPanel);
+    public final FileType getSelectedType() {
+        return (FileType) fileTypeSelector.getSelectedItem();
     }
 
     /**
@@ -82,12 +60,48 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
         return null;
     }
 
+    private void init() {
+        panels = new HashMap<FileType, XmlStartEditSubPanel>();
+        this.setLayout(new BorderLayout());
+
+        fileTypeSelector = new JComboBox<FileType>(FileType.values());
+        fileTypeSelector.addItemListener(this);
+        this.add(fileTypeSelector, BorderLayout.NORTH);
+
+        editPanel = new JPanel();
+        editPanel.setLayout(new CardLayout());
+        XmlTxtEditPanel txtPanel = new XmlTxtEditPanel();
+        XmlXlsEditPanel xlsPanel = new XmlXlsEditPanel();
+        XmlXlsEditPanel xlsxPanel = new XmlXlsEditPanel();
+        editPanel.add(txtPanel, "TXT");
+        editPanel.add(xlsPanel, "XLS");
+        editPanel.add(xlsxPanel, "XLSX");
+        this.add(editPanel);
+
+        // add panels to the map
+        panels.put(FileType.TXT, txtPanel);
+        panels.put(FileType.XLS, xlsPanel);
+        panels.put(FileType.XLSX, xlsxPanel);
+    }
+
     /**
-     * Gets the FileType that is currently selected in fileTypeSelector.
-     * @return FileType that is currently selected.
+     * Shows a panel depending on the FileType selected in fileTypeSelector.
+     * @param evt
+     *            ItemEvent object containing information
      */
-    public final FileType getSelectedType() {
-        return (FileType) fileTypeSelector.getSelectedItem();
+    @Override
+    public final void itemStateChanged(final ItemEvent evt) {
+        CardLayout cl = (CardLayout) (editPanel.getLayout());
+        cl.show(editPanel, evt.getItem().toString());
+    }
+
+    /**
+     * Sets the fileType.
+     * @param type
+     *            type of the config xml
+     */
+    public final void setFileType(final FileType type) {
+        fileTypeSelector.setSelectedItem(type);
     }
 
     /**
@@ -103,16 +117,5 @@ public class XmlStartEditPanel extends JPanel implements ItemListener {
             panels.get(type).setValues(values);
             setFileType(type);
         }
-    }
-
-    /**
-     * Shows a panel depending on the FileType selected in fileTypeSelector.
-     * @param evt
-     *            ItemEvent object containing information
-     */
-    @Override
-    public final void itemStateChanged(final ItemEvent evt) {
-        CardLayout cl = (CardLayout) (editPanel.getLayout());
-        cl.show(editPanel, evt.getItem().toString());
     }
 }
