@@ -1,5 +1,6 @@
 package com.health.control;
 
+import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -7,10 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.jfree.chart.JFreeChart;
 import org.xml.sax.SAXException;
 
 import com.health.Column;
@@ -168,26 +168,26 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("boxplot", (args) -> {
-            JPanel panel;
+            JFreeChart panel;
 
             if (args.length >= 2) {
-                panel = BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue(),
+                panel = BoxPlot.createBoxPlot(((WrapperValue<Table>) args[0]).getValue(),
                         ((StringValue) args[1]).getValue());
             } else {
-                panel = BoxPlot.boxPlot(((WrapperValue<Table>) args[0]).getValue());
+                panel = BoxPlot.createBoxPlot(((WrapperValue<Table>) args[0]).getValue());
             }
 
-            this.output.put("boxplot" + ++numBoxPlots, panel);
+            this.output.put("boxplot" + ++numBoxPlots, BoxPlot.visualBoxPlot(panel));
             return null;
         });
 
         context.declareStaticMethod("hist", (args) -> {
-            JPanel panel = Histogram.createHistogram(
+            JFreeChart panel = Histogram.createHist(
                     ((WrapperValue<Table>) args[0]).getValue(),
                     ((StringValue) args[1]).getValue(),
                     (int) ((NumberValue) args[2]).getValue());
 
-            this.output.put("histogram" + ++numHistograms, panel);
+            this.output.put("histogram" + ++numHistograms, Histogram.visualHist(panel));
             return null;
         });
 
@@ -236,7 +236,7 @@ public final class ControlModule {
                     }
 
                     EventList codes = ((EventListValue) args[baseIndex + 0]).getValue();
-                    JTable table;
+                    Container table;
 
                     if (args.length >= baseIndex + 2) {
                         EventSequence sequence = ((EventSequenceValue) args[baseIndex + 1]).getValue();

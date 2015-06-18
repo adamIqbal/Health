@@ -5,8 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTable;
-
 import org.junit.Test;
 
 import com.health.Column;
@@ -20,7 +18,7 @@ import com.health.operations.Code;
 
 /**
  * Test for State Transition Matrix.
- * 
+ *
  * @author Lizzy Scholten
  *
  */
@@ -85,8 +83,14 @@ public class StateTransitionMatrixTest {
         Event e2 = new Event("B", table.getRecords().get(1));
         Event e3 = new Event("A", table.getRecords().get(2));
         Event e4 = new Event("B", table.getRecords().get(three));
-        Event e5 = new Event("A", table.getRecords().get(four));
+        Event e5 = new Event("E", table.getRecords().get(four));
         Event e6 = new Event("C", table.getRecords().get(four));
+        Event e7 = new Event("A", table.getRecords().get(0));
+        Event e8 = new Event("D", table.getRecords().get(1));
+        Event e9 = new Event("E", table.getRecords().get(2));
+        Event e10 = new Event("B", table.getRecords().get(three));
+        Event e11 = new Event("A", table.getRecords().get(four));
+        Event e12 = new Event("D", table.getRecords().get(four));
 
         eList.addEvent(e1);
         eList.addEvent(e2);
@@ -94,11 +98,17 @@ public class StateTransitionMatrixTest {
         eList.addEvent(e4);
         eList.addEvent(e5);
         eList.addEvent(e6);
+        eList.addEvent(e7);
+        eList.addEvent(e8);
+        eList.addEvent(e9);
+        eList.addEvent(e10);
+        eList.addEvent(e11);
+        eList.addEvent(e12);
 
-        String[] codePat1 = { "B", "A", "A", "B" };
-        String[] codePat2 = { "A", "A", "B" };
-        String[] codePat3 = { "A", "B", "A", "C" };
-        String[] codePat4 = { "C", "B", "C" };
+        String[] codePat1 = {"B", "A", "A", "B", "E", "D", "B"};
+        String[] codePat2 = {"A", "A", "B"};
+        String[] codePat3 = {"A", "B", "A", "C", "D", "E", "E"};
+        String[] codePat4 = {"C", "B", "E", "C"};
 
         EventSequence eSeq1 = new EventSequence(codePat1);
         EventSequence eSeq2 = new EventSequence(codePat2);
