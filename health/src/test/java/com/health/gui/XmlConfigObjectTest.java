@@ -101,43 +101,91 @@ public class XmlConfigObjectTest {
 
     @Test
     public void testSetColumns() throws Exception {
-        fail("not yet implemented");
+        ArrayList<String> currentColumns = (ArrayList<String>) xml.getColumns();
+        
+        ArrayList<String> newColumns = new ArrayList<String>();
+        newColumns.add("2numbercolumn");
+        newColumns.add("datecolumn[yyM[M]dd]");
+        newColumns.add("string2column");
+        xml.setColumns(newColumns);
+        
+        assertNotEquals(currentColumns, newColumns);  
+        
+        ArrayList<String> columns = (ArrayList<String>) xml.getColumns();
+        assertEquals(newColumns, columns);
     }
 
     @Test
     public void testSetColumnTypes() throws Exception {
-        fail("not yet implemented");
+        ArrayList<ValueType> currentColumns = (ArrayList<ValueType>) xml.getColumnTypes();
+        
+        ArrayList<ValueType> newColumns = new ArrayList<ValueType>();
+        newColumns.add(ValueType.Number);
+        newColumns.add(ValueType.Date);
+        newColumns.add(ValueType.String);
+        xml.setColumnTypes(newColumns);
+        
+        assertNotEquals(currentColumns, newColumns);  
+        
+        ArrayList<ValueType> actualColumns = (ArrayList<ValueType>) xml.getColumnTypes();
+        assertEquals(newColumns, actualColumns);
     }
 
     @Test
     public void testSetDateFormat() throws Exception {
-        fail("not yet implemented");
+        String currentFormat = xml.getDateFormat();
+        
+        String newFormat = "d[d]/M[M]/yyyy";
+        xml.setDateFormat(newFormat);
+        
+        assertNotEquals(currentFormat, newFormat);
+        
+        String actual = xml.getDateFormat();
+        assertEquals(newFormat, actual);
     }
 
     @Test
     public void testSetPath() throws Exception {
-        fail("not yet implemented");
+        Path currentPath = xml.getPath();
+        
+        Path newPath = Paths.get("new/path/to/file.xml");
+        xml.setPath(newPath);
+        
+        assertNotEquals(currentPath, newPath);
+        
+        Path actual = xml.getPath();
+        assertEquals(newPath, actual);
     }
 
     @Test
     public void testSetType() throws Exception {
-        fail("not yet implemented");
+        FileType currentType = xml.getType();
+        
+        FileType newType = FileType.XLS;
+        xml.setType(newType);
+        
+        assertNotEquals(currentType, newType);
+        
+        FileType actual = xml.getType();
+        assertEquals(newType, actual);
     }
 
     @Test
     public void testSetValues() throws Exception {
-        fail("not yet implemented");
-    }
-
-    @Test
-    public void testSplitString() throws Exception {
-        fail("not yet implemented");
+        String[] currentValues = {"startdelim", "enddelim", "delim", "ignorelast"};
+        
+        String[] newValues = {"4", "1", "1"};
+        xml.setValues(newValues);
+        
+        assertNotEquals(currentValues, newValues);
+        
+        String[] actual = xml.getValues();
+        assertArrayEquals(newValues, actual);
     }
 
     @Test
     public void testToXMLStringTXT() throws Exception {
-        
-        System.out.println(xml.toXMLStringTXT());
+        //System.out.println(xml.toXMLStringTXT());
         fail("not yet implemented");
     }
 
