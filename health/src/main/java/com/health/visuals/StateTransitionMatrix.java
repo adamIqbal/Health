@@ -1,6 +1,7 @@
 package com.health.visuals;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -50,7 +51,7 @@ public final class StateTransitionMatrix extends JFrame {
      * @return
      * 			JTable
      */
-    public static JTable createStateTrans(final EventList eList) {
+    public static Container createStateTrans(final EventList eList) {
         List<EventList> seqList = findEventSequences(eList);
 
         return createStateTrans(eList, seqList);
@@ -107,7 +108,7 @@ public final class StateTransitionMatrix extends JFrame {
      * @return
      * 			JTable
      */
-    public static JTable createStateTrans(final EventList eList, final List<EventList> seqList) {
+    public static Container createStateTrans(final EventList eList, final List<EventList> seqList) {
         // Create frame
     	final Dimension frameDimension = new Dimension((int) (PageSize.A4.getWidth()), (int) (PageSize.A4.getHeight()));
 
@@ -138,7 +139,7 @@ public final class StateTransitionMatrix extends JFrame {
         frame.setVisible(true);
         frame.setVisible(false);
 
-        return table;
+        return scrollPane;
     }
 
 
@@ -237,7 +238,7 @@ public final class StateTransitionMatrix extends JFrame {
      * 			table you want to save
      *
      */
-	public static void saveFile(final String name, final JPanel table) {
+	public static void saveFile(final String name, final Container table) {
 		com.itextpdf.text.Document document = new com.itextpdf.text.Document(PageSize.A4
 				);
 		try {
