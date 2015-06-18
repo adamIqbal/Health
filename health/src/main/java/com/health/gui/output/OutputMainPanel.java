@@ -55,16 +55,16 @@ public class OutputMainPanel extends JPanel {
                 jtable.setEnabled(false);
                 jtable.setAutoCreateRowSorter(true);
                 JScrollPane scroll = new JScrollPane(jtable);
-                pane.add("Tab", scroll);
+                pane.add("Table: "+key, scroll);
             } else if (element instanceof Component) {
                 Component component = (Component) element;
-                pane.add("Visual", component);
+                pane.add("Visual: "+key, component);
             } else if (element instanceof JTable) {
                 JTable jtable = (JTable) element;
                 jtable.setEnabled(false);
                 jtable.setAutoCreateRowSorter(true);
                 JScrollPane scroll = new JScrollPane(jtable);
-                pane.add("Matrix", scroll);
+                pane.add("Matrix: "+key, scroll);
             }
         }
 
