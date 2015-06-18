@@ -123,6 +123,7 @@ class XmlFilePanel extends JPanel {
         }
 
         public void buildList() {
+            listModel.removeAllElements();
             try {
                 DirectoryStream<Path> stream;
                 stream = Files.newDirectoryStream(path);
