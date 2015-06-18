@@ -17,7 +17,7 @@ public class VButton extends JButton {
     private static final long serialVersionUID = 7943200926343968143L;
     private final int width = 100;
     private final int height = 50;
-    private final Color buttonColor = new Color(200, 200, 200);
+    final static Color BUTTON_COLOR = new Color(200, 200, 200);
 
     /**
      * Constructor.
@@ -27,6 +27,6 @@ public class VButton extends JButton {
     public VButton(final String text) {
         super(text);
         this.setPreferredSize(new Dimension(width, height));
-        this.setBackground(buttonColor);
+        this.setBackground(BUTTON_COLOR);
     }
 }

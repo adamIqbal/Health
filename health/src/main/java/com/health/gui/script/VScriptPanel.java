@@ -44,7 +44,6 @@ public final class VScriptPanel extends VidneyPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 4322421568728565558L;
-    private static JTextArea scriptArea= new JTextArea(2, 1);
 
     /**
      * Constructor.
@@ -54,8 +53,8 @@ public final class VScriptPanel extends VidneyPanel {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        scriptArea.setText("");
-        mainPanel.add(scriptArea, BorderLayout.CENTER);
+        mainPanel.add(new ScriptMainPanel(), BorderLayout.CENTER);
+        //mainPanel.add(scriptArea, BorderLayout.CENTER);
 
         VButton startAnalysisButton = new VButton("Start Analysis");
         startAnalysisButton.addActionListener(new AnalysisListener());
@@ -83,21 +82,12 @@ public final class VScriptPanel extends VidneyPanel {
         this.setRight(sidePanel);
     }
 
-    /**
-     * Gets the script as a String.
-     *
-     * @return a String representation of the script
-     */
-    protected static String getScriptAreaText() {
-        return scriptArea.getText();
-    }
-
     private VButton createSaveButton() {
         VButton saveScriptButton = new VButton("Save Script");
         saveScriptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                if (VScriptPanel.getScriptAreaText().equals("")) {
+                if (ScriptMainPanel.getScript().equals("")) {
                     JOptionPane.showMessageDialog(new JFrame(),
                             "You have not typed a script yet.", "Whoops!",
                             JOptionPane.OK_OPTION);
@@ -111,7 +101,7 @@ public final class VScriptPanel extends VidneyPanel {
 
                     try {
                         FileUtils.writeStringToFile(file,
-                                VScriptPanel.getScriptAreaText());
+                                ScriptMainPanel.getScript());
                     } catch (IOException e) {
                         JOptionPane.showMessageDialog(new JFrame(),
                                 "Error occured while selecting file.", "Error",
@@ -182,7 +172,7 @@ public final class VScriptPanel extends VidneyPanel {
      *            the text to set
      */
     private static void setScriptAreaText(final String text) {
-        scriptArea.setText(text);
+        ScriptMainPanel.setScript(text);
     }
 
     /**
@@ -216,7 +206,7 @@ public final class VScriptPanel extends VidneyPanel {
          */
         @Override
         public void actionPerformed(final ActionEvent event) {
-            if (getScript().equals("")) {
+            if (ScriptMainPanel.getScript().equals("")) {
                 JOptionPane.showMessageDialog(new JFrame(),
                         "The script is empty.", "Whoops!",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -225,7 +215,7 @@ public final class VScriptPanel extends VidneyPanel {
             Context context;
 
             ControlModule control = new ControlModule();
-            control.setScript(getScript());
+            control.setScript(ScriptMainPanel.getScript());
             control.setData(getInputData());
 
             try {
@@ -252,10 +242,6 @@ public final class VScriptPanel extends VidneyPanel {
             }
 
             VOutputPanel.addAnalysis(control.getOutput());
-        }
-
-        private String getScript() {
-            return VScriptPanel.getScriptAreaText();
         }
 
         private List<InputData> getInputData() {

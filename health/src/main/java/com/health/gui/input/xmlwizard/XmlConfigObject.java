@@ -156,7 +156,7 @@ public class XmlConfigObject {
      * @param type
      *            new value of type
      */
-    protected final void setType(final FileType type) {
+    public final void setType(final FileType type) {
         this.type = type;
     }
 
@@ -164,7 +164,7 @@ public class XmlConfigObject {
      * Gets the date format
      * @return date format
      */
-    protected final String getDateFormat() {
+    public final String getDateFormat() {
         return dateFormat;
     }
 
@@ -173,7 +173,7 @@ public class XmlConfigObject {
      * @param dateFormat
      *            date format
      */
-    protected final void setDateFormat(final String dateFormat) {
+    public final void setDateFormat(final String dateFormat) {
         this.dateFormat = dateFormat;
     }
 
@@ -181,7 +181,7 @@ public class XmlConfigObject {
      * Gets the value of the values attribute.
      * @return the type attribute
      */
-    protected final String[] getValues() {
+    public final String[] getValues() {
         return values;
     }
 
@@ -190,7 +190,7 @@ public class XmlConfigObject {
      * @param values
      *            new value of values
      */
-    protected final void setValues(final String[] values) {
+    public final void setValues(final String[] values) {
         this.values = values;
     }
 
@@ -198,7 +198,7 @@ public class XmlConfigObject {
      * Gets the value of the columns attribute.
      * @return the type attribute
      */
-    protected final List<String> getColumns() {
+    public final List<String> getColumns() {
         return columns;
     }
 
@@ -207,7 +207,7 @@ public class XmlConfigObject {
      * @param columns
      *            new value of columns
      */
-    protected final void setColumns(final List<String> columns) {
+    public final void setColumns(final List<String> columns) {
         this.columns = columns;
     }
 
@@ -215,7 +215,7 @@ public class XmlConfigObject {
      * Gets the value of the columnTypes attribute.
      * @return the type attribute
      */
-    protected final List<ValueType> getColumnTypes() {
+    public final List<ValueType> getColumnTypes() {
         return columnTypes;
     }
 
@@ -224,7 +224,7 @@ public class XmlConfigObject {
      * @param columnTypes
      *            new value of columnTypes
      */
-    protected final void setColumnTypes(final List<ValueType> columnTypes) {
+    public final void setColumnTypes(final List<ValueType> columnTypes) {
         this.columnTypes = columnTypes;
     }
 
@@ -232,7 +232,7 @@ public class XmlConfigObject {
      * Gets the value of the path attribute.
      * @return the type attribute
      */
-    protected final Path getPath() {
+    public final Path getPath() {
         return path;
     }
 
@@ -241,7 +241,7 @@ public class XmlConfigObject {
      * @param path
      *            new value of path
      */
-    protected final void setPath(final Path path) {
+    public final void setPath(final Path path) {
         this.path = path;
     }
 
