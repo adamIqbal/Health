@@ -14,16 +14,6 @@ Mijnnierinzicht?
 
 Mijnnierinzicht?
 
-- Do patient follow up advice given my Mijnnierinzicht?
-
-- What are the conditions under which people start deviating from their normal measurement 
-
-routine?
-
 - Find cases where there is a difference between device measurement and what is entered in 
 
 Mijnnierinzicht 
-
-- Do external factors, such as holidays, have an effect on the patient�s measurement routine?
-
-- Is the value of creatine, blood pressure, HR effecting the patient�s measurement routine?
