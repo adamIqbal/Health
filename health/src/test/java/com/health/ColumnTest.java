@@ -111,7 +111,7 @@ public class ColumnTest {
 
     @Test
     public void equals_givenSameColumn_returnsTrue() {
-        assertEquals(false, column.equals(column));
+        assertEquals(true, column.equals(column));
     }
 
     @Test
@@ -129,10 +129,10 @@ public class ColumnTest {
     }
 
     @Test
-    public void equals_givenColumnWithDifferentIndex_returnsFalse() {
+    public void equals_givenColumnWithDifferentIndex_returnsTrue() {
         Column inequalColumn = new Column(name, 1, type);
 
-        assertEquals(false, column.equals(inequalColumn));
+        assertEquals(true, column.equals(inequalColumn));
     }
 
     @Test
