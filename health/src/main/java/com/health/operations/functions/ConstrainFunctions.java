@@ -179,7 +179,7 @@ public final class ConstrainFunctions {
             StringValue str = (StringValue) value;
             if (columns.toString().contains(str.getValue())
                     && !columns.toString().equals(str.getValue())) {
-                System.out.println();
+
             }
             return columns.toString().equals(str.getValue());
         }
