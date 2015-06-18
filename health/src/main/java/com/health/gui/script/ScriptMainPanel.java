@@ -19,7 +19,7 @@ public class ScriptMainPanel extends JPanel {
         super();
         this.setLayout(new BorderLayout());
         editor = new JTextArea("");
-        editor.setFont(new Font("Consolas", Font.BOLD, 14));
+        editor.setFont(new Font("Helvetica", Font.BOLD, 12));
         JScrollPane scriptPane = new JScrollPane(editor);
         TextLineNumber tln = new TextLineNumber(editor);
         scriptPane.setRowHeaderView(tln);
