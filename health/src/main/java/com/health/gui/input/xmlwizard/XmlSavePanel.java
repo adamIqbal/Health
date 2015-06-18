@@ -25,10 +25,46 @@ import com.health.gui.VButton;
  */
 public class XmlSavePanel extends JPanel {
     /**
+     * Listens if the user presses the 'Save as..' button.
+     * @author Bjorn van der Laan
+     *
+     */
+    private class XmlSaveAsListener implements ActionListener {
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            try {
+                saveAs();
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(new JFrame(),
+                        "'Save as..' operation has failed. Please try again.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    /**
+     * Listens if the user presses the Save button.
+     * @author Bjorn van der Laan
+     *
+     */
+    private class XmlSaveListener implements ActionListener {
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+            try {
+                saveFile();
+            } catch (IOException e1) {
+                JOptionPane.showMessageDialog(new JFrame(),
+                        "Save operation has failed. Please try again.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    /**
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -1653095867015812077L;
+
     private JTextArea preview;
+
     private JPanel buttonPanel;
 
     /**
@@ -63,6 +99,36 @@ public class XmlSavePanel extends JPanel {
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    private void saveAs() throws IOException {
+        String name = JOptionPane.showInputDialog(new JFrame(),
+                "Please specify a name for this XML file", "Save as..");
+        String filename = GUImain.PATH_TO_CONFIG_XML + name + ".xml";
+        File file = new File(filename);
+
+        FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
+    }
+
+    private void saveFile() throws IOException {
+        int reply = JOptionPane.showConfirmDialog(null,
+                "Do you want to overwrite your file?", "Save",
+                JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.NO_OPTION
+                || reply == JOptionPane.CANCEL_OPTION) {
+            return;
+        }
+
+        String filename = XmlWizard.getXml().getPath().toString();
+        File file = new File(filename);
+        FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
+
+        JOptionPane.showMessageDialog(new JFrame(),
+                "Your file has been saved.", "Success!",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        XmlWizard.setXml(new XmlConfigObject());
+        XmlWizard.nextPanel();
+    }
+
     /**
      * Sets the values of the components of this panel according to the input
      * object.
@@ -81,64 +147,6 @@ public class XmlSavePanel extends JPanel {
             buttonPanel.add(saveButton);
             buttonPanel.revalidate();
             buttonPanel.repaint();
-        }
-    }
-
-    private void saveAs() throws IOException {
-        String name = JOptionPane.showInputDialog(new JFrame(),
-                "Please specify a name for this XML file", "Save as..");
-        String filename = GUImain.PATH_TO_CONFIG_XML + name + ".xml";
-        File file = new File(filename);
-
-        FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
-    }
-
-    private void saveFile() throws IOException {
-        String filename = XmlWizard.getXml().getPath().toString();
-        File file = new File(filename);
-        FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
-
-        JOptionPane.showMessageDialog(new JFrame(),
-                "Your file has been saved.", "Success!",
-                JOptionPane.INFORMATION_MESSAGE);
-
-        XmlWizard.setXml(new XmlConfigObject());
-        XmlWizard.nextPanel();
-    }
-
-    /**
-     * Listens if the user presses the 'Save as..' button.
-     * @author Bjorn van der Laan
-     *
-     */
-    private class XmlSaveAsListener implements ActionListener {
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-            try {
-                saveAs();
-            } catch (IOException e1) {
-                JOptionPane.showMessageDialog(new JFrame(),
-                        "'Save as..' operation has failed. Please try again.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    /**
-     * Listens if the user presses the Save button.
-     * @author Bjorn van der Laan
-     *
-     */
-    private class XmlSaveListener implements ActionListener {
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-            try {
-                saveFile();
-            } catch (IOException e1) {
-                JOptionPane.showMessageDialog(new JFrame(),
-                        "Save operation has failed. Please try again.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
         }
     }
 
