@@ -1,6 +1,6 @@
 package com.health;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,9 +49,10 @@ public class EventTest {
 
         e.setCode("B");
         e.setRecord(table.getRecords().get(1));
-        
+
         assertEquals("B", e.getCode());
         assertEquals("Jan", e.getRecord().getStringValue("name"));
+        assertEquals(LocalDate.of(2, 2, 2), e.getDate());
     }
 
 }
