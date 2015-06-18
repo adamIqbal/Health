@@ -100,8 +100,22 @@ public class EventList {
             return null;
         }
         List<Column> cols = makeTableCols();
+        cols.add(new Column("code_name", cols.size(), ValueType.String));
         Table res = new Table(cols);
-        addAllRecords(res, cols);
+        
+        for(Event e : eventList){
+            Record rec = new Record(res);
+            
+            Record tmp = e.getRecord();
+            int i = 0;
+            for(Object o : tmp.getValues()){
+                rec.setValue(i, o);
+                i++;
+            }
+            
+            rec.setValue("code_name", e.getCode());
+            
+        }
 
         return res;
     }
