@@ -81,6 +81,10 @@ public class GUImain extends JFrame {
      * Makes the frame and and fills tabs.
      */
     public GUImain() {
+        init();
+    }
+    
+    protected void init() {
         this.initializeFrame();
 
         this.createTabbedPane();
