@@ -64,6 +64,9 @@ public final class BoxPlot {
             }
         }
 
+        if (column == null) {
+            return null;
+        }
         return createBoxPlot(table, column.getName());
     }
 
@@ -82,7 +85,7 @@ public final class BoxPlot {
      * 			chart
      */
     public static JFreeChart createBoxPlot(final Table table, final String column) {
-    	if (!(table.getColumn(column).getType() == ValueType.Number)) {
+    	if (column == null || !(table.getColumn(column).getType() == ValueType.Number)) {
             throw new IllegalArgumentException("Column must be of type Number");
         }
 
