@@ -13,6 +13,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import com.health.Column;
 import com.health.EventList;
 import com.health.EventSequence;
 import com.health.Table;
@@ -20,6 +21,7 @@ import com.health.input.Input;
 import com.health.input.InputException;
 import com.health.interpreter.Interpreter;
 import com.health.operations.Code;
+import com.health.operations.ReadTime;
 import com.health.operations.TableWithDays;
 import com.health.output.Output;
 import com.health.script.runtime.BooleanValue;
@@ -259,6 +261,15 @@ public final class ControlModule {
 
         context.declareStaticMethod("tableWithHoursOfDay", (args) -> {
             return new WrapperValue<Table>(TableWithDays.TableHours(((WrapperValue<Table>) args[0]).getValue()));
+        });
+        
+        context.declareStaticMethod("addTimeToDate", (args) -> {
+            Table table = ((WrapperValue<Table>) args[0]).getValue();
+            Column dateCol = table.getColumn(((StringValue) args[1]).getValue());
+            Column timeCol = table.getColumn(((StringValue) args[2]).getValue());
+            
+            ReadTime.addTimeToDate(table, dateCol, timeCol);
+            return null;
         });
         return context;
     }

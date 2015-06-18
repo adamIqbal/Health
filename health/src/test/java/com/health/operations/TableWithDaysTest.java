@@ -1,12 +1,10 @@
 package com.health.operations;
 
 import static org.junit.Assert.*;
+import static com.health.operations.TableWithDays.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,23 +13,21 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
-import com.health.output.Output;
 
-public class ConnectTest {
-
-
-  private Table connectedTable;
+public class TableWithDaysTest {
+  LocalDate date;
+  Column[] tableColumns;
+  Table table, table2;
 
   @Before
-  public void setupTest() {
-
-    Column[] tableColumns = new Column[4];
+  public void setUp() throws Exception {
+    tableColumns = new Column[4];
     tableColumns[0] = new Column("date", 0, ValueType.Date);
     tableColumns[1] = new Column("meetwaarde1", 1, ValueType.Number);
     tableColumns[2] = new Column("name", 2, ValueType.String);
     tableColumns[3] = new Column("meetwaarde2", 3, ValueType.Number);
 
-    Table table = new Table(Arrays.asList(tableColumns));
+    table = new Table(Arrays.asList(tableColumns));
 
     Record tmp = new Record(table);
 
@@ -76,7 +72,7 @@ public class ConnectTest {
     tableColumns2[2] = new Column("name", 2, ValueType.String);
     tableColumns2[3] = new Column("meetwaarde4", 3, ValueType.Number);
 
-    Table table2 = new Table(Arrays.asList(tableColumns2));
+    table2 = new Table(Arrays.asList(tableColumns2));
 
     tmp = new Record(table2);
     tmp.setValue("datum", LocalDate.parse("2013-11-15"));
@@ -85,68 +81,27 @@ public class ConnectTest {
     tmp.setValue("meetwaarde4", 3.0);
 
     tmp = new Record(table2);
-    tmp.setValue("datum", LocalDate.parse("2013-12-16"));
+    tmp.setValue("datum", LocalDate.parse("2015-06-17"));
     tmp.setValue("meetwaarde3", 10.0);
     tmp.setValue("name", "Dolf");
     tmp.setValue("meetwaarde4", 10.0);
-
-    List<ColumnConnection> connections = new ArrayList<ColumnConnection>();
-    connections.add(new ColumnConnection("date", "datum", "date"));
-
-    connectedTable = Connect.connect(table, table2, connections);
-
   }
 
   @Test
-  public void testColsDate() {
-    List<Column> tableCols = connectedTable.getColumns();
-
-    assertEquals("date", tableCols.get(0).getName());
-    assertNotEquals("date", tableCols.get(1).getName());
-
+  public void testTableDays() {
+    assertEquals(table2.getColumns().size(), 4);
+    table2 = TableDays(table2);
+    assertEquals(table2.getColumns().size(), 5);
+    assertTrue(table2.getRecords().get(1).getStringValue("day_of_week").contains("WEDNESDAY"));
   }
 
   @Test
-  public void testColsString() {
-    List<Column> tableCols = connectedTable.getColumns();
-
-    assertEquals("name", tableCols.get(2).getName());
-    assertNotEquals("name", tableCols.get(1).getName());
-
+  public void testDayOfWeek() {
+    date = LocalDate.parse("2015-06-17");
+    assertTrue(dayOfWeek(date).toLowerCase().equals("wednesday"));
+    assertFalse(dayOfWeek(date).toLowerCase().equals("partyday"));
+    date = LocalDate.parse("2015-06-16");
+    assertTrue(dayOfWeek(date).toLowerCase().equals("tuesday"));
+    assertFalse(dayOfWeek(date).toLowerCase().equals("partyday"));
   }
-
-  @Test
-  public void testColsNumber() {
-    List<Column> tableCols = connectedTable.getColumns();
-
-    assertTrue(tableCols.contains(new Column("meetwaarde3", 1, ValueType.Number)));
-    assertFalse(tableCols.contains(new Column("meetwaarde6", 0, ValueType.Number)));
-
-  }
-
-  @Test
-  public void testAllThree() {
-    List<Column> tableCols = connectedTable.getColumns();
-    assertEquals("name", tableCols.get(2).getName());
-    assertNotEquals("name", tableCols.get(0).getName());
-
-    assertTrue(tableCols.contains(new Column("meetwaarde3", 1, ValueType.Number)));
-    assertFalse(tableCols.contains(new Column("meetwaarde0", 0, ValueType.Number)));
-
-    assertEquals("date", tableCols.get(0).getName());
-    assertNotEquals("date", tableCols.get(2).getName());
-
-  }
-
-  @Test
-  public void testNoEmptyCells() {
-
-    List<Record> tableRecs = connectedTable.getRecords();
-
-    assertNotEquals(null, tableRecs.get(3).getNumberValue("meetwaarde1"));
-    double value = tableRecs.get(1).getNumberValue("meetwaarde3");
-    double expected = 10;
-    assertTrue(expected == value);
-  }
-
 }
