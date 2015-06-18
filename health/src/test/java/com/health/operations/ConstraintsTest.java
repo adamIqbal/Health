@@ -91,8 +91,6 @@ public class ConstraintsTest {
 
         assertFalse(table0.getRecords().contains("Dolf"));
         System.out.println(table0.getRecords().get(0).getStringValue("name"));
-        // assertTrue(table0.getRecords().contains("Piet"));
-        // FIXME: contains not working??
         assertTrue(table0.getRecords().get(0).getStringValue("name")
                 .equals("Piet"));
         assertFalse(table.getRecords().contains(null));
@@ -117,4 +115,6 @@ public class ConstraintsTest {
         assertFalse(table1.getRecords().contains(LocalDateTime.of(2013, 11, 12, 0, 0)));
         assertFalse(table1.getRecords().contains(null));
     }
+
+
 }
