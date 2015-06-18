@@ -300,6 +300,66 @@ public class RecordTest {
         assertSame(expected, actual);
     }
 
+    @Test
+    public void setValueFloat_updatesValue() {
+        float value = -1.0f;
+
+        record.setValue(column2.getIndex(), value);
+
+        Double expected = (double) value;
+        Double actual = record.getNumberValue(column2.getName());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void setValueShort_updatesValue() {
+        short value = 255;
+
+        record.setValue(column2.getIndex(), value);
+
+        Double expected = (double) value;
+        Double actual = record.getNumberValue(column2.getName());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void setValueInteger_updatesValue() {
+        int value = 255;
+
+        record.setValue(column2.getIndex(), value);
+
+        Double expected = (double) value;
+        Double actual = record.getNumberValue(column2.getName());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void setValueLong_updatesValue() {
+        long value = 255;
+
+        record.setValue(column2.getIndex(), value);
+
+        Double expected = (double) value;
+        Double actual = record.getNumberValue(column2.getName());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void setValueCharacter_updatesValue() {
+        char value = 255;
+
+        record.setValue(column2.getIndex(), value);
+
+        Double expected = (double) value;
+        Double actual = record.getNumberValue(column2.getName());
+
+        assertEquals(expected, actual);
+    }
+
     /**
      * Tests whether {@link Record#setValue(String, Object)} throws a
      * {@link IllegalArgumentException} when given a null reference for name.
