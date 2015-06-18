@@ -157,7 +157,7 @@ public final class Record {
     }
 
     private static ValueType getValueType(final Object value) {
-        if (value instanceof Double) {
+        if (instanceofNumericType(value)) {
             return ValueType.Number;
         } else if (value instanceof String) {
             return ValueType.String;
@@ -234,6 +234,45 @@ public final class Record {
             throw new IllegalStateException();
         }
 
-        this.values[column.getIndex()] = value;
+        if (type == ValueType.Number) {
+            this.values[column.getIndex()] = castNumericTypeToDouble(value);
+        } else {
+            this.values[column.getIndex()] = value;
+        }
+    }
+
+    private static boolean instanceofNumericType(final Object value) {
+        return value instanceof Double
+                || value instanceof Float
+                || value instanceof Short
+                || value instanceof Integer
+                || value instanceof Long
+                || value instanceof Character;
+    }
+
+    private static Object castNumericTypeToDouble(final Object value) {
+        if (value instanceof Float) {
+            float fval = (Float) value;
+            double dval = fval;
+            return dval;
+        } else if (value instanceof Short) {
+            short sval = (Short) value;
+            double dval = sval;
+            return dval;
+        } else if (value instanceof Integer) {
+            int ival = (Integer) value;
+            double dval = ival;
+            return dval;
+        } else if (value instanceof Long) {
+            long lval = (Long) value;
+            double dval = lval;
+            return dval;
+        } else if (value instanceof Character) {
+            char cval = (Character) value;
+            double dval = cval;
+            return dval;
+        } else {
+            return value;
+        }
     }
 }
