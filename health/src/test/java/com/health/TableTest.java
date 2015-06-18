@@ -42,9 +42,7 @@ public class TableTest {
         };
 
         table = new Table(Arrays.asList(columns));
-
-        record = mock(Record.class);
-        when(record.getTable()).thenReturn(table);
+        record = mockRecord(table);
     }
 
     /**
@@ -196,8 +194,7 @@ public class TableTest {
     public void addRecord_givenRecordBeloningToDifferentTable_throwsIllegalArgumentException() {
         Table table1 = table;
         Table table2 = new Table(Arrays.asList(columns));
-        Record record = mock(Record.class);
-        when(record.getTable()).thenReturn(table2);
+        Record record = mockRecord(table2);
 
         table1.addRecord(record);
     }
@@ -273,6 +270,14 @@ public class TableTest {
     }
 
     @Test
+    public void size_returnsNumberOfRecords() {
+        table.addRecord(mockRecord(table));
+        table.addRecord(mockRecord(table));
+
+        assertEquals(2, table.size());
+    }
+
+    @Test
     public void getDateColumn_givenTableContainsDateColumn_returnsDateColumn() {
         assertEquals(columns[3], table.getDateColumn());
     }
@@ -282,5 +287,12 @@ public class TableTest {
         Table table = new Table(Arrays.asList(new Column("abc", 0, ValueType.Number)));
 
         assertNull(table.getDateColumn());
+    }
+
+    private static Record mockRecord(final Table table) {
+        Record record = mock(Record.class);
+        when(record.getTable()).thenReturn(table);
+
+        return record;
     }
 }
