@@ -244,6 +244,21 @@ public final class Record {
     public void setValue(final String name, final Object value) {
         if (value instanceof Double) {
             this.setValue(name, (Double) value);
+        } else if (value instanceof Short) {
+            short sval = (Short) value;
+            double dval = sval;
+
+            this.setValue(name, (Double) dval);
+        } else if (value instanceof Integer) {
+            int ival = (Integer) value;
+            double dval = ival;
+
+            this.setValue(name, (Double) dval);
+        } else if (value instanceof Long) {
+            long lval = (Long) value;
+            double dval = lval;
+
+            this.setValue(name, (Double) dval);
         } else if (value instanceof String) {
             this.setValue(name, (String) value);
         } else if (value instanceof LocalDateTime) {
