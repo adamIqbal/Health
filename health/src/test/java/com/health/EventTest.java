@@ -2,7 +2,6 @@ package com.health;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class EventTest {
-
     private Table table;
 
     @Before
@@ -32,7 +30,6 @@ public class EventTest {
         tmp.setValue(0, LocalDateTime.of(2, 2, 2, 0, 0));
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
-
     }
 
     @Test
@@ -52,7 +49,6 @@ public class EventTest {
 
         assertEquals("B", e.getCode());
         assertEquals("Jan", e.getRecord().getStringValue("name"));
-        assertEquals(LocalDate.of(2, 2, 2), e.getDate());
+        assertEquals(LocalDateTime.of(2, 2, 2, 0, 0), e.getDate());
     }
-
 }

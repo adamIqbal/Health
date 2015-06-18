@@ -11,6 +11,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -28,7 +29,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class RecordTest {
     private static final String value1 = "abc";
     private static final Double value2 = 1.5;
-    private static final LocalDate value3 = LocalDate.of(1970, 1, 1);
+    private static final LocalDateTime value3 = LocalDateTime.of(1970, 1, 1, 0, 0);
     private Column column1;
     private Column column2;
     private Column column3;
@@ -246,8 +247,8 @@ public class RecordTest {
      */
     @Test
     public void getDateValue_givenNameOfColumnWithDate_returnsDate() {
-        LocalDate expected = (LocalDate) value3;
-        LocalDate actual = record.getDateValue(column3.getName());
+        LocalDateTime expected = (LocalDateTime) value3;
+        LocalDateTime actual = record.getDateValue(column3.getName());
 
         assertEquals(expected, actual);
     }
@@ -429,12 +430,12 @@ public class RecordTest {
      */
     @Test
     public void setValueDate_givenNameOfColumn_updatesValue() {
-        LocalDate value = LocalDate.of(1971, 1, 1);
+        LocalDateTime value = LocalDateTime.of(1971, 1, 1, 1, 1);
 
         record.setValue(column3.getName(), value);
 
-        LocalDate expected = value;
-        LocalDate actual = record.getDateValue(column3.getName());
+        LocalDateTime expected = value;
+        LocalDateTime actual = record.getDateValue(column3.getName());
 
         assertSame(expected, actual);
     }
