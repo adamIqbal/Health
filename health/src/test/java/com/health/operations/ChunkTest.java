@@ -1,89 +1,7 @@
-package com.health.operations;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
-
-import com.health.Column;
-import com.health.Record;
-import com.health.Table;
-import com.health.ValueType;
-
-public class ChunkTest {
-
-  private Table table;
-
-  @Before
-  public void setup() {
-      List<Column> columns = new ArrayList<Column>();
-      columns.add(new Column("date", 0, ValueType.Date));
-      columns.add(new Column("waarde", 1, ValueType.Number));
-      columns.add(new Column("name", 2, ValueType.String));
-
-      table = new Table(columns);
-
-      Record tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
-      tmp.setValue("waarde", 8.0);
-      tmp.setValue("name", "Jan");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 22, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Peter");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 26, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "dolfje");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 27, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Jan");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 29, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Jan");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "dolfje");
-
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
-      tmp.setValue("waarde", 8.0);
-      tmp.setValue("name", "Piet");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 12, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Hein");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 13, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Dolf");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 10, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Piet");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 11, 15, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Piet");
-
-      tmp = new Record(table);
-      tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
-      tmp.setValue("waarde", 10.0);
-      tmp.setValue("name", "Dolf");
-
-  }
+  
+  
+  
 
 //  /*
 //   * @Test public void testChunkOnDay() { period = Period.ofDays(1); column = "date"; table =
@@ -173,8 +91,7 @@ public class ChunkTest {
 //   * 
 //   * @Test public void testChunkWithSum() { column = "name";
 //   * 
-//   * aggregates = new HashMap<String, AggregateFunctions>(); aggregates.put("meetwaarde2",
-//   * AggregateFunctions.Sum);
+
 //   * 
 //   * table = Chunk.chunkByString(table, column, aggregates);
 //   * 
@@ -194,4 +111,3 @@ public class ChunkTest {
 //   * double value = resultList.get(0).getNumberValue("meetwaarde2"); double expected = 11;
 //   * assertTrue(expected == value); }
 //   */
-}
