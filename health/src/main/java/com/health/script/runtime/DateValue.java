@@ -9,6 +9,7 @@ public final class DateValue extends WrapperValue<LocalDateTime> {
     /**
      * Creates a new value with zero.
      */
+    @SuppressWarnings("checkstyle:magicnumber")
     public DateValue() {
         super(LocalDateTime.of(1970, 1, 1, 0, 0));
     }
