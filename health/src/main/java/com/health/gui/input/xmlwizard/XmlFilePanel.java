@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 
-import com.health.gui.GUImain;
+import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 
 /**
@@ -95,7 +95,7 @@ class XmlFilePanel extends JPanel {
 
         // add list model
         DefaultListModel<Path> listModel = new DefaultListModel<Path>();
-        fileList = new FileList(Paths.get(GUImain.PATH_TO_CONFIG_XML),
+        fileList = new FileList(Paths.get(UserInterface.PATH_TO_CONFIG_XML),
                 listModel);
         this.add(fileList, BorderLayout.CENTER);
 

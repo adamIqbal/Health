@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.health.gui.GUImain;
+import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 
 /**
@@ -28,7 +28,7 @@ public class ScriptPanelSidebar extends JPanel {
     public ScriptPanelSidebar() {
         super();
         this.setLayout(new BorderLayout());
-        this.setBackground(GUImain.GUI_COLOR);
+        this.setBackground(UserInterface.GUI_COLOR);
 
         JPanel cards = new JPanel();
         cards.setOpaque(false);

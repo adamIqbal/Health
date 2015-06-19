@@ -33,10 +33,36 @@ public class XmlConfigObject {
      * this.columnTypes = columnTypes; }
      */
 
+    @Override
+    public final String toString() {
+        return "XmlConfigObject [type=" + type + ", values="
+                + Arrays.toString(values) + ", columns=" + columns
+                + ", columnTypes=" + columnTypes + ", path=" + path + "]";
+    }
+
     /**
-     * Writes the columns in XML format.
-     * @return the xml string
+     * Calls a toXMLString variant method based on the format attribute.
+     * @return a String in a XML format
      */
+    public final String toXMLString() {
+        String xml = null;
+
+        switch (this.type) {
+        case TXT:
+            xml = this.toXMLStringTXT();
+            break;
+        case XLS:
+            xml = this.toXMLStringXLS();
+            break;
+        default:
+            break;
+        }
+
+        return xml;
+    }
+
+ 
+
     private final String columnsToXML() {
         String columnTags = "";
         int n = columns.size();
@@ -65,87 +91,11 @@ public class XmlConfigObject {
     }
 
     /**
-     * Gets the value of the columns attribute.
-     * @return the type attribute
-     */
-    public final List<String> getColumns() {
-        return columns;
-    }
-
-    /**
-     * Gets the value of the columnTypes attribute.
-     * @return the type attribute
-     */
-    public final List<ValueType> getColumnTypes() {
-        return columnTypes;
-    }
-
-    /**
-     * Gets the date format
-     * @return date format
-     */
-    public final String getDateFormat() {
-        return dateFormat;
-    }
-
-    /**
-     * Gets the value of the path attribute.
-     * @return the type attribute
-     */
-    public final Path getPath() {
-        return path;
-    }
-
-    /**
      * Gets the value of the type attribute.
      * @return the type attribute
      */
-    protected final FileType getType() {
+    public final FileType getType() {
         return type;
-    }
-
-    /**
-     * Gets the value of the values attribute.
-     * @return the type attribute
-     */
-    public final String[] getValues() {
-        return values;
-    }
-
-    /**
-     * Sets the value of the columns attribute.
-     * @param columns
-     *            new value of columns
-     */
-    public final void setColumns(final List<String> columns) {
-        this.columns = columns;
-    }
-
-    /**
-     * Sets the value of the columnTypes attribute.
-     * @param columnTypes
-     *            new value of columnTypes
-     */
-    public final void setColumnTypes(final List<ValueType> columnTypes) {
-        this.columnTypes = columnTypes;
-    }
-
-    /**
-     * sets the date format
-     * @param dateFormat
-     *            date format
-     */
-    public final void setDateFormat(final String dateFormat) {
-        this.dateFormat = dateFormat;
-    }
-
-    /**
-     * Sets the value of the path attribute.
-     * @param path
-     *            new value of path
-     */
-    public final void setPath(final Path path) {
-        this.path = path;
     }
 
     /**
@@ -158,12 +108,88 @@ public class XmlConfigObject {
     }
 
     /**
+     * Gets the date format
+     * @return date format
+     */
+    public final String getDateFormat() {
+        return dateFormat;
+    }
+
+    /**
+     * sets the date format
+     * @param dateFormat
+     *            date format
+     */
+    public final void setDateFormat(final String dateFormat) {
+        this.dateFormat = dateFormat;
+    }
+
+    /**
+     * Gets the value of the values attribute.
+     * @return the type attribute
+     */
+    public final String[] getValues() {
+        return values;
+    }
+
+    /**
      * Sets the value of the values attribute.
      * @param values
      *            new value of values
      */
     public final void setValues(final String[] values) {
         this.values = values;
+    }
+
+    /**
+     * Gets the value of the columns attribute.
+     * @return the type attribute
+     */
+    public final List<String> getColumns() {
+        return columns;
+    }
+
+    /**
+     * Sets the value of the columns attribute.
+     * @param columns
+     *            new value of columns
+     */
+    public final void setColumns(final List<String> columns) {
+        this.columns = columns;
+    }
+
+    /**
+     * Gets the value of the columnTypes attribute.
+     * @return the type attribute
+     */
+    public final List<ValueType> getColumnTypes() {
+        return columnTypes;
+    }
+
+    /**
+     * Sets the value of the columnTypes attribute.
+     * @param columnTypes
+     *            new value of columnTypes
+     */
+    public final void setColumnTypes(final List<ValueType> columnTypes) {
+        this.columnTypes = columnTypes;
+    }
+
+    /**
+     * Gets the value of the path attribute.
+     * @return the type attribute
+     */
+    public final Path getPath() {
+        return path;
+    }
+
+    /**
+     * Sets the value of the path attribute.
+     * @param path
+     *            new value of path
+     */
+    public final void setPath(final Path path) {
+        this.path = path;
     }
 
     private String[] splitString(final String source, final String splitter) {
@@ -187,35 +213,6 @@ public class XmlConfigObject {
         return rv;
     }
 
-    @Override
-    public final String toString() {
-        return "XmlConfigObject [type=" + type + ", values="
-                + Arrays.toString(values) + ", columns=" + columns
-                + ", columnTypes=" + columnTypes + ", path=" + path + "]";
-    }
-
-    /**
-     * Calls a toXMLString variant method based on the format attribute.
-     * @return a String in a XML format
-     */
-    public final String toXMLString() {
-        String xml = null;
-
-        switch (this.type) {
-        case TXT:
-            xml = this.toXMLStringTXT();
-            break;
-        case XLS:
-            xml = this.toXMLStringXLS();
-            break;
-        case XLSX:
-            xml = this.toXMLStringXLSX();
-        default:
-            break;
-        }
-
-        return xml;
-    }
 
     /**
      * Generates XML string of a config XML describing a TXT data set.

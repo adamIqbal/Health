@@ -14,7 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
-import com.health.gui.GUImain;
+import com.health.gui.UserInterface;
 
 import externalClasses.FileDrop;
 
@@ -159,7 +159,7 @@ public final class FileListingRow {
 
         try {
             List<File> filesInFolder = Files
-                    .walk(Paths.get(GUImain.PATH_TO_CONFIG_XML))
+                    .walk(Paths.get(UserInterface.PATH_TO_CONFIG_XML))
                     .filter(Files::isRegularFile).map(Path::toFile)
                     .collect(Collectors.toList());
             String[] formats = new String[filesInFolder.size() + 1];
