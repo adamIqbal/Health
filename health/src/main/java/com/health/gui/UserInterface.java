@@ -26,6 +26,6 @@ public interface UserInterface {
     /**
      * Initializes the GUI frame.
      */
-    void init();
+    void init(String title, String laf);
 
 }

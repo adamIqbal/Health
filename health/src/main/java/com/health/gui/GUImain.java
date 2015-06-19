@@ -64,23 +64,22 @@ public class GUImain extends JFrame implements UserInterface {
     /**
      * Makes the frame and and fills tabs.
      */
-    public GUImain() {
-        init();
+    public GUImain(String title, String laf) {
+        init(title, laf);
     }
 
     /**
      * Initializes the GUI frame.
      */
     @Override
-    public final void init() {
+    public final void init(String title, String laf) {
         this.createTabbedPane();
 
         this.add(tabbedPane);
 
         try {
-            setLookAndFeel("Metal");
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            setLookAndFeel(laf);
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(
                     new JFrame(),
                     "Error loading the look and feel. Message: "
@@ -89,7 +88,7 @@ public class GUImain extends JFrame implements UserInterface {
         }
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("Vidney");
+        this.setTitle(title);
         this.setExtendedState(Frame.MAXIMIZED_BOTH);
         this.pack();
         this.setVisible(true);
@@ -126,7 +125,7 @@ public class GUImain extends JFrame implements UserInterface {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    private void setLookAndFeel(final String name)
+    protected void setLookAndFeel(final String name)
             throws ClassNotFoundException, InstantiationException,
             IllegalAccessException, UnsupportedLookAndFeelException {
         boolean lafFound = false;

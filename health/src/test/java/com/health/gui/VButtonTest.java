@@ -1,10 +1,8 @@
 package com.health.gui;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +16,16 @@ public class VButtonTest {
     }
 
     @Test
-    public void color_Test() {
-        Color expected = VButton.BUTTON_COLOR;
+    public void testVButton_Color() throws Exception {
+        Color expected= VButton.BUTTON_COLOR;
         Color actual = button.getBackground();
-
         assertEquals(expected, actual);
     }
-
+    
+    @Test
+    public void testVButton_Text() throws Exception {
+        String expected = "Test";
+        String actual = button.getText();
+        assertEquals(expected, actual);
+    }
 }
