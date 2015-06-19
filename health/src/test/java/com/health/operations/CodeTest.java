@@ -204,7 +204,7 @@ public class CodeTest {
     }
 
     @Test
-    public void testForDeve() {
+    public void simpleFillTest() {
         EventList eList = new EventList();
 
         Event e1 = new Event("A", table.getRecords().get(0));
