@@ -17,9 +17,7 @@ public class LValue {
      *            the type of the l-value.
      */
     public LValue(final ScriptType type) {
-        Objects.requireNonNull(type);
-
-        this.type = type;
+        this(type, null);
     }
 
     /**

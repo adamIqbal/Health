@@ -32,6 +32,24 @@ public final class Interpreter {
      *             if any I/O-exceptions occur.
      */
     public static void interpret(final String script, final Context context) throws IOException {
+        Interpreter.interpret(script, context, new StatementListener(context));
+    }
+
+    /**
+     * Interprets the given script.
+     *
+     * @param script
+     *            the script to interpret.
+     * @param context
+     *            the script context.
+     * @param interpreter
+     *            a statement listener for interpreting the statements in the
+     *            script.
+     * @throws IOException
+     *             if any I/O-exceptions occur.
+     */
+    public static void interpret(final String script, final Context context, final StatementListener interpreter)
+            throws IOException {
         Objects.requireNonNull(script);
         Objects.requireNonNull(context);
 
@@ -48,8 +66,6 @@ public final class Interpreter {
 
         // Create a walker to walk the parse tree for interpreting
         ParseTreeWalker walker = new ParseTreeWalker();
-
-        StatementListener interpreter = new StatementListener(context);
         walker.walk(interpreter, tree);
     }
 }
