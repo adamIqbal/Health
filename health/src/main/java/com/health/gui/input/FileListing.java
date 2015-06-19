@@ -39,7 +39,7 @@ public class FileListing extends JPanel {
     private static final int COLSINLISTING = 3;
     private static final int MINROWSINLISTING = 20;
 
-    private static int maxStringLength = 50;
+    private static final int MAXSTRINGLENGTH = 50;
 
     /**
      * get the data from filelisting.
@@ -323,7 +323,7 @@ public class FileListing extends JPanel {
     public static void addFile(final File newFile) {
         FileListingRow row = new FileListingRow();
 
-        row.setFileString(newFile.getPath(), maxStringLength);
+        row.setFileString(newFile.getPath(), MAXSTRINGLENGTH);
         fileListingRows.add(row);
         fileCount++;
         fillFileListing();
@@ -340,7 +340,7 @@ public class FileListing extends JPanel {
     public static void addFile(final File newFile, final String xmlFormat) {
         FileListingRow row = new FileListingRow();
 
-        row.setFileString(newFile.getPath(), maxStringLength);
+        row.setFileString(newFile.getPath(), MAXSTRINGLENGTH);
         row.getXmlFormat().setSelectedItem(xmlFormat);
         fileListingRows.add(row);
         fileCount++;
