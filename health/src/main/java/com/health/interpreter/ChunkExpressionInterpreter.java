@@ -143,7 +143,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static AggregateFunction evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
+    private static AggregateFunction<?> evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
         switch (ctx.getText()) {
         case "count":
             return AggregateFunctions.count();
