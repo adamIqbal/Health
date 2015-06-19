@@ -28,7 +28,15 @@ public class WrapperValue<T> extends Value {
         this(WrapperValue.getWrapperType(value.getClass()), value);
     }
 
-    protected WrapperValue(ScriptType type, final T value) {
+    /**
+     * Creates a new value with the given script type and underlying Java value.
+     *
+     * @param type
+     *            the type of the value.
+     * @param value
+     *            the value.
+     */
+    protected WrapperValue(final ScriptType type, final T value) {
         super(type);
 
         Objects.requireNonNull(value);
