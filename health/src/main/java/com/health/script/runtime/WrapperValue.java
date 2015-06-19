@@ -70,7 +70,7 @@ public class WrapperValue<T> extends Value {
     public static synchronized ScriptType getWrapperType(final Class<?> type) {
         if (!types.containsKey(type)) {
             ScriptTypeBuilder builder = new ScriptTypeBuilder();
-            builder.setTypeName(type.getName());
+            builder.setTypeName(type.getSimpleName());
             builder.defineConstructor((args) -> null);
             builder.defineMethod(new ScriptMethod("toString",
                     (args) -> {

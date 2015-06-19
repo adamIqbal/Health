@@ -64,7 +64,7 @@ public class WrapperValueTest extends ValueTest {
     public void getWrapperType_returnsTypeWithCorrectName() {
         ScriptType type = WrapperValue.getWrapperType(Object.class);
 
-        assertEquals(type.getName(), Object.class.getName());
+        assertEquals("Object", type.getName());
     }
 
     @Test
