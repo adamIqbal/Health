@@ -12,7 +12,7 @@ import java.util.Objects;
  */
 public class WrapperValue<T> extends Value {
     private static Map<Class<?>, ScriptType> types;
-    private final T value;
+    private T value;
 
     static {
         WrapperValue.types = new HashMap<Class<?>, ScriptType>();
@@ -43,6 +43,16 @@ public class WrapperValue<T> extends Value {
      */
     public final T getValue() {
         return this.value;
+    }
+
+    /**
+     * Sets the underlying value of this wrapper.
+     *
+     * @param value
+     *            the underlying value of this wrapper.
+     */
+    public final void setValue(final T value) {
+        this.value = value;
     }
 
     /**
