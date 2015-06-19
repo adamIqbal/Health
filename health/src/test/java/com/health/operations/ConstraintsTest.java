@@ -336,6 +336,11 @@ public class ConstraintsTest {
         assertFalse(table0.getRecords().size() < 1);
 
         assertFalse(table0.getRecords().contains("Dolf"));
+<<<<<<< HEAD
+        // assertTrue(table0.getRecords().contains("Piet"));
+        // FIXME: contains not working??
+=======
+>>>>>>> master
         assertTrue(table0.getRecords().get(0).getStringValue("name")
                 .equals("Piet"));
         assertFalse(table.getRecords().contains(null));

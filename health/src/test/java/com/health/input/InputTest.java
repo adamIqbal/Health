@@ -1,6 +1,6 @@
 package com.health.input;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -30,7 +30,7 @@ public class InputTest {
         Table table = Input.readTable(filePath, configPath);
         assertTrue(table != null);
     }
-    
+
     @Test
     public void testXlsxInput() throws IOException,
             ParserConfigurationException, SAXException, InputException {
@@ -52,7 +52,7 @@ public class InputTest {
             assertTrue(true);
         }
     }
-    
+
     @Test
     public void testUnknownFormat() throws IOException,
             ParserConfigurationException, SAXException, InputException {
