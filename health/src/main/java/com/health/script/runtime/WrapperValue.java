@@ -2,7 +2,6 @@ package com.health.script.runtime;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Represents a wrapped Java value in the script.
@@ -38,8 +37,6 @@ public class WrapperValue<T> extends Value {
      */
     protected WrapperValue(final ScriptType type, final T value) {
         super(type);
-
-        Objects.requireNonNull(value);
 
         this.value = value;
     }

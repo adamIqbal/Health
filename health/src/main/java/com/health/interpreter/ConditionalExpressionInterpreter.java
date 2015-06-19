@@ -18,6 +18,7 @@ import com.health.script.runtime.NumberValue;
 import com.health.script.runtime.ScriptRuntimeException;
 import com.health.script.runtime.StringValue;
 import com.health.script.runtime.Value;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents an interpreter for conditional expressions.
@@ -137,7 +138,7 @@ public final class ConditionalExpressionInterpreter {
             if (value != null) {
                 context.declareLocal(column.getName(), value.getType(), value);
             } else {
-                context.declareLocal(column.getName(), Value.getStaticType(), null);
+                context.declareLocal(column.getName(), WrapperValue.getWrapperType(Object.class), null);
             }
         }
     }

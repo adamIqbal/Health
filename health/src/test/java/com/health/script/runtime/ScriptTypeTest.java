@@ -226,7 +226,7 @@ public class ScriptTypeTest {
 
     @Test
     public void isAssignableFrom_givenObjectType_returnsTrue() {
-        ScriptType objType = new ScriptType("object", new HashMap<String, ScriptField>(),
+        ScriptType objType = new ScriptType("Object", new HashMap<String, ScriptField>(),
                 new HashMap<String, ScriptMethod>());
 
         assertEquals(true, objType.isAssignableFrom(type));

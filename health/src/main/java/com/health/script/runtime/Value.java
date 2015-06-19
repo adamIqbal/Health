@@ -7,29 +7,9 @@ import java.util.Objects;
 /**
  * Represents a value in the script.
  */
-public class Value {
-    private static ScriptType objectType;
+public abstract class Value {
     private final ScriptType type;
     private final Map<String, LValue> fields;
-
-    static {
-        ScriptTypeBuilder object = new ScriptTypeBuilder();
-        object.setTypeName("object");
-        object.defineConstructor((args) -> new Value());
-        object.defineMethod(new ScriptMethod("toString",
-                (args) -> {
-                    return new StringValue(args[0].toString());
-                }));
-
-        Value.objectType = object.buildType();
-    }
-
-    /**
-     * Creates a new value with type 'object'.
-     */
-    public Value() {
-        this(objectType);
-    }
 
     /**
      * Creates a new value with the given type.
@@ -37,7 +17,7 @@ public class Value {
      * @param type
      *            the type of the value.
      */
-    public Value(final ScriptType type) {
+    protected Value(final ScriptType type) {
         Objects.requireNonNull(type);
 
         this.type = type;
@@ -145,14 +125,5 @@ public class Value {
         }
 
         this.fields.get(symbol).set(value);
-    }
-
-    /**
-     * Gets the {@link ScriptType} corresponding to {@link Value}.
-     *
-     * @return the {@link ScriptType} corresponding to {@link Value}.
-     */
-    public static ScriptType getStaticType() {
-        return Value.objectType;
     }
 }

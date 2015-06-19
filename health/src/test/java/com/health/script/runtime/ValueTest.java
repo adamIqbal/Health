@@ -1,6 +1,5 @@
 package com.health.script.runtime;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
@@ -17,7 +16,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ ScriptType.class, ScriptField.class, ScriptMethod.class })
-public class ValueTest {
+public abstract class ValueTest {
     private ScriptType type;
     private Value value;
     private ScriptField field;
@@ -46,12 +45,7 @@ public class ValueTest {
         when(type.getMethods()).thenReturn(Arrays.asList(method));
         when(type.isAssignableFrom(type)).thenReturn(true);
 
-        value = new Value(type);
-    }
-
-    @Test
-    public void constructor_givenNoArguments_createsObjectValue() {
-        assertEquals("object", new Value().getType().getName());
+        value = this.createValue(type);
     }
 
     @Test(expected = ScriptRuntimeException.class)
@@ -127,8 +121,5 @@ public class ValueTest {
         assertSame(value, value.getField("field").get());
     }
 
-    @Test
-    public void getStaticType_returnsObjectType() {
-        assertEquals("object", Value.getStaticType().getName());
-    }
+    protected abstract Value createValue(final ScriptType type);
 }

@@ -26,7 +26,7 @@ public final class Context {
         this.variables = new HashMap<String, LValue>();
 
         // Declare all the standard type
-        this.declareType(Value.getStaticType());
+        this.declareType(WrapperValue.getWrapperType(Object.class));
         this.declareType(WrapperValue.getWrapperType(Double.class));
         this.declareType(WrapperValue.getWrapperType(String.class));
         this.declareType(WrapperValue.getWrapperType(Boolean.class));
