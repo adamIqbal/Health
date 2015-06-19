@@ -20,7 +20,7 @@ import javax.swing.JTable;
 public final class Table implements Iterable<Record> {
     private List<Column> columns;
     private Map<String, Column> columnMap;
-    private List<Record>     records;
+    private List<Record> records;
 
     /**
      * Constructs a table with the given columns. Each column must have a unique
@@ -148,8 +148,6 @@ public final class Table implements Iterable<Record> {
     }
 
     private static void verifyColumnIndices(final Iterable<Column> columns) {
-        assert columns != null;
-
         Set<Integer> indices = new HashSet<Integer>();
         int count = 0;
         int minIndex = Integer.MAX_VALUE;
@@ -205,7 +203,7 @@ public final class Table implements Iterable<Record> {
 
         return null;
     }
-
+    
     /**
      * Convert the Table data into a JTable.
      * @return a JTable Object with the content of the table.
@@ -229,5 +227,4 @@ public final class Table implements Iterable<Record> {
         JTable table = new JTable(data, names);
         return table;
     }
-
 }
