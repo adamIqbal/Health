@@ -117,7 +117,7 @@ public class IntegrationTest {
 
     @Test
     public void testAssignment() throws IOException {
-        Interpreter.interpret("String myVar = \"one\"; myVar = \"two\"", context);
+        Interpreter.interpret("String myVar = \"one\"; myVar = \"two\";", context);
 
         String expected = "two";
         String actual = ((StringValue) context.lookup("myVar").get()).getValue();
@@ -176,7 +176,7 @@ public class IntegrationTest {
 
     @Test
     public void testChunkExpression() throws IOException {
-        Interpreter.interpret("var result = chunk table by name select sum of value", context);
+        Interpreter.interpret("var result = chunk table by name select sum of value;", context);
 
         @SuppressWarnings("unchecked")
         Table result = ((WrapperValue<Table>) context.lookup("result").get()).getValue();
