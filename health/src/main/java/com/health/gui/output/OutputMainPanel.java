@@ -65,19 +65,21 @@ public class OutputMainPanel extends JPanel {
 
     private static void setJTableData(final Object element, final String key) {
         JTable jtable = (JTable) element;
-        jtable.setEnabled(false);
-        jtable.setAutoCreateRowSorter(true);
-        JScrollPane scroll = new JScrollPane(jtable);
+        JScrollPane scroll = createScrollPane(jtable);
         pane.add("Matrix: " + key, scroll);
     }
 
     private static void setTableData(final Object element, final String key) {
         Table table = (Table) element;
-        JTable jtable = table.toJTable();
+        JScrollPane scroll = createScrollPane(table.toJTable());
+        pane.add("Table: " + key, scroll);
+    }
+    
+    private static JScrollPane createScrollPane(JTable jtable) {
         jtable.setEnabled(false);
         jtable.setAutoCreateRowSorter(true);
-        JScrollPane scroll = new JScrollPane(jtable);
-        pane.add("Table: " + key, scroll);
+        jtable.setFillsViewportHeight(false);
+        return new JScrollPane(jtable);
     }
 
     /**
