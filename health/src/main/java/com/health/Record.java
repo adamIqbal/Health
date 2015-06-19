@@ -2,7 +2,6 @@ package com.health;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,8 +58,19 @@ public final class Record {
      *         null.
      */
     public Object getValue(final String name) {
-        // Retrieve the value for any of the supported types
-        return this.getValue(name, EnumSet.allOf(ValueType.class));
+        return this.getValue(table.getColumn(name), null);
+    }
+
+    /**
+     * Gets the value of the column with the given index.
+     *
+     * @param index
+     *            the index of the column whose value to get.
+     * @return the value of the column with the given index if found; otherwise
+     *         null.
+     */
+    public Object getValue(final int index) {
+        return this.getValue(table.getColumn(index), null);
     }
 
     /**
@@ -74,8 +84,7 @@ public final class Record {
      *             if the specified column does not contain Double values.
      */
     public Double getNumberValue(final String name) {
-        // Retrieve the value for a number and cast it to Double
-        Object value = this.getValue(name, EnumSet.of(ValueType.Number));
+        Object value = this.getValue(table.getColumn(name), ValueType.Number);
 
         if (value == null) {
             value = (double) 0;
@@ -95,8 +104,7 @@ public final class Record {
      *             if the specified column does not contain String values.
      */
     public String getStringValue(final String name) {
-        // Retrieve the value for a number and cast it to String
-        return (String) this.getValue(name, EnumSet.of(ValueType.String));
+        return (String) this.getValue(table.getColumn(name), ValueType.String);
     }
 
     /**
@@ -111,56 +119,7 @@ public final class Record {
      */
     public LocalDateTime getDateValue(final String name) {
         // Retrieve the value for a number and cast it to String
-        return (LocalDateTime) this.getValue(name, EnumSet.of(ValueType.Date));
-    }
-
-    /**
-     * Sets the {@link Double} value of the column with the given index.
-     *
-     * @param index
-     *            the index of the column whose value to set.
-     * @param value
-     *            the new value.
-     * @throws IllegalArgumentException
-     *             if a column with the given name was not found.
-     * @throws IllegalStateException
-     *             if the specified column does not contain Double values.
-     */
-    public void setValue(final int index, final Double value) {
-        this.setValue(this.table.getColumn(index).getName(), value);
-    }
-
-    /**
-     * Sets the {@link String} value of the column with the given index.
-     *
-     * @param index
-     *            the index of the column whose value to set.
-     * @param value
-     *            the new value.
-     * @throws IllegalArgumentException
-     *             if a column with the given name was not found.
-     * @throws IllegalStateException
-     *             if the specified column does not contain String values.
-     */
-    public void setValue(final int index, final String value) {
-        this.setValue(this.table.getColumn(index).getName(), value);
-    }
-
-    /**
-     * Sets the {@link LocalDateTime} value of the column with the given index.
-     *
-     * @param index
-     *            the index of the column whose value to set.
-     * @param value
-     *            the new value.
-     * @throws IllegalArgumentException
-     *             if a column with the given name was not found.
-     * @throws IllegalStateException
-     *             if the specified column does not contain LocalDateTime
-     *             values.
-     */
-    public void setValue(final int index, final LocalDateTime value) {
-        this.setValue(this.table.getColumn(index).getName(), value);
+        return (LocalDateTime) this.getValue(table.getColumn(name), ValueType.Date);
     }
 
     /**
@@ -177,55 +136,7 @@ public final class Record {
      *             type.
      */
     public void setValue(final int index, final Object value) {
-        this.setValue(this.table.getColumn(index).getName(), value);
-    }
-
-    /**
-     * Sets the {@link Double} value of the column with the given name.
-     *
-     * @param name
-     *            the name of the column whose value to set.
-     * @param value
-     *            the new value.
-     * @throws IllegalArgumentException
-     *             if a column with the given name was not found.
-     * @throws IllegalStateException
-     *             if the specified column does not contain Double values.
-     */
-    public void setValue(final String name, final Double value) {
-        this.setValue(name, value, ValueType.Number);
-    }
-
-    /**
-     * Sets the {@link String} value of the column with the given name.
-     *
-     * @param name
-     *            the name of the column whose value to set.
-     * @param value
-     *            the new value.
-     * @throws IllegalArgumentException
-     *             if a column with the given name was not found.
-     * @throws IllegalStateException
-     *             if the specified column does not contain String values.
-     */
-    public void setValue(final String name, final String value) {
-        this.setValue(name, value, ValueType.String);
-    }
-
-    /**
-     * Sets the {@link LocalDateTime} value of the column with the given name.
-     *
-     * @param name
-     *            the name of the column whose value to set.
-     * @param value
-     *            the new value.
-     * @throws IllegalArgumentException
-     *             if a column with the given name was not found.
-     * @throws IllegalStateException
-     *             if the specified column does not contain Date values.
-     */
-    public void setValue(final String name, final LocalDateTime value) {
-        this.setValue(name, value, ValueType.Date);
+        this.setValue(table.getColumn(index), value, getValueType(value));
     }
 
     /**
@@ -242,30 +153,20 @@ public final class Record {
      *             type.
      */
     public void setValue(final String name, final Object value) {
-        if (value instanceof Double) {
-            this.setValue(name, (Double) value);
-        } else if (value instanceof Short) {
-            short sval = (Short) value;
-            double dval = sval;
+        this.setValue(table.getColumn(name), value, getValueType(value));
+    }
 
-            this.setValue(name, (Double) dval);
-        } else if (value instanceof Integer) {
-            int ival = (Integer) value;
-            double dval = ival;
-
-            this.setValue(name, (Double) dval);
-        } else if (value instanceof Long) {
-            long lval = (Long) value;
-            double dval = lval;
-
-            this.setValue(name, (Double) dval);
+    private static ValueType getValueType(final Object value) {
+        if (instanceofNumericType(value)) {
+            return ValueType.Number;
         } else if (value instanceof String) {
-            this.setValue(name, (String) value);
+            return ValueType.String;
         } else if (value instanceof LocalDateTime) {
-            this.setValue(name, (LocalDateTime) value);
-        } else if (value != null) {
-            throw new IllegalArgumentException(
-                    "Unsupported value type, must be either Double, String or LocalDateTime.");
+            return ValueType.Date;
+        } else if (value == null) {
+            return null;
+        } else {
+            throw new IllegalArgumentException("Unsupported value type, must be either Double, String or LocalDate.");
         }
     }
 
@@ -281,15 +182,20 @@ public final class Record {
 
         List<Column> columns1 = this.table.getColumns();
         List<Column> columns2 = table.getColumns();
-        int length = columns1.size();
 
-        if (length != columns2.size()) {
+        if (columns1.size() != columns2.size()) {
             throw new IllegalArgumentException(
                     "The given table must have the same columns as the table that this record belongs to.");
         }
 
-        for (int i = 0; i < length; i++) {
+        verifyColumnTypesEqual(columns1, columns2);
 
+        Record copy = new Record(table);
+        System.arraycopy(this.values, 0, copy.values, 0, columns1.size());
+    }
+
+    private static void verifyColumnTypesEqual(final List<Column> columns1, final List<Column> columns2) {
+        for (int i = 0; i < columns1.size(); i++) {
             ValueType type1 = columns1.get(i).getType();
             ValueType type2 = columns2.get(i).getType();
 
@@ -298,52 +204,75 @@ public final class Record {
                         "The given table must have the same columns as the table that this record belongs to.");
             }
         }
-
-        Record copy = new Record(table);
-
-        copy.values = new Object[length];
-
-        for (int i = 0; i < length; i++) {
-            copy.values[i] = this.values[i];
-        }
     }
 
-    private Object getValue(final String name, final EnumSet<ValueType> types) {
-        assert types != null;
-
-        Column column = this.table.getColumn(name);
-
-        // Return null if a column with the given name was not found
+    private Object getValue(final Column column, final ValueType type) {
+        // Return null if a column with the given name or index was not found
         if (column == null) {
             return null;
         }
 
-        // Throw an exception if the column contains a type not contained in the
-        // enum set
-        if (!types.contains(column.getType())) {
+        // Throw an exception if the column contains a type does not match the
+        // given type
+        if (type != null && column.getType() != type) {
             throw new IllegalStateException();
         }
 
         return this.values[column.getIndex()];
     }
 
-    private void setValue(final String name, final Object value,
-            final ValueType type) {
-        assert type != null;
-
-        Column column = this.table.getColumn(name);
-
-        // Throw an exception if a column with the given name was not found
+    private void setValue(final Column column, final Object value, final ValueType type) {
+        // Throw an exception if a column with the given name or index was not
+        // found
         if (column == null) {
             throw new IllegalArgumentException();
         }
 
         // Throw an exception if the column contains a type does not match the
         // given type
-        if (column.getType() != type) {
+        if (type != null && column.getType() != type) {
             throw new IllegalStateException();
         }
 
-        this.values[column.getIndex()] = value;
+        if (type == ValueType.Number) {
+            this.values[column.getIndex()] = castNumericTypeToDouble(value);
+        } else {
+            this.values[column.getIndex()] = value;
+        }
+    }
+
+    private static boolean instanceofNumericType(final Object value) {
+        return value instanceof Double
+                || value instanceof Float
+                || value instanceof Short
+                || value instanceof Integer
+                || value instanceof Long
+                || value instanceof Character;
+    }
+
+    private static Object castNumericTypeToDouble(final Object value) {
+        if (value instanceof Float) {
+            float fval = (Float) value;
+            double dval = fval;
+            return dval;
+        } else if (value instanceof Short) {
+            short sval = (Short) value;
+            double dval = sval;
+            return dval;
+        } else if (value instanceof Integer) {
+            int ival = (Integer) value;
+            double dval = ival;
+            return dval;
+        } else if (value instanceof Long) {
+            long lval = (Long) value;
+            double dval = lval;
+            return dval;
+        } else if (value instanceof Character) {
+            char cval = (Character) value;
+            double dval = cval;
+            return dval;
+        } else {
+            return value;
+        }
     }
 }
