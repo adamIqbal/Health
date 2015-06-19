@@ -195,15 +195,12 @@ public class CodeTest {
         Code.fillEventSequenceWithinPeriod(eSeq, eList, per);
 
         assertTrue(eSeq.getSequences().size() == 2);
-        System.out.println(eSeq.getSequences().size());
 
         EventSequence eSeqe = new EventSequence(codePattern, true);
         per = Period.parse("P1D");
         Code.fillEventSequenceWithinPeriod(eSeqe, eList, per);
 
         assertTrue(eSeqe.getSequences().size() == 1);
-        System.out.println(eSeqe.getSequences().size());
-
     }
 
     @Test
