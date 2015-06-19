@@ -69,6 +69,7 @@ class XmlFilePanel extends JPanel {
                 }
             } catch (IOException e) {
                 // Directory not found, add no elements
+                e.printStackTrace();
             }
         }
     }

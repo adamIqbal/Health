@@ -203,9 +203,10 @@ public final class Table implements Iterable<Record> {
 
         return null;
     }
-    
+
     /**
      * Convert the Table data into a JTable.
+     *
      * @return a JTable Object with the content of the table.
      */
     public JTable toJTable() {

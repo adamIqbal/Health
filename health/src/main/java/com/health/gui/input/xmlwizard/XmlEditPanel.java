@@ -21,7 +21,7 @@ import com.health.input.InputException;
 /**
  * Represents the wizard panel where one can specify the delimiters and columns
  * of the Config XML.
- * 
+ *
  * @author Bjorn van der Laan
  *
  */
@@ -63,7 +63,7 @@ public class XmlEditPanel extends JPanel {
 
     /**
      * Models the input values as a {@link XmlConfigObject} and returns it.
-     * 
+     *
      * @return XmlConfigObject containing the input values
      */
     public final XmlConfigObject getValues() {
@@ -94,7 +94,7 @@ public class XmlEditPanel extends JPanel {
                 xmlObj.setDateFormat(id.getDateFormat());
                 XmlWizard.setXml(xmlObj);
 
-                String[] values = { id.getStartDelimiter(),
+                String[] values = {id.getStartDelimiter(),
                         id.getEndDelimiter(), id.getDelimiter(),
                         Integer.toString(id.getIgnoreLast()) };
 
@@ -115,7 +115,7 @@ public class XmlEditPanel extends JPanel {
         }
     }
 
-    private void setStarPanel(InputDescriptor id, String[] values) {
+    private void setStarPanel(final InputDescriptor id, final String[] values) {
         if (id.getFormat().equals("xls")) {
             startPanel.setValues(values, FileType.XLS);
             startPanel.setFileType(FileType.XLS);
