@@ -3,6 +3,9 @@ package com.health.script.runtime;
 import com.health.EventSequence;
 import com.health.Table;
 
+/**
+ * Represents an event sequence value in the script.
+ */
 public final class EventSequenceValue extends WrapperValue<EventSequence> {
     private static ScriptType type;
 
@@ -22,7 +25,13 @@ public final class EventSequenceValue extends WrapperValue<EventSequence> {
         EventSequenceValue.type = sequence.buildType();
     }
 
-    public EventSequenceValue(EventSequence value) {
+    /**
+     * Creates a new value with the given underlying event sequence value.
+     *
+     * @param value
+     *            the value.
+     */
+    public EventSequenceValue(final EventSequence value) {
         super(EventSequenceValue.type, value);
     }
 

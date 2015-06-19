@@ -11,7 +11,6 @@ import com.health.ValueType;
 
 /**
  * a class to read time data in tables.
- * 
  * @author daan
  *
  */
@@ -25,12 +24,17 @@ public class ReadTime {
     }
 
     /**
-     * Adds the time in the timeCol to the date in de dateCol. 
-     * @param table the table to manipulate.
-     * @param dateCol the columns which has the date.
-     * @param timeCol the collumns which has the time as a number between 0 and 2400.
+     * Adds the time in the timeCol to the date in de dateCol.
+     * @param table
+     *            the table to manipulate.
+     * @param dateCol
+     *            the columns which has the date.
+     * @param timeCol
+     *            the collumns which has the time as a number between 0 and
+     *            2400.
      */
-    public static void addTimeToDate(final Table table, final Column dateCol, final Column timeCol) {
+    public static void addTimeToDate(final Table table, final Column dateCol,
+            final Column timeCol) {
         if (dateCol.getType() != ValueType.Date
                 && timeCol.getType() != ValueType.Number) {
             return;

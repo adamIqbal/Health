@@ -40,7 +40,8 @@ public final class Chunk {
      */
     public static Table chunkByPeriod(final Table table,
             final String dateColumn,
-            final List<ColumnAggregateTuple> operations, final TemporalAmount period) {
+            final List<ColumnAggregateTuple> operations,
+            final TemporalAmount period) {
         Map<Object, List<Record>> groups = groupByPeriod(table, dateColumn,
                 period);
 
@@ -176,10 +177,8 @@ public final class Chunk {
         return list;
     }
 
-    private static double aggregate(
-            final List<Record> records,
-            final String column,
-            final AggregateFunction<?> function) {
+    private static double aggregate(final List<Record> records,
+            final String column, final AggregateFunction<?> function) {
         return function.apply(records, column);
     }
 
@@ -210,7 +209,8 @@ public final class Chunk {
         }
     }
 
-    private static LocalDateTime getFirstDate(final Table table, final String column) {
+    private static LocalDateTime getFirstDate(final Table table,
+            final String column) {
         LocalDateTime res = LocalDateTime.MAX;
 
         for (Record record : table) {
@@ -223,7 +223,8 @@ public final class Chunk {
         return res;
     }
 
-    private static LocalDateTime getLastDate(final Table table, final String column) {
+    private static LocalDateTime getLastDate(final Table table,
+            final String column) {
         LocalDateTime res = LocalDateTime.MIN;
 
         for (Record record : table) {

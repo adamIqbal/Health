@@ -19,8 +19,9 @@ public class ReadTimeTest {
     @Test
     public void testAddTimeToDate() {
         String txtPath = "test_data_and_xmls/ADMIRE 2.txt";
-        
+
         try {
+<<<<<<< HEAD
             Table actual = Input.readTable(txtPath, "test_data_and_xmls/admireTxtConfigIgnoreLast.xml");
             
             ReadTime.addTimeToDate(actual, actual.getDateColumn(), actual.getColumn("time"));
@@ -31,8 +32,21 @@ public class ReadTimeTest {
             assertTrue(dateTime.getHour()>0);
             
             
+=======
+            Table actual = Input.readTable(txtPath,
+                    "test_data_and_xmls/admireTxtConfigIgnoreLast.xml");
+
+            ReadTime.addTimeToDate(actual, actual.getDateColumn(),
+                    actual.getColumn("time"));
+
+            LocalDateTime dateTime = actual.getRecords().get(1)
+                    .getDateValue(actual.getDateColumn().getName());
+
+            assertTrue(dateTime.getHour() > 0);
+
+>>>>>>> master
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
     }
 }

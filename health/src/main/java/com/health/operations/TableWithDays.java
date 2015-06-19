@@ -43,6 +43,8 @@ public class TableWithDays {
 
             Record record = new Record(result);
 
+            Record test = record;
+
             for (int j = 0; j < colList.size() - 1; j++) {
 
                 String name = colList.get(j).getName();
@@ -55,7 +57,7 @@ public class TableWithDays {
 
         return result;
     }
-    
+
     /**
      * A function to add days to a table as a column.
      *
@@ -83,20 +85,20 @@ public class TableWithDays {
 
                 record.setValue(name, recList.get(i).getValue(name));
             }
-            record.setValue("hour_of_day", recList.get(i).getDateValue(dateColumn).getHour());
+            record.setValue("hour_of_day",
+                    recList.get(i).getDateValue(dateColumn).getHour());
         }
 
         return result;
     }
 
+    /**
+     * Gets the day of the week based on the input.
+     * @param value
+     *            the local datetime
+     * @return the day of the week as a String
+     */
     public static String dayOfWeek(LocalDateTime value) {
         return value.getDayOfWeek().toString();
     }
 }
-/*// with Admire statsensor data
-
-var table = chunk table0 by date per 12 weeks select count of date;
-
-write("out.txt", table);
-hist(table, "date", 5)
-*/

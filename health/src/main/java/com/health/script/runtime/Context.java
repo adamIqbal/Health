@@ -28,14 +28,19 @@ public final class Context {
 
         // Declare all the standard type
         this.declareType(Value.getStaticType());
-        this.declareType(BooleanValue.getStaticType());
-        this.declareType(NumberValue.getStaticType());
-        this.declareType(StringValue.getStaticType());
+        this.declareType(WrapperValue.getWrapperType(Double.class));
+        this.declareType(WrapperValue.getWrapperType(String.class));
+        this.declareType(WrapperValue.getWrapperType(Boolean.class));
         this.declareType(WrapperValue.getWrapperType(Table.class));
         this.declareType(WrapperValue.getWrapperType(EventList.class));
         this.declareType(WrapperValue.getWrapperType(EventSequence.class));
     }
 
+    /**
+     * Returns a map containing the local variables declared in this context.
+     *
+     * @return a map containing the local variables declared in this context.
+     */
     public Map<String, LValue> getVariables() {
         return Collections.unmodifiableMap(this.variables);
     }
@@ -80,6 +85,12 @@ public final class Context {
         this.variables.put(symbol, new LValue(type, value));
     }
 
+    /**
+     * Removes the local variable with the given name.
+     *
+     * @param symbol
+     *            the name of the local variable to remove.
+     */
     public void removeLocal(final String symbol) {
         Objects.requireNonNull(symbol);
 
