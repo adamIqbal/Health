@@ -4,8 +4,6 @@ package com.health.script.runtime;
  * Represents a boolean value in the script.
  */
 public final class BooleanValue extends WrapperValue<Boolean> {
-    private static ScriptType type;
-
     /**
      * Creates a new value with the default value (false).
      */
