@@ -3,6 +3,7 @@ package com.health.operations;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,29 +35,34 @@ public class CodeTest {
         table = new Table(columns);
 
         Record tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(1, 1, 1));
-        tmp.setValue(1, 1.0);
-        tmp.setValue(2, "piet");
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
+        tmp.setValue("waarde", 8.0);
+        tmp.setValue("name", "Piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(2, 2, 2));
-        tmp.setValue(1, 2.0);
-        tmp.setValue(2, "Jan");
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 12, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Hein");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(3, 2, 3));
-        tmp.setValue(1, 3.0);
-        tmp.setValue(2, "piet");
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 13, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Dolf");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(4, 2, 2));
-        tmp.setValue(1, 4.0);
-        tmp.setValue(2, "piet");
-        
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 10, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Piet");
+
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(4, 2, 3));
-        tmp.setValue(1, 2.0);
-        tmp.setValue(2, "Jan");
+        tmp.setValue("date", LocalDateTime.of(2013, 11, 15, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Piet");
+
+        tmp = new Record(table);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Dolf");
     }
     
     @Test

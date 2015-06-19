@@ -1,6 +1,6 @@
 package com.health.operations;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +14,22 @@ import com.health.Record;
 import com.health.Table;
 
 public class Code {
+
+    /**
+     * an unused constructor.
+     */
+    protected Code() {
+    }
+
+    /**
+     * Looks for all event declared and puts them in an evenList.
+     * 
+     * @param table
+     *            the table in which to look for events.
+     * @param codes
+     *            the event declaration.
+     * @return an EventList with all found events.
+     */
     public static EventList makeEventList(final Table table,
             final Map<String, Function<Record, Boolean>> codes) {
         EventList list = new EventList();
@@ -30,6 +46,8 @@ public class Code {
                 }
             }
         }
+        
+        list.orderListByDate();
         return list;
     }
 
@@ -42,8 +60,8 @@ public class Code {
      * @param eventList
      *            the EventList Object in which to look for the pattern.
      */
-    public static List<EventList> fillEventSequence(final EventSequence eventSeq,
-            final EventList eventList) {
+    public static List<EventList> fillEventSequence(
+            final EventSequence eventSeq, final EventList eventList) {
         eventList.orderListByDate();
         List<Event> eList = eventList.getList();
         String[] codePattern = eventSeq.getCodePattern();
@@ -72,7 +90,7 @@ public class Code {
                     if (nextIndex - oldIndex == 1) {
                         tmpEList.addEvent(eList.get(nextIndex));
                         oldIndex = nextIndex;
-                        currentIndex = ++nextIndex;
+                        nextIndex++;
                     } else {
                         break makeEventList;
                     }
@@ -146,7 +164,7 @@ public class Code {
             Event lastEvent = eventList.getList().get(
                     eventList.getList().size() - 1);
 
-            LocalDate endOfPer = firstEvent.getDate().plus(per);
+            LocalDateTime endOfPer = firstEvent.getDate().plus(per);
             if (lastEvent.getDate().isAfter(endOfPer)) {
                 eventSeq.deleteSequence(eventList);
             }

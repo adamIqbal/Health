@@ -15,6 +15,7 @@ import com.health.Column;
 import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
+import com.itextpdf.text.PageSize;
 import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.ChartBuilder;
 import com.xeiam.xchart.StyleManager.ChartType;
@@ -45,9 +46,9 @@ public final class FreqBar {
      *
      * @param table
      *            Table to use
-     * @throws RuntimeException
+     * @return
+     * 			Chart
      */
-
     public static Chart frequencyBar(final Table table) {
         // Check if the Table contains a frequency and a date column
         Column freqColumn = null;
@@ -77,6 +78,8 @@ public final class FreqBar {
      *            Table to use
      * @param column
      *            Column to display frequency of
+     * @return
+     * 			Chart
      */
     public static Chart frequencyBar(final Table table, final String column) {
         // Check if the Table contains a frequency column
@@ -159,6 +162,10 @@ public final class FreqBar {
      *
      * @param freqMap
      *            frequency map
+     * @param seriesName
+     * 				name of the series
+     * @return
+     * 			chart
      */
     private static Chart makeBarChart(final Map<String, Integer> freqMap,
             final String seriesName) {
@@ -182,7 +189,14 @@ public final class FreqBar {
         return chart;
     }
 
-    public static Container getContainer(Chart chart) {
+    /**
+     * Container for chart.
+     * @param chart
+     * 			chart
+     * @return
+     * 			Container
+     */
+    public static Container getContainer(final Chart chart) {
         // Wrap the chart in a JFrame and hide the frame
         JFrame frame = new SwingWrapper(chart).displayChart();
         frame.addWindowListener(new HideWindowAdapter());
@@ -190,10 +204,22 @@ public final class FreqBar {
         return frame.getContentPane();
     }
 
-    public static void saveGraph(Chart chart, String fileName) throws IOException {
-        VectorGraphics2D g = new PDFGraphics2D(0.0, 0.0, chart.getWidth(), chart.getHeight());
+    /**
+     * Save the chart as pdf.
+     * @param chart
+     * 			chart that should be saved.
+     * @param fileName
+     * 			file name under which the chart should be saved.
+     * @throws IOException
+     * 			i/o exception
+     */
+    public static void saveGraph(final Chart chart, final String fileName) throws IOException {
+    	final int width = (int) PageSize.A4.getWidth();
+        final int height = (int) PageSize.A4.getHeight();
 
-        chart.paint(g, chart.getWidth(), chart.getHeight());
+        VectorGraphics2D g = new PDFGraphics2D(0.0, 0.0, width, height);
+
+        chart.paint(g, width, height);
 
         // Write the vector graphic output to a file
         FileOutputStream file = new FileOutputStream(fileName + ".pdf");
@@ -205,9 +231,14 @@ public final class FreqBar {
         }
     }
 
+    /**
+     * Hides window.
+     * @author lizzy
+     *
+     */
     private static class HideWindowAdapter extends WindowAdapter {
         @Override
-        public void windowActivated(WindowEvent e) {
+        public void windowActivated(final WindowEvent e) {
             e.getWindow().setVisible(false);
 
         }

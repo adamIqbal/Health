@@ -1,36 +1,63 @@
 package com.health;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventList {
-    List<Event> eventList;
+    private List<Event> eventList;
 
+    /**
+     * Creates an emty eventList
+     */
     public EventList() {
         eventList = new ArrayList<Event>();
     }
 
-    public void addEvent(Event e) {
+    /**
+     * Add an event to the EventList.
+     *
+     * @param e
+     *            an event to add Event.
+     */
+    public final void addEvent(final Event e) {
         eventList.add(e);
     }
 
-    public Event getEvent(int index) {
+    /**
+     * Get an event at a given index.
+     *
+     * @param index
+     *            of the event you want to get.
+     * @return an event at index.
+     */
+    public final Event getEvent(final int index) {
         return eventList.get(index);
     }
 
-    public List<Event> getList() {
+    /**
+     * Get an arrayList with all event in the eventList.
+     *
+     * @return an arrayList with all event in the eventList.
+     */
+    public final List<Event> getList() {
         return eventList;
     }
 
-    public void concatList(EventList that) {
+    /**
+     * Concatenates one evenList that to this one.
+     *
+     * @param that
+     *            an other EventList.
+     */
+    public final void concatList(final EventList that) {
         eventList.addAll(that.getList());
     }
 
     /**
      * Orders an this list by date.
      */
-    public void orderListByDate() {
+    public final void orderListByDate() {
         List<Event> sortedEvents = new ArrayList<Event>(eventList);
 
         if (sortedEvents.size() <= 0) {
@@ -46,8 +73,8 @@ public class EventList {
         }
 
         sortedEvents.sort((a, b) -> {
-            LocalDate dateA = a.getRecord().getDateValue(dateColumnName);
-            LocalDate dateB = b.getRecord().getDateValue(dateColumnName);
+            LocalDateTime dateA = a.getRecord().getDateValue(dateColumnName);
+            LocalDateTime dateB = b.getRecord().getDateValue(dateColumnName);
 
             if (dateA == null && dateB == null) {
                 return 0;
@@ -65,16 +92,30 @@ public class EventList {
 
     /**
      * Turns this eventList into a table.
-     * 
+     *
      * @return a Table format with all element in the eventSequence
      */
-    public Table toTable() {
+    public final Table toTable() {
         if (this.eventList.size() <= 0) {
             return null;
         }
         List<Column> cols = makeTableCols();
+        cols.add(new Column("code_name", cols.size(), ValueType.String));
         Table res = new Table(cols);
-        addAllRecords(res, cols);
+        
+        for(Event e : eventList){
+            Record rec = new Record(res);
+            
+            Record tmp = e.getRecord();
+            int i = 0;
+            for(Object o : tmp.getValues()){
+                rec.setValue(i, o);
+                i++;
+            }
+            
+            rec.setValue("code_name", e.getCode());
+            
+        }
 
         return res;
     }

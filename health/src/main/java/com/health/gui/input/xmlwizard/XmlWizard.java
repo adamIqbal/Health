@@ -42,6 +42,71 @@ public class XmlWizard extends JPanel {
     private static XmlSavePanel savePanel;
 
     /**
+     * Gets the editpanel.
+     * @return the editpanel
+     */
+    protected static XmlEditPanel getEditPanel() {
+        return editPanel;
+    }
+
+    /**
+     * Gets the filepanel.
+     * @return the filepanel
+     */
+    protected static XmlFilePanel getFilePanel() {
+        return filePanel;
+    }
+
+    /**
+     * Gets the savepanel.
+     * @return the savepanel
+     */
+    protected static XmlSavePanel getSavePanel() {
+        return savePanel;
+    }
+
+    /**
+     * Gets the xml object.
+     * @return the xml object
+     */
+    protected static XmlConfigObject getXml() {
+        return xml;
+    }
+
+    /**
+     * Moves the CardLayout to the next panel.
+     */
+    protected static void nextPanel() {
+        CardLayout cl = (CardLayout) cardPanel.getLayout();
+        cl.next(cardPanel);
+    }
+
+    /**
+     * Moves the CardLayout to the previous panel.
+     */
+    protected static void prevPanel() {
+        CardLayout cl = (CardLayout) cardPanel.getLayout();
+        cl.previous(cardPanel);
+    }
+
+    /**
+     * Resets the state of the panels. Does not work yet.
+     */
+    protected static void resetPanels() {
+        editPanel = new XmlEditPanel();
+        savePanel = new XmlSavePanel();
+    }
+
+    /**
+     * Sets the xml object.
+     * @param xml
+     *            xml object
+     */
+    protected static void setXml(final XmlConfigObject xml) {
+        XmlWizard.xml = xml;
+    }
+
+    /**
      * Constructs a XmlWizard containing the wizard panels.
      */
     public XmlWizard() {
@@ -71,70 +136,5 @@ public class XmlWizard extends JPanel {
 
         this.setBackground(GUImain.GUI_COLOR);
         this.setVisible(true);
-    }
-
-    /**
-     * Moves the CardLayout to the next panel.
-     */
-    protected static void nextPanel() {
-        CardLayout cl = (CardLayout) cardPanel.getLayout();
-        cl.next(cardPanel);
-    }
-
-    /**
-     * Moves the CardLayout to the previous panel.
-     */
-    protected static void prevPanel() {
-        CardLayout cl = (CardLayout) cardPanel.getLayout();
-        cl.previous(cardPanel);
-    }
-
-    /**
-     * Resets the state of the panels. Does not work yet.
-     */
-    protected static void resetPanels() {
-        editPanel = new XmlEditPanel();
-        savePanel = new XmlSavePanel();
-    }
-
-    /**
-     * Gets the xml object.
-     * @return the xml object
-     */
-    protected static XmlConfigObject getXml() {
-        return xml;
-    }
-
-    /**
-     * Sets the xml object.
-     * @param xml
-     *            xml object
-     */
-    protected static void setXml(final XmlConfigObject xml) {
-        XmlWizard.xml = xml;
-    }
-
-    /**
-     * Gets the filepanel.
-     * @return the filepanel
-     */
-    protected static XmlFilePanel getFilePanel() {
-        return filePanel;
-    }
-
-    /**
-     * Gets the editpanel.
-     * @return the editpanel
-     */
-    protected static XmlEditPanel getEditPanel() {
-        return editPanel;
-    }
-
-    /**
-     * Gets the savepanel.
-     * @return the savepanel
-     */
-    protected static XmlSavePanel getSavePanel() {
-        return savePanel;
     }
 }

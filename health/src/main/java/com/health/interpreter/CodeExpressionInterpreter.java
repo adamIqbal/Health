@@ -1,6 +1,7 @@
 package com.health.interpreter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,8 +203,8 @@ public final class CodeExpressionInterpreter extends TableExpressionInterpreter 
             return new NumberValue((Double) value);
         } else if (value instanceof String) {
             return new StringValue((String) value);
-        } else if (value instanceof LocalDate) {
-            return new DateValue((LocalDate) value);
+        } else if (value instanceof LocalDateTime) {
+            return new DateValue((LocalDateTime) value);
         } else if (value != null) {
             throw new IllegalArgumentException("Invalid value type, must be Double, String or LocalDate.");
         } else {

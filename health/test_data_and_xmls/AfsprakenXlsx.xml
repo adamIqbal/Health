@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data format="xlsx" startRow="1" startColumn="1" ignoreLast="0">
+	<column type="Number">admnr</column>
+	<column type="Number">sys</column>
+	<column type="Date">date</column>
+	<column type="String">agendaOmscrijving</column>
+</data>

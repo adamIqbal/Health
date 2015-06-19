@@ -10,5 +10,9 @@ public enum FileType {
     /**
      * Represents the xls (Excel) format.
      */
-    XLS
+    XLS,
+    /**
+     * Represents the xlsx (Excel) format.
+     */
+    XLSX     
 }

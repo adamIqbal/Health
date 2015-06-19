@@ -20,7 +20,7 @@ import javax.swing.JTable;
 public final class Table implements Iterable<Record> {
     private List<Column> columns;
     private Map<String, Column> columnMap;
-    private List<Record> records;
+    private List<Record>     records;
 
     /**
      * Constructs a table with the given columns. Each column must have a unique
@@ -49,7 +49,8 @@ public final class Table implements Iterable<Record> {
         }
 
         // Sort the columns by index and make the list read-only
-        this.columns.sort((a, b) -> Integer.compare(a.getIndex(), b.getIndex()));
+        this.columns
+                .sort((a, b) -> Integer.compare(a.getIndex(), b.getIndex()));
         this.columns = Collections.unmodifiableList(this.columns);
     }
 
@@ -204,25 +205,29 @@ public final class Table implements Iterable<Record> {
 
         return null;
     }
-    
+
+    /**
+     * Convert the Table data into a JTable.
+     * @return a JTable Object with the content of the table.
+     */
     public JTable toJTable() {
         int rows = this.getRecords().size();
         int cols = this.getColumns().size();
-        
+
         String[] names = new String[cols];
-        for(int i = 0; i < cols; i++) {
+        for (int i = 0; i < cols; i++) {
             names[i] = this.getColumns().get(i).getName();
         }
-        
+
         Object[][] data = new Object[rows][cols];
-        for(int j = 0; j < rows; j++) {
-            for(int k = 0; k < cols; k++) {
-                data[j][k] = this.getRecords().get(j).getValue(this.getColumns().get(k).getName());
+        for (int j = 0; j < rows; j++) {
+            for (int k = 0; k < cols; k++) {
+                data[j][k] = this.getRecords().get(j)
+                        .getValue(this.getColumns().get(k).getName());
             }
         }
         JTable table = new JTable(data, names);
         return table;
     }
-    
-    
+
 }

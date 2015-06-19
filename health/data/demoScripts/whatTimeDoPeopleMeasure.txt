@@ -7,5 +7,9 @@ table =connect table with table4 where date = date;
 table =connect table with table5 where date = date;
 table =connect table with table6 where date = date;
 
+addTimeToDate(table , "date", "time");
 
-hist(table, "time", 24)
+table = tableWithHoursOfDay(table);
+
+hist(table, "hour_of_day", 24)
+
