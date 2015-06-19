@@ -45,30 +45,9 @@ public class XmlConfigObjectTest {
         expected.add(ValueType.Number);
         expected.add(ValueType.String);
 
+        xmlConfig.setColumnTypes(expected);
         ArrayList<ValueType> actual = (ArrayList<ValueType>) xmlConfig
                 .getColumnTypes();
-
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testGetDateFormat() throws Exception {
-        String expected = "yyMMdd";
-        String actual = xmlConfig.getDateFormat();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testGetPath() throws Exception {
-        Path expected = Paths.get("path/to/file.xml");
-        Path actual = xmlConfig.getPath();
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void testGetType() throws Exception {
-        FileType expected = FileType.TXT;
-        FileType actual = xmlConfig.getType();
         assertEquals(expected, actual);
     }
 
@@ -236,7 +215,7 @@ public class XmlConfigObjectTest {
         columnTypes.add(ValueType.Date);
         xmlConfig.setColumnTypes(columnTypes);
 
-        assertTrue(xmlConfig.toXMLString().contains("xlsx"));
+        assertTrue(xmlConfig.toXMLStringXLSX().contains("xlsx"));
 
     }
 }
