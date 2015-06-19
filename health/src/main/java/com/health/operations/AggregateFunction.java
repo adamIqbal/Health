@@ -7,6 +7,8 @@ import com.health.Record;
 
 /**
  * Represents a named aggregate function.
+ * @param <T>
+ *            the type
  */
 public final class AggregateFunction<T> {
     private final String name;
@@ -21,7 +23,8 @@ public final class AggregateFunction<T> {
      * @param function
      *            the actual aggregation function.
      */
-    public AggregateFunction(final String name, final BiFunction<List<Record>, String, Double> function) {
+    public AggregateFunction(final String name,
+            final BiFunction<List<Record>, String, Double> function) {
         this.name = name;
         this.function = function;
     }

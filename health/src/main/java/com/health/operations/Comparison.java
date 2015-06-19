@@ -14,7 +14,6 @@ import com.health.ValueType;
 
 /**
  * A class to compare EventSequences.
- * 
  * @author daan
  *
  */

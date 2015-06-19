@@ -10,9 +10,9 @@ import java.util.Objects;
  * @param <T>
  *            the type of the value being wrapped.
  */
-public class WrapperValue<T> extends ComplexValue {
+public class WrapperValue<T> extends Value {
     private static Map<Class<?>, ScriptType> types;
-    private final T value;
+    private T value;
 
     static {
         WrapperValue.types = new HashMap<Class<?>, ScriptType>();
@@ -28,7 +28,15 @@ public class WrapperValue<T> extends ComplexValue {
         this(WrapperValue.getWrapperType(value.getClass()), value);
     }
 
-    protected WrapperValue(ScriptType type, final T value) {
+    /**
+     * Creates a new value with the given script type and underlying Java value.
+     *
+     * @param type
+     *            the type of the value.
+     * @param value
+     *            the value.
+     */
+    protected WrapperValue(final ScriptType type, final T value) {
         super(type);
 
         Objects.requireNonNull(value);
@@ -43,6 +51,16 @@ public class WrapperValue<T> extends ComplexValue {
      */
     public final T getValue() {
         return this.value;
+    }
+
+    /**
+     * Sets the underlying value of this wrapper.
+     *
+     * @param value
+     *            the underlying value of this wrapper.
+     */
+    public final void setValue(final T value) {
+        this.value = value;
     }
 
     /**
