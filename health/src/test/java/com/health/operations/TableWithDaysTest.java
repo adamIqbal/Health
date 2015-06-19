@@ -107,4 +107,15 @@ public class TableWithDaysTest {
         assertTrue(dayOfWeek(date).toLowerCase().equals("tuesday"));
         assertFalse(dayOfWeek(date).toLowerCase().equals("partyday"));
     }
+
+    @Test
+    public void testTableHours() {
+
+        assertEquals(table2.getColumns().size(), 4);
+        table2 = TableHours(table2);
+        assertEquals(table2.getColumns().size(), 5);
+        assertTrue(table2.getRecords().get(1).getNumberValue("hour_of_day")
+                .equals(0.0));
+
+    }
 }
