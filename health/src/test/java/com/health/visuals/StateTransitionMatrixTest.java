@@ -9,11 +9,7 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import javax.swing.JScrollPane;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -128,34 +124,45 @@ public class StateTransitionMatrixTest {
         listOfSeq.addAll(Code.fillEventSequence(eSeq3, eList));
         listOfSeq.addAll(Code.fillEventSequence(eSeq4, eList));
     }
-    
+
+    /**
+     * Test that table is indeed saved as file.
+     */
     @Test
-    public void fileTest(){
+	public final void fileTest() {
     	Container table = StateTransitionMatrix.createStateTrans(eList, listOfSeq);
-    	
+
     	StateTransitionMatrix.saveFile("StateTransTest", table);
 
         File f = new File("StateTransTest.pdf");
         assertTrue(f.exists());
     }
-    
+
+    /**
+     * Test that constructor cannot be called.
+     * @throws Exception
+     * 				exception
+     */
     @SuppressWarnings("rawtypes")
 	@Test
-    public void constructorTest() throws Exception {
+	public final void constructorTest() throws Exception {
         Constructor[] ctors = StateTransitionMatrix.class.getDeclaredConstructors();
         assertEquals("State Transition Matrix class should only have one constructor",
                 1, ctors.length);
         Constructor ctor = ctors[0];
-        assertFalse("State Transition Matrix class constructor should be inaccessible", 
+        assertFalse("State Transition Matrix class constructor should be inaccessible",
                 ctor.isAccessible());
-        ctor.setAccessible(true); // obviously we'd never do this in production
+        ctor.setAccessible(true);
         assertEquals("You'd expect the construct to return the expected type",
         		StateTransitionMatrix.class, ctor.newInstance().getClass());
     }
-    
+
+    /**
+     * Test state transition matrix creation.
+     */
     @Test
-    public void createContainerTest() {
+	public final void createContainerTest() {
     	StateTransitionMatrix.createStateTrans(eList);
     }
-    
+
 }
