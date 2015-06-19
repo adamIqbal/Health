@@ -113,7 +113,7 @@ public final class InputDescriptor {
     /**
      * Gets a List containing the ValueType of the columns as described in the
      * input file.
-     * 
+     *
      * @return a List of ValueType objects
      */
     public List<ValueType> getColumnTypes() {

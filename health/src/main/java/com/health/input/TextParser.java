@@ -68,8 +68,9 @@ public final class TextParser implements Parser {
         return table;
     }
 
-    private void fillCell(final InputDescriptor config, Table table, int i,
-            Record record, int j, String value) throws InputException {
+    private void fillCell(final InputDescriptor config, final Table table,
+            final int i, final Record record, final int j, final String value)
+            throws InputException {
         switch (table.getColumn(j).getType()) {
         case String:
             record.setValue(j, value);
@@ -92,34 +93,30 @@ public final class TextParser implements Parser {
         }
     }
 
-    private void fillDateCell(final InputDescriptor config, Table table,
-            Record record, int j, String value) throws InputException {
+    private void fillDateCell(final InputDescriptor config, final Table table,
+            final Record record, final int j, final String value) throws InputException {
         try {
             LocalDateTime dateValue;
-            DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern(config.getDateFormat());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(config
+                    .getDateFormat());
             if (config.getDateFormat().contains("H")
                     || config.getDateFormat().contains("m")) {
-                dateValue = LocalDateTime.parse(value,
-                        formatter);
+                dateValue = LocalDateTime.parse(value, formatter);
             } else {
-                LocalDate date = LocalDate.parse(value,
-                        formatter);
-                dateValue = LocalDateTime.of(date,
-                        LocalTime.of(0, 0));
+                LocalDate date = LocalDate.parse(value, formatter);
+                dateValue = LocalDateTime.of(date, LocalTime.of(0, 0));
             }
             record.setValue(j, dateValue);
         } catch (DateTimeParseException e) {
             throw new InputException(
                     "DateFormat did not match the format of the column "
-                            + table.getColumns().get(j)
-                                    .getName());
+                            + table.getColumns().get(j).getName());
         }
     }
 
     /**
      * Deletes the last x lines which are not needed as specified by the user.
-     * 
+     *
      * @param table
      *            Gets the table with the redundant lines.
      * @param config
