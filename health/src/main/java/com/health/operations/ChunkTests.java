@@ -84,7 +84,7 @@ public class ChunkTests {
 
         tmp = new Record(table);
         tmp.setValue("date", LocalDateTime.of(2013, 11, 15, 0, 0));
-        tmp.setValue("waarde", 10.0);
+        tmp.setValue("waarde", 25.0);
         tmp.setValue("name", "Piet");
 
         tmp = new Record(table);
@@ -99,19 +99,61 @@ public class ChunkTests {
         TemporalAmount period = Period.parse("P6D");
 
         ColumnAggregateTuple cat = new ColumnAggregateTuple("meetwaarde2",
-                AggregateFunctions.sum());
+                AggregateFunctions.average());
         List<ColumnAggregateTuple> aggregates = new ArrayList<ColumnAggregateTuple>();
         aggregates.add(cat);
 
+        assertFalse(table.getRecords().get(0).getValue("date")
+                .equals(LocalDateTime.of(2013, 11, 15, 0, 0)));
+        assertNotEquals(table.getRecords().size(), 5);
+        assertEquals(table.getRecords().size(), 11);
+
         table = chunkByPeriod(table, "date", aggregates, period);
 
-        System.out.println(table.getRecords());
+        assertTrue(table.getRecords().get(0).getValue("date")
+                .equals(LocalDateTime.of(2013, 11, 15, 0, 0)));
+        assertEquals(table.getRecords().size(), 5);
+        assertFalse(table.getRecords().get(0).getValue("date")
+                .equals(LocalDateTime.of(2013, 11, 14, 0, 0)));
+    }
 
+    @Test
+    public void testChunkByPeriodsEmpty() {
+        TemporalAmount period = Period.parse("P6D");
+
+        List<ColumnAggregateTuple> aggregates = new ArrayList<ColumnAggregateTuple>();
+
+        assertFalse(table.getRecords().get(0).getValue("date")
+                .equals(LocalDateTime.of(2013, 11, 15, 0, 0)));
+        assertNotEquals(table.getRecords().size(), 5);
+        assertEquals(table.getRecords().size(), 11);
+
+        table = chunkByPeriod(table, "date", aggregates, period);
+
+        assertTrue(table.getRecords().get(0).getValue("date")
+                .equals(LocalDateTime.of(2013, 11, 15, 0, 0)));
+        assertEquals(table.getRecords().size(), 5);
+        assertFalse(table.getRecords().get(0).getValue("date")
+                .equals(LocalDateTime.of(2013, 11, 14, 0, 0)));
     }
 
     @Test
     public void testChunkByColumn() {
-        fail("Not yet implemented");
-    }
 
+        ColumnAggregateTuple cat = new ColumnAggregateTuple("waarde",
+                AggregateFunctions.max());
+        List<ColumnAggregateTuple> aggregates = new ArrayList<ColumnAggregateTuple>();
+        aggregates.add(cat);
+
+        assertFalse(table.getRecords().get(0).getValue("waarde").equals(10.0));
+        assertTrue(table.getRecords().get(0).getValue("waarde").equals(8.0));
+        assertNotEquals(table.getRecords().size(), 5);
+        assertEquals(table.getRecords().size(), 11);
+
+        table = chunkByColumn(table, "waarde", aggregates);
+
+        assertTrue(table.getRecords().get(2).getNumberValue("waarde") == 25.0);
+        assertTrue(table.getRecords().get(1).getNumberValue("waarde") == 10.0);
+        assertTrue(table.getRecords().get(0).getNumberValue("waarde") == 8.0);
+    }
 }
