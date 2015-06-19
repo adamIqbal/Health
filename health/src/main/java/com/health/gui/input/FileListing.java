@@ -35,6 +35,9 @@ public class FileListing extends JPanel {
     private static final int MIDDLE = 1;
     private static final int BOTTOM = 2;
     private static final int SINGLE = 3;
+    
+    private final static int colsInListing = 3;
+    private final static int minRowsInListing = 20;
 
     private static int maxStringLength = 50;
 
@@ -76,8 +79,8 @@ public class FileListing extends JPanel {
         fileListingCons.gridheight = 1;
         int rows = fileCount;
 
-        if (rows < 20) {
-            rows = 20;
+        if (rows < minRowsInListing) {
+            rows = minRowsInListing;
         }
 
         for (int i = 0; i < rows; i++) {
@@ -136,7 +139,7 @@ public class FileListing extends JPanel {
             } catch (IndexOutOfBoundsException e) {
                 // make empty row
                 fileListingCons.gridy = i + 1;
-                for (int j = 0; j < 3; j++) {
+                for (int j = 0; j < colsInListing; j++) {
                     fileListingCons.gridx = j;
                     JTextField textField = new JTextField();
                     textField.setSize(200, 30);
@@ -257,7 +260,7 @@ public class FileListing extends JPanel {
         fileListingRows.get(index).getFileField()
                 .setBorder(new MatteBorder(top, 1, bottom, 0, borderColor));
         listing.add(fileListingRows.get(index).getFileField(), fileListingCons,
-                (index * 3) + 1);
+                (index * colsInListing) + 1);
 
         fileListingCons.gridx = 1;
         // add xmlformat in single and top, add empty space for mid and bot
@@ -268,7 +271,7 @@ public class FileListing extends JPanel {
             fileListingRows.get(index).getXmlFormat()
                     .setBorder(new MatteBorder(top, 0, bottom, 0, borderColor));
             listing.add(fileListingRows.get(index).getXmlFormat(),
-                    fileListingCons, (index * 3) + 2);
+                    fileListingCons, (index * colsInListing) + 2);
         } else if (rowType == FileListing.BOTTOM
                 || rowType == FileListing.MIDDLE) {
             // needed for group format change
@@ -290,7 +293,7 @@ public class FileListing extends JPanel {
                             }
                         }
                     });
-            listing.add(textField, fileListingCons, (index * 3) + 2);
+            listing.add(textField, fileListingCons, (index * colsInListing) + 2);
         }
 
         // add delete button
@@ -298,7 +301,7 @@ public class FileListing extends JPanel {
         fileListingRows.get(index).getDeleteButton()
                 .setBorder(new MatteBorder(top, 0, bottom, 2, borderColor));
         listing.add(fileListingRows.get(index).getDeleteButton(),
-                fileListingCons, (index * 3) + 3);
+                fileListingCons, (index * colsInListing) + colsInListing);
 
     }
 
