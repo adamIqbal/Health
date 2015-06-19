@@ -17,6 +17,6 @@ final class App {
      *            array of arguments passed to the program.
      */
     public static void main(final String[] args) {
-        new GUImain();
+        new GUImain("Vidney", "Metal");
     }
 }
