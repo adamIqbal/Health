@@ -28,6 +28,14 @@ public class OutputMainPanel extends JPanel {
      */
     private static final long serialVersionUID = -5652640933659529127L;
 
+    /**
+     * Gets the pane containing generated output.
+     * @return the tabbed pane
+     */
+    protected static JTabbedPane getPane() {
+        return pane;
+    }
+
     private static void setComponentData(final Object element, String key) {
         Component component = (Component) element;
         pane.add("Visual: " + key, component);
@@ -55,7 +63,7 @@ public class OutputMainPanel extends JPanel {
         }
     }
 
-    private static void setJTableData(Object element, String key) {
+    private static void setJTableData(final Object element, final String key) {
         JTable jtable = (JTable) element;
         jtable.setEnabled(false);
         jtable.setAutoCreateRowSorter(true);
@@ -63,7 +71,7 @@ public class OutputMainPanel extends JPanel {
         pane.add("Matrix: " + key, scroll);
     }
 
-    private static void setTableData(Object element, String key) {
+    private static void setTableData(final Object element, final String key) {
         Table table = (Table) element;
         JTable jtable = table.toJTable();
         jtable.setEnabled(false);
@@ -81,13 +89,5 @@ public class OutputMainPanel extends JPanel {
 
         pane.setBackground(Color.WHITE);
         this.add(pane, BorderLayout.CENTER);
-    }
-
-    /**
-     * Gets the pane containing generated output.
-     * @return the tabbed pane
-     */
-    protected static JTabbedPane getPane() {
-        return pane;
     }
 }

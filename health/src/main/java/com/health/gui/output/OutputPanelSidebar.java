@@ -48,8 +48,17 @@ public class OutputPanelSidebar extends JPanel {
     }
 
     /**
+     * Returns an array containing the names of all performed analyses.
+     * @return array containing names
+     */
+    protected static Object[] getAnalyses() {
+        return dataMap.keySet().toArray();
+    }
+
+    /**
      * Gets the analysis data for a particular analysis.
-     * @param name name of the analysis
+     * @param name
+     *            name of the analysis
      * @return a Map containing the data
      */
     public static Map<String, Object> getAnalysisData(final String name) {

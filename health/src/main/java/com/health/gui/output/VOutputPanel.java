@@ -19,7 +19,8 @@ public class VOutputPanel extends VidneyPanel {
 
     /**
      * Adds an performed analysis to the output panel.
-     * @param data the data to be displayed
+     * @param data
+     *            the data to be displayed
      */
     public static void addAnalysis(final Map<String, Object> data) {
         OutputPanelSidebar.add(data);
@@ -42,7 +43,8 @@ public class VOutputPanel extends VidneyPanel {
             public void mouseClicked(final MouseEvent e) {
                 String selected = OutputPanelSidebar.getList()
                         .getSelectedValue();
-                OutputMainPanel.setData(OutputPanelSidebar.getAnalysisData(selected));
+                OutputMainPanel.setData(OutputPanelSidebar
+                        .getAnalysisData(selected));
             }
 
             @Override
@@ -63,19 +65,5 @@ public class VOutputPanel extends VidneyPanel {
 
         });
         this.setRight(sidebar);
-
-        // DUMMY DATA
-        /*
-         * String filePath = "data/data_all/data_txt/ADMIRE 2.txt"; String
-         * filePath2 = "data/data_all/data_txt/ADMIRE_13.txt"; String configPath
-         * = "data/configXmls/admireTxtConfig.xml"; Table table = null; Table
-         * table2 = null; try { table = Input.readTable(filePath, configPath);
-         * table2 = Input.readTable(filePath2, configPath); } catch (IOException
-         * | ParserConfigurationException | SAXException | InputException e) {
-         * e.printStackTrace(); } HashMap<String, Object> test = new
-         * HashMap<String, Object>(); test.put("test", table); test.put("test2",
-         * table2); addAnalysis(test);
-         */
-        //
     }
 }
