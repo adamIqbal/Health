@@ -54,12 +54,12 @@ public final class VScriptPanel extends VidneyPanel {
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         mainPanel.add(new ScriptMainPanel(), BorderLayout.CENTER);
-        //mainPanel.add(scriptArea, BorderLayout.CENTER);
+        // mainPanel.add(scriptArea, BorderLayout.CENTER);
 
         VButton startAnalysisButton = new VButton("Start Analysis");
         startAnalysisButton.addActionListener(new AnalysisListener());
         mainPanel.add(startAnalysisButton, BorderLayout.SOUTH);
-        
+
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(rigidArea());
@@ -168,6 +168,7 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Sets the script area text.
+     * 
      * @param text
      *            the text to set
      */
@@ -177,6 +178,7 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Reads the txt file containing the script.
+     * 
      * @param file
      *            File containing the script
      * @throws IOException
