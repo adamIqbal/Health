@@ -68,8 +68,9 @@ public final class TextParser implements Parser {
         return table;
     }
 
-    private void fillCell(final InputDescriptor config, Table table, int i,
-            Record record, int j, String value) throws InputException {
+    private void fillCell(final InputDescriptor config, final Table table,
+            final int i, final Record record, final int j, final String value)
+            throws InputException {
         switch (table.getColumn(j).getType()) {
         case String:
             record.setValue(j, value);
@@ -92,8 +93,8 @@ public final class TextParser implements Parser {
         }
     }
 
-    private void fillDateCell(final InputDescriptor config, Table table,
-            Record record, int j, String value) throws InputException {
+    private void fillDateCell(final InputDescriptor config, final Table table,
+            final Record record, final int j, final String value) throws InputException {
         try {
             LocalDateTime dateValue;
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(config
@@ -115,7 +116,7 @@ public final class TextParser implements Parser {
 
     /**
      * Deletes the last x lines which are not needed as specified by the user.
-     * 
+     *
      * @param table
      *            Gets the table with the redundant lines.
      * @param config

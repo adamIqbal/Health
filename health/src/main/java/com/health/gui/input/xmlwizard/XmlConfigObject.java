@@ -9,6 +9,7 @@ import com.health.ValueType;
 
 /**
  * Models a XML Config file and providing methods to write is as a String.
+ * 
  * @author Bjorn van der Laan
  *
  */
@@ -42,6 +43,7 @@ public class XmlConfigObject {
 
     /**
      * Calls a toXMLString variant method based on the format attribute.
+     * 
      * @return a String in a XML format
      */
     public final String toXMLString() {
@@ -59,61 +61,6 @@ public class XmlConfigObject {
         }
 
         return xml;
-    }
-
-    /**
-     * Generates XML string of a config XML describing a TXT data set.
-     * @return XML string of the config XML
-     */
-    public final String toXMLStringTXT() {
-        String startDelimiter = this.values[0];
-        String endDelimiter = this.values[1];
-        String delimiter = this.values[2];
-        String ignoreLast = this.values[3];
-
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
-        String dataStart = "<data format=\"text\" start=\"" + startDelimiter
-                + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
-                + "\"";
-
-        if (this.values.length > 3) {
-            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
-        }
-
-        dataStart += ">" + "\n\r";
-
-        String columnTags = this.columnsToXML();
-
-        String dataEnd = "</data>";
-
-        return header + dataStart + columnTags + dataEnd;
-    }
-
-    /**
-     * Generates XML string of a config XML describing a XLS data set.
-     * @return XML string of the config XML
-     */
-    public final String toXMLStringXLS() {
-        String startRow = this.values[0];
-        String startCol = this.values[1];
-        String ignoreLast = this.values[2];
-
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
-        String dataStart = "<data format=\"xls\" startRow=\"" + startRow
-                + "\" startColumn=\"" + startCol + "\"";
-
-        if (this.values.length > 2) {
-            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
-        }
-
-        dataStart += ">" + "\n\r";
-        dataStart += ">" + "\n\r";
-
-        String columnTags = this.columnsToXML();
-
-        String dataEnd = "</data>";
-
-        return header + dataStart + columnTags + dataEnd;
     }
 
     private final String columnsToXML() {
@@ -145,6 +92,7 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the type attribute.
+     * 
      * @return the type attribute
      */
     public final FileType getType() {
@@ -153,6 +101,7 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the type attribute.
+     * 
      * @param type
      *            new value of type
      */
@@ -162,6 +111,7 @@ public class XmlConfigObject {
 
     /**
      * Gets the date format
+     * 
      * @return date format
      */
     public final String getDateFormat() {
@@ -170,6 +120,7 @@ public class XmlConfigObject {
 
     /**
      * sets the date format
+     * 
      * @param dateFormat
      *            date format
      */
@@ -179,6 +130,7 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the values attribute.
+     * 
      * @return the type attribute
      */
     public final String[] getValues() {
@@ -187,6 +139,7 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the values attribute.
+     * 
      * @param values
      *            new value of values
      */
@@ -196,6 +149,7 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the columns attribute.
+     * 
      * @return the type attribute
      */
     public final List<String> getColumns() {
@@ -204,6 +158,7 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the columns attribute.
+     * 
      * @param columns
      *            new value of columns
      */
@@ -213,6 +168,7 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the columnTypes attribute.
+     * 
      * @return the type attribute
      */
     public final List<ValueType> getColumnTypes() {
@@ -221,6 +177,7 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the columnTypes attribute.
+     * 
      * @param columnTypes
      *            new value of columnTypes
      */
@@ -230,6 +187,7 @@ public class XmlConfigObject {
 
     /**
      * Gets the value of the path attribute.
+     * 
      * @return the type attribute
      */
     public final Path getPath() {
@@ -238,6 +196,7 @@ public class XmlConfigObject {
 
     /**
      * Sets the value of the path attribute.
+     * 
      * @param path
      *            new value of path
      */
@@ -264,5 +223,83 @@ public class XmlConfigObject {
         }
 
         return rv;
+    }
+
+    /**
+     * Generates XML string of a config XML describing a TXT data set.
+     * 
+     * @return XML string of the config XML
+     */
+    public final String toXMLStringTXT() {
+        String startDelimiter = this.values[0];
+        String endDelimiter = this.values[1];
+        String delimiter = this.values[2];
+        String ignoreLast = this.values[3];
+
+        String dataStart = "<data format=\"text\" start=\"" + startDelimiter
+                + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
+                + "\"";
+
+        if (this.values.length > 3) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
+        }
+
+        dataStart += ">" + "\n\r";
+
+        return makeHeader() + dataStart + getEndofXml();
+    }
+
+    /**
+     * Generates XML string of a config XML describing a XLS data set.
+     * 
+     * @return XML string of the config XML
+     */
+    public final String toXMLStringXLS() {
+        String startRow = this.values[0];
+        String startCol = this.values[1];
+        String ignoreLast = this.values[2];
+
+        String dataStart = "<data format=\"xls\" startRow=\"" + startRow
+                + "\" startColumn=\"" + startCol + "\"";
+
+        if (this.values.length > 2) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
+        }
+
+        return makeHeader() + dataStart + getEndofXml();
+    }
+
+    /**
+     * Generates XML string of a config XML describing a XLSX data set.
+     * 
+     * @return XML string of the config XML
+     */
+    public final String toXMLStringXLSX() {
+        String startRow = this.values[0];
+        String startCol = this.values[1];
+        String ignoreLast = this.values[2];
+
+        String dataStart = "<data format=\"xlsx\" startRow=\"" + startRow
+                + "\" startColumn=\"" + startCol + "\"";
+
+        if (this.values.length > 2) {
+            dataStart += " ignoreLast=\"" + ignoreLast + "\"";
+        }
+
+        dataStart += ">" + "\n\r";
+
+        return makeHeader() + dataStart + getEndofXml();
+    }
+
+    private String getEndofXml() {
+        String columnTags = this.columnsToXML();
+
+        String dataEnd = "</data>";
+
+        return columnTags + dataEnd;
+    }
+
+    private String makeHeader() {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
     }
 }

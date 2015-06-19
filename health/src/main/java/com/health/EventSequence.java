@@ -7,6 +7,12 @@ import java.util.Objects;
 
 import com.health.operations.Connect;
 
+/**
+ * a class with contains the found sequences as a list of eventlists.
+ * 
+ * @author daan
+ *
+ */
 public final class EventSequence {
     private final List<EventList> sequences;
     private final String[] codePattern;
@@ -125,7 +131,7 @@ public final class EventSequence {
     public Table toTable() {
         List<Column> cols = new ArrayList<Column>();
         cols.add(new Column("nothing found", 0, ValueType.Number));
-        
+
         Table res = new Table(cols);
         boolean start = true;
         for (EventList eList : sequences) {

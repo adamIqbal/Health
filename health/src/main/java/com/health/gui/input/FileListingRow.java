@@ -31,6 +31,7 @@ public final class FileListingRow {
     private ListenForDeleteFile lforDelete;
     private boolean inGroup = false;
     private static String selectFormatString = "select format";
+    private final Color backgroundOfRow = Color.gray;
 
     /**
      * @return return the standard format string.
@@ -100,7 +101,7 @@ public final class FileListingRow {
         fileField.setOpaque(false);
 
         deleteButton = new JButton("X");
-        deleteButton.setBackground(new Color(200, 200, 200));
+        deleteButton.setBackground(backgroundOfRow);
         lforDelete = new ListenForDeleteFile(fileString);
         deleteButton.addActionListener(lforDelete);
         // filedrop for fileField
@@ -217,8 +218,10 @@ public final class FileListingRow {
      */
     private class ListenForSetFormat implements ActionListener {
 
+        @SuppressWarnings("unchecked")
         @Override
         public void actionPerformed(final ActionEvent e) {
+
             JComboBox<String> changed = (JComboBox<String>) e.getSource();
             FileListing.changeFormat(changed.getSelectedItem().toString());
 
