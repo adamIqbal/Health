@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.gui.GUImain;
+import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 import com.health.gui.VidneyPanel;
 import com.health.gui.input.FileListing;
@@ -79,7 +80,6 @@ public final class VScriptPanel extends VidneyPanel {
         this.setLeft(mainPanel);
 
         JPanel sidePanel = new JPanel();
-        sidePanel.add(new ScriptPanelSidebar());
         this.setRight(sidePanel);
     }
 
@@ -96,7 +96,7 @@ public final class VScriptPanel extends VidneyPanel {
                     String name = JOptionPane.showInputDialog(new JFrame(),
                             "Please specify a name for this script file",
                             "Save as..");
-                    String filename = GUImain.PATH_TO_DATA + "scripts/" + name
+                    String filename = UserInterface.PATH_TO_DATA + "scripts/" + name
                             + ".txt";
                     File file = new File(filename);
 
@@ -137,7 +137,7 @@ public final class VScriptPanel extends VidneyPanel {
             public void actionPerformed(final ActionEvent arg0) {
                 JFileChooser loadFile = new JFileChooser();
                 loadFile.setApproveButtonText("Select File");
-                loadFile.setCurrentDirectory(new File(GUImain.PATH_TO_DATA));
+                loadFile.setCurrentDirectory(new File(UserInterface.PATH_TO_DATA));
                 loadFile.setAcceptAllFileFilterUsed(false);
                 FileNameExtensionFilter f1 = new FileNameExtensionFilter(
                         "Text Files", "txt", "text", "rtf");
@@ -169,6 +169,7 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Sets the script area text.
+     * 
      * @param text
      *            the text to set
      */
@@ -178,6 +179,7 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Reads the txt file containing the script.
+     * 
      * @param file
      *            File containing the script
      * @throws IOException
@@ -257,7 +259,7 @@ public final class VScriptPanel extends VidneyPanel {
                 // tableN
                 String name = "table" + i;
 
-                xmlFormat = GUImain.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
+                xmlFormat = UserInterface.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
 
                 parsedData.add(new InputData(fileString, xmlFormat, name));
             }

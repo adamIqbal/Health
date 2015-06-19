@@ -6,7 +6,7 @@ import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.health.gui.GUImain;
+import com.health.gui.UserInterface;
 
 /**
  * TODO delete columns
@@ -134,7 +134,7 @@ public class XmlWizard extends JPanel {
         JLabel label = new JLabel("Create or edit XML files here");
         this.add(label, BorderLayout.NORTH);
 
-        this.setBackground(GUImain.GUI_COLOR);
+        this.setBackground(UserInterface.GUI_COLOR);
         this.setVisible(true);
     }
 }

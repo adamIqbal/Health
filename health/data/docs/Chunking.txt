@@ -1,8 +1,0 @@
-<html><body>
-<h1>Chunking</h1>
-<p>You can use the chunking operation for instance
-to determine the maximum value of a column on a specified interval.<p>
-<h2>Example</h2>
-<p>chunk YourTable <br>by <u>date_column</u> <br>per <u>5 days</u>
-, <u>max</u> of <u>column</u></p>
-</body></html>

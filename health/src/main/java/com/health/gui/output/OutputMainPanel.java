@@ -15,18 +15,72 @@ import com.health.Table;
 /**
  * Represents the mainpanel of the Output section. Shows tables and
  * visualizations of the analysis selected in the sidepanel.
- *
  * @author Bjorn van der Laan
+ *
  */
 public class OutputMainPanel extends JPanel {
-    /**
-     * Constant serialized ID used for compatibility.
-     */
-    private static final long serialVersionUID = -5652640933659529127L;
     /**
      * Tabbed pane containing the generated results.
      */
     private static JTabbedPane pane = new JTabbedPane();
+    /**
+     * Constant serialized ID used for compatibility.
+     */
+    private static final long serialVersionUID = -5652640933659529127L;
+
+    /**
+     * Gets the pane containing generated output.
+     * @return the tabbed pane
+     */
+    protected static JTabbedPane getPane() {
+        return pane;
+    }
+
+    private static void setComponentData(final Object element, String key) {
+        Component component = (Component) element;
+        pane.add("Visual: " + key, component);
+    }
+
+    /**
+     * Sets the data of the panel based on the input.
+     * @param map2
+     *            Map containing the data
+     */
+    public static final void setData(final Map<String, Object> map2) {
+        pane.removeAll();
+        for (String key : map2.keySet()) {
+            Object element = map2.get(key);
+            if (element instanceof Table) {
+                setTableData(element, key);
+            } else if (element instanceof JTable) {
+                setJTableData(element, key);
+            } else if (element instanceof Component) {
+                setComponentData(element, key);
+            }
+
+            pane.repaint();
+            pane.revalidate();
+        }
+    }
+
+    private static void setJTableData(final Object element, final String key) {
+        JTable jtable = (JTable) element;
+        JScrollPane scroll = createScrollPane(jtable);
+        pane.add("Matrix: " + key, scroll);
+    }
+
+    private static void setTableData(final Object element, final String key) {
+        Table table = (Table) element;
+        JScrollPane scroll = createScrollPane(table.toJTable());
+        pane.add("Table: " + key, scroll);
+    }
+    
+    private static JScrollPane createScrollPane(JTable jtable) {
+        jtable.setEnabled(false);
+        jtable.setAutoCreateRowSorter(true);
+        jtable.setFillsViewportHeight(false);
+        return new JScrollPane(jtable);
+    }
 
     /**
      * Constructor.
@@ -37,58 +91,5 @@ public class OutputMainPanel extends JPanel {
 
         pane.setBackground(Color.WHITE);
         this.add(pane, BorderLayout.CENTER);
-    }
-
-    /**
-     * Sets the data of the panel based on the input.
-     *
-     * @param map2
-     *            Map containing the data
-     */
-    public static final void setData(final Map<String, Object> map2) {
-        pane.removeAll();
-        for (String key : map2.keySet()) {
-            Object element = map2.get(key);
-            if (element instanceof Table) {
-                Table table = (Table) element;
-                JTable jtable = tableToJTable(table);
-                jtable.setEnabled(false);
-                jtable.setAutoCreateRowSorter(true);
-                JScrollPane scroll = new JScrollPane(jtable);
-                pane.add("Table: " + key, scroll);
-
-            } else if (element instanceof Component) {
-                Component component = (Component) element;
-                pane.add("Visual: " + key, component);
-            } else if (element instanceof JTable) {
-                JTable jtable = (JTable) element;
-                jtable.setEnabled(false);
-                jtable.setAutoCreateRowSorter(true);
-                JScrollPane scroll = new JScrollPane(jtable);
-                pane.add("Matrix: " + key, scroll);
-            }
-        }
-
-        pane.repaint();
-        pane.revalidate();
-    }
-
-    public static JTable tableToJTable(final Table table) {
-        int rows = table.getRecords().size();
-        int cols = table.getColumns().size();
-
-        String[] names = new String[cols];
-        for (int i = 0; i < cols; i++) {
-            names[i] = table.getColumns().get(i).getName();
-        }
-
-        Object[][] data = new Object[rows][cols];
-        for (int j = 0; j < rows; j++) {
-            for (int k = 0; k < cols; k++) {
-                data[j][k] = table.getRecords().get(j).getValue(k);
-            }
-        }
-
-        return new JTable(data, names);
     }
 }

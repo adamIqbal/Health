@@ -51,16 +51,7 @@ public final class XlsParser implements Parser {
 
         // String ext = getFileExtension(path);
         String ext = config.getFormat().toLowerCase();
-        Workbook wb;
-        if (ext.equals("xls")) {
-            wb = new HSSFWorkbook(io);
-        } else if (ext.equals("xlsx")) {
-            wb = new XSSFWorkbook(io);
-        } else {
-            io.close();
-            throw new InputException(
-                    "Not a xls or xlsx file, so cannot parse with XLSParser");
-        }
+        Workbook wb = getWorkBook(ext, io);
 
         StartCell startCell = config.getStartCell();
         int rowCount = 0;
@@ -82,52 +73,8 @@ public final class XlsParser implements Parser {
                         value = "NULL";
                     }
 
-                    switch (table.getColumn(columnCountTableRow).getType()) {
-                    case String:
-                        if (!value.equals("NULL")) {
-                            tableRow.setValue(columnCountTableRow, value);
-                        }
-                        break;
-                    case Number:
-                        if (!value.equals("NULL")) {
-                            tableRow.setValue(columnCountTableRow,
-                                    Double.parseDouble(value));
-                        }
-                        break;
-                    case Date:
-                        if (config.getDateFormat() != null) {
-                            try {
-                                String format = config.getDateFormat();
-                                LocalDateTime dateValue;
-                                if (ext.equals("xlsx")) {
-                                    Date date = row.getCell(i)
-                                            .getDateCellValue();
-                                    dateValue = date.toInstant()
-                                            .atZone(ZoneId.systemDefault())
-                                            .toLocalDateTime();
-                                } else {
-                                    DateTimeFormatter formatter = DateTimeFormatter
-                                            .ofPattern(format);
-                                    dateValue = LocalDateTime
-                                            .parse(row.getCell(i).toString(),
-                                                    formatter);
-                                }
-                                tableRow.setValue(columnCountTableRow,
-                                        dateValue);
-                                // LocalDateTime time = dateValue.at;
-                                // time.toString();
-                            } catch (DateTimeParseException e) {
-                                break;
-                            }
-                        }
-                        break;
-                    default:
-                        // The type was null, this should never happen
-                        assert false;
-                        throw new InputException(
-                                "Internal error.",
-                                new Exception("Column.getType() returned null."));
-                    }
+                    fillCell(config, table, ext, row, tableRow,
+                            columnCountTableRow, i, value);
 
                     columnCountTableRow++;
                 }
@@ -140,5 +87,77 @@ public final class XlsParser implements Parser {
         wb.close();
         return table;
 
+    }
+
+    private void fillCell(final InputDescriptor config, Table table,
+            String ext, Row row, Record tableRow, int columnCountTableRow,
+            int i, String value) throws InputException {
+        switch (table.getColumn(columnCountTableRow).getType()) {
+        case String:
+            if (!value.equals("NULL")) {
+                tableRow.setValue(columnCountTableRow, value);
+            }
+            break;
+        case Number:
+            if (!value.equals("NULL")) {
+                tableRow.setValue(columnCountTableRow,
+                        Double.parseDouble(value));
+            }
+            break;
+        case Date:
+            if (config.getDateFormat() != null) {
+                try {
+                    fillDateCell(config, ext, row, tableRow,
+                            columnCountTableRow, i);
+                } catch (DateTimeParseException e) {
+                    break;
+                }
+            }
+            break;
+        default:
+            // The type was null, this should never happen
+            assert false;
+            throw new InputException("Internal error.", new Exception(
+                    "Column.getType() returned null."));
+        }
+    }
+
+    private void fillDateCell(final InputDescriptor config, String ext,
+            Row row, Record tableRow, int columnCountTableRow, int i) {
+        String format = config.getDateFormat();
+        LocalDateTime dateValue;
+        if (ext.equals("xlsx")) {
+            Date date = row.getCell(i).getDateCellValue();
+            if (date == null) {
+                dateValue = null;
+            } else {
+                dateValue = date.toInstant().atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+            }
+        } else {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+            dateValue = LocalDateTime.parse(row.getCell(i).toString(),
+                    formatter);
+        }
+        tableRow.setValue(columnCountTableRow, dateValue);
+        // LocalDateTime time = dateValue.at;
+        // time.toString();
+    }
+
+    private Workbook getWorkBook(String ext, FileInputStream io)
+            throws IOException, InputException {
+        Workbook wb = null;
+        if (ext.equals("xls")) {
+            wb = new HSSFWorkbook(io);
+        } else if (ext.equals("xlsx")) {
+
+            wb = new XSSFWorkbook(io);
+        } else {
+            io.close();
+            throw new InputException(
+                    "Not a xls or xlsx file, so cannot parse with XLSParser");
+
+        }
+        return wb;
     }
 }

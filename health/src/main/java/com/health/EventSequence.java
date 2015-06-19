@@ -123,11 +123,15 @@ public final class EventSequence {
      * @return a table with all events found.
      */
     public Table toTable() {
-        Table res = null;
-
+        List<Column> cols = new ArrayList<Column>();
+        cols.add(new Column("nothing found", 0, ValueType.Number));
+        
+        Table res = new Table(cols);
+        boolean start = true;
         for (EventList eList : sequences) {
-            if (res == null) {
+            if (start) {
                 res = eList.toTable();
+                start = false;
             } else {
                 res = Connect.connect(res, eList.toTable(), null);
             }

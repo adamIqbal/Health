@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data format="xlsx" startRow="1" startColumn="1" ignoreLast="0">
+>
+	<column type="Number">admireNum</column>
+	<column type="Number">groep</column>
+	<column type="Date" format="M[M]/d[d]/yyyy">date</column>
+	<column type="String">agendaOmschrijving</column>
+</data>

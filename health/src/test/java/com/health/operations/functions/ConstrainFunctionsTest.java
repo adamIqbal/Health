@@ -149,20 +149,14 @@ public class ConstrainFunctionsTest {
     public void testEqualString() {
         assertFalse(equal(crea, valueString));
         crea = valueString.getValue();
-        System.out.println(crea);
-        System.out.println(crea instanceof String);
-        System.out.println(valueString);
         assertTrue(equal(crea, valueString));
         valueString.setValue("crea");
         crea = "crea";
         assertTrue(equal(crea, valueString));
-        System.out.println(crea);
-        System.out.println(valueString);
     }
 
     @Test
     public void testGreaterNumber() {
-
         assertTrue(greater((Object) columns, (Value) value));
 
         value.setValue(3.0);

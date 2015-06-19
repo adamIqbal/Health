@@ -59,52 +59,58 @@ public final class TextParser implements Parser {
                 String value = columns[j].trim();
 
                 // Convert the value to the correct type and insert it
-                switch (table.getColumn(j).getType()) {
-                case String:
-                    record.setValue(j, value);
-                    break;
-                case Number:
-                    record.setValue(j, stringToNumber(value, i));
-                    break;
-                case Date:
-                    if (config.getDateFormat() != null) {
-                        try {
-                            LocalDateTime dateValue;
-                            DateTimeFormatter formatter = DateTimeFormatter
-                                    .ofPattern(config.getDateFormat());
-                            if (config.getDateFormat().contains("H")
-                                    || config.getDateFormat().contains("m")) {
-                                dateValue = LocalDateTime.parse(value,
-                                        formatter);
-                            } else {
-                                LocalDate date = LocalDate.parse(value,
-                                        formatter);
-                                dateValue = LocalDateTime.of(date,
-                                        LocalTime.of(0, 0));
-                            }
-                            record.setValue(j, dateValue);
-                        } catch (DateTimeParseException e) {
-                            throw new InputException(
-                                    "DateFormat did not match the format of the column "
-                                            + table.getColumns().get(j)
-                                                    .getName());
-                        }
-                    } else {
-                        break;
-                    }
-                    break;
-                default:
-                    // The type was null, this should never happen
-                    assert false;
-                    throw new InputException("Internal error.", new Exception(
-                            "Column.getType() returned null."));
-                }
+                fillCell(config, table, i, record, j, value);
             }
         }
 
         table = deleteLastLines(table, config);
 
         return table;
+    }
+
+    private void fillCell(final InputDescriptor config, Table table, int i,
+            Record record, int j, String value) throws InputException {
+        switch (table.getColumn(j).getType()) {
+        case String:
+            record.setValue(j, value);
+            break;
+        case Number:
+            record.setValue(j, stringToNumber(value, i));
+            break;
+        case Date:
+            if (config.getDateFormat() != null) {
+                fillDateCell(config, table, record, j, value);
+            } else {
+                break;
+            }
+            break;
+        default:
+            // The type was null, this should never happen
+            assert false;
+            throw new InputException("Internal error.", new Exception(
+                    "Column.getType() returned null."));
+        }
+    }
+
+    private void fillDateCell(final InputDescriptor config, Table table,
+            Record record, int j, String value) throws InputException {
+        try {
+            LocalDateTime dateValue;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(config
+                    .getDateFormat());
+            if (config.getDateFormat().contains("H")
+                    || config.getDateFormat().contains("m")) {
+                dateValue = LocalDateTime.parse(value, formatter);
+            } else {
+                LocalDate date = LocalDate.parse(value, formatter);
+                dateValue = LocalDateTime.of(date, LocalTime.of(0, 0));
+            }
+            record.setValue(j, dateValue);
+        } catch (DateTimeParseException e) {
+            throw new InputException(
+                    "DateFormat did not match the format of the column "
+                            + table.getColumns().get(j).getName());
+        }
     }
 
     /**
