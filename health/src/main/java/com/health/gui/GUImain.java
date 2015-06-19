@@ -14,7 +14,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
-import com.health.gui.help.VHelpPanel;
 import com.health.gui.input.VInputPanel;
 import com.health.gui.output.VOutputPanel;
 import com.health.gui.script.VScriptPanel;
@@ -116,12 +115,10 @@ public class GUImain extends JFrame {
         VidneyPanel inputPanel = new VInputPanel();
         VidneyPanel scriptPanel = new VScriptPanel();
         VidneyPanel outputPanel = new VOutputPanel();
-        VidneyPanel helperPanel = new VHelpPanel();
 
         addTab("Step 1: Input", inputPanel);
         addTab("Step 2: Script", scriptPanel);
         addTab("Step 3: Output", outputPanel);
-        addTab("Documentation", helperPanel);
 
         tabbedPane.setBackground(GUImain.GUI_COLOR);
         sizeTabs(tabWidth, tabHeight);

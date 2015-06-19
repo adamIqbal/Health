@@ -102,15 +102,18 @@ public final class XlsParser implements Parser {
                                 if (ext.equals("xlsx")) {
                                     Date date = row.getCell(i)
                                             .getDateCellValue();
-                                    dateValue = date.toInstant()
-                                            .atZone(ZoneId.systemDefault())
-                                            .toLocalDateTime();
+                                    if (date == null) {
+                                        dateValue = null;
+                                    } else {
+                                        dateValue = date.toInstant()
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDateTime();
+                                    }
                                 } else {
                                     DateTimeFormatter formatter = DateTimeFormatter
                                             .ofPattern(format);
-                                    dateValue = LocalDateTime
-                                            .parse(row.getCell(i).toString(),
-                                                    formatter);
+                                    dateValue = LocalDateTime.parse(row
+                                            .getCell(i).toString(), formatter);
                                 }
                                 tableRow.setValue(columnCountTableRow,
                                         dateValue);

@@ -1,0 +1,22 @@
+// with metingen xlsx as table0 and afspraken afspraken anoniem xlsx as table1
+var table = constrain table0 where KreatinineAlgorithmDayRatingId >= 5;
+//constrain for specific user
+table  = constrain table where Login = "admire3";
+
+var tableDocAppointments = constrain table1 where admireNum = 3;
+
+var events = code table0 as concern : KreatinineAlgorithmDayRatingId == 4 , 
+	noconcern : KreatinineAlgorithmDayRatingId != 4;
+var seq = sequence("concern" , "concern", true);
+findSequences(events, seq);
+
+var contactHospTable = seq.toTable();
+
+table = connect table with contactHospTable 
+	where KreatinineAlgorithmDayRatingId = KreatinineAlgorithmDayRatingId;
+
+table = connect table with tableDocAppointments where date = ModifiedDate;
+
+write("out.txt", table);
+
+transitionMatrix(events , seq);

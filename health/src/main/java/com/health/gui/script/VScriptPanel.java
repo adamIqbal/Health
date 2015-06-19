@@ -169,6 +169,7 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Sets the script area text.
+     * 
      * @param text
      *            the text to set
      */
@@ -178,6 +179,7 @@ public final class VScriptPanel extends VidneyPanel {
 
     /**
      * Reads the txt file containing the script.
+     * 
      * @param file
      *            File containing the script
      * @throws IOException
