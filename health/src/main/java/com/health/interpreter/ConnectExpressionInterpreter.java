@@ -14,7 +14,7 @@ import com.health.script.runtime.WrapperValue;
 /**
  * Represents an interpreter for connecting expressions.
  */
-public final class ConnectExpressionInterpreter extends TableExpressionInterpreter {
+public final class ConnectExpressionInterpreter extends BaseExpressionInterpreter {
     /**
      * Creates a new instance of {@link ConnectExpressionInterpreter} with the
      * given context and expressionVisitor.
@@ -42,8 +42,8 @@ public final class ConnectExpressionInterpreter extends TableExpressionInterpret
         String table1Ident = ctx.table1.getText();
         String table2Ident = ctx.table2.getText();
 
-        Table table1 = lookupTable(table1Ident);
-        Table table2 = lookupTable(table2Ident);
+        Table table1 = BaseExpressionInterpreter.lookupTable(this.getContext(), table1Ident);
+        Table table2 = BaseExpressionInterpreter.lookupTable(this.getContext(), table2Ident);
 
         List<ColumnConnection> connections = evaluateColumnConnections(ctx.columnConnectionList());
 

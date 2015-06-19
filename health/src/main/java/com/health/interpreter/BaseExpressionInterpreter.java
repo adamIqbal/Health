@@ -9,12 +9,12 @@ import com.health.script.runtime.WrapperValue;
 /**
  * A base class with common functions for interpreter of table expressions.
  */
-public abstract class TableExpressionInterpreter {
+public abstract class BaseExpressionInterpreter {
     private final Context context;
     private final ExpressionValueVisitor expressionVisitor;
 
     /**
-     * Creates a {@link TableExpressionInterpreter} with the given context and
+     * Creates a {@link BaseExpressionInterpreter} with the given context and
      * expressionVisitor.
      *
      * @param context
@@ -22,7 +22,7 @@ public abstract class TableExpressionInterpreter {
      * @param expressionVisitor
      *            the expressionVisitor.
      */
-    protected TableExpressionInterpreter(
+    protected BaseExpressionInterpreter(
             final Context context,
             final ExpressionValueVisitor expressionVisitor) {
         this.context = context;
@@ -33,12 +33,15 @@ public abstract class TableExpressionInterpreter {
      * Looks up a table from the context or throws an exception if the variable
      * is undefined or not a table.
      *
+     * @param context
+     *            the context.
      * @param tableName
      *            the name of the table to retrieve.
      * @return the table declared with the given name.
      */
-    protected final Table lookupTable(final String tableName) {
-        LValue var = this.context.lookup(tableName);
+    @SuppressWarnings("unchecked")
+    public static final Table lookupTable(final Context context, final String tableName) {
+        LValue var = context.lookup(tableName);
 
         if (!WrapperValue.getWrapperType(Table.class).isAssignableFrom(var.getType())) {
             throw new ScriptRuntimeException("Chunking can only be performed on a table instance.");
@@ -58,7 +61,7 @@ public abstract class TableExpressionInterpreter {
      * @param column
      *            the column to be verified.
      */
-    protected static final void verifyHasColumn(final Table table, final String tableName, final String column) {
+    public static final void verifyHasColumn(final Table table, final String tableName, final String column) {
         if (table.getColumn(column) == null) {
             throw new ScriptRuntimeException(String.format("Table '%s' does not define a column named '%s'.",
                     tableName, column));
