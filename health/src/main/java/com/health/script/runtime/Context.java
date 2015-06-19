@@ -3,7 +3,6 @@ package com.health.script.runtime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 
 import com.health.EventList;
@@ -43,6 +42,15 @@ public final class Context {
      */
     public Map<String, LValue> getVariables() {
         return Collections.unmodifiableMap(this.variables);
+    }
+
+    /**
+     * Returns a map containing the types declared in this context.
+     *
+     * @return a map containing the types declared in this context.
+     */
+    public Map<String, ScriptType> getTypes() {
+        return Collections.unmodifiableMap(this.types);
     }
 
     /**
@@ -235,27 +243,5 @@ public final class Context {
         }
 
         return this.types.get(symbol);
-    }
-
-    /**
-     * Returns a string that represents the current object.
-     *
-     * @return a string that represents the current object.
-     */
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-
-        for (Entry<String, LValue> entry : this.variables.entrySet()) {
-            string.append(entry.getKey());
-            string.append(": ");
-            if (entry.getValue() != null && entry.getValue().get() != null) {
-                string.append(entry.getValue().get().toString());
-            } else {
-                string.append("null");
-            }
-            string.append("\r\n");
-        }
-
-        return string.toString();
     }
 }
