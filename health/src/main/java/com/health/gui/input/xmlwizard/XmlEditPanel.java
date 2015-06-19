@@ -21,6 +21,7 @@ import com.health.input.InputException;
 /**
  * Represents the wizard panel where one can specify the delimiters and columns
  * of the Config XML.
+ * 
  * @author Bjorn van der Laan
  *
  */
@@ -62,6 +63,7 @@ public class XmlEditPanel extends JPanel {
 
     /**
      * Models the input values as a {@link XmlConfigObject} and returns it.
+     * 
      * @return XmlConfigObject containing the input values
      */
     public final XmlConfigObject getValues() {
@@ -92,28 +94,11 @@ public class XmlEditPanel extends JPanel {
                 xmlObj.setDateFormat(id.getDateFormat());
                 XmlWizard.setXml(xmlObj);
 
-                if (id.getFormat().equals("xls")) {
-                    String[] values = {
-                            Integer.toString(id.getStartCell().getStartRow()),
-                            Integer.toString(id.getStartCell().getStartColumn()),
-                            Integer.toString(id.getIgnoreLast()) };
-                    startPanel.setValues(values, FileType.XLS);
-                    startPanel.setFileType(FileType.XLS);
-                } else if (id.getFormat().equals("xlsx")) {
-                    String[] values = {
-                            Integer.toString(id.getStartCell().getStartRow()),
-                            Integer.toString(id.getStartCell().getStartColumn()),
-                            Integer.toString(id.getIgnoreLast()) };
-                    startPanel.setValues(values, FileType.XLSX);
-                    startPanel.setFileType(FileType.XLSX);
-                } else {
-                    // default case: txt
-                    String[] values = { id.getStartDelimiter(),
-                            id.getEndDelimiter(), id.getDelimiter(),
-                            Integer.toString(id.getIgnoreLast()) };
-                    startPanel.setValues(values, FileType.TXT);
-                    startPanel.setFileType(FileType.TXT);
-                }
+                String[] values = { id.getStartDelimiter(),
+                        id.getEndDelimiter(), id.getDelimiter(),
+                        Integer.toString(id.getIgnoreLast()) };
+
+                setStarPanel(id, values);
 
                 columnPanel.setColumns(id.getColumns(), id.getColumnTypes());
             } catch (ParserConfigurationException | SAXException | IOException
@@ -127,6 +112,20 @@ public class XmlEditPanel extends JPanel {
             // case where new xml is created
             startPanel.setValues(null, FileType.TXT);
             columnPanel.clearColumns();
+        }
+    }
+
+    private void setStarPanel(InputDescriptor id, String[] values) {
+        if (id.getFormat().equals("xls")) {
+            startPanel.setValues(values, FileType.XLS);
+            startPanel.setFileType(FileType.XLS);
+        } else if (id.getFormat().equals("xlsx")) {
+            startPanel.setValues(values, FileType.XLSX);
+            startPanel.setFileType(FileType.XLSX);
+        } else {
+            // default case: txt
+            startPanel.setValues(values, FileType.TXT);
+            startPanel.setFileType(FileType.TXT);
         }
     }
 }

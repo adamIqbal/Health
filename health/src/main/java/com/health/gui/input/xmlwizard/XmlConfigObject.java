@@ -227,7 +227,6 @@ public class XmlConfigObject {
         String delimiter = this.values[2];
         String ignoreLast = this.values[3];
 
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"text\" start=\"" + startDelimiter
                 + "\" end=\"" + endDelimiter + "\" delimeter=\"" + delimiter
                 + "\"";
@@ -238,11 +237,7 @@ public class XmlConfigObject {
 
         dataStart += ">" + "\n\r";
 
-        String columnTags = this.columnsToXML();
-
-        String dataEnd = "</data>";
-
-        return header + dataStart + columnTags + dataEnd;
+        return makeHeader() + dataStart + getEndofXml();
     }
 
     /**
@@ -254,7 +249,6 @@ public class XmlConfigObject {
         String startCol = this.values[1];
         String ignoreLast = this.values[2];
 
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
         String dataStart = "<data format=\"xls\" startRow=\"" + startRow
                 + "\" startColumn=\"" + startCol + "\"";
 
@@ -262,14 +256,9 @@ public class XmlConfigObject {
             dataStart += " ignoreLast=\"" + ignoreLast + "\"";
         }
 
-        dataStart += ">" + "\n\r";
-        dataStart += ">" + "\n\r";
+        
 
-        String columnTags = this.columnsToXML();
-
-        String dataEnd = "</data>";
-
-        return header + dataStart + columnTags + dataEnd;
+        return makeHeader() + dataStart + getEndofXml();
     }
 
     /**
@@ -281,7 +270,7 @@ public class XmlConfigObject {
         String startCol = this.values[1];
         String ignoreLast = this.values[2];
 
-        String header = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
+        
         String dataStart = "<data format=\"xlsx\" startRow=\"" + startRow
                 + "\" startColumn=\"" + startCol + "\"";
 
@@ -291,10 +280,18 @@ public class XmlConfigObject {
 
         dataStart += ">" + "\n\r";
 
+        return makeHeader() + dataStart + getEndofXml();
+    }
+    
+    private String getEndofXml(){
         String columnTags = this.columnsToXML();
 
         String dataEnd = "</data>";
-
-        return header + dataStart + columnTags + dataEnd;
+        
+        return columnTags + dataEnd;
+    }
+    
+    private String makeHeader(){
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n\r";
     }
 }
