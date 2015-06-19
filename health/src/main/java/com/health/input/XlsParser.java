@@ -73,8 +73,35 @@ public final class XlsParser implements Parser {
                         value = "NULL";
                     }
 
-                    fillCell(config, table, ext, row, tableRow,
-                            columnCountTableRow, i, value);
+                    switch (table.getColumn(columnCountTableRow).getType()) {
+                    case String:
+                        if (!value.equals("NULL")) {
+                            tableRow.setValue(columnCountTableRow, value);
+                        }
+                        break;
+                    case Number:
+                        if (!value.equals("NULL")) {
+                            tableRow.setValue(columnCountTableRow,
+                                    Double.parseDouble(value));
+                        }
+                        break;
+                    case Date:
+                        if (config.getDateFormat() != null) {
+                            try {
+                                fillDateCell(config, ext, row, tableRow,
+                                        columnCountTableRow, i);
+                            } catch (DateTimeParseException e) {
+                                break;
+                            }
+                        }
+                        break;
+                    default:
+                        // The type was null, this should never happen
+                        assert false;
+                        throw new InputException(
+                                "Internal error.",
+                                new Exception("Column.getType() returned null."));
+                    }
 
                     columnCountTableRow++;
                 }
@@ -123,7 +150,7 @@ public final class XlsParser implements Parser {
     }
 
     private void fillDateCell(final InputDescriptor config, String ext,
-            Row row, Record tableRow, int columnCountTableRow, int i) {
+            final Row row, final Record tableRow, final int columnCountTableRow, final int i) {
         String format = config.getDateFormat();
         LocalDateTime dateValue;
         if (ext.equals("xlsx")) {
@@ -144,7 +171,7 @@ public final class XlsParser implements Parser {
         // time.toString();
     }
 
-    private Workbook getWorkBook(String ext, FileInputStream io)
+    private Workbook getWorkBook(final String ext, final FileInputStream io)
             throws IOException, InputException {
         Workbook wb = null;
         if (ext.equals("xls")) {

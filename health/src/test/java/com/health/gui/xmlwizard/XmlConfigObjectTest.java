@@ -1,13 +1,11 @@
 package com.health.gui.xmlwizard;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,47 +15,27 @@ import com.health.ValueType;
 import com.health.gui.input.xmlwizard.XmlConfigObject;
 
 public class XmlConfigObjectTest {
-    private XmlConfigObject xml;
+
+    XmlConfigObject xmlConfig;
 
     @Before
-    public void setUp() throws Exception {
-        xml = new XmlConfigObject();
-        xml.setType(FileType.TXT);
-        xml.setPath(Paths.get("path/to/file.xml"));
-        xml.setDateFormat("yyMMdd");
-        
-        String[] values = {"startdelim", "enddelim", "delim", "ignorelast"};
-        xml.setValues(values);
-        
-        ArrayList<String> columns = new ArrayList<String>();
-        columns.add("datecolumn[yyMMdd]");
-        columns.add("numbercolumn");
-        columns.add("stringcolumn");
-        xml.setColumns(columns);
-        
-        ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
-        columnTypes.add(ValueType.Date);
-        columnTypes.add(ValueType.Number);
-        columnTypes.add(ValueType.String);
-        xml.setColumnTypes(columnTypes);
+    public void setup() {
+        xmlConfig = new XmlConfigObject();
     }
 
     @Test
-    public void testColumnsToXML() throws Exception {
-        fail("not yet implemented");
-    }
+    public void testColumns() {
+        List<String> expected = new ArrayList<String>();
+        expected.add("col1");
+        expected.add("col2");
+        expected.add("col3");
+        expected.add("col4");
+        xmlConfig.setColumns(expected);
 
-    @Test
-    public void testGetColumns() throws Exception {
-        ArrayList<String> expected = new ArrayList<String>();
-        expected.add("datecolumn[yyMMdd]");
-        expected.add("numbercolumn");
-        expected.add("stringcolumn");
-        xml.setColumns(expected);
-        
-        ArrayList<String> actual = (ArrayList<String>) xml.getColumns();
-        
+        List<String> actual = xmlConfig.getColumns();
+
         assertEquals(expected, actual);
+
     }
 
     @Test
@@ -66,127 +44,178 @@ public class XmlConfigObjectTest {
         expected.add(ValueType.Date);
         expected.add(ValueType.Number);
         expected.add(ValueType.String);
-        
-        ArrayList<ValueType> actual = (ArrayList<ValueType>) xml.getColumnTypes();
-        
+
+        xmlConfig.setColumnTypes(expected);
+        ArrayList<ValueType> actual = (ArrayList<ValueType>) xmlConfig
+                .getColumnTypes();
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testGetDateFormat() throws Exception {
-        String expected = "yyMMdd";
-        String actual = xml.getDateFormat();
+    public void testDateFormat() {
+        String dateFormat = "dd/MM/yyyy";
+        xmlConfig.setDateFormat(dateFormat);
+
+        assertEquals(dateFormat, xmlConfig.getDateFormat());
+    }
+
+    @Test
+    public void testPath() {
+        Path expected = Paths.get("test_data_and_xmls/admireTxtConfig.xml");
+        xmlConfig.setPath(expected);
+
+        Path actual = xmlConfig.getPath();
+
         assertEquals(expected, actual);
     }
 
     @Test
-    public void testGetPath() throws Exception {
-        Path expected = Paths.get("path/to/file.xml");
-        Path actual = xml.getPath();
-        assertEquals(expected, actual);
+    public void testType() {
+
+        xmlConfig.setType(FileType.TXT);
+
+        String[] values = { "", "", "", "" };
+        xmlConfig.setValues(values);
+        List<String> columns = new ArrayList<String>();
+        columns.add("");
+        xmlConfig.setColumns(columns);
+        List<ValueType> columnTypes = new ArrayList<ValueType>();
+        columnTypes.add(ValueType.String);
+        xmlConfig.setColumnTypes(columnTypes);
+
+        assertTrue(xmlConfig.toXMLString().contains("text"));
+
+        assertEquals(values[1], xmlConfig.getValues()[1]);
+
+        assertEquals(
+                "XmlConfigObject [type=TXT, values=[, , , ], columns=[], columnTypes=[String], path=null]",
+                xmlConfig.toString());
     }
 
     @Test
-    public void testGetType() throws Exception {
-        FileType expected = FileType.TXT;
-        FileType actual = xml.getType();
-        assertEquals(expected, actual);
+    public void testXLSxml() {
+        xmlConfig.setType(FileType.XLS);
+
+        String[] values = { "", "", "" };
+        xmlConfig.setValues(values);
+        List<String> columns = new ArrayList<String>();
+        columns.add("");
+        xmlConfig.setColumns(columns);
+        List<ValueType> columnTypes = new ArrayList<ValueType>();
+        columnTypes.add(ValueType.String);
+        xmlConfig.setColumnTypes(columnTypes);
+
+        assertTrue(xmlConfig.toXMLString().contains("xls"));
     }
 
-    @Test
     public void testGetValues() throws Exception {
-        String[] expected = {"startdelim", "enddelim", "delim", "ignorelast"};
-        String[] actual = xml.getValues();
+        String[] expected = { "startdelim", "enddelim", "delim", "ignorelast" };
+        String[] actual = xmlConfig.getValues();
         assertArrayEquals(expected, actual);
     }
 
     @Test
     public void testSetColumns() throws Exception {
-        ArrayList<String> currentColumns = (ArrayList<String>) xml.getColumns();
-        
+        ArrayList<String> currentColumns = (ArrayList<String>) xmlConfig
+                .getColumns();
+
         ArrayList<String> newColumns = new ArrayList<String>();
         newColumns.add("2numbercolumn");
         newColumns.add("datecolumn[yyM[M]dd]");
         newColumns.add("string2column");
-        xml.setColumns(newColumns);
-        
-        assertNotEquals(currentColumns, newColumns);  
-        
-        ArrayList<String> columns = (ArrayList<String>) xml.getColumns();
+        xmlConfig.setColumns(newColumns);
+
+        assertNotEquals(currentColumns, newColumns);
+
+        ArrayList<String> columns = (ArrayList<String>) xmlConfig.getColumns();
         assertEquals(newColumns, columns);
     }
 
     @Test
     public void testSetColumnTypes() throws Exception {
-        ArrayList<ValueType> currentColumns = (ArrayList<ValueType>) xml.getColumnTypes();
-        
+        ArrayList<ValueType> currentColumns = (ArrayList<ValueType>) xmlConfig
+                .getColumnTypes();
+
         ArrayList<ValueType> newColumns = new ArrayList<ValueType>();
         newColumns.add(ValueType.Number);
         newColumns.add(ValueType.Date);
         newColumns.add(ValueType.String);
-        xml.setColumnTypes(newColumns);
-        
-        assertNotEquals(currentColumns, newColumns);  
-        
-        ArrayList<ValueType> actualColumns = (ArrayList<ValueType>) xml.getColumnTypes();
+        xmlConfig.setColumnTypes(newColumns);
+
+        assertNotEquals(currentColumns, newColumns);
+
+        ArrayList<ValueType> actualColumns = (ArrayList<ValueType>) xmlConfig
+                .getColumnTypes();
         assertEquals(newColumns, actualColumns);
     }
 
     @Test
     public void testSetDateFormat() throws Exception {
-        String currentFormat = xml.getDateFormat();
-        
+        String currentFormat = xmlConfig.getDateFormat();
+
         String newFormat = "d[d]/M[M]/yyyy";
-        xml.setDateFormat(newFormat);
-        
+        xmlConfig.setDateFormat(newFormat);
+
         assertNotEquals(currentFormat, newFormat);
-        
-        String actual = xml.getDateFormat();
+
+        String actual = xmlConfig.getDateFormat();
         assertEquals(newFormat, actual);
     }
 
     @Test
     public void testSetPath() throws Exception {
-        Path currentPath = xml.getPath();
-        
+        Path currentPath = xmlConfig.getPath();
+
         Path newPath = Paths.get("new/path/to/file.xml");
-        xml.setPath(newPath);
-        
+        xmlConfig.setPath(newPath);
+
         assertNotEquals(currentPath, newPath);
-        
-        Path actual = xml.getPath();
+
+        Path actual = xmlConfig.getPath();
         assertEquals(newPath, actual);
     }
 
     @Test
     public void testSetType() throws Exception {
-        FileType currentType = xml.getType();
-        
+        FileType currentType = xmlConfig.getType();
+
         FileType newType = FileType.XLS;
-        xml.setType(newType);
-        
+        xmlConfig.setType(newType);
+
         assertNotEquals(currentType, newType);
-        
-        FileType actual = xml.getType();
+
+        FileType actual = xmlConfig.getType();
         assertEquals(newType, actual);
     }
 
     @Test
     public void testSetValues() throws Exception {
-        String[] currentValues = {"startdelim", "enddelim", "delim", "ignorelast"};
-        
-        String[] newValues = {"4", "1", "1"};
-        xml.setValues(newValues);
-        
+        String[] currentValues = { "startdelim", "enddelim", "delim",
+                "ignorelast" };
+
+        String[] newValues = { "4", "1", "1" };
+        xmlConfig.setValues(newValues);
+
         assertNotEquals(currentValues, newValues);
-        
-        String[] actual = xml.getValues();
+
+        String[] actual = xmlConfig.getValues();
         assertArrayEquals(newValues, actual);
     }
 
     @Test
-    public void testToXMLStringTXT() throws Exception {
-        fail("not yet implemented");
-    }
+    public void testXLSXxml() {
+        xmlConfig.setType(FileType.XLSX);
 
+        String[] values = { "", "", "" };
+        xmlConfig.setValues(values);
+        List<String> columns = new ArrayList<String>();
+        columns.add("date[dd/MM/yyyy]");
+        xmlConfig.setColumns(columns);
+        List<ValueType> columnTypes = new ArrayList<ValueType>();
+        columnTypes.add(ValueType.Date);
+        xmlConfig.setColumnTypes(columnTypes);
+
+        assertTrue(xmlConfig.toXMLStringXLSX().contains("xlsx"));
+
+    }
 }

@@ -55,7 +55,7 @@ public final class Input {
 
     /**
      * A method to get the parser which applies to this datafile.
-     * 
+     *
      * @param format
      *            the extension of the data file.
      * @return the new parser or null if there is no matching parser.gi
