@@ -14,7 +14,7 @@ import javax.swing.JTextArea;
 
 import org.apache.commons.io.FileUtils;
 
-import com.health.gui.GUImain;
+import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 
 /**
@@ -102,7 +102,7 @@ public class XmlSavePanel extends JPanel {
     private void saveAs() throws IOException {
         String name = JOptionPane.showInputDialog(new JFrame(),
                 "Please specify a name for this XML file", "Save as..");
-        String filename = GUImain.PATH_TO_CONFIG_XML + name + ".xml";
+        String filename = UserInterface.PATH_TO_CONFIG_XML + name + ".xml";
         File file = new File(filename);
 
         FileUtils.writeStringToFile(file, XmlWizard.getXml().toXMLString());
