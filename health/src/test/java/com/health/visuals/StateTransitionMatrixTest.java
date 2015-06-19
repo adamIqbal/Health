@@ -1,9 +1,21 @@
 package com.health.visuals;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.awt.Container;
+import java.io.File;
+import java.lang.reflect.Constructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.swing.JScrollPane;
+
+import org.junit.Before;
 import org.junit.Test;
 
 import com.health.Column;
@@ -22,21 +34,16 @@ import com.health.operations.Code;
  *
  */
 public class StateTransitionMatrixTest {
+	private List<EventList> listOfSeq;
+	private EventList eList;
+	private Table table;
 
     /**
      * Dummy input for testing the State Transition Matrix.
      */
-    @Test
-    public final void test() {
-
-        /*
-         * Input: List EventSequences, pattern, subset to check within entire
-         * event sequence set
-         */
-
+    @Before
+    public final void setUp() {
         // Create dummy input values
-        Table table;
-
         final int two = 2;
         final double two2 = 2.0;
         final int three = 3;
@@ -76,7 +83,7 @@ public class StateTransitionMatrixTest {
         tmp.setValue(1, two2);
         tmp.setValue(2, "Jan");
 
-        EventList eList = new EventList();
+        eList = new EventList();
 
         Event e1 = new Event("A", table.getRecords().get(0));
         Event e2 = new Event("B", table.getRecords().get(1));
@@ -104,23 +111,51 @@ public class StateTransitionMatrixTest {
         eList.addEvent(e11);
         eList.addEvent(e12);
 
-        String[] codePat1 = {"B", "A", "A", "B", "E", "D", "B"};
-        String[] codePat2 = {"A", "A", "B"};
-        String[] codePat3 = {"A", "B", "A", "C", "D", "E", "E"};
-        String[] codePat4 = {"C", "B", "E", "C"};
+        String[] codePat1 = {"B", "A", "A", "B", "A", "D", "B"};
+        String[] codePat2 = {"A", "B", "A", "B"};
+        String[] codePat3 = {"A", "B", "A", "C", "D", "E", "A", "C"};
+        String[] codePat4 = {"C", "B", "E", "C", "B"};
 
         EventSequence eSeq1 = new EventSequence(codePat1);
         EventSequence eSeq2 = new EventSequence(codePat2);
         EventSequence eSeq3 = new EventSequence(codePat3);
         EventSequence eSeq4 = new EventSequence(codePat4);
 
-        List<EventList> listOfSeq = new ArrayList<EventList>();
+        listOfSeq = new ArrayList<EventList>();
 
         listOfSeq.addAll(Code.fillEventSequence(eSeq1, eList));
         listOfSeq.addAll(Code.fillEventSequence(eSeq2, eList));
         listOfSeq.addAll(Code.fillEventSequence(eSeq3, eList));
         listOfSeq.addAll(Code.fillEventSequence(eSeq4, eList));
-
-        StateTransitionMatrix.createStateTrans(eList, listOfSeq);
     }
+    
+    @Test
+    public void fileTest(){
+    	Container table = StateTransitionMatrix.createStateTrans(eList, listOfSeq);
+    	
+    	StateTransitionMatrix.saveFile("StateTransTest", table);
+
+        File f = new File("StateTransTest.pdf");
+        assertTrue(f.exists());
+    }
+    
+    @SuppressWarnings("rawtypes")
+	@Test
+    public void constructorTest() throws Exception {
+        Constructor[] ctors = StateTransitionMatrix.class.getDeclaredConstructors();
+        assertEquals("State Transition Matrix class should only have one constructor",
+                1, ctors.length);
+        Constructor ctor = ctors[0];
+        assertFalse("State Transition Matrix class constructor should be inaccessible", 
+                ctor.isAccessible());
+        ctor.setAccessible(true); // obviously we'd never do this in production
+        assertEquals("You'd expect the construct to return the expected type",
+        		StateTransitionMatrix.class, ctor.newInstance().getClass());
+    }
+    
+    @Test
+    public void createContainerTest() {
+    	StateTransitionMatrix.createStateTrans(eList);
+    }
+    
 }

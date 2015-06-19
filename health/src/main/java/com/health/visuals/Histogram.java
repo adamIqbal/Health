@@ -44,7 +44,7 @@ public final class Histogram extends JFrame {
 	 * Private constructor to prevent instantiation.
 	 */
 	private Histogram() {
-		// Nothing happens
+		// Does nothing.
 	}
 
 	/**

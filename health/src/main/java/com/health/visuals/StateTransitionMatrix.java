@@ -40,7 +40,7 @@ public final class StateTransitionMatrix extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private StateTransitionMatrix() {
-		// Does nothing
+		// Does nothing.
 	}
 
 	/**

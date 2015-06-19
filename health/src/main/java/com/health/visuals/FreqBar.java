@@ -36,7 +36,7 @@ public final class FreqBar {
 	 * Private constructor to prevent instantiation.
 	 */
 	private FreqBar() {
-		// Nothing happens
+		// Does nothing.
 	}
 
 	/**

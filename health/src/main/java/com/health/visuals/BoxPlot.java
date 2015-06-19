@@ -42,7 +42,7 @@ public final class BoxPlot {
 	 * Private constructor to prevent instantiation.
 	 */
 	private BoxPlot() {
-		// Nothing happens
+		//Does nothing
 	}
 
 	/**
