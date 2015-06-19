@@ -97,12 +97,16 @@ public class ChunkTests {
     @Test
     public void testChunkByPeriods() {
         TemporalAmount period = Period.parse("P6D");
-        List<String, AggregateFunction> aggregates = new List<String, AggregateFunction>();
-        aggregates.put("meetwaarde2", AggregateFunctions.sum());
 
-        table = chunkByPeriod(table, "date", aggregates), period);
+        ColumnAggregateTuple cat = new ColumnAggregateTuple("meetwaarde2",
+                AggregateFunctions.sum());
+        List<ColumnAggregateTuple> aggregates = new ArrayList<ColumnAggregateTuple>();
+        aggregates.add(cat);
 
-        fail("Not yet implemented");
+        table = chunkByPeriod(table, "date", aggregates, period);
+
+        System.out.println(table.getRecords());
+
     }
 
     @Test
