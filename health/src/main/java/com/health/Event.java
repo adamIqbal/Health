@@ -3,16 +3,12 @@ package com.health;
 import java.time.LocalDateTime;
 
 /**
- * A class for defining an Event.
- * 
+ * Represents an event that is labeled with a code.
+ *
  * @author daan.
  *
  */
-public class Event {
-
-    /**
-     * 
-     */
+public final class Event {
     private String codeName;
     private Record rec;
 
@@ -75,5 +71,4 @@ public class Event {
     public LocalDateTime getDate() {
         return rec.getDateValue(rec.getTable().getDateColumn().getName());
     }
-
 }

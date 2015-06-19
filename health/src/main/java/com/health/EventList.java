@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventList {
+public final class EventList {
     private List<Event> eventList;
 
     /**
-     * Creates an emty eventList
+     * Creates an emty eventList.
      */
     public EventList() {
         eventList = new ArrayList<Event>();
@@ -20,7 +20,7 @@ public class EventList {
      * @param e
      *            an event to add Event.
      */
-    public final void addEvent(final Event e) {
+    public void addEvent(final Event e) {
         eventList.add(e);
     }
 
@@ -31,7 +31,7 @@ public class EventList {
      *            of the event you want to get.
      * @return an event at index.
      */
-    public final Event getEvent(final int index) {
+    public Event getEvent(final int index) {
         return eventList.get(index);
     }
 
@@ -40,7 +40,7 @@ public class EventList {
      *
      * @return an arrayList with all event in the eventList.
      */
-    public final List<Event> getList() {
+    public List<Event> getList() {
         return eventList;
     }
 
@@ -50,14 +50,14 @@ public class EventList {
      * @param that
      *            an other EventList.
      */
-    public final void concatList(final EventList that) {
+    public void concatList(final EventList that) {
         eventList.addAll(that.getList());
     }
 
     /**
      * Orders an this list by date.
      */
-    public final void orderListByDate() {
+    public void orderListByDate() {
         List<Event> sortedEvents = new ArrayList<Event>(eventList);
 
         if (sortedEvents.size() <= 0) {
@@ -66,21 +66,24 @@ public class EventList {
 
         Table table = sortedEvents.get(0).getRecord().getTable();
         Column dateColumn = table.getDateColumn();
-        String dateColumnName = dateColumn.getName();
 
-        if (dateColumnName == null) {
+        if (dateColumn == null) {
             return;
         }
+
+        String dateColumnName = dateColumn.getName();
 
         sortedEvents.sort((a, b) -> {
             LocalDateTime dateA = a.getRecord().getDateValue(dateColumnName);
             LocalDateTime dateB = b.getRecord().getDateValue(dateColumnName);
 
-            if (dateA == null && dateB == null) {
-                return 0;
-            } else if (dateA == null && dateB != null) {
-                return -1;
-            } else if (dateA != null && dateB == null) {
+            if (dateA == null) {
+                if (dateB == null) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else if (dateB == null) {
                 return 1;
             } else {
                 return dateA.compareTo(dateB);
@@ -95,26 +98,26 @@ public class EventList {
      *
      * @return a Table format with all element in the eventSequence
      */
-    public final Table toTable() {
+    public Table toTable() {
         if (this.eventList.size() <= 0) {
             return null;
         }
         List<Column> cols = makeTableCols();
         cols.add(new Column("code_name", cols.size(), ValueType.String));
         Table res = new Table(cols);
-        
-        for(Event e : eventList){
+
+        for (Event e : eventList) {
             Record rec = new Record(res);
-            
+
             Record tmp = e.getRecord();
             int i = 0;
-            for(Object o : tmp.getValues()){
+            for (Object o : tmp.getValues()) {
                 rec.setValue(i, o);
                 i++;
             }
-            
+
             rec.setValue("code_name", e.getCode());
-            
+
         }
 
         return res;
@@ -133,19 +136,5 @@ public class EventList {
         }
 
         return cols;
-    }
-
-    private void addAllRecords(Table table, List<Column> cols) {
-        for (Event e : this.eventList) {
-            Record rec = e.getRecord();
-
-            Record newRec = new Record(table);
-            for (Column c : cols) {
-                Object val = rec.getValue(c.getName());
-                if (val != null) {
-                    newRec.setValue(c.getName(), val);
-                }
-            }
-        }
     }
 }
