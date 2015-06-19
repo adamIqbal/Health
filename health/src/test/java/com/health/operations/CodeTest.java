@@ -172,7 +172,39 @@ public class CodeTest {
         assertTrue(Code.fillEventSequence(eSeq, eList).size() == 2);
     }
 
+    @Test
+    public void testFillEventSequenceWithinPeriod() {
+        EventList eList = new EventList();
 
+        Event e1 = new Event("A", table.getRecords().get(0));
+        Event e2 = new Event("B", table.getRecords().get(1));
+        Event e3 = new Event("A", table.getRecords().get(2));
+        Event e4 = new Event("B", table.getRecords().get(3));
+        Event e5 = new Event("C", table.getRecords().get(4));
+
+        eList.addEvent(e1);
+        eList.addEvent(e2);
+        eList.addEvent(e3);
+        eList.addEvent(e4);
+        eList.addEvent(e5);
+
+        String[] codePattern = { "A", "B" };
+
+        EventSequence eSeq = new EventSequence(codePattern, true);
+        Period per = Period.parse("P3M");
+        Code.fillEventSequenceWithinPeriod(eSeq, eList, per);
+
+        assertTrue(eSeq.getSequences().size() == 2);
+        System.out.println(eSeq.getSequences().size());
+
+        EventSequence eSeqe = new EventSequence(codePattern, true);
+        per = Period.parse("P1D");
+        Code.fillEventSequenceWithinPeriod(eSeqe, eList, per);
+
+        assertTrue(eSeqe.getSequences().size() == 1);
+        System.out.println(eSeqe.getSequences().size());
+
+    }
 
     @Test
     public void testForDeve() {
