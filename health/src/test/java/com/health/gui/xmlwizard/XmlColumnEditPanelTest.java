@@ -26,18 +26,7 @@ public class XmlColumnEditPanelTest {
     public void testAddColumn(){
         xmlColEditPanel.addColumn();
         assertEquals(1, xmlColEditPanel.getColumns().size());
-        
-        xmlColEditPanel.addColumn("test[]" , ValueType.Date);
-   }
-    
-    @Test
-    public void testGetColumnTypes(){
-        
     }
-    
-    @Test
-    public void testSetColumns(){
-        
-    }
+
 
 }
