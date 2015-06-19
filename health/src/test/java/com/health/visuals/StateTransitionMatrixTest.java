@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.awt.Container;
 import java.io.File;
 import java.lang.reflect.Constructor;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +30,9 @@ import com.health.operations.Code;
  *
  */
 public class StateTransitionMatrixTest {
-	private List<EventList> listOfSeq;
-	private EventList eList;
-	private Table table;
+    private List<EventList> listOfSeq;
+    private EventList eList;
+    private Table table;
 
     /**
      * Dummy input for testing the State Transition Matrix.
@@ -55,27 +55,27 @@ public class StateTransitionMatrixTest {
         table = new Table(columns);
 
         Record tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(1, 1, 1));
+        tmp.setValue(0, LocalDateTime.of(1, 1, 1, 0, 0));
         tmp.setValue(1, 1.0);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(2, 2, 2));
+        tmp.setValue(0, LocalDateTime.of(2, 2, 2, 0, 0));
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(three, two, three));
+        tmp.setValue(0, LocalDateTime.of(three, two, three, 0, 0));
         tmp.setValue(1, three2);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(four, two, two));
+        tmp.setValue(0, LocalDateTime.of(four, two, two, 0, 0));
         tmp.setValue(1, four2);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(four, two, three));
+        tmp.setValue(0, LocalDateTime.of(four, two, three, 0, 0));
         tmp.setValue(1, two2);
         tmp.setValue(2, "Jan");
 
@@ -107,10 +107,10 @@ public class StateTransitionMatrixTest {
         eList.addEvent(e11);
         eList.addEvent(e12);
 
-        String[] codePat1 = {"B", "A", "A", "B", "A", "D", "B"};
-        String[] codePat2 = {"A", "B", "A", "B"};
-        String[] codePat3 = {"A", "B", "A", "C", "D", "E", "A", "C"};
-        String[] codePat4 = {"C", "B", "E", "C", "B"};
+        String[] codePat1 = { "B", "A", "A", "B", "A", "D", "B" };
+        String[] codePat2 = { "A", "B", "A", "B" };
+        String[] codePat3 = { "A", "B", "A", "C", "D", "E", "A", "C" };
+        String[] codePat4 = { "C", "B", "E", "C", "B" };
 
         EventSequence eSeq1 = new EventSequence(codePat1);
         EventSequence eSeq2 = new EventSequence(codePat2);
@@ -129,10 +129,10 @@ public class StateTransitionMatrixTest {
      * Test that table is indeed saved as file.
      */
     @Test
-	public final void fileTest() {
-    	Container table = StateTransitionMatrix.createStateTrans(eList, listOfSeq);
+    public final void fileTest() {
+        Container table = StateTransitionMatrix.createStateTrans(eList, listOfSeq);
 
-    	StateTransitionMatrix.saveFile("StateTransTest", table);
+        StateTransitionMatrix.saveFile("StateTransTest", table);
 
         File f = new File("StateTransTest.pdf");
         assertTrue(f.exists());
@@ -140,12 +140,13 @@ public class StateTransitionMatrixTest {
 
     /**
      * Test that constructor cannot be called.
+     * 
      * @throws Exception
-     * 				exception
+     *             exception
      */
     @SuppressWarnings("rawtypes")
-	@Test
-	public final void constructorTest() throws Exception {
+    @Test
+    public final void constructorTest() throws Exception {
         Constructor[] ctors = StateTransitionMatrix.class.getDeclaredConstructors();
         assertEquals("State Transition Matrix class should only have one constructor",
                 1, ctors.length);
@@ -154,15 +155,15 @@ public class StateTransitionMatrixTest {
                 ctor.isAccessible());
         ctor.setAccessible(true);
         assertEquals("You'd expect the construct to return the expected type",
-        		StateTransitionMatrix.class, ctor.newInstance().getClass());
+                StateTransitionMatrix.class, ctor.newInstance().getClass());
     }
 
     /**
      * Test state transition matrix creation.
      */
     @Test
-	public final void createContainerTest() {
-    	StateTransitionMatrix.createStateTrans(eList);
+    public final void createContainerTest() {
+        StateTransitionMatrix.createStateTrans(eList);
     }
 
 }
