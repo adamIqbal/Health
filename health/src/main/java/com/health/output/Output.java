@@ -112,16 +112,13 @@ public final class Output {
      *            a format string.
      * @return an iterable containing the formatted strings.
      */
-    public static Iterable<String> formatTableRaw(
-            final Table table,
+    public static Iterable<String> formatTableRaw(final Table table,
             final String format) {
         Objects.requireNonNull(table, "Argument table cannot be null.");
         Objects.requireNonNull(format, "Argument format cannot be null.");
 
-        List<String> result =
-                new ArrayList<String>(/* table.getRecords().size() */);
-        List<GetValueClosure> getValueClosures =
-                new ArrayList<GetValueClosure>();
+        List<String> result = new ArrayList<String>(/* table.getRecords().size() */);
+        List<GetValueClosure> getValueClosures = new ArrayList<GetValueClosure>();
 
         // Process the format string into a format compatible with String.format
         // and create a list of closures that will be used to fill in the
@@ -157,9 +154,8 @@ public final class Output {
      * @throws IOException
      *             if an I/O error occurs writing to or creating the file.
      */
-    public static void writeTable(
-            final String file,
-            final Table table) throws IOException {
+    public static void writeTable(final String file, final Table table)
+            throws IOException {
         Objects.requireNonNull(table, "Argument table cannot be null.");
 
         Output.writeTable(file, table, Output.getDefaultFormat(table));
@@ -179,9 +175,7 @@ public final class Output {
      *             if an I/O error occurs writing to or creating the file.
      * @see Output#formatTableRaw(Table, String)
      */
-    public static void writeTable(
-            final String file,
-            final Table table,
+    public static void writeTable(final String file, final Table table,
             final String format) throws IOException {
         Output.writeTable(file, table, format, "\n");
     }
@@ -203,11 +197,9 @@ public final class Output {
      *             if an I/O error occurs writing to or creating the file.
      * @see Output#formatTableRaw(Table, String)
      */
-    public static void writeTable(
-            final String file,
-            final Table table,
-            final String format,
-            final String recordDelimiter) throws IOException {
+    public static void writeTable(final String file, final Table table,
+            final String format, final String recordDelimiter)
+            throws IOException {
         Objects.requireNonNull(recordDelimiter,
                 "Argument recordDelimiter cannot be null.");
 
@@ -264,8 +256,7 @@ public final class Output {
      *         {@link String#format(String, Object...)}.
      */
     private static String buildFormatString(final Table table,
-            final String format,
-            final List<GetValueClosure> getValueClosures) {
+            final String format, final List<GetValueClosure> getValueClosures) {
         assert table != null;
         assert format != null;
         assert getValueClosures != null;
@@ -343,8 +334,7 @@ public final class Output {
      *            the first character inside the column specifier.
      * @return the name of the column.
      */
-    private static String readColumnSpecifier(
-            final Reader reader,
+    private static String readColumnSpecifier(final Reader reader,
             final int initialCharacter) {
         StringBuilder columnBuilder = new StringBuilder();
 

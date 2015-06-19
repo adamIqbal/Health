@@ -44,7 +44,7 @@ public final class ControlModule {
     private String script;
     private List<InputData> data;
     private Map<String, Object> output = new HashMap<String, Object>();
-    int numBoxPlots, numFreqBars, numTransitionMatrices, numHistograms;
+    private int numBoxPlots, numFreqBars, numTransitionMatrices, numHistograms;
 
     /**
      * Start analysis based on the script.
@@ -182,10 +182,12 @@ public final class ControlModule {
         });
 
         context.declareStaticMethod("hist", (args) -> {
+            double bins = ((NumberValue) args[2]).getValue();
+
             JFreeChart panel = Histogram.createHist(
                     ((WrapperValue<Table>) args[0]).getValue(),
                     ((StringValue) args[1]).getValue(),
-                    (int) ((NumberValue) args[2]).getValue());
+                    (int) bins);
 
             this.output.put("histogram" + ++numHistograms, Histogram.visualHist(panel));
             return null;
@@ -262,12 +264,12 @@ public final class ControlModule {
         context.declareStaticMethod("tableWithHoursOfDay", (args) -> {
             return new WrapperValue<Table>(TableWithDays.TableHours(((WrapperValue<Table>) args[0]).getValue()));
         });
-        
+
         context.declareStaticMethod("addTimeToDate", (args) -> {
             Table table = ((WrapperValue<Table>) args[0]).getValue();
             Column dateCol = table.getColumn(((StringValue) args[1]).getValue());
             Column timeCol = table.getColumn(((StringValue) args[2]).getValue());
-            
+
             ReadTime.addTimeToDate(table, dateCol, timeCol);
             return null;
         });

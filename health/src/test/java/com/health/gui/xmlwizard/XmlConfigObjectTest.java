@@ -1,12 +1,13 @@
 package com.health.gui.xmlwizard;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -185,7 +186,6 @@ public class XmlConfigObjectTest {
 
     @Test
     public void testToXMLStringTXT() throws Exception {
-        //System.out.println(xml.toXMLStringTXT());
         fail("not yet implemented");
     }
 

@@ -28,7 +28,8 @@ public final class ColumnAggregateTuple {
      * @param function
      *            an aggregate function
      */
-    public ColumnAggregateTuple(final String column, final AggregateFunction function) {
+    public ColumnAggregateTuple(final String column,
+            final AggregateFunction function) {
         this.column = column;
         this.function = function;
     }

@@ -235,8 +235,7 @@ public class OutputTest {
     }
 
     @Test
-    public void writeTableStringTable_writesCorrectResult()
-            throws IOException {
+    public void writeTableStringTable_writesCorrectResult() throws IOException {
         Output.writeTable(file, table);
 
         assertEquals("one, 1.0\ntwo, ", getOutput());
@@ -260,8 +259,7 @@ public class OutputTest {
     private String getOutput() throws IOException {
         if (Files.exists(filePath)) {
             return String.join("\n", Files.readAllLines(filePath));
-        }
-        else {
+        } else {
             return null;
         }
     }

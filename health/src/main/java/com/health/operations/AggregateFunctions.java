@@ -13,7 +13,8 @@ public final class AggregateFunctions {
     private AggregateFunctions() {
     }
 
-    private static Object[] getObjectValues(final List<Record> records, final String column) {
+    private static Object[] getObjectValues(final List<Record> records,
+            final String column) {
         Object[] values = new Object[records.size()];
 
         for (int i = 0; i < records.size(); i++) {
@@ -23,7 +24,8 @@ public final class AggregateFunctions {
         return values;
     }
 
-    private static double[] getDoubleValues(final List<Record> records, final String column) {
+    private static double[] getDoubleValues(final List<Record> records,
+            final String column) {
         double[] values = new double[records.size()];
 
         for (int i = 0; i < records.size(); i++) {
@@ -53,7 +55,7 @@ public final class AggregateFunctions {
     public static AggregateFunction average() {
         return new AggregateFunction<Double>("average", (records, column) -> {
             double sum = sum().apply(records, column);
-            double average = (double) sum / count().apply(records, column);
+            double average = sum / count().apply(records, column);
 
             return average;
         });
