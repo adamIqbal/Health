@@ -57,16 +57,6 @@ public class OutputPanelSidebar extends JPanel {
     }
 
     /**
-     * Get data of a past analysis.
-     * @param el
-     *            the stringname of this analysis
-     * @return a Map containing the data
-     */
-    protected static Map<String, Object> getData(final String el) {
-        return dataMap.get(el);
-    }
-
-    /**
      * Gets the list of completed analyses.
      * @return a JList containing all analyses
      */
