@@ -20,7 +20,7 @@ import com.health.ValueType;
 
 import static com.health.operations.Chunk.*;
 
-public class ChunkTests {
+public class ChunkTest {
 
     private Table table;
 
