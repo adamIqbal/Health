@@ -3,6 +3,9 @@ package com.health.script.runtime;
 import com.health.EventList;
 import com.health.Table;
 
+/**
+ * Represents an event list value in the script.
+ */
 public final class EventListValue extends WrapperValue<EventList> {
     private static ScriptType type;
 
@@ -22,7 +25,13 @@ public final class EventListValue extends WrapperValue<EventList> {
         EventListValue.type = eventList.buildType();
     }
 
-    public EventListValue(EventList value) {
+    /**
+     * Creates a new value with the given underlying event list value.
+     *
+     * @param value
+     *            the value.
+     */
+    public EventListValue(final EventList value) {
         super(EventListValue.type, value);
     }
 
