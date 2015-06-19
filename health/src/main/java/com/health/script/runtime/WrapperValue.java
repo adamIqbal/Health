@@ -10,7 +10,7 @@ import java.util.Objects;
  * @param <T>
  *            the type of the value being wrapped.
  */
-public class WrapperValue<T> extends ComplexValue {
+public class WrapperValue<T> extends Value {
     private static Map<Class<?>, ScriptType> types;
     private final T value;
 

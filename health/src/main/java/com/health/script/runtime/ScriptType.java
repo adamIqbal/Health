@@ -56,7 +56,7 @@ public final class ScriptType {
         this.methods = methods;
 
         if (constructor == null) {
-            this.constructor = (args) -> new ComplexValue(this);
+            this.constructor = (args) -> new Value(this);
         } else {
             this.constructor = constructor;
         }
