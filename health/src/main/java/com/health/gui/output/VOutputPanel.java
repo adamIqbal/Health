@@ -18,6 +18,15 @@ public class VOutputPanel extends VidneyPanel {
     private static final long serialVersionUID = -5303011708825739028L;
 
     /**
+     * Adds an performed analysis to the output panel.
+     * @param data the data to be displayed
+     */
+    public static void addAnalysis(final Map<String, Object> data) {
+        OutputPanelSidebar.add(data);
+        OutputMainPanel.setData(data);
+    }
+
+    /**
      * Constructor.
      */
     public VOutputPanel() {
@@ -31,7 +40,8 @@ public class VOutputPanel extends VidneyPanel {
 
             @Override
             public void mouseClicked(final MouseEvent e) {
-                String selected = OutputPanelSidebar.getList().getSelectedValue();
+                String selected = OutputPanelSidebar.getList()
+                        .getSelectedValue();
                 OutputMainPanel.setData(OutputPanelSidebar.getData(selected));
             }
 
@@ -67,21 +77,5 @@ public class VOutputPanel extends VidneyPanel {
          * table2); addAnalysis(test);
          */
         //
-    }
-
-    /**
-     * Same as addAnalysis. Is added for compatibility. Can be removed later.
-     */
-    public static void displayData(final Map<String, Object> data) {
-        addAnalysis(data);
-    }
-
-    /**
-     * Adds an performed analysis to the output panel.
-     * @param data
-     */
-    public static void addAnalysis(final Map<String, Object> data) {
-        OutputPanelSidebar.add(data);
-        OutputMainPanel.setData(data);
     }
 }

@@ -16,46 +16,16 @@ import javax.swing.JPanel;
  *
  */
 public class OutputPanelSidebar extends JPanel {
+    private static Map<String, Map<String, Object>> dataMap = new HashMap<String, Map<String, Object>>();
+    /**
+     * Contains all completed visualizations.
+     */
+    private static JList<String> list = new JList<String>(
+            new DefaultListModel<String>());
     /**
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 9050949741413643882L;
-    /**
-     * Contains all completed visualizations.
-     */
-    private static JList<String> list = new JList<String>(new DefaultListModel<String>());
-    private static Map<String, Map<String, Object>> dataMap = new HashMap<String, Map<String, Object>>();
-
-    /**
-     * Constructor.
-     */
-    public OutputPanelSidebar() {
-        super();
-        this.setLayout(new BorderLayout());
-        
-        list.setBackground(Color.white);
-        this.add(list, BorderLayout.CENTER);
-
-        this.setVisible(true);
-    }
-
-    private static void addElement(final String el) {
-        DefaultListModel<String> model = (DefaultListModel<String>) list
-                .getModel();
-        model.addElement(el);
-        list.repaint();
-        list.revalidate();
-    }
-
-    /**
-     * Get data of a past analysis.
-     * @param el
-     *            the stringname of this analysis
-     * @return a Map containing the data
-     */
-    protected static Map<String, Object> getData(final String el) {
-        return dataMap.get(el);
-    }
 
     /**
      * Adds a new analysis to the Output section.
@@ -69,16 +39,52 @@ public class OutputPanelSidebar extends JPanel {
         dataMap.put(name, data);
     }
 
-    public static Map<String, Object> getAnalysisData(String name) {
+    private static void addElement(final String el) {
+        DefaultListModel<String> model = (DefaultListModel<String>) list
+                .getModel();
+        model.addElement(el);
+        list.repaint();
+        list.revalidate();
+    }
+
+    /**
+     * Gets the analysis data for a particular analysis.
+     * @param name name of the analysis
+     * @return a Map containing the data
+     */
+    public static Map<String, Object> getAnalysisData(final String name) {
         return dataMap.get(name);
     }
 
+    /**
+     * Get data of a past analysis.
+     * @param el
+     *            the stringname of this analysis
+     * @return a Map containing the data
+     */
+    protected static Map<String, Object> getData(final String el) {
+        return dataMap.get(el);
+    }
+
+    /**
+     * Gets the list of completed analyses.
+     * @return a JList containing all analyses
+     */
     protected static JList<String> getList() {
         return list;
     }
 
-    protected static void setList(JList<String> list) {
-        OutputPanelSidebar.list = list;
+    /**
+     * Constructor.
+     */
+    public OutputPanelSidebar() {
+        super();
+        this.setLayout(new BorderLayout());
+
+        list.setBackground(Color.white);
+        this.add(list, BorderLayout.CENTER);
+
+        this.setVisible(true);
     }
-    
+
 }
