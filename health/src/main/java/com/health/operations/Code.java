@@ -13,12 +13,12 @@ import com.health.EventSequence;
 import com.health.Record;
 import com.health.Table;
 
-public class Code {
+public final class Code {
 
 	/**
 	 * an unused constructor.
 	 */
-	protected Code() {
+	private Code() {
 	}
 
 	/**
@@ -33,17 +33,14 @@ public class Code {
 	public static EventList makeEventList(final Table table,
 			final Map<String, Function<Record, Boolean>> codes) {
 		EventList list = new EventList();
-
-		if (codes == null) {
+		if (codes == null)
 			return list;
-		}
 		for (Record record : table.getRecords()) {
 			for (Entry<String, Function<Record, Boolean>> entry : codes
 					.entrySet()) {
-				if (entry.getValue().apply(record)) {
-					Event tmp = new Event(entry.getKey(), record);
-					list.addEvent(tmp);
-				}
+				if (entry.getValue().apply(record))
+					list.addEvent(new Event(entry.getKey(), record));
+
 			}
 		}
 
