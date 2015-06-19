@@ -105,7 +105,6 @@ public class TextParserTest {
             assertTrue(false);
         }
         
-        System.out.println(actual.getRecords().get(0).getDateValue("date"));
     }
     
     @Test

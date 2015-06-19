@@ -23,8 +23,6 @@ public class ReadTimeTest {
         try {
             Table actual = Input.readTable(txtPath, "test_data_and_xmls/admireTxtConfigIgnoreLast.xml");
             
-            System.out.println(actual.getRecords().get(0)
-                    .getDateValue(actual.getDateColumn().getName()).getHour());
             ReadTime.addTimeToDate(actual, actual.getDateColumn(), actual.getColumn("time"));
             
             LocalDateTime dateTime = actual.getRecords().get(1).getDateValue(actual.getDateColumn().getName());

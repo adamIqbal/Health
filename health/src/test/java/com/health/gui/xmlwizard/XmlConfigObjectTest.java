@@ -122,7 +122,6 @@ public class XmlConfigObjectTest {
     @Test
     public void testToXMLStringTXT() throws Exception {
         
-        System.out.println(xml.toXMLStringTXT());
         fail("not yet implemented");
     }
 
