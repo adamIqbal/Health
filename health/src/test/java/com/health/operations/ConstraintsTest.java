@@ -3,7 +3,6 @@ package com.health.operations;
 import static com.health.operations.Constraints.*;
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
