@@ -36,14 +36,14 @@ public class FileListing extends JPanel {
     private static final int BOTTOM = 2;
     private static final int SINGLE = 3;
 
-    private final static int colsInListing = 3;
-    private final static int minRowsInListing = 20;
+    private static final int COLSINLISTING = 3;
+    private static final int MINROWSINLISTING = 20;
 
     private static int maxStringLength = 50;
 
     /**
      * get the data from filelisting.
-     * 
+     *
      * @return fileListingRows the file data.
      */
     public static ArrayList<FileListingRow> getFileListingRows() {
@@ -80,8 +80,8 @@ public class FileListing extends JPanel {
         fileListingCons.gridheight = 1;
         int rows = fileCount;
 
-        if (rows < minRowsInListing) {
-            rows = minRowsInListing;
+        if (rows < MINROWSINLISTING) {
+            rows = MINROWSINLISTING;
         }
 
         for (int i = 0; i < rows; i++) {
@@ -100,9 +100,9 @@ public class FileListing extends JPanel {
         listing.repaint();
     }
 
-    private static void makeEmptyRow(int i) {
+    private static void makeEmptyRow(final int i) {
         fileListingCons.gridy = i + 1;
-        for (int j = 0; j < colsInListing; j++) {
+        for (int j = 0; j < COLSINLISTING; j++) {
             fileListingCons.gridx = j;
             JTextField textField = new JTextField();
             textField.setSize(200, 30);
@@ -120,7 +120,7 @@ public class FileListing extends JPanel {
         }
     }
 
-    private static int findRowType(int i) throws IndexOutOfBoundsException {
+    private static int findRowType(final int i) throws IndexOutOfBoundsException {
         FileListingRow row = fileListingRows.get(i);
         FileListingRow rowBefore = fileListingRows.get(i - 1);
         FileListingRow rowAfter = fileListingRows.get(i + 1);
@@ -159,8 +159,9 @@ public class FileListing extends JPanel {
         // if previous is same but next different
         else if (rowBefore.hasEqualFormat(row) && !rowAfter.hasEqualFormat(row)) {
             return FileListing.BOTTOM;
-        } else
+        } else {
             return -1;
+        }
     }
 
     /**
@@ -261,7 +262,7 @@ public class FileListing extends JPanel {
         fileListingRows.get(index).getFileField()
                 .setBorder(new MatteBorder(top, 1, bottom, 0, borderColor));
         listing.add(fileListingRows.get(index).getFileField(), fileListingCons,
-                (index * colsInListing) + 1);
+                (index * COLSINLISTING) + 1);
 
         fileListingCons.gridx = 1;
         // add xmlformat in single and top, add empty space for mid and bot
@@ -279,20 +280,21 @@ public class FileListing extends JPanel {
         fileListingRows.get(index).getDeleteButton()
                 .setBorder(new MatteBorder(top, 0, bottom, 2, borderColor));
         listing.add(fileListingRows.get(index).getDeleteButton(),
-                fileListingCons, (index * colsInListing) + colsInListing);
+                fileListingCons, (index * COLSINLISTING) + COLSINLISTING);
 
     }
 
-    private static void makeTopOrSingle(final int index, int top, int bottom) {
+    private static void makeTopOrSingle(final int index, final int top,
+            final int bottom) {
         fileListingRows.get(index).setInGroup(false);
 
         fileListingRows.get(index).getXmlFormat()
                 .setBorder(new MatteBorder(top, 0, bottom, 0, borderColor));
-        listing.add(fileListingRows.get(index).getXmlFormat(),
-                fileListingCons, (index * colsInListing) + 2);
+        listing.add(fileListingRows.get(index).getXmlFormat(), fileListingCons,
+                (index * COLSINLISTING) + 2);
     }
 
-    private static void makeBotOrMiddle(final int index, int bottom) {
+    private static void makeBotOrMiddle(final int index, final int bottom) {
         fileListingRows.get(index).setInGroup(true);
 
         JTextField textField = new JTextField();
@@ -300,18 +302,16 @@ public class FileListing extends JPanel {
         textField.setEditable(false);
         textField.setPreferredSize(new Dimension(200, 25));
         textField.setBorder(new MatteBorder(0, 0, bottom, 0, borderColor));
-        new FileDrop(textField, textField.getBorder(),
-                new FileDrop.Listener() {
-                    @Override
-                    public void filesDropped(final File[] files) {
-                        for (int i = 0; i < files.length; i++) {
-                            FileListing.addFile(files[i], fileListingRows
-                                    .get(i).getXmlFormat()
-                                    .getSelectedItem().toString());
-                        }
-                    }
-                });
-        listing.add(textField, fileListingCons, (index * colsInListing) + 2);
+        new FileDrop(textField, textField.getBorder(), new FileDrop.Listener() {
+            @Override
+            public void filesDropped(final File[] files) {
+                for (int i = 0; i < files.length; i++) {
+                    FileListing.addFile(files[i], fileListingRows.get(i)
+                            .getXmlFormat().getSelectedItem().toString());
+                }
+            }
+        });
+        listing.add(textField, fileListingCons, (index * COLSINLISTING) + 2);
     }
 
     /**
