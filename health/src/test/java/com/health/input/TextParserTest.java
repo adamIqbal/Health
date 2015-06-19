@@ -1,19 +1,21 @@
 package com.health.input;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.health.Table;
-import com.health.Column;
-import com.health.ValueType;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import static org.junit.Assert.*;
+import com.health.Column;
+import com.health.Table;
+import com.health.ValueType;
 
 public class TextParserTest {
     private TextParser tp;
@@ -72,9 +74,10 @@ public class TextParserTest {
         assertNotNull(actual);
 
     }
-    
+
     @Test
-    public void testNumberNotANumber() throws ParserConfigurationException, SAXException, IOException, InputException {
+    public void testNumberNotANumber() throws ParserConfigurationException,
+            SAXException, IOException, InputException {
         // InputDescriptor id = mock(InputDescriptor.class);
 
         Table actual = null;
@@ -90,9 +93,10 @@ public class TextParserTest {
         }
 
     }
-    
+
     @Test
-    public void testDateValue() throws ParserConfigurationException, SAXException, IOException{
+    public void testDateValue() throws ParserConfigurationException,
+            SAXException, IOException {
         Table actual = null;
         try {
             InputDescriptor id = new InputDescriptor(
@@ -104,11 +108,12 @@ public class TextParserTest {
             e.printStackTrace();
             assertTrue(false);
         }
-        
+
     }
-    
+
     @Test
-    public void testWrongDateFormat() throws ParserConfigurationException, SAXException, IOException{
+    public void testWrongDateFormat() throws ParserConfigurationException,
+            SAXException, IOException {
         Table actual = null;
         try {
             InputDescriptor id = new InputDescriptor(
@@ -120,9 +125,10 @@ public class TextParserTest {
             assertTrue(true);
         }
     }
-    
+
     @Test
-    public void testUnknown() throws ParserConfigurationException, SAXException, IOException{
+    public void testUnknown() throws ParserConfigurationException,
+            SAXException, IOException {
         Table actual = null;
         try {
             InputDescriptor id = new InputDescriptor(

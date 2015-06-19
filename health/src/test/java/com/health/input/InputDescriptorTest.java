@@ -1,19 +1,20 @@
 package com.health.input;
 
-import com.health.Table;
-import com.health.ValueType;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import com.health.Table;
+import com.health.ValueType;
 
 public class InputDescriptorTest {
 
@@ -80,56 +81,56 @@ public class InputDescriptorTest {
             InputException, SAXException, IOException {
         InputDescriptor id = new InputDescriptor(
                 "test_data_and_xmls/admireTxtConfigNoDateFormat.xml");
-        
+
         assertEquals(ValueType.String, id.getColumnTypes().get(4));
     }
-    
+
     @Test
     public void testStartCell() throws ParserConfigurationException,
             InputException, SAXException, IOException {
         InputDescriptor id = new InputDescriptor(
                 "test_data_and_xmls/admireXlsConfig.xml");
-        
+
         assertEquals(4, id.getStartCell().getStartRow());
         assertEquals(1, id.getStartCell().getStartColumn());
     }
-    
+
     @Test
     public void testNoValueType() throws ParserConfigurationException,
             InputException, SAXException, IOException {
-        try{
+        try {
             InputDescriptor id = new InputDescriptor(
                     "test_data_and_xmls/admireTxtConfigNoValueType.xml");
             assertTrue(false);
-        }catch(InputException e){
+        } catch (InputException e) {
             assertTrue(true);
         }
     }
-    
+
     @Test
     public void testValidate() throws ParserConfigurationException,
             InputException, SAXException, IOException {
-        try{
+        try {
             InputDescriptor id = new InputDescriptor(
                     "test_data_and_xmls/admireTxtConfigNoDataTag.xml");
             assertTrue(false);
-        }catch(InputException e){
+        } catch (InputException e) {
             assertTrue(true);
         }
-        try{
+        try {
             InputDescriptor id = new InputDescriptor(
                     "test_data_and_xmls/admireTxtConfigNoFormatAttribute.xml");
             assertTrue(false);
-        }catch(InputException e){
+        } catch (InputException e) {
             assertTrue(true);
         }
-        try{
+        try {
             InputDescriptor id = new InputDescriptor(
                     "test_data_and_xmls/admireTxtConfigNoColumns.xml");
             assertTrue(false);
-        }catch(InputException e){
+        } catch (InputException e) {
             assertTrue(true);
         }
-        
+
     }
 }

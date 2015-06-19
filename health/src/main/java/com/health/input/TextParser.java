@@ -96,24 +96,20 @@ public final class TextParser implements Parser {
             Record record, int j, String value) throws InputException {
         try {
             LocalDateTime dateValue;
-            DateTimeFormatter formatter = DateTimeFormatter
-                    .ofPattern(config.getDateFormat());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(config
+                    .getDateFormat());
             if (config.getDateFormat().contains("H")
                     || config.getDateFormat().contains("m")) {
-                dateValue = LocalDateTime.parse(value,
-                        formatter);
+                dateValue = LocalDateTime.parse(value, formatter);
             } else {
-                LocalDate date = LocalDate.parse(value,
-                        formatter);
-                dateValue = LocalDateTime.of(date,
-                        LocalTime.of(0, 0));
+                LocalDate date = LocalDate.parse(value, formatter);
+                dateValue = LocalDateTime.of(date, LocalTime.of(0, 0));
             }
             record.setValue(j, dateValue);
         } catch (DateTimeParseException e) {
             throw new InputException(
                     "DateFormat did not match the format of the column "
-                            + table.getColumns().get(j)
-                                    .getName());
+                            + table.getColumns().get(j).getName());
         }
     }
 

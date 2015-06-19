@@ -1,8 +1,10 @@
 package com.health.input;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -62,17 +64,17 @@ public class XlsParserTest {
             assertTrue(false);
         }
         assertNotNull(actual);
-        
+
         int expectedSize = 33372;
         assertTrue(expectedSize == actual.getRecords().size());
         assertFalse(expectedSize < actual.getRecords().size());
         assertFalse(expectedSize > actual.getRecords().size());
 
         Record rec = actual.getRecords().get(100);
-        
+
         assertEquals("Dag", rec.getValues().get(2));
         assertEquals(852.0, rec.getValues().get(0));
-        LocalDateTime dateTime = (LocalDateTime)rec.getValues().get(14);
+        LocalDateTime dateTime = (LocalDateTime) rec.getValues().get(14);
         assertEquals(21, dateTime.getHour());
 
         assertEquals(23, actual.getColumns().size());
@@ -99,7 +101,7 @@ public class XlsParserTest {
         assertFalse(expectedSize > actual.getRecords().size());
 
         Record rec = actual.getRecords().get(10);
-        
+
         assertEquals(null, rec.getValues().get(0));
         assertEquals(181.0, rec.getValues().get(2));
         assertEquals(102.0, rec.getValues().get(4));
