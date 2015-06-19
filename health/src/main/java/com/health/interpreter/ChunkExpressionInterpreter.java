@@ -21,7 +21,7 @@ import com.health.script.runtime.WrapperValue;
 /**
  * Represents an interpreter for chunking expressions.
  */
-public final class ChunkExpressionInterpreter extends TableExpressionInterpreter {
+public final class ChunkExpressionInterpreter extends BaseExpressionInterpreter {
     /**
      * Creates a new instance of {@link ChunkExpressionInterpreter} with the
      * given context and expressionVisitor.
@@ -49,7 +49,7 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         String tableIdent = ctx.table.getText();
         String columnIdent = ctx.column.getText();
 
-        Table table = this.lookupTable(tableIdent);
+        Table table = BaseExpressionInterpreter.lookupTable(this.getContext(), tableIdent);
 
         verifyHasColumn(table, tableIdent, columnIdent);
 
