@@ -169,7 +169,7 @@ public final class Code {
 
             LocalDateTime endOfPer = firstEvent.getDate().plus(per);
             if (lastEvent.getDate().isAfter(endOfPer)) {
-                eventSeq.deleteSequence(eventList);
+                eventSeq.removeSequence(eventList);
             }
         }
     }

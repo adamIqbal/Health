@@ -55,72 +55,9 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * Creates the column edit fields according to the selected config XML.
-     * @param columns
-     *            the column names of the config XML
-     * @param columnTypes
-     *            the column types of the config XML
-     */
-    public final void setColumns(final List<String> columns,
-            final List<ValueType> columnTypes) {
-        int size = columns.size();
-        if (size != columnTypes.size()) {
-            JOptionPane
-                    .showMessageDialog(
-                            new JFrame(),
-                            "Amount of columns and amount of column types does not match.",
-                            "Whoops!", JOptionPane.WARNING_MESSAGE);
-        }
-
-        clearColumns();
-        for (int i = 0; i < size; i++) {
-            addColumn(columns.get(i), columnTypes.get(i));
-        }
-    }
-
-    /**
-     * Clears the columns of the columnPanel.
-     */
-    public final void clearColumns() {
-        columnPanel.removeAll();
-    }
-
-    /**
-     * Gets the column names specified in the panel.
-     * @return an array containing the names
-     */
-    public final List<String> getColumns() {
-        ArrayList<String> columns = new ArrayList<String>();
-        for (Component comp : this.columnPanel.getComponents()) {
-            JPanel column = (JPanel) comp;
-            columns.add(((JTextField) column.getComponents()[0]).getText());
-        }
-
-        return columns;
-    }
-
-    /**
-     * Gets the column types specified in the panel.
-     * @return an array containing the types
-     */
-    public final List<ValueType> getColumnTypes() {
-        ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
-        for (Component comp : this.columnPanel.getComponents()) {
-            JPanel column = (JPanel) comp;
-            ValueType type = (ValueType) ((JComboBox<ValueType>) column
-                    .getComponents()[1]).getSelectedItem();
-
-            if (type.equals(ValueType.String)) {
-                columnTypes.add(ValueType.String);
-            } else if (type.equals(ValueType.Number)) {
-                columnTypes.add(ValueType.Number);
-            } else {
-                columnTypes.add(ValueType.Date);
-            }
-        }
-
-        return columnTypes;
+    @Override
+    public final void actionPerformed(final ActionEvent e) {
+        addColumn();
     }
 
     /**
@@ -175,8 +112,71 @@ public class XmlColumnEditPanel extends JPanel implements ActionListener {
         this.columnPanel.revalidate();
     }
 
-    @Override
-    public final void actionPerformed(final ActionEvent e) {
-        addColumn();
+    /**
+     * Clears the columns of the columnPanel.
+     */
+    public final void clearColumns() {
+        columnPanel.removeAll();
+    }
+
+    /**
+     * Gets the column names specified in the panel.
+     * @return an array containing the names
+     */
+    public final List<String> getColumns() {
+        ArrayList<String> columns = new ArrayList<String>();
+        for (Component comp : this.columnPanel.getComponents()) {
+            JPanel column = (JPanel) comp;
+            columns.add(((JTextField) column.getComponents()[0]).getText());
+        }
+
+        return columns;
+    }
+
+    /**
+     * Gets the column types specified in the panel.
+     * @return an array containing the types
+     */
+    public final List<ValueType> getColumnTypes() {
+        ArrayList<ValueType> columnTypes = new ArrayList<ValueType>();
+        for (Component comp : this.columnPanel.getComponents()) {
+            JPanel column = (JPanel) comp;
+            ValueType type = (ValueType) ((JComboBox<ValueType>) column
+                    .getComponents()[1]).getSelectedItem();
+
+            if (type.equals(ValueType.String)) {
+                columnTypes.add(ValueType.String);
+            } else if (type.equals(ValueType.Number)) {
+                columnTypes.add(ValueType.Number);
+            } else {
+                columnTypes.add(ValueType.Date);
+            }
+        }
+
+        return columnTypes;
+    }
+
+    /**
+     * Creates the column edit fields according to the selected config XML.
+     * @param columns
+     *            the column names of the config XML
+     * @param columnTypes
+     *            the column types of the config XML
+     */
+    public final void setColumns(final List<String> columns,
+            final List<ValueType> columnTypes) {
+        int size = columns.size();
+        if (size != columnTypes.size()) {
+            JOptionPane
+                    .showMessageDialog(
+                            new JFrame(),
+                            "Amount of columns and amount of column types does not match.",
+                            "Whoops!", JOptionPane.WARNING_MESSAGE);
+        }
+
+        clearColumns();
+        for (int i = 0; i < size; i++) {
+            addColumn(columns.get(i), columnTypes.get(i));
+        }
     }
 }

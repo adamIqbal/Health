@@ -32,12 +32,62 @@ import com.health.gui.VButton;
  */
 class XmlFilePanel extends JPanel {
     /**
+     * Lists the XML files in the specified folder.
+     * @author Bjorn van der Laan
+     *
+     */
+    class FileList extends JList<Path> {
+        /**
+         * Constant serialized ID used for compatibility.
+         */
+        private static final long serialVersionUID = 7122730191428505542L;
+        private final Path path;
+        private final DefaultListModel<Path> listModel;
+
+        public FileList(final Path path, final DefaultListModel<Path> listModel) {
+            super(listModel);
+            this.listModel = listModel;
+            this.path = path;
+
+            this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+            this.setBackground(Color.WHITE);
+
+            this.
+
+            buildList();
+        }
+
+        public void buildList() {
+            listModel.removeAllElements();
+            try {
+                DirectoryStream<Path> stream;
+                stream = Files.newDirectoryStream(path);
+                Iterator<Path> iterator = stream.iterator();
+
+                while (iterator.hasNext()) {
+                    listModel.addElement(iterator.next());
+                }
+            } catch (IOException e) {
+                // Directory not found, add no elements
+            }
+        }
+    }
+    /**
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 9063959421496759474L;
-    private JButton newFileButton;
-    private JButton selectFileButton;
     private static FileList fileList;
+    /**
+     * Gets the filelist.
+     * @return the filelist
+     */
+    protected static FileList getFileList() {
+        return fileList;
+    }
+
+    private JButton newFileButton;
+
+    private JButton selectFileButton;
 
     public XmlFilePanel() {
         super();
@@ -86,54 +136,5 @@ class XmlFilePanel extends JPanel {
         buttonPanel.add(selectFileButton);
         this.setOpaque(false);
         this.add(buttonPanel, BorderLayout.SOUTH);
-    }
-
-    /**
-     * Gets the filelist.
-     * @return the filelist
-     */
-    protected static FileList getFileList() {
-        return fileList;
-    }
-
-    /**
-     * Lists the XML files in the specified folder.
-     * @author Bjorn van der Laan
-     *
-     */
-    class FileList extends JList<Path> {
-        /**
-         * Constant serialized ID used for compatibility.
-         */
-        private static final long serialVersionUID = 7122730191428505542L;
-        private final Path path;
-        private final DefaultListModel<Path> listModel;
-
-        public FileList(final Path path, final DefaultListModel<Path> listModel) {
-            super(listModel);
-            this.listModel = listModel;
-            this.path = path;
-
-            this.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
-            this.setBackground(Color.WHITE);
-
-            this.
-
-            buildList();
-        }
-
-        public void buildList() {
-            try {
-                DirectoryStream<Path> stream;
-                stream = Files.newDirectoryStream(path);
-                Iterator<Path> iterator = stream.iterator();
-
-                while (iterator.hasNext()) {
-                    listModel.addElement(iterator.next());
-                }
-            } catch (IOException e) {
-                // Directory not found, add no elements
-            }
-        }
     }
 }

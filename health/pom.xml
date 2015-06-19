@@ -181,25 +181,30 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.jtattoo</groupId>
+            <artifactId>JTattoo</artifactId>
+            <version>1.6.11</version>
+        </dependency>
+        <dependency>
             <groupId>org.powermock</groupId>
             <artifactId>powermock-classloading-xstream</artifactId>
             <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
-          <dependency>
-        <groupId>org.apache.poi</groupId>
-        <artifactId>poi</artifactId>
-        <version>3.12</version>
-    </dependency>
-    <dependency>
-    <groupId>org.apache.poi</groupId>
-    <artifactId>poi-ooxml</artifactId>
-    <version>3.12</version>
-</dependency>
-<dependency>
-    <groupId>org.apache.poi</groupId>
-    <artifactId>poi-ooxml-schemas</artifactId>
-    <version>3.12</version>
-</dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml-schemas</artifactId>
+            <version>3.12</version>
+        </dependency>
     </dependencies>
 </project>
