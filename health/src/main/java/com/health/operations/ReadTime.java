@@ -11,7 +11,6 @@ import com.health.ValueType;
 
 /**
  * a class to read time data in tables.
- * 
  * @author daan
  *
  */
@@ -26,7 +25,6 @@ public class ReadTime {
 
 	/**
 	 * Adds the time in the timeCol to the date in de dateCol.
-	 * 
 	 * @param table
 	 *            the table to manipulate.
 	 * @param dateCol

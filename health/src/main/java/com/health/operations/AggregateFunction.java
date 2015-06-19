@@ -7,6 +7,7 @@ import com.health.Record;
 
 /**
  * Represents a named aggregate function.
+ * @param <T> the type
  */
 public final class AggregateFunction<T> {
 	private final String name;

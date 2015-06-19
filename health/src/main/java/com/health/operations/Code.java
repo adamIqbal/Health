@@ -1,6 +1,7 @@
 package com.health.operations;
 
 import java.time.LocalDateTime;
+
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,12 @@ import com.health.EventSequence;
 import com.health.Record;
 import com.health.Table;
 
+/**
+ * A class for all coding operations.
+ *
+ * @author daan
+ *
+ */
 public final class Code {
 
 	/**

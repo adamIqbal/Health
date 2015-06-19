@@ -92,6 +92,11 @@ public class TableWithDays {
 		return result;
 	}
 
+	/**
+	 * Gets the day of the week based on the input.
+	 * @param value the local datetime
+	 * @return the day of the week as a String
+	 */
 	public static String dayOfWeek(LocalDateTime value) {
 		return value.getDayOfWeek().toString();
 	}
