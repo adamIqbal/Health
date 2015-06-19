@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data format="text" start="[" end="]" delimeter="," ignoreLast="1">
+    <column>type</column>
+	<column type="Number">count_value</column>
+	<column type="String">unit</column>
+	<column type="Number">misc</column>
+	<column type="Date" format="yyMMdd">date</column>
+	<column type="Number">time</column>
+</data>
