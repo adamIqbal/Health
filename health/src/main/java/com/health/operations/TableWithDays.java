@@ -43,6 +43,8 @@ public class TableWithDays {
 
       Record record = new Record(result);
 
+      Record test = record;
+
       for (int j = 0; j < colList.size() - 1; j++) {
 
         String name = colList.get(j).getName();
@@ -92,10 +94,3 @@ public class TableWithDays {
     return value.getDayOfWeek().toString();
   }
 }
-/*
- * // with Admire statsensor data
- * 
- * var table = chunk table0 by date per 12 weeks select count of date;
- * 
- * write("out.txt", table); hist(table, "date", 5)
- */
