@@ -89,7 +89,6 @@ public class ConstraintsTest {
         assertFalse(table0.getRecords().size() < 1);
 
         assertFalse(table0.getRecords().contains("Dolf"));
-        System.out.println(table0.getRecords().get(0).getStringValue("name"));
         assertTrue(table0.getRecords().get(0).getStringValue("name")
                 .equals("Piet"));
         assertFalse(table.getRecords().contains(null));
