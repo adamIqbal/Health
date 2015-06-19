@@ -193,6 +193,124 @@ public class ConstraintsTest {
         tmp.setValue("waarde", 10.0);
         tmp.setValue("name", "Dolf");
 
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
+        tmp.setValue("waarde", 8.0);
+        tmp.setValue("name", "Jan");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 22, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Peter");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 26, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "dolfje");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 27, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Jan");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 29, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Jan");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "dolfje");
+
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
+        tmp.setValue("waarde", 8.0);
+        tmp.setValue("name", "Piet");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 12, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Hein");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 13, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Dolf");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 10, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Piet");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 11, 15, 0, 0));
+        tmp.setValue("waarde", 25.0);
+        tmp.setValue("name", "Piet");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Dolf");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
+        tmp.setValue("waarde", 8.0);
+        tmp.setValue("name", "Jan");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 22, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Peter");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 26, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "dolfje");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 27, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Jan");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 29, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Jan");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "dolfje");
+
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 20, 0, 0));
+        tmp.setValue("waarde", 8.0);
+        tmp.setValue("name", "Piet");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 12, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Hein");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 13, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Dolf");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 10, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Piet");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 11, 15, 0, 0));
+        tmp.setValue("waarde", 25.0);
+        tmp.setValue("name", "Piet");
+
+        tmp = new Record(table3);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
+        tmp.setValue("waarde", 10.0);
+        tmp.setValue("name", "Dolf");
+
     }
 
     @Test
@@ -249,9 +367,9 @@ public class ConstraintsTest {
     public void testConstrainNumberLargeTable() {
         Table table0 = constrain(
                 table3 -> table3.getNumberValue("waarde") >= 25, table3);
-        assertTrue(table0.getRecords().size() == 2);
-        assertFalse(table0.getRecords().size() > 2);
-        assertFalse(table0.getRecords().size() < 2);
+        assertTrue(table0.getRecords().size() == 4);
+        assertFalse(table0.getRecords().size() > 4);
+        assertFalse(table0.getRecords().size() < 4);
 
         assertFalse(table0.getRecords().contains("Dolf"));
         assertTrue(table0.getRecords().get(0).getStringValue("name")
