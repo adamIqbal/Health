@@ -1,0 +1,11 @@
+//with admire statsensor data of one user
+
+
+var tablePerDay = chunk table0 by date per day select count of date;
+write("tablePerDay.txt", tablePerDay);
+
+var tablePer2Days = chunk table0 by date per 2 days select count of date;
+write("tablePer2Days.txt", tablePer2Days);
+
+var tablePerWeek = chunk table0 by date per week select count of date;
+write("tablePerWeek.txt", tablePerWeek);

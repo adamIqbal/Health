@@ -1,5 +1,6 @@
 package com.health.operations;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +35,7 @@ public final class Connect {
      *            a list of Column Connections.
      * @return A Table object.
      */
-    public static Table connect(
-            final Table table1,
-            final Table table2,
+    public static Table connect(final Table table1, final Table table2,
             final List<ColumnConnection> connections) {
 
         List<Column> connectedTableCols = makeNewTableColumns(
@@ -48,7 +47,8 @@ public final class Connect {
         addRecords(connectedTable, table2, connections);
 
         for (Column column : connectedTableCols) {
-            if (column.getType() == ValueType.Date) {
+            if (column.getType() == ValueType.Date
+                    && isInConnections(column, connections) >= 0) {
                 connectedTable = sortTable(connectedTable, column.getName());
                 break;
             }
@@ -67,9 +67,11 @@ public final class Connect {
             int index = isInConnections(column, connections);
 
             if (index >= 0) {
-                result.add(new Column(connections.get(index).getNewName(), result.size(), column.getType()));
+                result.add(new Column(connections.get(index).getNewName(),
+                        result.size(), column.getType()));
             } else {
-                result.add(new Column(column.getName(), result.size(), column.getType()));
+                result.add(new Column(column.getName(), result.size(), column
+                        .getType()));
             }
         }
 
@@ -78,7 +80,8 @@ public final class Connect {
             int index = isInConnections(column, connections);
 
             if (!result.contains(column) && index == -1) {
-                result.add(new Column(column.getName(), result.size(), column.getType()));
+                result.add(new Column(column.getName(), result.size(), column
+                        .getType()));
             }
 
         }
@@ -99,8 +102,13 @@ public final class Connect {
             final List<ColumnConnection> connections) {
         int index = 0;
 
+        if (connections == null) {
+            return -1;
+        }
+
         for (ColumnConnection connection : connections) {
-            if (connection.getColumn1().equals(col.getName()) || connection.getColumn2().equals(col.getName())) {
+            if (connection.getColumn1().equals(col.getName())
+                    || connection.getColumn2().equals(col.getName())) {
                 return index;
             }
 
@@ -125,23 +133,11 @@ public final class Connect {
                 int indexInConnections = isInConnections(column, connections);
 
                 if (indexInConnections >= 0) {
-                    name = connections.get(indexInConnections).getNewName();
+                    newName = connections.get(indexInConnections).getNewName();
 
                 }
 
-                switch (column.getType()) {
-                case String:
-                    record.setValue(name, recList.get(i).getStringValue(newName));
-                    break;
-                case Number:
-                    record.setValue(name, recList.get(i).getNumberValue(newName));
-                    break;
-                case Date:
-                    record.setValue(name, recList.get(i).getDateValue(newName));
-                    break;
-                default:
-                    // error
-                }
+                record.setValue(newName, recList.get(i).getValue(name));
             }
         }
     }
@@ -149,7 +145,20 @@ public final class Connect {
     private static Table sortTable(final Table table, final String colName) {
         List<Record> records = new ArrayList<Record>(table.getRecords());
 
-        records.sort((a, b) -> a.getDateValue(colName).compareTo(b.getDateValue(colName)));
+        records.sort((a, b) -> {
+            LocalDateTime dateA = a.getDateValue(colName);
+            LocalDateTime dateB = b.getDateValue(colName);
+
+            if (dateA == null && dateB == null) {
+                return 0;
+            } else if (dateA == null && dateB != null) {
+                return -1;
+            } else if (dateA != null && dateB == null) {
+                return 1;
+            } else {
+                return dateA.compareTo(dateB);
+            }
+        });
 
         Table sortedTable = new Table(table.getColumns());
 

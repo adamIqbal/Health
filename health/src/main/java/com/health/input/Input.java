@@ -12,7 +12,11 @@ import com.health.Table;
  * Utility class for parsing input data.
  */
 public final class Input {
-    private Input() {
+
+    /**
+     * a never used constructor.
+     */
+    protected Input() {
     }
 
     /**
@@ -34,9 +38,7 @@ public final class Input {
      * @throws InputException
      *             if the input descriptor file is not formatted correctly.
      */
-    public static Table readTable(
-            final String filePath,
-            final String configPath)
+    public static Table readTable(final String filePath, final String configPath)
             throws IOException, ParserConfigurationException, SAXException,
             InputException {
         InputDescriptor config = new InputDescriptor(configPath);
@@ -51,12 +53,22 @@ public final class Input {
         return parser.parse(filePath, config);
     }
 
+    /**
+     * A method to get the parser which applies to this datafile.
+     *
+     * @param format
+     *            the extension of the data file.
+     * @return the new parser or null if there is no matching parser.gi
+     */
     private static Parser getParser(final String format) {
         assert format != null;
 
         switch (format.toLowerCase()) {
         case "xls":
-          return new XlsParser();
+            return new XlsParser();
+        case "xlsx":
+            XlsParser xls = new XlsParser();
+            return xls;
         case "text":
             return new TextParser();
         default:

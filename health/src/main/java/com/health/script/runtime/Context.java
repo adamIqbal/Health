@@ -1,9 +1,13 @@
 package com.health.script.runtime;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
+
+import com.health.EventList;
+import com.health.EventSequence;
+import com.health.Table;
 
 /**
  * Represents the runtime environment of the script.
@@ -22,11 +26,31 @@ public final class Context {
         this.variables = new HashMap<String, LValue>();
 
         // Declare all the standard type
-        this.declareType(Value.getStaticType());
-        this.declareType(BooleanValue.getStaticType());
-        this.declareType(NumberValue.getStaticType());
-        this.declareType(StringValue.getStaticType());
-        this.declareType(TableValue.getStaticType());
+        this.declareType(WrapperValue.getWrapperType(Object.class));
+        this.declareType(WrapperValue.getWrapperType(Double.class));
+        this.declareType(WrapperValue.getWrapperType(String.class));
+        this.declareType(WrapperValue.getWrapperType(Boolean.class));
+        this.declareType(WrapperValue.getWrapperType(Table.class));
+        this.declareType(WrapperValue.getWrapperType(EventList.class));
+        this.declareType(WrapperValue.getWrapperType(EventSequence.class));
+    }
+
+    /**
+     * Returns a map containing the local variables declared in this context.
+     *
+     * @return a map containing the local variables declared in this context.
+     */
+    public Map<String, LValue> getVariables() {
+        return Collections.unmodifiableMap(this.variables);
+    }
+
+    /**
+     * Returns a map containing the types declared in this context.
+     *
+     * @return a map containing the types declared in this context.
+     */
+    public Map<String, ScriptType> getTypes() {
+        return Collections.unmodifiableMap(this.types);
     }
 
     /**
@@ -67,6 +91,23 @@ public final class Context {
         }
 
         this.variables.put(symbol, new LValue(type, value));
+    }
+
+    /**
+     * Removes the local variable with the given name.
+     *
+     * @param symbol
+     *            the name of the local variable to remove.
+     */
+    public void removeLocal(final String symbol) {
+        Objects.requireNonNull(symbol);
+
+        if (!this.variables.containsKey(symbol)) {
+            throw new ScriptRuntimeException(String.format(
+                    "No local variable named '%s' is defined in this scope.", symbol));
+        }
+
+        this.variables.remove(symbol);
     }
 
     /**
@@ -202,27 +243,5 @@ public final class Context {
         }
 
         return this.types.get(symbol);
-    }
-
-    /**
-     * Returns a string that represents the current object.
-     *
-     * @return a string that represents the current object.
-     */
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-
-        for (Entry<String, LValue> entry : this.variables.entrySet()) {
-            string.append(entry.getKey());
-            string.append(": ");
-            if (entry.getValue() != null && entry.getValue().get() != null) {
-                string.append(entry.getValue().get().toString());
-            } else {
-                string.append("null");
-            }
-            string.append("\r\n");
-        }
-
-        return string.toString();
     }
 }

@@ -1,9 +1,7 @@
 package com.health.gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.FontMetrics;
+import java.awt.Frame;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +11,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
+
+import com.health.gui.input.VInputPanel;
+import com.health.gui.output.VOutputPanel;
+import com.health.gui.script.VScriptPanel;
 
 /**
  * Represents the GUI.
@@ -22,37 +23,39 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
  * @author Daan Vermunt and Bjorn van der Laan
  *
  */
-public class GUImain extends JFrame {
+public class GUImain extends JFrame implements UserInterface {
 
     /**
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 4671877202500940942L;
-    /**
-     * PATHTOXMLFORMAT is the path to all config xmls.
-     */
-    public static final String PATH_TO_CONFIG_XML = "data/configXmls/";
+    private static Map<String, VidneyPanel> panelMap = new HashMap<String, VidneyPanel>();
+    private static JTabbedPane tabbedPane;
 
     /**
-     * Main color of the GUI.
+     * Gets a panel by name.
+     * @param name
+     *            name of the panel
+     * @return the panel, or null if it does not exist
      */
-    public static final Color GUI_COLOR = new Color(137, 207, 240);
-
-    private static Map<String, VidneyPanel> panelMap;
-    private JTabbedPane tabbedPane;
+    public static VidneyPanel getPanel(final String name) {
+        return panelMap.get(name);
+    }
 
     /**
-     * Width of the GUI.
+     * Transitions the application to the specified tab.
+     * @param name
+     *            the name of the tab
      */
-    private final int width = 1000;
-    /**
-     * Height of the GUI.
-     */
-    private final int height = 618;
+    public static void goToTab(final String name) {
+        tabbedPane.setSelectedComponent(getPanel(name));
+    }
+
     /**
      * Width of the tabs.
      */
-    private final int tabWidth = 330;
+    private final int tabWidth = 200;
+
     /**
      * Height of the tabs.
      */
@@ -61,28 +64,22 @@ public class GUImain extends JFrame {
     /**
      * Makes the frame and and fills tabs.
      */
-    public GUImain() {
-        panelMap = new HashMap<String, VidneyPanel>();
+    public GUImain(String title, String laf) {
+        init(title, laf);
+    }
 
-        this.initializeFrame();
+    /**
+     * Initializes the GUI frame.
+     */
+    @Override
+    public final void init(String title, String laf) {
+        this.createTabbedPane();
 
-        tabbedPane = new JTabbedPane();
-        VidneyPanel inputPanel = new VInputPanel();
-        VidneyPanel scriptPanel = new VScriptPanel();
-        VidneyPanel outputPanel = new VOutputPanel();
-
-        addTab("Step 1: Input", inputPanel);
-        addTab("Step 2: Script", scriptPanel);
-        addTab("Step 3: Output", outputPanel);
-
-        tabbedPane.setBackground(GUImain.GUI_COLOR);
-        sizeTabs(tabWidth, tabHeight);
         this.add(tabbedPane);
 
         try {
-            setLookAndFeel("Metal");
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            setLookAndFeel(laf);
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(
                     new JFrame(),
                     "Error loading the look and feel. Message: "
@@ -90,6 +87,10 @@ public class GUImain extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE);
         }
 
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle(title);
+        this.setExtendedState(Frame.MAXIMIZED_BOTH);
+        this.pack();
         this.setVisible(true);
     }
 
@@ -101,6 +102,20 @@ public class GUImain extends JFrame {
         panelMap.put(name, panel);
     }
 
+    private void createTabbedPane() {
+        tabbedPane = new JTabbedPane();
+        VidneyPanel inputPanel = new VInputPanel();
+        VidneyPanel scriptPanel = new VScriptPanel();
+        VidneyPanel outputPanel = new VOutputPanel();
+
+        addTab("Step 1: Input", inputPanel);
+        addTab("Step 2: Script", scriptPanel);
+        addTab("Step 3: Output", outputPanel);
+
+        tabbedPane.setBackground(UserInterface.GUI_COLOR);
+        sizeTabs(tabWidth, tabHeight);
+    }
+
     /**
      * Sets look and feel of the application.
      * @param name
@@ -110,61 +125,36 @@ public class GUImain extends JFrame {
      * @throws InstantiationException
      * @throws ClassNotFoundException
      */
-    private void setLookAndFeel(final String name) throws ClassNotFoundException,
-            InstantiationException, IllegalAccessException,
-            UnsupportedLookAndFeelException {
-        boolean nimbusFound = false;
+    protected void setLookAndFeel(final String name)
+            throws ClassNotFoundException, InstantiationException,
+            IllegalAccessException, UnsupportedLookAndFeelException {
+        boolean lafFound = false;
         for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
             if (name.equals(info.getName())) {
                 UIManager.setLookAndFeel(info.getClassName());
-                nimbusFound = true;
+                lafFound = true;
                 break;
             }
         }
-        if (!nimbusFound) {
+        if (!lafFound) {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }
     }
-    
-    private void sizeTabs(int width, int height) {
+
+    private void sizeTabs(final int width, final int height) {
         tabbedPane.setUI(new BasicTabbedPaneUI() {
             @Override
-            protected int calculateTabWidth(
-                    int tabPlacement, int tabIndex, FontMetrics metrics) {
-                return width; 
-            }
-            @Override
-            protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
+            protected int calculateTabHeight(final int tabPlacement,
+                    final int tabIndex, final int fontHeight) {
                 return height;
             }
+
+            @Override
+            protected int calculateTabWidth(final int tabPlacement,
+                    final int tabIndex, final FontMetrics metrics) {
+                return width;
+            }
         });
-    }
-
-    /**
-     * sets the frame variables.
-     */
-    private void initializeFrame() {
-        this.setSize(width, height);
-
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension dim = tk.getScreenSize();
-
-        int xPos = (dim.width / 2) - (this.getWidth() / 2);
-        int yPos = (dim.height / 2) - (this.getHeight() / 2);
-
-        this.setLocation(xPos, yPos);
-        this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("Vidney");
-    }
-
-    /**
-     * Gets a panel by name.
-     * @param name name of the panel
-     * @return the panel, or null if it does not exist
-     */
-    public static VidneyPanel getPanel(final String name) {
-        return panelMap.get(name);
     }
 
 }

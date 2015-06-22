@@ -56,7 +56,7 @@ public final class ScriptType {
         this.methods = methods;
 
         if (constructor == null) {
-            this.constructor = (args) -> new ComplexValue(this);
+            this.constructor = (args) -> new WrapperValue<Object>(this, null);
         } else {
             this.constructor = constructor;
         }
@@ -201,6 +201,6 @@ public final class ScriptType {
      *         current type; otherwise false.
      */
     public boolean isAssignableFrom(final ScriptType type) {
-        return this.getName().equals("object") || this == type;
+        return this.getName().equals("Object") || this == type;
     }
 }

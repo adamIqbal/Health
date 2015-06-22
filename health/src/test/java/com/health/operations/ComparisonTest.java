@@ -3,6 +3,7 @@ package com.health.operations;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,43 +34,37 @@ public class ComparisonTest {
         // fill the table
         Record tmp = new Record(table);
 
-        tmp.setValue("date", LocalDate.parse("2013-12-12"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 11, 0, 0));
         tmp.setValue("meetwaarde1", 8.0);
         tmp.setValue("name", "Piet");
         tmp.setValue("meetwaarde2", 20.0);
 
         tmp = new Record(table);
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 12, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
-        tmp.setValue("date", LocalDate.parse("2013-12-12"));
         tmp.setValue("name", "Hein");
         tmp.setValue("meetwaarde2", 10.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-12-13"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 13, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Dolf");
         tmp.setValue("meetwaarde2", -1.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-12-20"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 10, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Piet");
         tmp.setValue("meetwaarde2", 10.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-12-30"));
+        tmp.setValue("date", LocalDateTime.of(2014, 11, 15, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Piet");
         tmp.setValue("meetwaarde2", 3.0);
 
         tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2014-11-16"));
-        tmp.setValue("meetwaarde1", 10.0);
-        tmp.setValue("name", "Dolf");
-        tmp.setValue("meetwaarde2", 10.0);
-
-        tmp = new Record(table);
-        tmp.setValue("date", LocalDate.parse("2013-11-12"));
+        tmp.setValue("date", LocalDateTime.of(2013, 12, 16, 0, 0));
         tmp.setValue("meetwaarde1", 10.0);
         tmp.setValue("name", "Dolf");
         tmp.setValue("meetwaarde2", 10.0);
@@ -101,8 +96,8 @@ public class ComparisonTest {
         
         Table res = Comparison.timeBetweenEvents(eSeq);
         List<Record> recList = res.getRecords();
-        double expected = 27.0;
-        double actual = recList.get(1).getNumberValue("A->C");
+        double expected = 3.0;
+        double actual = recList.get(0).getNumberValue("A->C");
         assertTrue(expected == actual);
         
         

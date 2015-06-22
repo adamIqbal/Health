@@ -1,0 +1,5 @@
+// on Mijnnierinzicht data
+
+var table = constrain table0 where CreatedDate != ModifiedDate;
+
+write("out.txt", table);

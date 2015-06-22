@@ -1,8 +1,7 @@
 package com.health;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,273 +11,268 @@ import java.util.Objects;
  * @author Martijn
  */
 public final class Record {
-	private Table table;
-	private Object[] values;
+    private Table table;
+    private Object[] values;
 
-	/**
-	 * Constructs a {@link Record} that belongs to the given table.
-	 *
-	 * @param table
-	 *            the table this record belongs to.
-	 * @throws NullPointerException
-	 *             if table is null.
-	 */
-	public Record(final Table table) {
-		Objects.requireNonNull(table, "Argument table cannot be null.");
+    /**
+     * Constructs a {@link Record} that belongs to the given table.
+     *
+     * @param table
+     *            the table this record belongs to.
+     * @throws NullPointerException
+     *             if table is null.
+     */
+    public Record(final Table table) {
+        Objects.requireNonNull(table, "Argument table cannot be null.");
 
-		this.table = table;
-		this.values = new Object[table.getColumns().size()];
+        this.table = table;
+        this.values = new Object[table.getColumns().size()];
 
-		table.addRecord(this);
-	}
+        table.addRecord(this);
+    }
 
-	/**
-	 * Gets the table this record belongs to.
-	 *
-	 * @return the table this record belongs to.
-	 */
-	public Table getTable() {
-		return this.table;
-	}
+    /**
+     * Gets the table this record belongs to.
+     *
+     * @return the table this record belongs to.
+     */
+    public Table getTable() {
+        return this.table;
+    }
 
-	/**
-	 * Gets an iterable containing the values in this record.
-	 *
-	 * @return an iterable containing the values in this record.
-	 */
-	public Iterable<Object> getValues() {
-		return Arrays.asList(this.values);
-	}
+    /**
+     * Gets an iterable containing the values in this record.
+     *
+     * @return an iterable containing the values in this record.
+     */
+    public List<Object> getValues() {
+        return Arrays.asList(this.values);
+    }
 
-	/**
-	 * Gets the value of the column with the given name.
-	 *
-	 * @param name
-	 *            the name of the column whose value to get.
-	 * @return the value of the column with the given name if found; otherwise
-	 *         null.
-	 */
-	public Object getValue(final String name) {
-		// Retrieve the value for any of the supported types
-		return this.getValue(name, EnumSet.allOf(ValueType.class));
-	}
+    /**
+     * Gets the value of the column with the given name.
+     *
+     * @param name
+     *            the name of the column whose value to get.
+     * @return the value of the column with the given name if found; otherwise
+     *         null.
+     */
+    public Object getValue(final String name) {
+        return this.getValue(table.getColumn(name), null);
+    }
 
-	/**
-	 * Gets the {@link Double} value of the column with the given name.
-	 *
-	 * @param name
-	 *            the name of the column whose value to get.
-	 * @return the value of the column with the given name if found; otherwise
-	 *         null.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain Double values.
-	 */
-	public Double getNumberValue(final String name) {
-		// Retrieve the value for a number and cast it to Double
-		return (Double) this.getValue(name, EnumSet.of(ValueType.Number));
-	}
+    /**
+     * Gets the value of the column with the given index.
+     *
+     * @param index
+     *            the index of the column whose value to get.
+     * @return the value of the column with the given index if found; otherwise
+     *         null.
+     */
+    public Object getValue(final int index) {
+        return this.getValue(table.getColumn(index), null);
+    }
 
-	/**
-	 * Gets the {@link String} value of the column with the given name.
-	 *
-	 * @param name
-	 *            the name of the column whose value to get.
-	 * @return the value of the column with the given name if found; otherwise
-	 *         null.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain String values.
-	 */
-	public String getStringValue(final String name) {
-		// Retrieve the value for a number and cast it to String
-		return (String) this.getValue(name, EnumSet.of(ValueType.String));
-	}
+    /**
+     * Gets the {@link Double} value of the column with the given name.
+     *
+     * @param name
+     *            the name of the column whose value to get.
+     * @return the value of the column with the given name if found; otherwise
+     *         null.
+     * @throws IllegalStateException
+     *             if the specified column does not contain Double values.
+     */
+    public Double getNumberValue(final String name) {
+        Object value = this.getValue(table.getColumn(name), ValueType.Number);
 
-	/**
-	 * Gets the {@link LocalDate} value of the column with the given name.
-	 *
-	 * @param name
-	 *            the name of the column whose value to get.
-	 * @return the value of the column with the given name if found; otherwise
-	 *         null.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain String values.
-	 */
-	public LocalDate getDateValue(final String name) {
-		// Retrieve the value for a number and cast it to String
-		return (LocalDate) this.getValue(name, EnumSet.of(ValueType.Date));
-	}
+        if (value == null) {
+            value = (double) 0;
+        }
 
-	/**
-	 * Sets the {@link Double} value of the column with the given index.
-	 *
-	 * @param index
-	 *            the index of the column whose value to set.
-	 * @param value
-	 *            the new value.
-	 * @throws IllegalArgumentException
-	 *             if a column with the given name was not found.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain Double values.
-	 */
-	public void setValue(final int index, final Double value) {
-		this.setValue(this.table.getColumn(index).getName(), value);
-	}
+        return (Double) value;
+    }
 
-	/**
-	 * Sets the {@link String} value of the column with the given index.
-	 *
-	 * @param index
-	 *            the index of the column whose value to set.
-	 * @param value
-	 *            the new value.
-	 * @throws IllegalArgumentException
-	 *             if a column with the given name was not found.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain String values.
-	 */
-	public void setValue(final int index, final String value) {
-		this.setValue(this.table.getColumn(index).getName(), value);
-	}
+    /**
+     * Gets the {@link String} value of the column with the given name.
+     *
+     * @param name
+     *            the name of the column whose value to get.
+     * @return the value of the column with the given name if found; otherwise
+     *         null.
+     * @throws IllegalStateException
+     *             if the specified column does not contain String values.
+     */
+    public String getStringValue(final String name) {
+        return (String) this.getValue(table.getColumn(name), ValueType.String);
+    }
 
-	/**
-	 * Sets the {@link LocalDate} value of the column with the given index.
-	 *
-	 * @param index
-	 *            the index of the column whose value to set.
-	 * @param value
-	 *            the new value.
-	 * @throws IllegalArgumentException
-	 *             if a column with the given name was not found.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain LocalDate values.
-	 */
-	public void setValue(final int index, final LocalDate value) {
-		this.setValue(this.table.getColumn(index).getName(), value);
-	}
+    /**
+     * Gets the {@link LocalDateTime} value of the column with the given name.
+     *
+     * @param name
+     *            the name of the column whose value to get.
+     * @return the value of the column with the given name if found; otherwise
+     *         null.
+     * @throws IllegalStateException
+     *             if the specified column does not contain String values.
+     */
+    public LocalDateTime getDateValue(final String name) {
+        // Retrieve the value for a number and cast it to String
+        return (LocalDateTime) this.getValue(table.getColumn(name), ValueType.Date);
+    }
 
-	/**
-	 * Sets the {@link Double} value of the column with the given name.
-	 *
-	 * @param name
-	 *            the name of the column whose value to set.
-	 * @param value
-	 *            the new value.
-	 * @throws IllegalArgumentException
-	 *             if a column with the given name was not found.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain Double values.
-	 */
-	public void setValue(final String name, final Double value) {
-		this.setValue(name, value, ValueType.Number);
-	}
+    /**
+     * Sets the value of the column with the given index.
+     *
+     * @param index
+     *            the index of the column whose value to set.
+     * @param value
+     *            the new value.
+     * @throws IllegalArgumentException
+     *             if a column with the given name was not found.
+     * @throws IllegalStateException
+     *             if the specified column does not contain values of the given
+     *             type.
+     */
+    public void setValue(final int index, final Object value) {
+        this.setValue(table.getColumn(index), value, getValueType(value));
+    }
 
-	/**
-	 * Sets the {@link String} value of the column with the given name.
-	 *
-	 * @param name
-	 *            the name of the column whose value to set.
-	 * @param value
-	 *            the new value.
-	 * @throws IllegalArgumentException
-	 *             if a column with the given name was not found.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain String values.
-	 */
-	public void setValue(final String name, final String value) {
-		this.setValue(name, value, ValueType.String);
-	}
+    /**
+     * Sets the value of the column with the given name.
+     *
+     * @param name
+     *            the name of the column whose value to set.
+     * @param value
+     *            the new value.
+     * @throws IllegalArgumentException
+     *             if a column with the given name was not found.
+     * @throws IllegalStateException
+     *             if the specified column does not contain values of the given
+     *             type.
+     */
+    public void setValue(final String name, final Object value) {
+        this.setValue(table.getColumn(name), value, getValueType(value));
+    }
 
-	/**
-	 * Sets the {@link LocalDate} value of the column with the given name.
-	 *
-	 * @param name
-	 *            the name of the column whose value to set.
-	 * @param value
-	 *            the new value.
-	 * @throws IllegalArgumentException
-	 *             if a column with the given name was not found.
-	 * @throws IllegalStateException
-	 *             if the specified column does not contain String values.
-	 */
-	public void setValue(final String name, final LocalDate value) {
-		this.setValue(name, value, ValueType.Date);
-	}
+    private static ValueType getValueType(final Object value) {
+        if (instanceofNumericType(value)) {
+            return ValueType.Number;
+        } else if (value instanceof String) {
+            return ValueType.String;
+        } else if (value instanceof LocalDateTime) {
+            return ValueType.Date;
+        } else if (value == null) {
+            return null;
+        } else {
+            throw new IllegalArgumentException("Unsupported value type, must be either Double, String or LocalDate.");
+        }
+    }
 
-	/**
-	 * Adds a copy of this record to the given table. The table must have
-	 * identical columns to the table that this record belongs to.
-	 *
-	 * @param table
-	 *            the table to copy the record to.
-	 */
-	public void copyTo(final Table table) {
-		Objects.requireNonNull(table);
+    /**
+     * Adds a copy of this record to the given table. The table must have
+     * identical columns to the table that this record belongs to.
+     *
+     * @param table
+     *            the table to copy the record to.
+     */
+    public void copyTo(final Table table) {
+        Objects.requireNonNull(table);
 
-		List<Column> columns1 = this.table.getColumns();
-		List<Column> columns2 = table.getColumns();
-		int length = columns1.size();
+        List<Column> columns1 = this.table.getColumns();
+        List<Column> columns2 = table.getColumns();
 
-		if (length != columns2.size()) {
-			throw new IllegalArgumentException(
-					"The given table must have the same columns as the table that this record belongs to.");
-		}
+        if (columns1.size() != columns2.size()) {
+            throw new IllegalArgumentException(
+                    "The given table must have the same columns as the table that this record belongs to.");
+        }
 
-		for (int i = 0; i < length; i++) {
+        verifyColumnTypesEqual(columns1, columns2);
 
-			ValueType type1 = columns1.get(i).getType();
-			ValueType type2 = columns2.get(i).getType();
+        Record copy = new Record(table);
+        System.arraycopy(this.values, 0, copy.values, 0, columns1.size());
+    }
 
-			if (type1 != type2) {
-				throw new IllegalArgumentException(
-						"The given table must have the same columns as the table that this record belongs to.");
-			}
-		}
+    private static void verifyColumnTypesEqual(final List<Column> columns1, final List<Column> columns2) {
+        for (int i = 0; i < columns1.size(); i++) {
+            ValueType type1 = columns1.get(i).getType();
+            ValueType type2 = columns2.get(i).getType();
 
-		Record copy = new Record(table);
+            if (type1 != type2) {
+                throw new IllegalArgumentException(
+                        "The given table must have the same columns as the table that this record belongs to.");
+            }
+        }
+    }
 
-		copy.values = new Object[length];
+    private Object getValue(final Column column, final ValueType type) {
+        // Return null if a column with the given name or index was not found
+        if (column == null) {
+            return null;
+        }
 
-		for (int i = 0; i < length; i++) {
-			copy.values[i] = this.values[i];
-		}
-	}
+        // Throw an exception if the column contains a type does not match the
+        // given type
+        if (type != null && column.getType() != type) {
+            throw new IllegalStateException();
+        }
 
-	private Object getValue(final String name, final EnumSet<ValueType> types) {
-		assert types != null;
+        return this.values[column.getIndex()];
+    }
 
-		Column column = this.table.getColumn(name);
+    private void setValue(final Column column, final Object value, final ValueType type) {
+        // Throw an exception if a column with the given name or index was not
+        // found
+        if (column == null) {
+            throw new IllegalArgumentException();
+        }
 
-		// Return null if a column with the given name was not found
-		if (column == null) {
-			return null;
-		}
+        // Throw an exception if the column contains a type does not match the
+        // given type
+        if (type != null && column.getType() != type) {
+            throw new IllegalStateException();
+        }
 
-		// Throw an exception if the column contains a type not contained in the
-		// enum set
-		if (!types.contains(column.getType())) {
-			throw new IllegalStateException();
-		}
+        if (type == ValueType.Number) {
+            this.values[column.getIndex()] = castNumericTypeToDouble(value);
+        } else {
+            this.values[column.getIndex()] = value;
+        }
+    }
 
-		return this.values[column.getIndex()];
-	}
+    private static boolean instanceofNumericType(final Object value) {
+        return value instanceof Double
+                || value instanceof Float
+                || value instanceof Short
+                || value instanceof Integer
+                || value instanceof Long
+                || value instanceof Character;
+    }
 
-	private void setValue(final String name, final Object value,
-			final ValueType type) {
-		assert type != null;
-
-		Column column = this.table.getColumn(name);
-
-		// Throw an exception if a column with the given name was not found
-		if (column == null) {
-			throw new IllegalArgumentException();
-		}
-
-		// Throw an exception if the column contains a type does not match the
-		// given type
-		if (column.getType() != type) {
-			throw new IllegalStateException();
-		}
-
-		this.values[column.getIndex()] = value;
-	}
+    private static Object castNumericTypeToDouble(final Object value) {
+        if (value instanceof Float) {
+            float fval = (Float) value;
+            double dval = fval;
+            return dval;
+        } else if (value instanceof Short) {
+            short sval = (Short) value;
+            double dval = sval;
+            return dval;
+        } else if (value instanceof Integer) {
+            int ival = (Integer) value;
+            double dval = ival;
+            return dval;
+        } else if (value instanceof Long) {
+            long lval = (Long) value;
+            double dval = lval;
+            return dval;
+        } else if (value instanceof Character) {
+            char cval = (Character) value;
+            double dval = cval;
+            return dval;
+        } else {
+            return value;
+        }
+    }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data format="xlsx" startRow="1" startColumn="1">
+	<column type="Number">custommeasurementitem_141214Id</column>
+	<column type="Number">Revision</column>
+	<column type="String">Moment</column>
+	<column type="Number">Date</column>
+	<column type="Number">Sequence</column>
+	<column type="Number">Value</column>
+	<column type="Number">Value2</column>
+	<column type="Number">IsMaverick</column>
+	<column type="Number">RegressionCoefficient</column>
+	<column type="Number">KreatinineAlgorithmRatingId</column>
+	<column type="Number">KreatinineAlgorithmActionId</column>
+	<column type="Number">KreatinineAlgorithmDayRatingId</column>
+	<column type="String">Comment</column>
+	<column type="String">CreatedBy</column>
+	<column type="Date" format="d[d]/MM/yy">CreatedDate</column>
+	<column type="String">ModifiedBy</column>
+	<column type="Date" format="d[d]/MM/yy">ModifiedDate</column>
+	<column type="Number">UserId</column>
+	<column type="Number">CustomMeasurementId</column>
+	<column type="String">Login</column>
+	<column type="Number">custommeasurement_141214Id</column>
+	<column type="String">measurementvariable_141214Name</column>
+	<column type="String">measurementunit_141214Name</column>
+</data>

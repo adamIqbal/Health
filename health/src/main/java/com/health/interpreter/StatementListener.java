@@ -57,7 +57,8 @@ public final class StatementListener extends MyScriptBaseListener {
     }
 
     private void declareLocal(final MyScriptParser.LocalVariableDeclaratorContext ctx, final ScriptType type) {
-        // If implicit typing is used, the declarator should have contained an initializer
+        // If implicit typing is used, the declarator should have contained an
+        // initializer
         if (type == null) {
             throw new ScriptRuntimeException("Implicitly-typed local variable must be initialized.");
         }
@@ -71,7 +72,8 @@ public final class StatementListener extends MyScriptBaseListener {
         ScriptType actualType = type;
 
         if (actualType == null) {
-            // If implicit typing is used, the value cannot be initialized to null
+            // If implicit typing is used, the value cannot be initialized to
+            // null
             if (value == null) {
                 throw new ScriptRuntimeException("Cannot assign <null> to an implicitly-typed local variable.");
             } else {

@@ -1,82 +1,158 @@
 package com.health;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-public class EventSequence {
-    private List<EventList> sequences;
-    private String[] codePattern;
-    private String code;
-    private boolean connected;
+import com.health.operations.Connect;
 
+/**
+ * a class with contains the found sequences as a list of eventlists.
+ * 
+ * @author daan
+ *
+ */
+public final class EventSequence {
+    private final List<EventList> sequences;
+    private final String[] codePattern;
+    private final String code;
+    private final boolean connected;
+
+    /**
+     * Makes an eventSequence with given Pattern.
+     *
+     * @param codePattern
+     *            the pattern one would like to look for.
+     */
     public EventSequence(final String[] codePattern) {
-        construct(codePattern, null, false);
+        this(codePattern, null, false);
     }
 
+    /**
+     * Makes an eventSequence with given Pattern.
+     *
+     * @param codePattern
+     *            the pattern one would like to look for.
+     * @param connected
+     *            true if the Sequence has to be connected to each other.
+     */
     public EventSequence(final String[] codePattern, final boolean connected) {
-        construct(codePattern, null, connected);
+        this(codePattern, null, connected);
     }
 
+    /**
+     * Makes an eventSequence with given Pattern.
+     *
+     * @param codePattern
+     *            the pattern one would like to look for.
+     * @param code
+     *            the code for the sequence.
+     * @param connected
+     *            true if the Sequence has to be connected to each other.
+     */
     public EventSequence(final String[] codePattern, final String code,
             final boolean connected) {
-        construct(codePattern, code, connected);
-    }
+        Objects.requireNonNull(codePattern);
 
-    private void construct(final String[] codePattern, final String code,
-            final boolean connected) {
-        sequences = new ArrayList<EventList>();
+        this.sequences = new ArrayList<EventList>();
         this.codePattern = codePattern;
         this.connected = connected;
+
         if (code == null) {
-            makeCodeOfCodePattern();
+            this.code = makeCodeOfCodePattern(codePattern);
         } else {
-            this.setCode(code);
+            this.code = code;
         }
     }
 
+    /**
+     * Gets the pattern of events represented by this sequence.
+     *
+     * @return the pattern of events represented by this sequence.
+     */
     public String[] getCodePattern() {
         return codePattern;
     }
 
-    private void makeCodeOfCodePattern() {
-        setCode("");
-        for (String singleCode : codePattern) {
-            setCode(getCode() + singleCode);
-        }
-
-    }
-
     /**
-     * @return the connected
-     */
-    public boolean isConnected() {
-        return connected;
-    }
-
-    public void addSequence(final EventList sequence) {
-        sequences.add(sequence);
-    }
-
-    public void deleteSequence(final EventList sequence) {
-        sequences.remove(sequence);
-    }
-
-    public List<EventList> getSequences() {
-        return sequences;
-    }
-
-    /**
-     * @return the code
+     * Gets the code associated with this event sequence.
+     *
+     * @return the code associated with this event sequence.
      */
     public String getCode() {
         return code;
     }
 
     /**
-     * @param code
-     *            the code to set
+     * Gets whether or not the events in the pattern must be consecutive.
+     *
+     * @return true if the events in the pattern must be consecutive; otherwise
+     *         false.
      */
-    public void setCode(String code) {
-        this.code = code;
+    public boolean isConnected() {
+        return connected;
+    }
+
+    /**
+     * Add a sequence to all found sequences in the list.
+     *
+     * @param sequence
+     *            an EvenList with record of a sequence.
+     */
+    public void addSequence(final EventList sequence) {
+        sequences.add(sequence);
+    }
+
+    /**
+     * Removes a sequence.
+     *
+     * @param sequence
+     *            the sequence to remove.
+     */
+    public void removeSequence(final EventList sequence) {
+        sequences.remove(sequence);
+    }
+
+    /**
+     * Get all sequences in the object.
+     *
+     * @return a list of evenlists with sequences.
+     */
+    public List<EventList> getSequences() {
+        return Collections.unmodifiableList(this.sequences);
+    }
+
+    /**
+     * Makes a Table of all events in all eventlists in the current object.
+     *
+     * @return a table with all events found.
+     */
+    public Table toTable() {
+        List<Column> cols = new ArrayList<Column>();
+        cols.add(new Column("nothing found", 0, ValueType.Number));
+
+        Table res = new Table(cols);
+        boolean start = true;
+        for (EventList eList : sequences) {
+            if (start) {
+                res = eList.toTable();
+                start = false;
+            } else {
+                res = Connect.connect(res, eList.toTable(), null);
+            }
+        }
+
+        return res;
+    }
+
+    private static String makeCodeOfCodePattern(final String[] codePattern) {
+        String code = "";
+
+        for (String singleCode : codePattern) {
+            code += singleCode;
+        }
+
+        return code;
     }
 }

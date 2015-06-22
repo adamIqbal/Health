@@ -1,8 +1,8 @@
 package com.health;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class EventTest {
-
     private Table table;
 
     @Before
@@ -23,15 +22,14 @@ public class EventTest {
         table = new Table(columns);
 
         Record tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(1, 1, 1));
+        tmp.setValue(0, LocalDateTime.of(1, 1, 1, 0, 0));
         tmp.setValue(1, 1.0);
         tmp.setValue(2, "piet");
 
         tmp = new Record(table);
-        tmp.setValue(0, LocalDate.of(2, 2, 2));
+        tmp.setValue(0, LocalDateTime.of(2, 2, 2, 0, 0));
         tmp.setValue(1, 2.0);
         tmp.setValue(2, "Jan");
-
     }
 
     @Test
@@ -48,9 +46,9 @@ public class EventTest {
 
         e.setCode("B");
         e.setRecord(table.getRecords().get(1));
-        
+
         assertEquals("B", e.getCode());
         assertEquals("Jan", e.getRecord().getStringValue("name"));
+        assertEquals(LocalDateTime.of(2, 2, 2, 0, 0), e.getDate());
     }
-
 }

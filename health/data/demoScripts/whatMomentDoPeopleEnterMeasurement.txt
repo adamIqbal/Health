@@ -1,0 +1,5 @@
+// with MijnnierInzicht Data
+
+var table = tableWithHoursOfDay(table0);
+
+hist(table, "hour_of_day", 24);

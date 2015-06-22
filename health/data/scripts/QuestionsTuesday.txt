@@ -1,0 +1,19 @@
+List of example questions the tool should help to answer are:
+
+TO DO:
+
+- What is the difference in time between measurement device and entering data in 
+
+Mijnnierinzicht?
+
+- Is there a difference between StatSensor measurement and what patients enter into 
+
+Mijnnierinzicht?
+
+- If a patient did measure multiple time, what measure do he/she eventually enter into 
+
+Mijnnierinzicht?
+
+- Find cases where there is a difference between device measurement and what is entered in 
+
+Mijnnierinzicht 

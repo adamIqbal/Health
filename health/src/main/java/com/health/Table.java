@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.swing.JTable;
+
 /**
  * Represents a collection of {@link Column}s and {@link Record}s.
  *
@@ -47,7 +49,8 @@ public final class Table implements Iterable<Record> {
         }
 
         // Sort the columns by index and make the list read-only
-        this.columns.sort((a, b) -> Integer.compare(a.getIndex(), b.getIndex()));
+        this.columns
+                .sort((a, b) -> Integer.compare(a.getIndex(), b.getIndex()));
         this.columns = Collections.unmodifiableList(this.columns);
     }
 
@@ -145,8 +148,6 @@ public final class Table implements Iterable<Record> {
     }
 
     private static void verifyColumnIndices(final Iterable<Column> columns) {
-        assert columns != null;
-
         Set<Integer> indices = new HashSet<Integer>();
         int count = 0;
         int minIndex = Integer.MAX_VALUE;
@@ -186,14 +187,45 @@ public final class Table implements Iterable<Record> {
                     "The indices of the columns must be in the range [0, n).");
         }
     }
-    
-    public Column getDateColumn(){
-        for(int i = 0; i < columns.size(); i++){
-            if(columns.get(i).getType() == ValueType.Date){
+
+    /**
+     * Gets the first column of type Date.
+     *
+     * @return the first column of type Date, or null if no column contains
+     *         dates.
+     */
+    public Column getDateColumn() {
+        for (int i = 0; i < columns.size(); i++) {
+            if (columns.get(i).getType() == ValueType.Date) {
                 return columns.get(i);
             }
         }
+
         return null;
     }
-    
+
+    /**
+     * Convert the Table data into a JTable.
+     *
+     * @return a JTable Object with the content of the table.
+     */
+    public JTable toJTable() {
+        int rows = this.getRecords().size();
+        int cols = this.getColumns().size();
+
+        String[] names = new String[cols];
+        for (int i = 0; i < cols; i++) {
+            names[i] = this.getColumns().get(i).getName();
+        }
+
+        Object[][] data = new Object[rows][cols];
+        for (int j = 0; j < rows; j++) {
+            for (int k = 0; k < cols; k++) {
+                data[j][k] = this.getRecords().get(j)
+                        .getValue(this.getColumns().get(k).getName());
+            }
+        }
+        JTable table = new JTable(data, names);
+        return table;
+    }
 }

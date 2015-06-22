@@ -55,6 +55,7 @@ nonAssignmentExpression
     | chunkExpression
     | constrainExpression
     | connectExpression
+    | codeExpression
     ;
 
 primaryExpression
@@ -66,7 +67,7 @@ primaryExpression
     ;
 
 chunkExpression
-    : 'chunk' table=IDENTIFIER 'by' 'column'? column=IDENTIFIER periodSpecifier? columnAggregateOperation*
+    : 'chunk' table=IDENTIFIER 'by' column=IDENTIFIER periodSpecifier? (','? 'select' chunkSelectionList)?
     ;
 
 periodSpecifier
@@ -79,17 +80,36 @@ period
     ;
 
 singularTimeUnit
-    : 'day'
+    : 'hour'
+    | 'day'
     | 'week'
     | 'month'
     | 'year'
     ;
 
 pluralTimeUnit
-    : 'days'
+    : 'hours'
+    | 'days'
     | 'weeks'
     | 'months'
     | 'years'
+    ;
+
+chunkSelectionList
+    : chunkSelectionList ',' columnOrAggregateOperation
+    | columnOrAggregateOperation
+    ;
+
+columnOrAggregateOperation
+    : (aggregateOperation 'of')? column=IDENTIFIER
+    ;
+
+aggregateOperation
+    : 'count'
+    | 'average'
+    | 'sum'
+    | 'min'
+    | 'max'
     ;
 
 constrainExpression
@@ -112,23 +132,13 @@ condition
     ;
 
 comparisonOperator
-    : '='
+    : '=='
+    | '='
+    | '!='
     | '<'
     | '<='
     | '>'
     | '>='
-    ;
-
-columnAggregateOperation
-    : ',' aggregateOperation 'of' IDENTIFIER
-    ;
-
-aggregateOperation
-    : 'count'
-    | 'average'
-    | 'sum'
-    | 'min'
-    | 'max'
     ;
 
 connectExpression
@@ -141,7 +151,20 @@ columnConnectionList
     ;
 
 columnConnection
-    : column1=IDENTIFIER '=' column2=IDENTIFIER ('as' newName=IDENTIFIER)?
+    : column1=IDENTIFIER ('=' | '==') column2=IDENTIFIER ('as' newName=IDENTIFIER)?
+    ;
+
+codeExpression
+    : 'code' table=IDENTIFIER 'as' codeList
+    ;
+
+codeList
+    : codeList ',' code
+    | code
+    ;
+
+code
+    : IDENTIFIER ':' conditionalExpression
     ;
 
 argumentList
@@ -211,8 +234,12 @@ IDENTIFIER
     : [a-zA-Z0-9][a-zA-Z0-9_]*
     ;
 
-SPACES
-    : [ \t\r\n] -> skip
+COMMENT
+    : '//' ~[\r\n]* -> skip
+    ;
+
+WHITESPACE
+    : [ \r\t\u000C'\n]+ -> skip
     ;
 
 fragment EXPONENT: [eE][+-]DECIMAL_DIGITS ;

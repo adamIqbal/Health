@@ -1,6 +1,8 @@
 package com.health.interpreter;
 
+import java.time.Duration;
 import java.time.Period;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,15 +12,16 @@ import com.health.operations.AggregateFunctions;
 import com.health.operations.Chunk;
 import com.health.operations.ColumnAggregateTuple;
 import com.health.script.MyScriptParser;
+import com.health.script.MyScriptParser.ChunkSelectionListContext;
 import com.health.script.runtime.Context;
 import com.health.script.runtime.ScriptRuntimeException;
-import com.health.script.runtime.TableValue;
 import com.health.script.runtime.Value;
+import com.health.script.runtime.WrapperValue;
 
 /**
  * Represents an interpreter for chunking expressions.
  */
-public final class ChunkExpressionInterpreter extends TableExpressionInterpreter {
+public final class ChunkExpressionInterpreter extends BaseExpressionInterpreter {
     /**
      * Creates a new instance of {@link ChunkExpressionInterpreter} with the
      * given context and expressionVisitor.
@@ -46,23 +49,43 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         String tableIdent = ctx.table.getText();
         String columnIdent = ctx.column.getText();
 
-        Table table = this.lookupTable(tableIdent);
+        Table table = BaseExpressionInterpreter.lookupTable(this.getContext(), tableIdent);
 
         verifyHasColumn(table, tableIdent, columnIdent);
 
         List<ColumnAggregateTuple> aggregateFunctions =
-                evaluateAggragateOperations(ctx.columnAggregateOperation());
+                evaluateChunkSelectionList(ctx.chunkSelectionList());
 
         if (ctx.periodSpecifier() != null) {
-            Period period = evaluatePeriod(ctx.periodSpecifier().period());
+            TemporalAmount period = evaluatePeriod(ctx.periodSpecifier().period());
 
-            return new TableValue(Chunk.chunkByPeriod(table, columnIdent, aggregateFunctions, period));
+            return new WrapperValue<Table>(Chunk.chunkByPeriod(table, columnIdent, aggregateFunctions, period));
         } else {
-            return new TableValue(Chunk.chunkByColumn(table, columnIdent, aggregateFunctions));
+            return new WrapperValue<Table>(Chunk.chunkByColumn(table, columnIdent, aggregateFunctions));
         }
     }
 
-    private static Period evaluatePeriod(final MyScriptParser.PeriodContext ctx) {
+    private List<ColumnAggregateTuple> evaluateChunkSelectionList(final ChunkSelectionListContext ctx) {
+        List<ColumnAggregateTuple> aggregateFunctions = new ArrayList<ColumnAggregateTuple>();
+
+        evaluateChunkSelectionList(ctx, aggregateFunctions);
+
+        return aggregateFunctions;
+    }
+
+    private void evaluateChunkSelectionList(
+            final ChunkSelectionListContext ctx,
+            final List<ColumnAggregateTuple> aggregateFunctions) {
+        if (ctx == null) {
+            return;
+        }
+
+        evaluateChunkSelectionList(ctx.chunkSelectionList(), aggregateFunctions);
+
+        aggregateFunctions.add(evaluateColumnOrAggragateOperation(ctx.columnOrAggregateOperation()));
+    }
+
+    private static TemporalAmount evaluatePeriod(final MyScriptParser.PeriodContext ctx) {
         if (ctx.singularTimeUnit() != null) {
             return evaluateSingularPeriod(ctx);
         } else if (ctx.pluralTimeUnit() != null) {
@@ -72,8 +95,10 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static Period evaluateSingularPeriod(final MyScriptParser.PeriodContext ctx) {
+    private static TemporalAmount evaluateSingularPeriod(final MyScriptParser.PeriodContext ctx) {
         switch (ctx.singularTimeUnit().getText()) {
+        case "hour":
+            return Duration.ofHours(1);
         case "day":
             return Period.ofDays(1);
         case "week":
@@ -87,10 +112,12 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static Period evaluatePluralPeriod(final MyScriptParser.PeriodContext ctx) {
+    private static TemporalAmount evaluatePluralPeriod(final MyScriptParser.PeriodContext ctx) {
         int number = (int) Double.parseDouble(ctx.NUMBER().getText());
 
         switch (ctx.pluralTimeUnit().getText()) {
+        case "hours":
+            return Duration.ofHours(number);
         case "days":
             return Period.ofDays(number);
         case "weeks":
@@ -104,21 +131,22 @@ public final class ChunkExpressionInterpreter extends TableExpressionInterpreter
         }
     }
 
-    private static List<ColumnAggregateTuple> evaluateAggragateOperations(
-            final List<MyScriptParser.ColumnAggregateOperationContext> columnAggregateOperation) {
-        List<ColumnAggregateTuple> aggregateFunctions = new ArrayList<ColumnAggregateTuple>();
+    private static ColumnAggregateTuple evaluateColumnOrAggragateOperation(
+            final MyScriptParser.ColumnOrAggregateOperationContext ctx) {
 
-        for (MyScriptParser.ColumnAggregateOperationContext ctx : columnAggregateOperation) {
-            aggregateFunctions.add(new ColumnAggregateTuple(
+        if (ctx.aggregateOperation() == null) {
+            return new ColumnAggregateTuple(ctx.IDENTIFIER().getText());
+        } else {
+            return new ColumnAggregateTuple(
                     ctx.IDENTIFIER().getText(),
-                    evaluateAggragateOperation(ctx.aggregateOperation())));
+                    evaluateAggragateOperation(ctx.aggregateOperation()));
         }
-
-        return aggregateFunctions;
     }
 
-    private static AggregateFunction evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
+    private static AggregateFunction<?> evaluateAggragateOperation(final MyScriptParser.AggregateOperationContext ctx) {
         switch (ctx.getText()) {
+        case "count":
+            return AggregateFunctions.count();
         case "average":
             return AggregateFunctions.average();
         case "sum":

@@ -5,6 +5,9 @@ import java.util.function.Function;
 import com.health.Record;
 import com.health.Table;
 
+/**
+ * A utility class to perform constraining of tables.
+ */
 public final class Constraints {
     private Constraints() {
     }
@@ -21,7 +24,8 @@ public final class Constraints {
      * @return a new table containing only the records for which the given
      *         predicate is evaluated as true.
      */
-    public static Table constrain(final Function<Record, Boolean> predicate, final Table table) {
+    public static Table constrain(final Function<Record, Boolean> predicate,
+            final Table table) {
         Table constrained = new Table(table.getColumns());
 
         for (Record record : table.getRecords()) {

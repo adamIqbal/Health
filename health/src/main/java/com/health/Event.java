@@ -1,27 +1,33 @@
 package com.health;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-public class Event {
+/**
+ * Represents an event that is labeled with a code.
+ *
+ * @author daan.
+ *
+ */
+public final class Event {
     private String codeName;
     private Record rec;
 
     /**
      * Create a new Event.
-     * 
+     *
      * @param code
      *            the name of the code.
      * @param record
      *            the Record of the event.
      */
-    public Event(String code, Record record) {
+    public Event(final String code, final Record record) {
         codeName = code;
         rec = record;
     }
 
     /**
      * get the code name of the event.
-     * 
+     *
      * @return the codeName.
      */
     public String getCode() {
@@ -30,17 +36,17 @@ public class Event {
 
     /**
      * set the code name of the event.
-     * 
+     *
      * @param code
      *            the name of the code.
      */
-    public void setCode(String code) {
+    public void setCode(final String code) {
         this.codeName = code;
     }
 
     /**
      * get the record of the event.
-     * 
+     *
      * @return the record of the event.
      */
     public Record getRecord() {
@@ -49,21 +55,20 @@ public class Event {
 
     /**
      * set the record of the event.
-     * 
+     *
      * @param record
      *            the record of the event.
      */
-    public void setRecord(Record record) {
+    public void setRecord(final Record record) {
         this.rec = record;
     }
 
     /**
      * get the date of an event.
-     * 
+     *
      * @return return the date of an event.
      */
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return rec.getDateValue(rec.getTable().getDateColumn().getName());
     }
-
 }

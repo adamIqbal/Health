@@ -14,13 +14,14 @@ import javax.swing.border.EmptyBorder;
  * @author Bjorn van der Laan
  *
  */
-abstract class VidneyPanel extends JSplitPane {
+public abstract class VidneyPanel extends JSplitPane {
     /**
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 1804783858852989085L;
     private JPanel mainPanel;
     private JPanel sidePanel;
+    private static final int PADDING = 20;
 
     /**
      * Constructor.
@@ -28,14 +29,11 @@ abstract class VidneyPanel extends JSplitPane {
     public VidneyPanel() {
         super();
 
-        // Should be 618 for perfect GoldenRatio between panels
-        final int dividerLocation = 650;
-
         this.setDefaultPanels();
-
         this.setContinuousLayout(true);
-        this.setDividerLocation(dividerLocation);
         this.setDividerSize(0);
+        final double dividerLocation = 0.7;
+        this.setResizeWeight(dividerLocation);
         setEnabled(false);
     }
 
@@ -52,15 +50,34 @@ abstract class VidneyPanel extends JSplitPane {
         this.setRight(sidePanel);
     }
 
-    protected void setLeft(final JPanel panel) {
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        panel.setBackground(GUImain.GUI_COLOR);
+    /**
+     * Sets layout options of the panel to create a consistent look.
+     * @param panel the panel to be inserted
+     * @return the panel, styled to fit in the application
+     */
+    private JPanel preparePanel(final JPanel panel) {
+        panel.setBorder(new EmptyBorder(PADDING, PADDING, PADDING, PADDING));
+        panel.setBackground(UserInterface.GUI_COLOR);
+        return panel;
+    }
+
+    /**
+     * Sets the left (side) panel of this panel.
+     * @param rawPanel
+     *            the panel to set
+     */
+    protected final void setLeft(final JPanel rawPanel) {
+        JPanel panel = preparePanel(rawPanel);
         this.setLeftComponent(panel);
     }
 
-    protected void setRight(final JPanel panel) {
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        panel.setBackground(GUImain.GUI_COLOR);
+    /**
+     * Sets the right (main) panel of this panel.
+     * @param rawPanel
+     *            the panel to set
+     */
+    protected final void setRight(final JPanel rawPanel) {
+        JPanel panel = preparePanel(rawPanel);
         this.setRightComponent(panel);
     }
 

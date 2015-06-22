@@ -1,6 +1,6 @@
 package com.health.operations;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
@@ -13,23 +13,44 @@ import com.health.EventSequence;
 import com.health.Record;
 import com.health.Table;
 
-public class Code {
+/**
+ * A class for all coding operations.
+ *
+ * @author daan
+ *
+ */
+public final class Code {
+
+    /**
+     * an unused constructor.
+     */
+    private Code() {
+    }
+
+    /**
+     * Looks for all event declared and puts them in an evenList.
+     * 
+     * @param table
+     *            the table in which to look for events.
+     * @param codes
+     *            the event declaration.
+     * @return an EventList with all found events.
+     */
     public static EventList makeEventList(final Table table,
             final Map<String, Function<Record, Boolean>> codes) {
         EventList list = new EventList();
-
-        if (codes == null) {
+        if (codes == null)
             return list;
-        }
         for (Record record : table.getRecords()) {
             for (Entry<String, Function<Record, Boolean>> entry : codes
                     .entrySet()) {
-                if (entry.getValue().apply(record)) {
-                    Event tmp = new Event(entry.getKey(), record);
-                    list.addEvent(tmp);
-                }
+                if (entry.getValue().apply(record))
+                    list.addEvent(new Event(entry.getKey(), record));
+
             }
         }
+
+        list.orderListByDate();
         return list;
     }
 
@@ -42,8 +63,8 @@ public class Code {
      * @param eventList
      *            the EventList Object in which to look for the pattern.
      */
-    public static void fillEventSequence(final EventSequence eventSeq,
-            final EventList eventList) {
+    public static List<EventList> fillEventSequence(
+            final EventSequence eventSeq, final EventList eventList) {
         eventList.orderListByDate();
         List<Event> eList = eventList.getList();
         String[] codePattern = eventSeq.getCodePattern();
@@ -65,15 +86,14 @@ public class Code {
 
                 tmpEList.addEvent(eList.get(currentIndex));
                 int oldIndex = currentIndex;
-                currentIndex++;
-
+                int nextIndex = ++currentIndex;
                 for (int i = 1; i < codePattern.length; i++) {
-                    currentIndex = findEventInSeq(codePattern[i], eventList,
-                            currentIndex);
-                    if (currentIndex - oldIndex == 1) {
-                        tmpEList.addEvent(eList.get(currentIndex));
-                        oldIndex = currentIndex;
-                        currentIndex++;
+                    nextIndex = findEventInSeq(codePattern[i], eventList,
+                            nextIndex);
+                    if (nextIndex - oldIndex == 1) {
+                        tmpEList.addEvent(eList.get(nextIndex));
+                        oldIndex = nextIndex;
+                        nextIndex++;
                     } else {
                         break makeEventList;
                     }
@@ -99,6 +119,8 @@ public class Code {
             }
 
         }
+
+        return eventSeq.getSequences();
     }
 
     /**
@@ -145,9 +167,9 @@ public class Code {
             Event lastEvent = eventList.getList().get(
                     eventList.getList().size() - 1);
 
-            LocalDate endOfPer = firstEvent.getDate().plus(per);
+            LocalDateTime endOfPer = firstEvent.getDate().plus(per);
             if (lastEvent.getDate().isAfter(endOfPer)) {
-                eventSeq.deleteSequence(eventList);
+                eventSeq.removeSequence(eventList);
             }
         }
     }
