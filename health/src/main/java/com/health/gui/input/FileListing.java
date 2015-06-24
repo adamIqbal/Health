@@ -120,10 +120,21 @@ public class FileListing extends JPanel {
         }
     }
 
-    private static int findRowType(final int i) throws IndexOutOfBoundsException {
+    private static int findRowType(final int i)
+            throws IndexOutOfBoundsException {
         FileListingRow row = fileListingRows.get(i);
-        FileListingRow rowBefore = fileListingRows.get(i - 1);
-        FileListingRow rowAfter = fileListingRows.get(i + 1);
+        FileListingRow rowBefore = null;
+        FileListingRow rowAfter = null;
+        try {
+            rowBefore = fileListingRows.get(i - 1);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
+        try {
+            rowAfter = fileListingRows.get(i + 1);
+        } catch (IndexOutOfBoundsException e) {
+
+        }
 
         // if format is select format, make single row
         if (row.getXmlFormat().getSelectedItem().toString()
