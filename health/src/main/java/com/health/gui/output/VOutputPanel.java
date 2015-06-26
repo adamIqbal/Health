@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Map;
 
+import javax.swing.JList;
+
 import com.health.gui.VidneyPanel;
 
 /**
@@ -41,10 +43,13 @@ public class VOutputPanel extends VidneyPanel {
 
             @Override
             public void mouseClicked(final MouseEvent e) {
-                String selected = OutputPanelSidebar.getList()
-                        .getSelectedValue();
-                OutputMainPanel.setData(OutputPanelSidebar
-                        .getAnalysisData(selected));
+            	JList<String> list = OutputPanelSidebar.getList();
+            	if(list.getModel().getSize() > 0) {
+	                String selected = OutputPanelSidebar.getList()
+	                        .getSelectedValue();
+	                OutputMainPanel.setData(OutputPanelSidebar
+	                        .getAnalysisData(selected));
+            	}
             }
 
             @Override
