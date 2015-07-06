@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FileUtils;
@@ -79,7 +80,7 @@ public final class VScriptPanel extends VidneyPanel {
 
         this.setLeft(mainPanel);
 
-        JPanel sidePanel = new JPanel();
+        ScriptPanelSidebar sidePanel = new ScriptPanelSidebar();
         this.setRight(sidePanel);
     }
 
@@ -215,19 +216,9 @@ public final class VScriptPanel extends VidneyPanel {
                         JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-            Context context;
-
-            ControlModule control = new ControlModule();
-            control.setScript(ScriptMainPanel.getScript());
-            control.setData(getInputData());
-
-            try {
-                context = control.startAnalysis();
-                GUImain.goToTab("Step 3: Output");
-                JOptionPane.showMessageDialog(new JFrame(),
-                        "Analysis is done.", "Done!",
-                        JOptionPane.INFORMATION_MESSAGE);
-
+            
+            try {            	
+                startAnalysis();
             } catch (Exception e) {
                 e.printStackTrace();
 
@@ -241,10 +232,39 @@ public final class VScriptPanel extends VidneyPanel {
                                 JOptionPane.ERROR_MESSAGE);
 
                 return;
-            }
-
-            VOutputPanel.addAnalysis(control.getOutput());
+            } 
         }
+        
+        private void startAnalysis() {
+        	  class MyWorker extends SwingWorker<String, Object> {
+        		  Context context;
+        		  ControlModule control;
+        		  
+        	     protected String doInBackground() throws IOException {
+        	       ScriptPanelSidebar.toggleProgress();
+        	       
+                   control = new ControlModule();
+                   control.setScript(ScriptMainPanel.getScript());
+                   control.setData(getInputData());
+                   context = control.startAnalysis();
+                   
+        	       return "Done.";
+        	     }
+
+        	     protected void done() {
+        	    	 ScriptPanelSidebar.toggleProgress();
+        	    	 VOutputPanel.addAnalysis(control.getOutput());
+        	    	 
+        	    	 GUImain.goToTab("Step 3: Output");
+                     JOptionPane.showMessageDialog(new JFrame(),
+                             "Analysis is done.", "Done!",
+                             JOptionPane.INFORMATION_MESSAGE);
+        	     }
+        	  }
+
+        	  new MyWorker().execute();
+
+        	}
 
         private List<InputData> getInputData() {
             List<FileListingRow> files = FileListing.getFileListingRows();

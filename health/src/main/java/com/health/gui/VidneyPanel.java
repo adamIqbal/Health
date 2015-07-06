@@ -80,5 +80,4 @@ public abstract class VidneyPanel extends JSplitPane {
         JPanel panel = preparePanel(rawPanel);
         this.setRightComponent(panel);
     }
-
 }
