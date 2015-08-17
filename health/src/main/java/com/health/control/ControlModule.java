@@ -263,9 +263,8 @@ public final class ControlModule {
             Table table = ((WrapperValue<Table>) args[0]).getValue();
             Column dateCol = table.getColumn(((StringValue) args[1]).getValue());
             Column timeCol = table.getColumn(((StringValue) args[2]).getValue());
-
-            ReadTime.addTimeToDate(table, dateCol, timeCol);
-            return null;
+            
+            return new WrapperValue<Table>(ReadTime.addTimeToDate(table, dateCol, timeCol));
         });
         return context;
     }
