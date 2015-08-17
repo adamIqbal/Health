@@ -42,7 +42,7 @@ import com.xeiam.xchart.Chart;
  */
 public final class ControlModule {
     private String script;
-    private List<InputData> data;
+    private Map<String,Table> data;
     private Map<String, Object> output = new HashMap<String, Object>();
     private int numBoxPlots, numFreqBars, numTransitionMatrices, numHistograms;
 
@@ -77,18 +77,12 @@ public final class ControlModule {
      *
      * @return the data of this control module.
      */
-    public List<InputData> getData() {
+    public Map<String,Table> getData() {
         return data;
     }
-
-    /**
-     * Sets the data of this control module.
-     *
-     * @param data
-     *            the data of this control module.
-     */
-    public void setData(final List<InputData> data) {
-        this.data = data;
+    
+    public void setData(Map<String,Table> d) {
+    	data = d;
     }
 
     /**
@@ -277,29 +271,10 @@ public final class ControlModule {
     }
 
     private void loadAllData(final Context context) {
-        if (this.data != null) {
-            for (int i = 0; i < this.data.size(); i++) {
-                this.loadData(this.data.get(i), context);
-            }
-        }
-    }
+    	for( Map.Entry<String,Table> entry : data.entrySet()) {
+    		WrapperValue<Table> value = new WrapperValue<Table>(entry.getValue());
 
-    private void loadData(final InputData input, final Context context) {
-        Table table = null;
-
-        try {
-            table = Input.readTable(input.getFilePath(), input.getConfigPath());
-        } catch (IOException | ParserConfigurationException
-                | SAXException | InputException e) {
-            System.out.println("Error: Something went wrong parsing the config and data!");
-
-            e.printStackTrace();
-
-            return;
-        }
-
-        WrapperValue<Table> value = new WrapperValue<Table>(table);
-
-        context.declareLocal(input.getName(), value.getType(), value);
+            context.declareLocal(entry.getKey(), value.getType(), value);
+    	}
     }
 }

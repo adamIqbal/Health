@@ -5,12 +5,17 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.health.control.InputData;
+import com.health.control.InputLoaderModule;
+import com.health.gui.GUImain;
 import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 
@@ -46,6 +51,13 @@ public class FileSelectionPanel extends JPanel {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(addButton);
 
+        
+        VButton nextButton = new VButton("Next");
+        ListenForNext lnext = new ListenForNext();
+        nextButton.addActionListener(lnext);
+        buttonPanel.add(nextButton);
+        
+        
         this.add(buttonPanel, BorderLayout.SOUTH);
 
     }
@@ -74,5 +86,42 @@ public class FileSelectionPanel extends JPanel {
 
         }
 
+    }
+    
+    private class ListenForNext implements ActionListener {
+    	
+    	/**
+         * Handles the button click.
+         *
+         * @param e
+         */
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+        	List<InputData> inputData = getInputData();
+        	InputLoaderModule loader = new InputLoaderModule(inputData);
+        	loader.loadAllData();
+        	GUImain.goToTab("Step 2: Script");
+        }
+        
+        private List<InputData> getInputData() {
+            List<FileListingRow> files = FileListing.getFileListingRows();
+            List<InputData> parsedData = new ArrayList<InputData>();
+
+            for (int i = 0; i < files.size(); i++) {
+                String xmlFormat = files.get(i).getXmlFormat()
+                        .getSelectedItem().toString();
+                String fileString = files.get(i).getFileString();
+
+                // TODO: Name the tables to something other than table0 ...
+                // tableN
+                String name = "table" + i;
+
+                xmlFormat = UserInterface.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
+
+                parsedData.add(new InputData(fileString, xmlFormat, name));
+            }
+
+            return parsedData;
+        }
     }
 }

@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.health.control.ControlModule;
 import com.health.control.InputData;
+import com.health.control.InputLoaderModule;
 import com.health.gui.GUImain;
 import com.health.gui.UserInterface;
 import com.health.gui.VButton;
@@ -64,6 +65,9 @@ public final class VScriptPanel extends VidneyPanel {
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(rigidArea());
+        VButton prevButton = createPrevButton();
+        topPanel.add(prevButton);
+        topPanel.add(rigidArea());
         VButton loadScriptButton = createLoadButton();
         topPanel.add(loadScriptButton);
         topPanel.add(rigidArea());
@@ -84,6 +88,17 @@ public final class VScriptPanel extends VidneyPanel {
         this.setRight(sidePanel);
     }
 
+    private VButton createPrevButton() {
+    	VButton prevButton = new VButton("Previous");
+    	prevButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(final ActionEvent arg0) {
+    			GUImain.goToTab("Step 1: Input");
+    		}
+    	});
+    	return prevButton;
+    }
+    
     private VButton createSaveButton() {
         VButton saveScriptButton = new VButton("Save Script");
         saveScriptButton.addActionListener(new ActionListener() {
@@ -237,7 +252,6 @@ public final class VScriptPanel extends VidneyPanel {
         
         private void startAnalysis() {
         	  class MyWorker extends SwingWorker<String, Object> {
-        		  Context context;
         		  ControlModule control;
         		  
         	     protected String doInBackground() throws IOException {
@@ -245,8 +259,8 @@ public final class VScriptPanel extends VidneyPanel {
         	       
                    control = new ControlModule();
                    control.setScript(ScriptMainPanel.getScript());
-                   control.setData(getInputData());
-                   context = control.startAnalysis();
+                   control.setData(InputLoaderModule.getTableMap());
+                   control.startAnalysis();
                    
         	       return "Done.";
         	     }
@@ -266,25 +280,5 @@ public final class VScriptPanel extends VidneyPanel {
 
         	}
 
-        private List<InputData> getInputData() {
-            List<FileListingRow> files = FileListing.getFileListingRows();
-            List<InputData> parsedData = new ArrayList<InputData>();
-
-            for (int i = 0; i < files.size(); i++) {
-                String xmlFormat = files.get(i).getXmlFormat()
-                        .getSelectedItem().toString();
-                String fileString = files.get(i).getFileString();
-
-                // TODO: Name the tables to something other than table0 ...
-                // tableN
-                String name = "table" + i;
-
-                xmlFormat = UserInterface.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
-
-                parsedData.add(new InputData(fileString, xmlFormat, name));
-            }
-
-            return parsedData;
-        }
     }
 }
