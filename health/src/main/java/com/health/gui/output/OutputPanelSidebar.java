@@ -20,7 +20,7 @@ public class OutputPanelSidebar extends JPanel {
     /**
      * Contains all completed visualizations.
      */
-    private static JList<String> list = new JList<String>(
+    private JList<String> list = new JList<String>(
             new DefaultListModel<String>());
     /**
      * Constant serialized ID used for compatibility.
@@ -32,14 +32,14 @@ public class OutputPanelSidebar extends JPanel {
      * @param data
      *            data of this analysis
      */
-    public static void add(final Map<String, Object> data) {
+    public void add(final Map<String, Object> data) {
         Date date = new Date();
         String name = "Analysis " + date.toString();
-        OutputPanelSidebar.addElement(name);
+        addElement(name);
         dataMap.put(name, data);
     }
 
-    private static void addElement(final String el) {
+    private void addElement(final String el) {
         DefaultListModel<String> model = (DefaultListModel<String>) list
                 .getModel();
         model.addElement(el);
@@ -51,7 +51,7 @@ public class OutputPanelSidebar extends JPanel {
      * Returns an array containing the names of all performed analyses.
      * @return array containing names
      */
-    protected static Object[] getAnalyses() {
+    public Object[] getAnalyses() {
         return dataMap.keySet().toArray();
     }
 
@@ -61,7 +61,7 @@ public class OutputPanelSidebar extends JPanel {
      *            name of the analysis
      * @return a Map containing the data
      */
-    public static Map<String, Object> getAnalysisData(final String name) {
+    public Map<String, Object> getAnalysisData(final String name) {
         return dataMap.get(name);
     }
 
@@ -69,7 +69,7 @@ public class OutputPanelSidebar extends JPanel {
      * Gets the list of completed analyses.
      * @return a JList containing all analyses
      */
-    protected static JList<String> getList() {
+    public JList<String> getList() {
         return list;
     }
 

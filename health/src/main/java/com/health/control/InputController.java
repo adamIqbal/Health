@@ -24,10 +24,9 @@ public class InputController {
 	
 	public InputController (VInputPanel inputP){
 		inputPanel = inputP;
-		control();
 	}
 	
-	private void control(){
+	public void control(){
 		ListenForAddFile lforAddFile = new ListenForAddFile();
 		inputPanel.getFileSelectionPanel().getAddButton().addActionListener(lforAddFile);
 		

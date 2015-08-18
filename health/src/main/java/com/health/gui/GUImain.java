@@ -14,6 +14,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 import com.health.control.InputController;
+import com.health.control.OutputController;
 import com.health.control.ScriptController;
 import com.health.gui.input.VInputPanel;
 import com.health.gui.output.VOutputPanel;
@@ -108,10 +109,19 @@ public class GUImain extends JFrame implements UserInterface {
         tabbedPane = new JTabbedPane();
         VInputPanel inputPanel = new VInputPanel();
         VScriptPanel scriptPanel = new VScriptPanel();
-        VidneyPanel outputPanel = new VOutputPanel();
+        VOutputPanel outputPanel = new VOutputPanel();
         
+        // Create all controllers
         InputController inputController = new InputController(inputPanel);
         ScriptController scriptController = new ScriptController(scriptPanel);
+        OutputController outputController = new OutputController(outputPanel);
+        
+        // Add references between controllers
+        scriptController.setOutputController(outputController);
+        
+        inputController.control();
+        scriptController.control();
+        outputController.control();
 
         addTab("Step 1: Input", inputPanel);
         addTab("Step 2: Script", scriptPanel);

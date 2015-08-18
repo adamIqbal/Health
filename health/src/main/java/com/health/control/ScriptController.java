@@ -16,19 +16,18 @@ import org.apache.commons.io.FileUtils;
 import com.health.gui.GUImain;
 import com.health.gui.ProgressDialog;
 import com.health.gui.UserInterface;
-import com.health.gui.output.VOutputPanel;
 import com.health.gui.script.VScriptPanel;
 
 public class ScriptController {
 	private VScriptPanel scriptPanel;
     final ProgressDialog dialog = new ProgressDialog();
+    private OutputController outputController;
 	
 	public ScriptController (VScriptPanel scriptP){
 		scriptPanel = scriptP;
-		control();
 	}
 	
-	private void control(){
+	public void control(){
 	
 		
 		scriptPanel.getPrevButton().addActionListener(new ActionListener() {
@@ -149,7 +148,6 @@ public class ScriptController {
                                         e.getMessage()),
                                 "Script runtime exception",
                                 JOptionPane.ERROR_MESSAGE);
-
                 return;
             } 
         }
@@ -172,7 +170,7 @@ public class ScriptController {
         	     protected void done() {
         	    	 dialog.hideDialog();
         	    	 
-        	    	 VOutputPanel.addAnalysis(control.getOutput());
+        	    	 outputController.addAnalysis(control.getOutput());
         	    	 GUImain.selectedTab(1, 2);
         	    	 GUImain.goToTab("Step 3: Output");
                      JOptionPane.showMessageDialog(new JFrame(),
@@ -182,8 +180,10 @@ public class ScriptController {
         	  }
 
         	  new MyWorker().execute();
-
-        	}
-		
+        }
 	}
+    
+    public void setOutputController(OutputController controller){
+    	outputController = controller;
+    }
 }
