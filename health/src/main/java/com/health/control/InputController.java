@@ -5,22 +5,33 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
+import javax.xml.parsers.ParserConfigurationException;
 
+import org.xml.sax.SAXException;
+
+import com.health.Table;
 import com.health.gui.GUImain;
 import com.health.gui.ProgressDialog;
 import com.health.gui.UserInterface;
 import com.health.gui.input.FileListing;
 import com.health.gui.input.FileListingRow;
 import com.health.gui.input.VInputPanel;
+import com.health.input.Input;
+import com.health.input.InputException;
 
 public class InputController {
 	private VInputPanel inputPanel;
     final ProgressDialog dialog = new ProgressDialog();
+    private Map<String,Table> map;
 	
 	public InputController (VInputPanel inputP){
 		inputPanel = inputP;
@@ -33,6 +44,34 @@ public class InputController {
 		ListenForNext lnext = new ListenForNext();
 		inputPanel.getFileSelectionPanel().getNextButton().addActionListener(lnext);
 	}
+		
+    private void loadTables(List<InputData> data) {
+        if (data != null) {
+            for (int i = 0; i < data.size(); i++) {
+                this.loadTable(data.get(i));
+            }
+        }
+    }
+
+    public Map<String,Table> getTables(){
+    	return map;
+    }
+    
+    private void loadTable(final InputData input) {
+        try {
+            Table table = Input.readTable(input.getFilePath(), input.getConfigPath());
+            map.put(input.getName(),table);
+            
+        } catch (IOException | ParserConfigurationException
+                | SAXException | InputException e) {
+            System.out.println("Error: Something went wrong parsing the config and data!");
+
+            e.printStackTrace();
+
+            return;
+        }
+    }
+	
 	
     /**
      * Listener for the add file button.
@@ -77,10 +116,9 @@ public class InputController {
 
 			@Override
 			protected Object doInBackground() throws Exception {
-				List<InputData> inputData = getInputData();
-	        	InputLoaderModule loader = new InputLoaderModule(inputData);
 	        	dialog.showDialog();
-	        	loader.loadAllData();
+	        	
+	        	loadTables(getInputData());
 	        	
 				return null;
 			}

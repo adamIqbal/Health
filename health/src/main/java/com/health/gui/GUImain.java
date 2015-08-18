@@ -118,6 +118,7 @@ public class GUImain extends JFrame implements UserInterface {
         
         // Add references between controllers
         scriptController.setOutputController(outputController);
+        scriptController.setInputController(inputController);
         
         inputController.control();
         scriptController.control();

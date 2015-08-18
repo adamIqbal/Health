@@ -17,12 +17,10 @@ public class ProgressDialog extends JDialog{
 	
 	public ProgressDialog(){
 		this.setVisible(false);
-	}
-
-	public void showDialog(){
-        
-        // Create Progress Bar
-        JLabel msg;
+		
+		
+		// Create Progress Bar
+		JLabel msg;
         JProgressBar progress;
         final int MAXIMUM = 100;
         JPanel panel;
@@ -43,6 +41,9 @@ public class ProgressDialog extends JDialog{
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         this.setAlwaysOnTop(false);
+	}
+
+	public void showDialog(){
         this.setVisible(true);   
     }
     

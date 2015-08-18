@@ -22,6 +22,7 @@ public class ScriptController {
 	private VScriptPanel scriptPanel;
     final ProgressDialog dialog = new ProgressDialog();
     private OutputController outputController;
+    private InputController inputController;
 	
 	public ScriptController (VScriptPanel scriptP){
 		scriptPanel = scriptP;
@@ -161,7 +162,7 @@ public class ScriptController {
                      
                    control = new ControlModule();
                    control.setScript(scriptPanel.getScriptMainPanel().getScript());
-                   control.setData(InputLoaderModule.getTableMap());
+                   control.setData(inputController.getTables());
                    control.startAnalysis();
                    
         	       return "Done.";
@@ -185,5 +186,9 @@ public class ScriptController {
     
     public void setOutputController(OutputController controller){
     	outputController = controller;
+    }
+    
+    public void setInputController(InputController controller){
+    	inputController = controller;
     }
 }

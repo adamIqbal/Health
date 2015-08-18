@@ -19,7 +19,6 @@ import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 
 import com.health.control.InputData;
-import com.health.control.InputLoaderModule;
 import com.health.gui.GUImain;
 import com.health.gui.ProgressDialog;
 import com.health.gui.UserInterface;
