@@ -35,7 +35,8 @@ public class FileSelectionPanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -271558376732604213L;
-    final ProgressDialog dialog = new ProgressDialog();
+    private VButton addButton;
+    private VButton nextButton;
 
     /**
      * Constructor which set the panel layout and adds. components
@@ -52,104 +53,25 @@ public class FileSelectionPanel extends JPanel {
         JScrollPane scrollForFileListing = new JScrollPane(new FileListing());
         this.add(scrollForFileListing, BorderLayout.CENTER);
 
-        VButton addButton = new VButton("Add file");
-        ListenForAddFile lforAddFile = new ListenForAddFile();
-        addButton.addActionListener(lforAddFile);
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        
+        addButton = new VButton("Add file");
         buttonPanel.add(addButton);
-
         
-        VButton nextButton = new VButton("Next");
-        ListenForNext lnext = new ListenForNext();
-        nextButton.addActionListener(lnext);
+        nextButton = new VButton("Next");
         buttonPanel.add(nextButton);
-        
         
         this.add(buttonPanel, BorderLayout.SOUTH);
 
     }
 
-    /**
-     * Listener for the add file button.
-     *
-     */
-    private class ListenForAddFile implements ActionListener {
-
-        /**
-         * Handles the button click.
-         *
-         * @param e
-         */
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(UserInterface.PATH_TO_DATA));
-            int result = fileChooser.showOpenDialog(null);
-
-            if (result == JFileChooser.APPROVE_OPTION) {
-                FileListing.addFile(fileChooser.getSelectedFile());
-
-            }
-
-        }
-
+    
+    public VButton getAddButton(){
+    	return addButton;
     }
     
-    private class ListenForNext implements ActionListener {
-    	
-    	/**
-         * Handles the button click.
-         *
-         * @param e
-         */
-        @Override
-        public void actionPerformed(final ActionEvent e) {
-        	Worker work = new Worker();
-        	work.execute();
-        }
-        
-        class Worker extends SwingWorker<Object,Object> {
-
-			@Override
-			protected Object doInBackground() throws Exception {
-				List<InputData> inputData = getInputData();
-	        	InputLoaderModule loader = new InputLoaderModule(inputData);
-	        	dialog.showDialog();
-	        	loader.loadAllData();
-	        	
-				return null;
-			}
-			
-			@Override 
-			protected void done() {
-				GUImain.selectedTab(0, 1);
-	        	dialog.hideDialog();
-	        	GUImain.goToTab("Step 2: Script");
-			}	
-        }
-        
-        
-        private List<InputData> getInputData() {
-            List<FileListingRow> files = FileListing.getFileListingRows();
-            List<InputData> parsedData = new ArrayList<InputData>();
-
-            for (int i = 0; i < files.size(); i++) {
-                String xmlFormat = files.get(i).getXmlFormat()
-                        .getSelectedItem().toString();
-                String fileString = files.get(i).getFileString();
-
-                // TODO: Name the tables to something other than table0 ...
-                // tableN
-                String name = "table" + i;
-
-                xmlFormat = UserInterface.PATH_TO_CONFIG_XML + xmlFormat + ".xml";
-
-                parsedData.add(new InputData(fileString, xmlFormat, name));
-            }
-
-            return parsedData;
-        }
+    public VButton getNextButton(){
+    	return nextButton;
     }
     
 }

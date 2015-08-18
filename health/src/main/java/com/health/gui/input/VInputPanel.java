@@ -15,17 +15,21 @@ public class VInputPanel extends VidneyPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 2343407366589926543L;
-
+    private FileSelectionPanel fileSelectionPanel;
     /**
      * Constructor.
      */
     public VInputPanel() {
         super();
 
-        JPanel fileSelectionPanel = new FileSelectionPanel();
+        fileSelectionPanel = new FileSelectionPanel();
         this.setLeft(fileSelectionPanel);
 
         XmlWizard filePanel = new XmlWizard();
         this.setRight(filePanel);
+    }
+    
+    public FileSelectionPanel getFileSelectionPanel(){
+    	return fileSelectionPanel;
     }
 }
