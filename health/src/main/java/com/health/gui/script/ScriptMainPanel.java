@@ -15,7 +15,7 @@ public class ScriptMainPanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 5017484222082184353L;
-    private static JTextArea editor;
+    private JTextArea editor;
     
     public ScriptMainPanel() {
         super();
@@ -33,13 +33,13 @@ public class ScriptMainPanel extends JPanel {
      * Sets the script.
      * @param newScript the new script
      */
-    protected static void setScript(String newScript) {
+    public void setScript(String newScript) {
         //not sure first line is needed.
         editor.setText("");
         editor.setText(newScript);
     }
     
-    protected static String getScript() {
+    public String getScript() {
         return editor.getText();
     }
 }

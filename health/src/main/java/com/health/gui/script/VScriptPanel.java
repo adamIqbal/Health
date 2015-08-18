@@ -4,40 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
-import javax.swing.SwingWorker;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.io.FileUtils;
 
-import com.health.control.ControlModule;
-import com.health.control.InputData;
-import com.health.control.InputLoaderModule;
-import com.health.gui.GUImain;
 import com.health.gui.ProgressDialog;
-import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 import com.health.gui.VidneyPanel;
-import com.health.gui.input.FileListing;
-import com.health.gui.input.FileListingRow;
-import com.health.gui.output.VOutputPanel;
-import com.health.script.runtime.Context;
 
 /**
  * Represents the panel where the script is typed.
@@ -51,6 +29,12 @@ public final class VScriptPanel extends VidneyPanel {
      */
     private static final long serialVersionUID = 4322421568728565558L;
     final ProgressDialog dialog = new ProgressDialog();
+    private VButton startAnalysisButton;
+    private VButton prevButton;
+    private VButton loadScriptButton;
+    private VButton clearScriptButton;
+    private VButton saveScriptButton;
+    private ScriptMainPanel scriptMainPanel;
 
     /**
      * Constructor.
@@ -60,25 +44,25 @@ public final class VScriptPanel extends VidneyPanel {
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        mainPanel.add(new ScriptMainPanel(), BorderLayout.CENTER);
+        scriptMainPanel = new ScriptMainPanel();
+        mainPanel.add(scriptMainPanel, BorderLayout.CENTER);
         
-        VButton startAnalysisButton = new VButton("Run Analysis");
-        startAnalysisButton.addActionListener(new AnalysisListener());
+        startAnalysisButton = new VButton("Run Analysis");
         startAnalysisButton.setBackground(Color.GREEN);
         
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(rigidArea());
-        VButton prevButton = createPrevButton();
+        prevButton = new VButton("Previous");
         topPanel.add(prevButton);
         topPanel.add(rigidArea());
-        VButton loadScriptButton = createLoadButton();
+        loadScriptButton = new VButton("Load existing script");
         topPanel.add(loadScriptButton);
         topPanel.add(rigidArea());
-        VButton clearScriptButton = createClearButton();
+        clearScriptButton = new VButton("Clear Script");
         topPanel.add(clearScriptButton);
         topPanel.add(rigidArea());
-        VButton saveScriptButton = createSaveButton();
+        saveScriptButton = new VButton("Save Script");
         topPanel.add(saveScriptButton);
         topPanel.add(rigidArea());
         topPanel.add(rigidArea());
@@ -92,101 +76,32 @@ public final class VScriptPanel extends VidneyPanel {
         this.setRight(sidePanel);
     }
 
-
-    private VButton createPrevButton() {
-    	VButton prevButton = new VButton("Previous");
-    	prevButton.addActionListener(new ActionListener() {
-    		@Override
-    		public void actionPerformed(final ActionEvent arg0) {
-    			GUImain.selectedTab(1, 0);
-    			GUImain.goToTab("Step 1: Input");
-    		}
-    	});
+    public VButton getAnalysisButton (){
+    	return startAnalysisButton;
+    }
+    
+    public VButton getPrevButton (){
     	return prevButton;
     }
     
-    private VButton createSaveButton() {
-        VButton saveScriptButton = new VButton("Save Script");
-        saveScriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent arg0) {
-                if (ScriptMainPanel.getScript().equals("")) {
-                    JOptionPane.showMessageDialog(new JFrame(),
-                            "You have not typed a script yet.", "Whoops!",
-                            JOptionPane.OK_OPTION);
-                } else {
-                    String name = JOptionPane.showInputDialog(new JFrame(),
-                            "Please specify a name for this script file",
-                            "Save as..");
-                    String filename = UserInterface.PATH_TO_DATA + "scripts/" + name
-                            + ".txt";
-                    File file = new File(filename);
-
-                    try {
-                        FileUtils.writeStringToFile(file,
-                                ScriptMainPanel.getScript());
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Error occured while selecting file.", "Error",
-                                JOptionPane.OK_OPTION);
-                    }
-                }
-            }
-        });
-        return saveScriptButton;
+    public VButton getLoadScriptButton (){
+    	return loadScriptButton;
+    }
+    
+    public VButton getClearScriptButton (){
+    	return clearScriptButton;
+    }
+    
+    public VButton getSaveScriptButton (){
+    	return saveScriptButton;
+    }
+    
+    public ScriptMainPanel getScriptMainPanel(){
+    	return scriptMainPanel;
     }
 
     private Component rigidArea() {
         return Box.createRigidArea(new Dimension(10, 0));
-    }
-
-    private VButton createClearButton() {
-        VButton clearScriptButton = new VButton("Clear Script");
-        clearScriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent arg0) {
-                VScriptPanel.setScriptAreaText("");
-            }
-        });
-        return clearScriptButton;
-    }
-
-    private VButton createLoadButton() {
-        VButton loadScriptButton = new VButton("Load existing script");
-
-        loadScriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent arg0) {
-                JFileChooser loadFile = new JFileChooser();
-                loadFile.setApproveButtonText("Select File");
-                loadFile.setCurrentDirectory(new File(UserInterface.PATH_TO_DATA));
-                loadFile.setAcceptAllFileFilterUsed(false);
-                FileNameExtensionFilter f1 = new FileNameExtensionFilter(
-                        "Text Files", "txt", "text", "rtf");
-                loadFile.setFileFilter(f1);
-
-                switch (loadFile.showOpenDialog(new JFrame())) {
-                case JFileChooser.APPROVE_OPTION:
-                    File file = loadFile.getSelectedFile();
-                    try {
-                        VScriptPanel.setScript(file);
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(new JFrame(),
-                                "Error occured while selecting file", "Error",
-                                JOptionPane.OK_OPTION);
-                    }
-                    break;
-                case JFileChooser.ERROR_OPTION:
-                    JOptionPane.showMessageDialog(new JFrame(),
-                            "Error occured while selecting file", "Error",
-                            JOptionPane.OK_OPTION);
-                    loadFile.setSelectedFile(null);
-                default:
-                    break;
-                }
-            }
-        });
-        return loadScriptButton;
     }
 
     /**
@@ -195,8 +110,8 @@ public final class VScriptPanel extends VidneyPanel {
      * @param text
      *            the text to set
      */
-    private static void setScriptAreaText(final String text) {
-        ScriptMainPanel.setScript(text);
+    public void setScriptAreaText(final String text) {
+        scriptMainPanel.setScript(text);
     }
 
     /**
@@ -207,85 +122,10 @@ public final class VScriptPanel extends VidneyPanel {
      * @throws IOException
      *             thrown if there is an IO error
      */
-    protected static void setScript(final File file) throws IOException {
+    public void setScript(final File file) throws IOException {
         String script = FileUtils.readFileToString(file);
-        VScriptPanel.setScriptAreaText(script);
-
+        setScriptAreaText(script);
     }
 
-    /**
-     * Starts the analysis when the button is clicked.
-     *
-     * @author Daan Vermunt
-     */
-    private class AnalysisListener implements ActionListener {
-
-        public AnalysisListener() {
-            super();
-        }
-
-        /**
-         * Makes inputData array and calls the control module.
-         *
-         * @param event
-         */
-        @Override
-        public void actionPerformed(final ActionEvent event) {
-            if (ScriptMainPanel.getScript().equals("")) {
-                JOptionPane.showMessageDialog(new JFrame(),
-                        "The script is empty.", "Whoops!",
-                        JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            
-            try {            	
-                startAnalysis();
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                JOptionPane
-                        .showMessageDialog(
-                                null,
-                                String.format(
-                                        "An unhandled exception occured while executing the script: %s.",
-                                        e.getMessage()),
-                                "Script runtime exception",
-                                JOptionPane.ERROR_MESSAGE);
-
-                return;
-            } 
-        }
-        
-        private void startAnalysis() {
-        	  class MyWorker extends SwingWorker<String, Object> {
-        		  ControlModule control;
-        		  
-        	     protected String doInBackground() throws IOException {
-                   dialog.showDialog();
-                     
-                   control = new ControlModule();
-                   control.setScript(ScriptMainPanel.getScript());
-                   control.setData(InputLoaderModule.getTableMap());
-                   control.startAnalysis();
-                   
-        	       return "Done.";
-        	     }
-
-        	     protected void done() {
-        	    	 dialog.hideDialog();
-        	    	 
-        	    	 VOutputPanel.addAnalysis(control.getOutput());
-        	    	 GUImain.selectedTab(1, 2);
-        	    	 GUImain.goToTab("Step 3: Output");
-                     JOptionPane.showMessageDialog(new JFrame(),
-                             "Analysis is done.", "Done!",
-                             JOptionPane.INFORMATION_MESSAGE);
-        	     }
-        	  }
-
-        	  new MyWorker().execute();
-
-        	}
-
-    }
+    
 }
