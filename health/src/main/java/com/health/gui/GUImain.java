@@ -113,6 +113,9 @@ public class GUImain extends JFrame implements UserInterface {
         addTab("Step 3: Output", outputPanel);
 
         tabbedPane.setBackground(UserInterface.GUI_COLOR);
+        tabbedPane.setEnabledAt(0,true);
+        tabbedPane.setEnabledAt(1,false);
+        tabbedPane.setEnabledAt(2,false);
         sizeTabs(tabWidth, tabHeight);
     }
 
@@ -157,4 +160,8 @@ public class GUImain extends JFrame implements UserInterface {
         });
     }
 
+    public static void selectedTab(int from, int to){
+    	tabbedPane.setEnabledAt(from, false);
+    	tabbedPane.setEnabledAt(to, true);
+    }
 }

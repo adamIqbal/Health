@@ -8,14 +8,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
 
 import com.health.control.InputData;
 import com.health.control.InputLoaderModule;
 import com.health.gui.GUImain;
+import com.health.gui.ProgressDialog;
 import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 
@@ -29,12 +35,14 @@ public class FileSelectionPanel extends JPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = -271558376732604213L;
+    final ProgressDialog dialog = new ProgressDialog();
 
     /**
      * Constructor which set the panel layout and adds. components
      */
     public FileSelectionPanel() {
         super();
+        
         this.setLayout(new BorderLayout());
 
         JLabel instructionLabel = new JLabel(
@@ -97,11 +105,30 @@ public class FileSelectionPanel extends JPanel {
          */
         @Override
         public void actionPerformed(final ActionEvent e) {
-        	List<InputData> inputData = getInputData();
-        	InputLoaderModule loader = new InputLoaderModule(inputData);
-        	loader.loadAllData();
-        	GUImain.goToTab("Step 2: Script");
+        	Worker work = new Worker();
+        	work.execute();
         }
+        
+        class Worker extends SwingWorker<Object,Object> {
+
+			@Override
+			protected Object doInBackground() throws Exception {
+				List<InputData> inputData = getInputData();
+	        	InputLoaderModule loader = new InputLoaderModule(inputData);
+	        	dialog.showDialog();
+	        	loader.loadAllData();
+	        	
+				return null;
+			}
+			
+			@Override 
+			protected void done() {
+				GUImain.selectedTab(0, 1);
+	        	dialog.hideDialog();
+	        	GUImain.goToTab("Step 2: Script");
+			}	
+        }
+        
         
         private List<InputData> getInputData() {
             List<FileListingRow> files = FileListing.getFileListingRows();
@@ -124,4 +151,5 @@ public class FileSelectionPanel extends JPanel {
             return parsedData;
         }
     }
+    
 }

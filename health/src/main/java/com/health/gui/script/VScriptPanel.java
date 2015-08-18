@@ -13,11 +13,13 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,6 +30,7 @@ import com.health.control.ControlModule;
 import com.health.control.InputData;
 import com.health.control.InputLoaderModule;
 import com.health.gui.GUImain;
+import com.health.gui.ProgressDialog;
 import com.health.gui.UserInterface;
 import com.health.gui.VButton;
 import com.health.gui.VidneyPanel;
@@ -47,6 +50,7 @@ public final class VScriptPanel extends VidneyPanel {
      * Constant serialized ID used for compatibility.
      */
     private static final long serialVersionUID = 4322421568728565558L;
+    final ProgressDialog dialog = new ProgressDialog();
 
     /**
      * Constructor.
@@ -88,11 +92,13 @@ public final class VScriptPanel extends VidneyPanel {
         this.setRight(sidePanel);
     }
 
+
     private VButton createPrevButton() {
     	VButton prevButton = new VButton("Previous");
     	prevButton.addActionListener(new ActionListener() {
     		@Override
     		public void actionPerformed(final ActionEvent arg0) {
+    			GUImain.selectedTab(1, 0);
     			GUImain.goToTab("Step 1: Input");
     		}
     	});
@@ -255,8 +261,8 @@ public final class VScriptPanel extends VidneyPanel {
         		  ControlModule control;
         		  
         	     protected String doInBackground() throws IOException {
-        	       ScriptPanelSidebar.toggleProgress();
-        	       
+                   dialog.showDialog();
+                     
                    control = new ControlModule();
                    control.setScript(ScriptMainPanel.getScript());
                    control.setData(InputLoaderModule.getTableMap());
@@ -266,9 +272,10 @@ public final class VScriptPanel extends VidneyPanel {
         	     }
 
         	     protected void done() {
-        	    	 ScriptPanelSidebar.toggleProgress();
-        	    	 VOutputPanel.addAnalysis(control.getOutput());
+        	    	 dialog.hideDialog();
         	    	 
+        	    	 VOutputPanel.addAnalysis(control.getOutput());
+        	    	 GUImain.selectedTab(1, 2);
         	    	 GUImain.goToTab("Step 3: Output");
                      JOptionPane.showMessageDialog(new JFrame(),
                              "Analysis is done.", "Done!",

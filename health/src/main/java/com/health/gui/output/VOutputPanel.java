@@ -1,12 +1,26 @@
 package com.health.gui.output;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JList;
+import javax.swing.JPanel;
 
+import com.health.control.InputData;
+import com.health.control.InputLoaderModule;
+import com.health.gui.GUImain;
+import com.health.gui.UserInterface;
+import com.health.gui.VButton;
 import com.health.gui.VidneyPanel;
+import com.health.gui.input.FileListing;
+import com.health.gui.input.FileListingRow;
 
 /**
  * Represents the panel where the script is typed.
@@ -70,5 +84,29 @@ public class VOutputPanel extends VidneyPanel {
 
         });
         this.setRight(sidebar);
+        
+        VButton prevButton = new VButton("Return");
+        ListenForPrev lprev = new ListenForPrev();
+        prevButton.addActionListener(lprev);
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(prevButton);
+        
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        
+    }
+    
+    private class ListenForPrev implements ActionListener {
+    	
+    	/**
+         * Handles the button click.
+         *
+         * @param e
+         */
+        @Override
+        public void actionPerformed(final ActionEvent e) {
+        	GUImain.selectedTab(2, 1);
+        	GUImain.goToTab("Step 2: Script");
+        }
     }
 }
