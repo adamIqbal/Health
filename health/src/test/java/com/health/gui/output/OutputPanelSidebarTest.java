@@ -13,8 +13,11 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class OutputPanelSidebarTest {
+	private OutputPanelSidebar outputPanelSidebar;
+	
     @Before
     public void setUp() throws Exception {
+    	outputPanelSidebar = new OutputPanelSidebar();
     }
 
     @Test
@@ -23,10 +26,10 @@ public class OutputPanelSidebarTest {
         Component component = Mockito.mock(Component.class);
         map.put("testComponent", component);
 
-        OutputPanelSidebar.add(map);
+        outputPanelSidebar.add(map);
 
-        String name = (String) OutputPanelSidebar.getAnalyses()[0];
-        HashMap<String, Object> actual = (HashMap<String, Object>) OutputPanelSidebar
+        String name = (String) outputPanelSidebar.getAnalyses()[0];
+        HashMap<String, Object> actual = (HashMap<String, Object>) outputPanelSidebar
                 .getAnalysisData(name);
 
         assertEquals(map.get("testComponent"), actual.get("testComponent"));
@@ -36,7 +39,7 @@ public class OutputPanelSidebarTest {
     public void testGetList() throws Exception {
         JList<String> expectedList = new JList<String>(
                 new DefaultListModel<String>());
-        JList<String> actualList = OutputPanelSidebar.getList();
+        JList<String> actualList = outputPanelSidebar.getList();
         assertEquals(expectedList, actualList);
     }
 
