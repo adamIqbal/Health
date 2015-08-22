@@ -35,6 +35,7 @@ public class InputController {
 	
 	public InputController (VInputPanel inputP){
 		inputPanel = inputP;
+		map = new HashMap<String,Table>();
 	}
 	
 	public void control(){
@@ -46,6 +47,7 @@ public class InputController {
 	}
 		
     private void loadTables(List<InputData> data) {
+    	map.clear();
         if (data != null) {
             for (int i = 0; i < data.size(); i++) {
                 this.loadTable(data.get(i));
