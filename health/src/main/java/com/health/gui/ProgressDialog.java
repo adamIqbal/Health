@@ -10,17 +10,20 @@ import javax.swing.JProgressBar;
 
 /**
  * Dialog containing a progress bar to indicate that the program is processing.
+ * Now only one is created and can be used throughout the entire project.
  * @author lizzy
  *
  */
-public class ProgressDialog extends JDialog {
+public final class ProgressDialog extends JDialog {
+
+	private static final ProgressDialog INSTANCE = new ProgressDialog();
 
 	private static final long serialVersionUID = -6841895954914414908L;
 
 	/**
 	 * Create new progress dialog.
 	 */
-	public ProgressDialog() {
+	private ProgressDialog() {
 		this.setVisible(false);
 
 		// Create Progress Bar
@@ -59,6 +62,14 @@ public class ProgressDialog extends JDialog {
 	 */
 	public final void hideDialog() {
 		this.setVisible(false);
+	}
+
+	/**
+	 * Get the instance of progress dialog.
+	 * @return Instance
+	 */
+	public static ProgressDialog getProgressDialog() {
+		return INSTANCE;
 	}
 
 }

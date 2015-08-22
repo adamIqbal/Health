@@ -32,7 +32,6 @@ import com.health.input.InputException;
  */
 public final class InputController {
 	private VInputPanel inputPanel;
-	private final ProgressDialog dialog = new ProgressDialog();
 	private Map<String, Table> map;
 
 	/**
@@ -141,7 +140,7 @@ public final class InputController {
 
 			@Override
 			protected Object doInBackground() throws Exception {
-				dialog.showDialog();
+				ProgressDialog.getProgressDialog().showDialog();
 
 				loadTables(getInputData());
 
@@ -151,7 +150,7 @@ public final class InputController {
 			@Override
 			protected void done() {
 				GUImain.selectedTab(0, 1);
-				dialog.hideDialog();
+				ProgressDialog.getProgressDialog().hideDialog();
 				GUImain.goToTab("Step 2: Script");
 			}
 		}

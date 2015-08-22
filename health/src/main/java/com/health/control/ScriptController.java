@@ -25,7 +25,6 @@ import com.health.gui.script.VScriptPanel;
  */
 public final class ScriptController {
 	private VScriptPanel scriptPanel;
-	private final ProgressDialog dialog = new ProgressDialog();
 	private OutputController outputController;
 	private InputController inputController;
 
@@ -175,7 +174,7 @@ public final class ScriptController {
 				private ControlModule control;
 
 				protected String doInBackground() throws IOException {
-					dialog.showDialog();
+					ProgressDialog.getProgressDialog().showDialog();
 
 					control = new ControlModule();
 					control.setScript(scriptPanel.getScriptMainPanel()
@@ -187,7 +186,7 @@ public final class ScriptController {
 				}
 
 				protected void done() {
-					dialog.hideDialog();
+					ProgressDialog.getProgressDialog().hideDialog();
 
 					outputController.addAnalysis(control.getOutput());
 					GUImain.selectedTab(1, 2);
