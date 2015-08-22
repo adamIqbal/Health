@@ -3,8 +3,6 @@ package com.health.control;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
@@ -15,7 +13,6 @@ import com.health.gui.GUImain;
 import com.health.gui.ProgressDialog;
 import com.health.gui.UserInterface;
 import com.health.gui.input.FileListing;
-import com.health.gui.input.FileListingRow;
 import com.health.gui.input.VInputPanel;
 
 /**
@@ -114,30 +111,10 @@ public final class InputController implements InputLoadedObserver {
 			protected Object doInBackground() throws Exception {
 				ProgressDialog.getProgressDialog().showDialog();
 
-				inputLoader.loadTables(getInputData());
+				inputLoader.loadTables(FileListing.getInputData());
 
 				return null;
 			}
-		}
-
-		private List<InputData> getInputData() {
-			List<FileListingRow> files = FileListing.getFileListingRows();
-			List<InputData> parsedData = new ArrayList<InputData>();
-
-			for (int i = 0; i < files.size(); i++) {
-				String xmlFormat = files.get(i).getXmlFormat()
-						.getSelectedItem().toString();
-				String fileString = files.get(i).getFileString();
-
-				String name = "table" + i;
-
-				xmlFormat = UserInterface.PATH_TO_CONFIG_XML + xmlFormat
-						+ ".xml";
-
-				parsedData.add(new InputData(fileString, xmlFormat, name));
-			}
-
-			return parsedData;
 		}
 	}
 

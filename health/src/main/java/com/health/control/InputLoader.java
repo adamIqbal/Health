@@ -26,14 +26,14 @@ public final class InputLoader {
 
 	/**
 	 * Load all the input data.
-	 * @param data	input data
+	 * @param iterable	input data
 	 */
-	public void loadTables(final List<InputData> data) {
+	public void loadTables(final Iterable<InputData> iterable) {
 		map.clear();
 
-		if (data != null) {
-			for (int i = 0; i < data.size(); i++) {
-				this.loadTable(data.get(i));
+		if (iterable != null) {
+			for (InputData data: iterable) {
+				this.loadTable(data);
 			}
 		}
 
