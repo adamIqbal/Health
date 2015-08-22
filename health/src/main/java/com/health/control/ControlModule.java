@@ -5,20 +5,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.jfree.chart.JFreeChart;
-import org.xml.sax.SAXException;
 
 import com.health.Column;
 import com.health.EventList;
 import com.health.EventSequence;
 import com.health.Table;
-import com.health.input.Input;
-import com.health.input.InputException;
 import com.health.interpreter.Interpreter;
 import com.health.operations.Code;
 import com.health.operations.ReadTime;
@@ -38,6 +32,7 @@ import com.health.visuals.StateTransitionMatrix;
 import com.xeiam.xchart.Chart;
 
 /**
+ * Setup of file data, as used by script.
  *
  */
 public final class ControlModule {
@@ -80,7 +75,7 @@ public final class ControlModule {
     public Map<String,Table> getData() {
         return data;
     }
-    
+
     public void setData(Map<String,Table> d) {
     	data = d;
     }

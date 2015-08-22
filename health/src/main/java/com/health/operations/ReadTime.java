@@ -24,15 +24,15 @@ public class ReadTime {
     }
 
     /**
-     * Adds the time in the timeCol to the date in de dateCol.
+     * Creates a new table, which adds the time in the timeCol to the date in the dateCol.
      * @param table
      *            the table to manipulate.
      * @param dateCol
      *            the columns which has the date.
      * @param timeCol
-     *            the collumns which has the time as a number between 0 and
+     *            the columns which has the time as a number between 0 and
      *            2400.
-     * @return 
+     * @return 	table
      */
     public static Table addTimeToDate(final Table table, final Column dateCol,
             final Column timeCol) {
@@ -42,7 +42,7 @@ public class ReadTime {
         }
 
         Table copy = table.clone();
-        
+
         List<Record> recordList = copy.getRecords();
         for (Record rec : recordList) {
 
@@ -59,7 +59,7 @@ public class ReadTime {
             rec.setValue(copy.getDateColumn().getName(), date);
 
         }
-        
+
         return copy;
     }
 }

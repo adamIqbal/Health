@@ -32,11 +32,11 @@ public class OutputMainPanel extends JPanel {
      * Gets the pane containing generated output.
      * @return the tabbed pane
      */
-    protected JTabbedPane getPane() {
+    protected final JTabbedPane getPane() {
         return pane;
     }
 
-    private void setComponentData(final Object element, String key) {
+    private void setComponentData(final Object element, final String key) {
         Component component = (Component) element;
         pane.add("Visual: " + key, component);
     }
@@ -74,8 +74,8 @@ public class OutputMainPanel extends JPanel {
         JScrollPane scroll = createScrollPane(table.toJTable());
         pane.add("Table: " + key, scroll);
     }
-    
-    private JScrollPane createScrollPane(JTable jtable) {
+
+    private JScrollPane createScrollPane(final JTable jtable) {
         jtable.setEnabled(false);
         jtable.setAutoCreateRowSorter(true);
         jtable.setFillsViewportHeight(false);

@@ -33,27 +33,39 @@ public class VOutputPanel extends VidneyPanel {
         this.setLeft(mainPanel);
 
         sidebar = new OutputPanelSidebar();
-        
+
         this.setRight(sidebar);
-        
+
         prevButton = new VButton("Return");
-        
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.add(prevButton);
-        
+
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-        
+
     }
-    
-    public VButton getPrevButton(){
+
+    /**
+     * Get previous button.
+     * @return	previous button
+     */
+    public final VButton getPrevButton() {
     	return prevButton;
-    }  
-    
-    public OutputPanelSidebar getSidebar () {
+    }
+
+    /**
+     * Get sidebar.
+     * @return	sidebar
+     */
+    public final OutputPanelSidebar getSidebar() {
     	return sidebar;
     }
-    
-    public OutputMainPanel getMainPanel () {
+
+    /**
+     * Get main panel.
+     * @return	main panel
+     */
+    public final OutputMainPanel getMainPanel() {
     	return mainPanel;
     }
 }
