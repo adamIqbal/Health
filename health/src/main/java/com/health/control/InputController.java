@@ -3,17 +3,12 @@ package com.health.control;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.SwingWorker;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import com.health.Table;
 import com.health.gui.GUImain;
@@ -22,25 +17,25 @@ import com.health.gui.UserInterface;
 import com.health.gui.input.FileListing;
 import com.health.gui.input.FileListingRow;
 import com.health.gui.input.VInputPanel;
-import com.health.input.Input;
-import com.health.input.InputException;
 
 /**
  * Controls the selection and loading of the input files.
+ *
  * @author lizzy
  *
  */
-public final class InputController {
+public final class InputController implements InputLoadedObserver {
 	private VInputPanel inputPanel;
-	private Map<String, Table> map;
+	private InputLoader inputLoader = new InputLoader();
 
 	/**
 	 * Create new instance of input controller.
-	 * @param inputP	the input panel
+	 *
+	 * @param inputP
+	 *            the input panel
 	 */
 	public InputController(final VInputPanel inputP) {
 		inputPanel = inputP;
-		map = new HashMap<String, Table>();
 	}
 
 	/**
@@ -54,41 +49,17 @@ public final class InputController {
 		ListenForNext lnext = new ListenForNext();
 		inputPanel.getFileSelectionPanel().getNextButton()
 				.addActionListener(lnext);
-	}
 
-	private void loadTables(final List<InputData> data) {
-		map.clear();
-		if (data != null) {
-			for (int i = 0; i < data.size(); i++) {
-				this.loadTable(data.get(i));
-			}
-		}
+		inputLoader.addInputLoadedObserver(this);
 	}
 
 	/**
 	 * Gets map with loaded tables.
-	 * @return
-	 * 			map
+	 *
+	 * @return map
 	 */
 	public Map<String, Table> getTables() {
-		return map;
-	}
-
-	private void loadTable(final InputData input) {
-		try {
-			Table table = Input.readTable(input.getFilePath(),
-					input.getConfigPath());
-			map.put(input.getName(), table);
-
-		} catch (IOException | ParserConfigurationException | SAXException
-				| InputException e) {
-			System.out
-					.println("Error: Something went wrong parsing the config and data!");
-
-			e.printStackTrace();
-
-			return;
-		}
+		return inputLoader.getMap();
 	}
 
 	/**
@@ -120,6 +91,7 @@ public final class InputController {
 
 	/**
 	 * Action listener for next button.
+	 *
 	 * @author lizzy
 	 *
 	 */
@@ -142,16 +114,9 @@ public final class InputController {
 			protected Object doInBackground() throws Exception {
 				ProgressDialog.getProgressDialog().showDialog();
 
-				loadTables(getInputData());
+				inputLoader.loadTables(getInputData());
 
 				return null;
-			}
-
-			@Override
-			protected void done() {
-				GUImain.selectedTab(0, 1);
-				ProgressDialog.getProgressDialog().hideDialog();
-				GUImain.goToTab("Step 2: Script");
 			}
 		}
 
@@ -174,6 +139,13 @@ public final class InputController {
 
 			return parsedData;
 		}
+	}
+
+	@Override
+	public void inputLoaded() {
+		GUImain.selectedTab(0, 1);
+		ProgressDialog.getProgressDialog().hideDialog();
+		GUImain.goToTab("Step 2: Script");
 	}
 
 }
