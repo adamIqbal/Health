@@ -22,7 +22,7 @@ public class OutputMainPanel extends JPanel {
     /**
      * Tabbed pane containing the generated results.
      */
-    private static JTabbedPane pane = new JTabbedPane();
+    private JTabbedPane pane = new JTabbedPane();
     /**
      * Constant serialized ID used for compatibility.
      */
@@ -32,11 +32,11 @@ public class OutputMainPanel extends JPanel {
      * Gets the pane containing generated output.
      * @return the tabbed pane
      */
-    protected static JTabbedPane getPane() {
+    protected final JTabbedPane getPane() {
         return pane;
     }
 
-    private static void setComponentData(final Object element, String key) {
+    private void setComponentData(final Object element, final String key) {
         Component component = (Component) element;
         pane.add("Visual: " + key, component);
     }
@@ -46,7 +46,7 @@ public class OutputMainPanel extends JPanel {
      * @param map2
      *            Map containing the data
      */
-    public static final void setData(final Map<String, Object> map2) {
+    public final void setData(final Map<String, Object> map2) {
         pane.removeAll();
         for (String key : map2.keySet()) {
             Object element = map2.get(key);
@@ -63,19 +63,19 @@ public class OutputMainPanel extends JPanel {
         }
     }
 
-    private static void setJTableData(final Object element, final String key) {
+    private void setJTableData(final Object element, final String key) {
         JTable jtable = (JTable) element;
         JScrollPane scroll = createScrollPane(jtable);
         pane.add("Matrix: " + key, scroll);
     }
 
-    private static void setTableData(final Object element, final String key) {
+    private void setTableData(final Object element, final String key) {
         Table table = (Table) element;
         JScrollPane scroll = createScrollPane(table.toJTable());
         pane.add("Table: " + key, scroll);
     }
-    
-    private static JScrollPane createScrollPane(JTable jtable) {
+
+    private JScrollPane createScrollPane(final JTable jtable) {
         jtable.setEnabled(false);
         jtable.setAutoCreateRowSorter(true);
         jtable.setFillsViewportHeight(false);

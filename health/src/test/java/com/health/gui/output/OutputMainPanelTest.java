@@ -4,8 +4,6 @@
 package com.health.gui.output;
 
 import static org.junit.Assert.assertEquals;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
 
 import java.awt.Component;
 import java.util.Arrays;
@@ -20,7 +18,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.health.Column;
-import com.health.Record;
 import com.health.Table;
 import com.health.ValueType;
 
@@ -29,10 +26,11 @@ import com.health.ValueType;
  *
  */
 public class OutputMainPanelTest {
-    private OutputMainPanel panel;
+    private OutputMainPanel outputMainPanel;
 
     @Before
     public void setUp() {
+    	outputMainPanel = new OutputMainPanel();
     }
 
     @Test
@@ -41,11 +39,11 @@ public class OutputMainPanelTest {
         JTable component = new JTable();
         map.put("testJTable", component);
 
-        OutputMainPanel.setData(map);
-        int expected = OutputMainPanel.getPane().getComponentCount();
+        outputMainPanel.setData(map);
+        int expected = outputMainPanel.getPane().getComponentCount();
         assertEquals(expected, 1);
 
-        JScrollPane scrollPane = (JScrollPane) OutputMainPanel.getPane()
+        JScrollPane scrollPane = (JScrollPane) outputMainPanel.getPane()
                 .getComponent(0);
         JViewport port = (JViewport) scrollPane.getComponent(0);
         JTable actual = (JTable) port.getView();
@@ -58,11 +56,11 @@ public class OutputMainPanelTest {
         Component component = Mockito.mock(Component.class);
         map.put("testComponent", component);
 
-        OutputMainPanel.setData(map);
-        int expected = OutputMainPanel.getPane().getComponentCount();
+        outputMainPanel.setData(map);
+        int expected = outputMainPanel.getPane().getComponentCount();
         assertEquals(expected, 1);
 
-        Component actual = OutputMainPanel.getPane().getComponent(0);
+        Component actual = outputMainPanel.getPane().getComponent(0);
         assertEquals(component, actual);
     }
 
@@ -74,11 +72,11 @@ public class OutputMainPanelTest {
         Table component = createTable();
         map.put("testTable", component);
 
-        OutputMainPanel.setData(map);
-        int expected = OutputMainPanel.getPane().getComponentCount();
+        outputMainPanel.setData(map);
+        int expected = outputMainPanel.getPane().getComponentCount();
         assertEquals(expected, 1);
 
-        JScrollPane scrollPane = (JScrollPane) OutputMainPanel.getPane()
+        JScrollPane scrollPane = (JScrollPane) outputMainPanel.getPane()
                 .getComponent(0);
         JViewport port = (JViewport) scrollPane.getComponent(0);
         JTable actual = (JTable) port.getView();

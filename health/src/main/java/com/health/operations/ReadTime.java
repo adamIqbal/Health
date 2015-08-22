@@ -24,23 +24,26 @@ public class ReadTime {
     }
 
     /**
-     * Adds the time in the timeCol to the date in de dateCol.
+     * Creates a new table, which adds the time in the timeCol to the date in the dateCol.
      * @param table
      *            the table to manipulate.
      * @param dateCol
      *            the columns which has the date.
      * @param timeCol
-     *            the collumns which has the time as a number between 0 and
+     *            the columns which has the time as a number between 0 and
      *            2400.
+     * @return 	table
      */
-    public static void addTimeToDate(final Table table, final Column dateCol,
+    public static Table addTimeToDate(final Table table, final Column dateCol,
             final Column timeCol) {
         if (dateCol.getType() != ValueType.Date
                 && timeCol.getType() != ValueType.Number) {
-            return;
+            return table;
         }
 
-        List<Record> recordList = table.getRecords();
+        Table copy = table.clone();
+
+        List<Record> recordList = copy.getRecords();
         for (Record rec : recordList) {
 
             LocalDateTime date = rec.getDateValue(dateCol.getName());
@@ -53,8 +56,10 @@ public class ReadTime {
             long hours = (long) ((time - min) / 100);
             date = date.plus(hours, ChronoUnit.HOURS);
 
-            rec.setValue(table.getDateColumn().getName(), date);
+            rec.setValue(copy.getDateColumn().getName(), date);
 
         }
+
+        return copy;
     }
 }
