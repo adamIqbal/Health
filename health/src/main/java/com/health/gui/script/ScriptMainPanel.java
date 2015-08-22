@@ -9,37 +9,51 @@ import javax.swing.JTextArea;
 
 import externalClasses.TextLineNumber;
 
+/**
+ * Panel containing script.
+ * @author lizzy
+ *
+ */
 public class ScriptMainPanel extends JPanel {
 
-    /**
-     * Constant serialized ID used for compatibility.
-     */
-    private static final long serialVersionUID = 5017484222082184353L;
-    private static JTextArea editor;
-    
-    public ScriptMainPanel() {
-        super();
-        this.setLayout(new BorderLayout());
-        editor = new JTextArea("");
-        editor.setFont(new Font("Helvetica", Font.BOLD, 12));
-        JScrollPane scriptPane = new JScrollPane(editor);
-        TextLineNumber tln = new TextLineNumber(editor);
-        scriptPane.setRowHeaderView(tln);
+	/**
+	 * Constant serialized ID used for compatibility.
+	 */
+	private static final long serialVersionUID = 5017484222082184353L;
+	private JTextArea editor;
 
-        this.add(scriptPane);
-    }
-    
-    /**
-     * Sets the script.
-     * @param newScript the new script
+	/**
+     * Create new script main panel.
      */
-    protected static void setScript(String newScript) {
-        //not sure first line is needed.
-        editor.setText("");
-        editor.setText(newScript);
-    }
-    
-    protected static String getScript() {
-        return editor.getText();
-    }
+	public ScriptMainPanel() {
+		super();
+		this.setLayout(new BorderLayout());
+		editor = new JTextArea("");
+		editor.setFont(new Font("Helvetica", Font.BOLD, 12));
+		JScrollPane scriptPane = new JScrollPane(editor);
+		TextLineNumber tln = new TextLineNumber(editor);
+		scriptPane.setRowHeaderView(tln);
+
+		this.add(scriptPane);
+	}
+
+	/**
+	 * Sets the script.
+	 *
+	 * @param newScript
+	 *            the new script
+	 */
+	public final void setScript(final String newScript) {
+		// not sure first line is needed.
+		editor.setText("");
+		editor.setText(newScript);
+	}
+
+	/**
+	 * Gets the script.
+	 * @return	the script
+	 */
+	public final String getScript() {
+		return editor.getText();
+	}
 }

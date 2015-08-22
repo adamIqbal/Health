@@ -228,4 +228,18 @@ public final class Table implements Iterable<Record> {
         JTable table = new JTable(data, names);
         return table;
     }
+
+    /**
+     * Clones table.
+     * @return	copy of the table
+     */
+    public Table clone() {
+    	Table copy = new Table(this.getColumns());
+
+    	for (Record record : this.getRecords()) {
+    		record.copyTo(copy);
+    	}
+
+    	return copy;
+    }
 }

@@ -11,9 +11,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.health.control.OutputController;
+
 public class VOutputPanelTest {
+	private VOutputPanel outputPanel;
+	private OutputController outputController;
+	
     @Before
     public void setUp() throws Exception {
+    	outputPanel = new VOutputPanel();
+    	outputController = new OutputController(outputPanel);
+    	outputController.control();
     }
 
     @Test
@@ -22,25 +30,23 @@ public class VOutputPanelTest {
         Component component = Mockito.mock(Component.class);
         map.put("testComponent", component);
 
-        VOutputPanel.addAnalysis(map);
+        outputController.addAnalysis(map);
 
         // why is this failing?
-        Component actualComponent = OutputMainPanel.getPane().getComponent(0);
+        Component actualComponent = outputPanel.getMainPanel().getPane().getComponent(0);
         assertEquals(component, actualComponent);
 
-        HashMap<String, Object> actualMap = (HashMap<String, Object>) OutputPanelSidebar
+        HashMap<String, Object> actualMap = (HashMap<String, Object>) outputPanel.getSidebar()
                 .getAnalysisData("testComponent");
         assertEquals(map, actualMap);
     }
 
     @Test
     public void testVOutputPanelConstructor() throws Exception {
-        VOutputPanel panel = new VOutputPanel();
-
-        OutputMainPanel mainPanel = (OutputMainPanel) panel.getLeftComponent();
-        OutputPanelSidebar sidebar = (OutputPanelSidebar) panel
+        OutputMainPanel mainPanel = (OutputMainPanel) outputPanel.getLeftComponent();
+        OutputPanelSidebar sidebar = (OutputPanelSidebar) outputPanel
                 .getRightComponent();
-        MouseListener[] listeners = OutputPanelSidebar.getList().getListeners(
+        MouseListener[] listeners = outputPanel.getSidebar().getList().getListeners(
                 MouseListener.class);
 
         assertNotNull(mainPanel);

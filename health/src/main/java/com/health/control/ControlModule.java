@@ -5,20 +5,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.jfree.chart.JFreeChart;
-import org.xml.sax.SAXException;
 
 import com.health.Column;
 import com.health.EventList;
 import com.health.EventSequence;
 import com.health.Table;
-import com.health.input.Input;
-import com.health.input.InputException;
 import com.health.interpreter.Interpreter;
 import com.health.operations.Code;
 import com.health.operations.ReadTime;
@@ -38,11 +32,12 @@ import com.health.visuals.StateTransitionMatrix;
 import com.xeiam.xchart.Chart;
 
 /**
+ * Setup of file data, as used by script.
  *
  */
 public final class ControlModule {
     private String script;
-    private List<InputData> data;
+    private Map<String,Table> data;
     private Map<String, Object> output = new HashMap<String, Object>();
     private int numBoxPlots, numFreqBars, numTransitionMatrices, numHistograms;
 
@@ -77,18 +72,12 @@ public final class ControlModule {
      *
      * @return the data of this control module.
      */
-    public List<InputData> getData() {
+    public Map<String,Table> getData() {
         return data;
     }
 
-    /**
-     * Sets the data of this control module.
-     *
-     * @param data
-     *            the data of this control module.
-     */
-    public void setData(final List<InputData> data) {
-        this.data = data;
+    public void setData(Map<String,Table> d) {
+    	data = d;
     }
 
     /**
@@ -269,37 +258,17 @@ public final class ControlModule {
             Table table = ((WrapperValue<Table>) args[0]).getValue();
             Column dateCol = table.getColumn(((StringValue) args[1]).getValue());
             Column timeCol = table.getColumn(((StringValue) args[2]).getValue());
-
-            ReadTime.addTimeToDate(table, dateCol, timeCol);
-            return null;
+            
+            return new WrapperValue<Table>(ReadTime.addTimeToDate(table, dateCol, timeCol));
         });
         return context;
     }
 
     private void loadAllData(final Context context) {
-        if (this.data != null) {
-            for (int i = 0; i < this.data.size(); i++) {
-                this.loadData(this.data.get(i), context);
-            }
-        }
-    }
+    	for( Map.Entry<String,Table> entry : data.entrySet()) {
+    		WrapperValue<Table> value = new WrapperValue<Table>(entry.getValue());
 
-    private void loadData(final InputData input, final Context context) {
-        Table table = null;
-
-        try {
-            table = Input.readTable(input.getFilePath(), input.getConfigPath());
-        } catch (IOException | ParserConfigurationException
-                | SAXException | InputException e) {
-            System.out.println("Error: Something went wrong parsing the config and data!");
-
-            e.printStackTrace();
-
-            return;
-        }
-
-        WrapperValue<Table> value = new WrapperValue<Table>(table);
-
-        context.declareLocal(input.getName(), value.getType(), value);
+            context.declareLocal(entry.getKey(), value.getType(), value);
+    	}
     }
 }
